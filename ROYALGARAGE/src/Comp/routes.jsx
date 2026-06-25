@@ -6,7 +6,7 @@ import Home from "../pages/Common/Home";
 import About from "../pages/Common/About";
 import Service from "../pages/Common/Services";
 import Userlogin from "../pages/clients/Userlogin";
-import Pages404 from "../pages/Common/Pages404";
+import Pages404 from "./Pages404";
 import Admin from "../pages/ADMIN/pages";
 import Templatelayout from "../pages/clients/templatelayout ";
 import HomeClient from "../pages/clients/HomeClient";
@@ -23,6 +23,9 @@ import WkLogin from "../pages/WK/WkLogin";
 import WKhome from "../pages/WK/Wkhome";
 import NotAuth from "./notauth";
 import Authenicated from "./authenication/auth";
+import { Ad } from "lucide-react";
+import AdminViewProducts from "@/pages/ADMIN/pages/Adminproducts";
+import AdminViewServices from "@/pages/ADMIN/pages/Adminservices";
 
 export default function Routess() {
   return (
@@ -74,6 +77,8 @@ export default function Routess() {
         >
           <Route path="home" element={<AdminHome />} />
           <Route path="employee" element={<Employees />} />
+          <Route path="products" element={<AdminViewProducts />} />
+          <Route path="services" element={<AdminViewServices />} />
         </Route>
         {/* worker routes  */}
 

@@ -2,11 +2,11 @@
   "name": "royalgaragebackend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "Server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev:": "nodemon ./src/Server.js",
-    "start": "node ./src/Server.js"
+    "start:dev:": "nodemon ./Server.js",
+    "start": "node ./Server.js"
   },
   "keywords": [],
   "author": "",

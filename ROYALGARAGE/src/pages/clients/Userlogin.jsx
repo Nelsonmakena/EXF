@@ -3,6 +3,10 @@ import { Link } from "react-router";
 import logo from "/src/assets/logo.png";
 import login from "/src/assets/login2.png";
 
+import logodata from "/src/assets/logoanimation.json";
+
+import Lottie from "lottie-react";
+
 import { useContext, useState } from "react";
 import HomeClient from "./HomeClient";
 import { Globalcontext } from "../../context";
@@ -26,7 +30,7 @@ export default function Userlogin() {
       <section className="section  flex items-center justify-center">
         <div className="flex h-screen container-main card-lg  w-full  bg-card md:h-fit">
           <div className="  w-full  hidden md:flex md:items-center justify-center ">
-            <img src={logo} alt="leftSideImage" className="h-96" />
+            <Lottie animationData={logodata} />
           </div>
 
           {state === "login" ? (

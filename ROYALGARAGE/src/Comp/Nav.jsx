@@ -4,6 +4,10 @@ import logo from "/src/assets/logo.png";
 import Userlogin from "../pages/clients/Userlogin";
 import { Globalcontext } from "../context";
 import profileimage from "/src/assets/profile.png";
+import logodata from "/src/assets/logoanimation.json";
+import smallmenuanimation from "/src/assets/smallmenu.json";
+
+import Lottie from "lottie-react";
 import { Search, Menu, X } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 
@@ -62,7 +66,7 @@ function Nav() {
       >
         <nav className=" hidden h-full md:flex items-center   ">
           <div className="w-18  ">
-            <img src={logo} alt="" />
+            <Lottie animationData={logodata} />
           </div>
           <div className="flex ">
             <ul className="flex space-x-3.5 ">
@@ -81,7 +85,7 @@ function Nav() {
         <div className=" hidden md:flex      h-full items-center ">
           <button
             onClick={() => navigate("/login")}
-            className={`flex  flex-row justify-center items-center w-44  shadow-md  h-14
+            className={`flex  justify-center items-center w-44  shadow-md  h-14 rounded-md
                ${scrolled ? "bg-transparent " : " bg-white text-black"}`}
           >
             Get Started
@@ -93,8 +97,9 @@ function Nav() {
 
         {/* smallscreen menu  */}
         <div className="flex  w-full  items-center justify-between  md:hidden ">
-          <div className="">
-            <h1 className="heading-bold">Royal Auto Garage </h1>
+          <div className=" ">
+            {" "}
+            <Lottie animationData={smallmenuanimation} />
           </div>
           <button
             onClick={() => Setsmallmenu(true)}

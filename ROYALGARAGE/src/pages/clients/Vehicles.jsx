@@ -91,30 +91,29 @@ export default function Vehicles() {
       <main>
         <section className="container-main">
           <div className="section">
-            <h1 className="heading-normal text-header border"> My Cars</h1>
-            <ScrollArea className="  rounded-md border">
-              <Table>
-                <TableCaption> Registered Vehicles.</TableCaption>
-                <TableHeader>
-                  <TableRow className="text-header font-bold">
-                    <TableHead>Number Plate</TableHead>
-                    <TableHead>Model</TableHead>
-                    <TableHead>Color</TableHead>
+            <h1 className="heading-normal text-header "> My Cars</h1>
+
+            <Table className="">
+              <TableCaption> Registered Vehicles.</TableCaption>
+              <TableHeader>
+                <TableRow className="text-header font-bold">
+                  <TableHead>Number Plate</TableHead>
+                  <TableHead>Model</TableHead>
+                  <TableHead>Color</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Vehicle.map((item) => (
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      {item.VehicleRegistrationNumber}
+                    </TableCell>
+                    <TableCell>{item.VehicleDetails}</TableCell>
+                    <TableCell>{item.Color}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {Vehicle.map((item) => (
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        {item.VehicleRegistrationNumber}
-                      </TableCell>
-                      <TableCell>{item.VehicleDetails}</TableCell>
-                      <TableCell>{item.Color}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </section>
       </main>

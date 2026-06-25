@@ -3,7 +3,7 @@ import ClientNav from "./ClientNav";
 export default function HomeClient() {
   return (
     <>
-      <section className=" mt-24 p-3.5 w-full  ">
+      <section className=" mt-24 p-3.5 w-full container-main ">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           <div className=" bg-linear-to-br from-violet-500 to-purple-600  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl">
             <div className="flex items-start justify-between mb-4">

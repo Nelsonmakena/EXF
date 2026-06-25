@@ -105,7 +105,7 @@ export default function ClientServices() {
       <section className="container-main">
         {/* get new service */}
         <div></div>
-        <div className=" section  border ">
+        <div className=" section   ">
           <h1 className="  heading-normal  text-green-700 ">
             {" "}
             Ongoing <span className="text-blue-500"> Services </span>{" "}

@@ -402,26 +402,50 @@ function Home() {
                 Inside RoyalAutoGarage : Work In Progres
               </h2>
             </div>
-            <div className="flex card border ">
-              <div className="border ">
-                <img src={img1} alt="img1" />
-                <div className="flex">
-                  <img src={img1} alt="img2" />
-                  <img src={img1} alt="img3" />
+            <div className=" grid  grid-cols-1 gap-normal md:grid-cols-3 card  ">
+              <div className="flex flex-col ">
+                <div className="section-sm ">
+                  <img className="shadow-md rounded-2xl" src={bg} alt="" />
+                </div>
+
+                <div className="flex flex-row gap-normal">
+                  <div className=" section-sm">
+                    {" "}
+                    <img className="shadow-md rounded-2xl" src={bg1} alt="" />
+                  </div>
+                  <div className="section-sm">
+                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
+                  </div>
                 </div>
               </div>
-              <div className="border ">
-                <img src={img1} alt="img1" />
-                <div className="flex">
-                  <img src={img1} alt="img2" />
-                  <img src={img1} alt="img3" />
+              <div className="flex flex-col ">
+                <div className="flex flex-row gap-normal">
+                  <div className=" section-sm">
+                    {" "}
+                    <img className="shadow-md rounded-2xl" src={bg1} alt="" />
+                  </div>
+                  <div className="section-sm">
+                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
+                  </div>
+                </div>
+
+                <div className="section-sm ">
+                  <img className="shadow-md rounded-2xl" src={bg} alt="" />
                 </div>
               </div>
-              <div className="border ">
-                <img src={img1} alt="img1" />
-                <div className="flex">
-                  <img src={img1} alt="img2" />
-                  <img src={img1} alt="img3" />
+              <div className="flex flex-col ">
+                <div className="section-sm ">
+                  <img className="shadow-md rounded-2xl" src={bg} alt="" />
+                </div>
+
+                <div className="flex flex-row gap-normal">
+                  <div className=" section-sm">
+                    {" "}
+                    <img className="shadow-md rounded-2xl" src={bg1} alt="" />
+                  </div>
+                  <div className="section-sm">
+                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
+                  </div>
                 </div>
               </div>
             </div>

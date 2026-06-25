@@ -2,13 +2,30 @@ import logo from "/src/assets/logo.png";
 
 import profileimage from "/src/assets/profile.png";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { Globalcontext } from "../../context";
-import { Menu, X, LogOut, ShoppingBag, MenuIcon } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  ShoppingBag,
+  MenuIcon,
+  Moon,
+  Sun,
+} from "lucide-react";
 import { ModeToggle } from "@/Comp/mode-toggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/comp/theme-provider";
 
 export default function ClientNav() {
+  const { setTheme, theme } = useTheme();
   const navigate = useNavigate();
   const { SetIsloggedin, SetRole } = useContext(Globalcontext);
   const [SmallMe, SetSmallMe] = useState(false);
@@ -31,7 +48,7 @@ export default function ClientNav() {
 
   return (
     <>
-      <div className="   flex items-center justify-center text-sm  w-full    font-semibold h-24  overflow-hidden    ">
+      <div className="flex items-center justify-center text-sm  w-full    font-semibold h-24  overflow-hidden    ">
         <nav className=" flex items-center w-full relative h-24   bg-card    rounded-2xl  md:w-3/4   ">
           {/* bigscreen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between ">
@@ -64,29 +81,60 @@ export default function ClientNav() {
                 </div>
               </Link>
             </div>
-            <div className=" flex  items-center   ">
-              <Link to="profile">
-                {" "}
-                <img
-                  src={profileimage}
-                  alt="userimage"
-                  className="rounded-[50%] w-14 h-14"
-                />
-              </Link>
-            </div>
-            <div className="flex">
-              <ModeToggle />
-            </div>
-            <div className="flex items-center  w-25  ">
-              {" "}
-              <LogOut
-                className="text-blue-400"
-                onClick={() => {
-                  navigate("/");
-                  SetIsloggedin(false);
-                  SetRole(null);
-                }}
-              />
+            <div className=" flex  items-center  card   ">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <img
+                    src={profileimage}
+                    alt="userimage"
+                    className="rounded-[50%] w-14 h-14"
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-2xs section  ">
+                  <DropdownMenuItem
+                    onClick={() => navigate("profile")}
+                    className={" h-14 shadow-md"}
+                  >
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className={"h-14 shadow-md"}>
+                    {" "}
+                    <div className="  flex  justify-between shadow-md card ">
+                      <div
+                        className="px-3.5"
+                        onClick={() => {
+                          setTheme("dark");
+                        }}
+                      >
+                        <Moon
+                          className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
+                        />
+                      </div>
+                      <div
+                        className="px-3.5"
+                        onClick={() => {
+                          setTheme("light");
+                        }}
+                      >
+                        <Sun
+                          className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
+                        />
+                      </div>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={"h-14 shadow-md"}
+                    onClick={() => {
+                      navigate("/");
+                      SetIsloggedin(false);
+                      SetRole(null);
+                    }}
+                  >
+                    {" "}
+                    <LogOut className="text-blue-400" />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           {/* smallscreen menu  */}

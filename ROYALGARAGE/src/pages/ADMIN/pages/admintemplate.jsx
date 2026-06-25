@@ -14,7 +14,7 @@ export default function Admincommon() {
     <>
       <main className="flex ">
         <div
-          className={` ${hidemenu == true ? "hidden  " : "min-h-svh md:w-64  shadow-md"} `}
+          className={` ${hidemenu == true ? "hidden  " : " min-h-svh md:w-64  shadow-md"} `}
         >
           <AdminNav />
         </div>
@@ -22,14 +22,11 @@ export default function Admincommon() {
         <div className="flex flex-col w-full  ">
           <ScrollArea className="h-screen  ">
             <div className=" flex  py-2.5 justify-between h-20  w-full ">
-              <div className="w-14  ">
+              <div className="px-3.5">
                 <Menu
                   onClick={() => Sethidemenu(!hidemenu)}
-                  className="w-full h-10"
+                  className="w-full h-10 text-primary"
                 />
-              </div>
-              <div className=" flex  overflow-hidden  gap-large items-center px-3.5   ">
-                <ModeToggle />
               </div>
             </div>
             <div className="container-main">

@@ -21,9 +21,6 @@ function App() {
       offset: 100,
     });
   }, []);
-  //useEffect(() => {
-  // AOS.refresh(); // 🔥 VERY IMPORTANT
-  /// }, [location]);
 
   return (
     <>
