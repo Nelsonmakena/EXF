@@ -18,7 +18,6 @@ import bg3 from "../../assets/bg3.jpg";
 import bg4 from "../../assets/bg4.jpg";
 import img3 from "../../assets/img3.jpg";
 import bg from "../../assets/engine3.jpg";
-import Nav from "../../Comp/Nav";
 import Banner from "../../Comp/banner";
 import img1 from "../../assets/img1.jpg";
 function Home() {
@@ -89,7 +88,7 @@ function Home() {
 
   return (
     <>
-      <main className=" flex flex-col ">
+      <main>
         {/*pg1 */}
         <section className="  w-full  h-screen    ">
           {/* img scroll */}
@@ -398,8 +397,8 @@ function Home() {
         <section className="contanier-main ">
           <div className="section">
             <div class="mx-auto max-w-2xl text-center mb-16 ">
-              <h2 class=" text-header heading-medium ">
-                Inside RoyalAutoGarage : Work In Progres
+              <h2 class=" text-header heading-medium text-nowrap">
+                Inside RoyalAutoGarage Work In Progress
               </h2>
             </div>
             <div className=" grid  grid-cols-1 gap-normal md:grid-cols-3 card  ">
@@ -449,6 +448,21 @@ function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/**page 5 Garage experts  */}
+        <section className="container-main">
+          <div className="section">
+            <h1 className="flex justify-center heading-medium text-header ">
+              {" "}
+              Meet Our Experts{" "}
+            </h1>
+            <p className="flex justify-center heading-normal">
+              {" "}
+              The skilled hands and trusted faces behind every smooth running at
+              Royal Garage{" "}
+            </p>
           </div>
         </section>
       </main>

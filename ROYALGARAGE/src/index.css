@@ -52,6 +52,7 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-header: var(--header);
   --color-header-foreground: var(--header-foreground);
+  --color-cardbg: var(--cardbg);
 }
 
 :root {
@@ -92,6 +93,7 @@
 
   --header: oklch(0.65 0.18 255);
   --header-foreground: oklch(0.75 0.15 70);
+  --cardbg: oklch(0.65 0.18 255);
 }
 
 .dark {
@@ -137,6 +139,7 @@
   /* custom switching of base colours */
   --header: oklch(0.65 0.18 145);
   --header-foreground: oklch(0.25 0.02 60);
+  --cardbg: oklch(77.875% 0.17259 66.559 / 0.877);
 }
 
 @layer base {

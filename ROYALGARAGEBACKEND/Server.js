@@ -1,9 +1,15 @@
 import express from "express";
+import Productsroutes from "./src/Routes/Productsroutes.js";
 
 const app = express();
 
-const port = 3000;
+const Port = 3000;
 
-app.listen(port, () => {
-  console.log(`Sever is running ${port}`);
+app.use(express.json());
+
+// product routes
+app.use("api/products", Productsroutes);
+
+app.listen(Port, () => {
+  console.log(`Sever is running ${Port}`);
 });

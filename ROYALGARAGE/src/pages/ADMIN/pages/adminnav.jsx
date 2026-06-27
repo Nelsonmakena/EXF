@@ -38,7 +38,13 @@ export default function AdminNav() {
           <button className=" h-11 w-full bg-card"> Managment </button>
         </div>
 
-        <div onClick={() => SetService(!Services)} className="p-1 ">
+        <div
+          onClick={() => {
+            SetService(!Services);
+            console.log(Services);
+          }}
+          className="p-1 "
+        >
           <button
             className={`h-11 font-bold rounded-md shadow-md ${Services == true ? "bg-none w-1/2 text-header " : "w-full bg-card"}`}
           >
@@ -126,7 +132,7 @@ export default function AdminNav() {
           />
         </div>
       </div>
-
+      {/**pop up  small menu  */}
       {UserAccountSmallMenu && (
         <div className="bg-card   shadow-md absolute rounded-xl  w-3xs  bottom-5 left-52 z-999  ">
           <div className="  flex  justify-between shadow-md card ">

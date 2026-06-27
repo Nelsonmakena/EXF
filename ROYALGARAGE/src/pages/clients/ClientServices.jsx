@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ClientNav from "./ClientNav";
 import dodge from "/src/assets/dodge.jpg";
+import { XIcon } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -12,8 +13,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ScrollArea } from "@base-ui/react/scroll-area";
+import buttonanimation from "/src/assets/addbuttondata.json";
+import Lottie from "lottie-react";
+import ProductServiceList from "./ProductsServiceList";
 
 export default function ClientServices() {
+  const [NewServiceTab, SetNewServiceTab] = useState(false);
   const [ServicesList, SetServicesList] = useState([
     {
       ServiceName: "Clutch Replacement",
@@ -100,45 +105,72 @@ export default function ClientServices() {
       VehicleRegistrationNumber: "KDA227Z",
     },
   ]);
+
+  {
+    /**locks scroll to the area of the new tab  */
+  }
+  useEffect(() => {
+    if (NewServiceTab) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [NewServiceTab]);
   return (
     <>
-      <section className="container-main">
-        {/* get new service */}
-        <div></div>
-        <div className=" section   ">
-          <h1 className="  heading-normal  text-green-700 ">
-            {" "}
-            Ongoing <span className="text-blue-500"> Services </span>{" "}
-          </h1>
-          <div className=" flex   bg-orange-700 w-2xs h-40   rounded-2xl shadow-lg md:w-4xl md:h-40 ">
-            <div className="   flex flex-col  items-center  w-1/3 ">
-              <div className="  h-1/2  flex items-center ">
-                <h1 className="font-medium  text-white ">service name </h1>
-              </div>
-              <div className="   h-1/2 text-white ">
+      <section className="container-main ">
+        <div className="section">
+          {/* get new service */}
+          <div className="bg-card w-46 card  rounded-xl shadow-md">
+            <div className=" card ">
+              <Lottie animationData={buttonanimation} />
+            </div>
+            <button
+              onClick={() => {
+                SetNewServiceTab(!NewServiceTab);
+                console.log(NewServiceTab);
+              }}
+              className="w-full h-12 text-white rounded-md   bg-primary"
+            >
+              {" "}
+              New Service
+            </button>
+          </div>
+          <div className=" section   ">
+            <h1 className="  heading-normal  text-green-700 ">
+              {" "}
+              Ongoing <span className="text-blue-500"> Services </span>{" "}
+            </h1>
+
+            {/**service card  progress for ongoing services  */}
+            <div className=" grid   heading-normal card   bg-cardbg  w-full md:h-40   rounded-2xl shadow-2xl md:w-4xl  gap-normal md:grid-cols-3 ">
+              {/**col-1 */}
+              <div className="flex  md:flex-col justify-between card">
+                <h1 className=" text-primary-foreground">Service name </h1>
                 <h1>Wheel allignment </h1>
               </div>
-            </div>
-            <div className="   flex flex-col  items-center  w-1/3 ">
-              <div className="  h-1/2  flex items-center ">
-                <h1 className="font-medium  text-white ">Amount </h1>
-              </div>
-              <div className="    h-1/2 text-white font-medium text-shadow-xs  ">
+
+              {/**col-2 */}
+              <div className="flex md:flex-col justify-between card">
+                <h1 className="text-primary-foreground">Amount </h1>
                 <h1> 10,000/= </h1>
               </div>
-            </div>
-            <div className="   flex flex-col  items-center  w-1/3 ">
-              <div className="p   h-1/2  flex items-center ">
-                <h1 className="font-medium  text-white ">vehicle </h1>
-              </div>
-              <div class="flex    items-center gap-2 sm:gap-3 ">
-                <img
-                  src={dodge}
-                  alt="Avatar"
-                  class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
-                />
-                <div class="min-w-0">
-                  <div class="text-white  ">KAY233Y</div>
+              {/**col-3 */}
+              <div className="flex md:flex-col justify-between card">
+                <h1 className="text-primary-foreground">Vehicle </h1>
+
+                <div className="flex  items-center gap-1.5">
+                  <img
+                    src={dodge}
+                    alt="Avatar"
+                    class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
+                  />
+
+                  <h1> KAY233Y</h1>
                 </div>
               </div>
             </div>
@@ -174,6 +206,21 @@ export default function ClientServices() {
           </Table>
         </div>
       </section>
+      {/** floating serive list */}
+
+      {NewServiceTab && (
+        <div>
+          <div className=" w-full absolute top-15 z-50 p-3.5 flex justify-end ">
+            <XIcon
+              onClick={() => {
+                SetNewServiceTab(!NewServiceTab);
+              }}
+            />
+          </div>
+
+          <ProductServiceList />
+        </div>
+      )}
     </>
   );
 }

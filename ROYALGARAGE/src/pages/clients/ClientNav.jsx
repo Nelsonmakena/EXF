@@ -29,6 +29,7 @@ export default function ClientNav() {
   const navigate = useNavigate();
   const { SetIsloggedin, SetRole } = useContext(Globalcontext);
   const [SmallMe, SetSmallMe] = useState(false);
+  const [ProfileMenu, SetProfileMenu] = useState(false);
   const navlinks = [
     { name: "Vehicles", Path: "vehicles" },
     { name: "Services ", Path: "Userservice" },
@@ -48,8 +49,8 @@ export default function ClientNav() {
 
   return (
     <>
-      <div className="flex items-center justify-center text-sm  w-full    font-semibold h-24  overflow-hidden    ">
-        <nav className=" flex items-center w-full relative h-24   bg-card    rounded-2xl  md:w-3/4   ">
+      <div className="  flex items-center justify-center text-sm  w-full    font-semibold h-24       ">
+        <nav className=" flex items-center w-full relative h-20   bg-card    rounded-2xl  md:w-3/4  shadow-md  ">
           {/* bigscreen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between ">
             {/* icon logo */}
@@ -81,65 +82,76 @@ export default function ClientNav() {
                 </div>
               </Link>
             </div>
-            <div className=" flex  items-center  card   ">
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <img
-                    src={profileimage}
-                    alt="userimage"
-                    className="rounded-[50%] w-14 h-14"
-                  />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-2xs section  ">
-                  <DropdownMenuItem
-                    onClick={() => navigate("profile")}
-                    className={" h-14 shadow-md"}
+            <div
+              className=" flex  items-center  card    "
+              onClick={() => {
+                SetProfileMenu(!ProfileMenu);
+              }}
+            >
+              <img
+                src={profileimage}
+                alt="userimage"
+                className="rounded-[50%] w-14 h-14"
+              />
+            </div>
+            {ProfileMenu && (
+              <div className=" absolute top-24 right-5 bg-card rounded-2xl shadow-md  w-2xs   card ">
+                <div className="card text-body">
+                  <button
+                    onClick={() => {
+                      navigate("profile");
+                      SetProfileMenu(!ProfileMenu);
+                    }}
                   >
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className={"h-14 shadow-md"}>
                     {" "}
-                    <div className="  flex  justify-between shadow-md card ">
-                      <div
-                        className="px-3.5"
-                        onClick={() => {
-                          setTheme("dark");
-                        }}
-                      >
-                        <Moon
-                          className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
-                        />
-                      </div>
-                      <div
-                        className="px-3.5"
-                        onClick={() => {
-                          setTheme("light");
-                        }}
-                      >
-                        <Sun
-                          className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
-                        />
-                      </div>
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className={"h-14 shadow-md"}
+                    Profile{" "}
+                  </button>
+                </div>
+                <div className=" card  flex  justify-between  ">
+                  <div
+                    className="px-3.5"
+                    onClick={() => {
+                      setTheme("dark");
+                    }}
+                  >
+                    <Moon
+                      className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </div>
+                  <div
+                    className="px-3.5"
+                    onClick={() => {
+                      setTheme("light");
+                    }}
+                  >
+                    <Sun
+                      className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </div>
+                </div>
+
+                <div className="card ">
+                  <button
                     onClick={() => {
                       navigate("/");
                       SetIsloggedin(false);
                       SetRole(null);
                     }}
                   >
-                    {" "}
                     <LogOut className="text-blue-400" />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           {/* smallscreen menu  */}
           <div className="flex   w-full  items-center justify-between container-main md:hidden ">
-            <div className="">
+            <div
+              onClick={() => {
+                navigate("dashboard");
+              }}
+              className=" flex items-center cursor-pointer  h-14 "
+            >
               <h1 className="text-orange-700  font-bold text-xl ">
                 Royal <span className="text-blue-400">Auto </span>
                 <span className="text-green-700 text-shadow-xs">
@@ -149,7 +161,7 @@ export default function ClientNav() {
               </h1>
             </div>
             <button
-              onClick={() => SetSmallMe(true)}
+              onClick={() => SetSmallMe(!SmallMe)}
               className="flex  items-center w-15 h-full  "
             >
               <Menu className="w-12 h-10" />
@@ -157,23 +169,28 @@ export default function ClientNav() {
           </div>
         </nav>
       </div>
-      {SmallMe == true ? (
-        <div className="w-full h-screen  fixed top-0 backdrop-blur-xs ">
+      {SmallMe && (
+        <div
+          onClick={() => {
+            SetSmallMe(!SmallMe);
+          }}
+          className="w-full h-screen  fixed top-0 backdrop-blur-xs z-999 "
+        >
           <div className="  flex  flex-col bg-card    w-[50%] h-screen fixed right-0 z-10   gap-14 p-3.5   top-0">
-            <div className="flex   items-center card-lg justify-between ">
-              <button onClick={() => SetSmallMe(false)} className="flex ">
+            <div className="flex   items-center card-lg justify-end ">
+              <button onClick={() => SetSmallMe(!SmallMe)} className="flex ">
                 <Menu className="h-14 w-10 text-shadow-2xs" />
               </button>
-              <div className="">
-                <ModeToggle />
-              </div>
             </div>
 
             <div className=" w-full">
               <ul className=" flex  flex-col text-2xl text-[#0c98ee]   space-y-8  font-semibold  ">
                 {navlinks.map((single) => {
                   return (
-                    <li className="card-lg">
+                    <li
+                      onClick={() => SetSmallMe(!SmallMe)}
+                      className="card-lg"
+                    >
                       <Link to={single.Path}> {single.name} </Link>
                     </li>
                   );
@@ -189,6 +206,28 @@ export default function ClientNav() {
                 <button className="absolute -top-2 -right-3 text-xs text-white bg-orange-600 w-4.5 h-4.5 rounded-full">
                   3
                 </button>
+              </div>
+            </div>
+            <div className="  flex  justify-between card ">
+              <div
+                className="px-3.5"
+                onClick={() => {
+                  setTheme("dark");
+                }}
+              >
+                <Moon
+                  className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
+                />
+              </div>
+              <div
+                className="px-3.5"
+                onClick={() => {
+                  setTheme("light");
+                }}
+              >
+                <Sun
+                  className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
+                />
               </div>
             </div>
             <div className="flex items-center  w-25  card-lg">
@@ -220,7 +259,7 @@ export default function ClientNav() {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 }

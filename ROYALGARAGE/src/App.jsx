@@ -6,10 +6,8 @@ import "aos/dist/aos.css";
 
 import "./App.css";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Userlogin from "./pages/clients/Userlogin";
 
 import Routess from "./Comp/Routes";
-import Template from "./pages/Common/Common";
 
 function App() {
   const location = useLocation();

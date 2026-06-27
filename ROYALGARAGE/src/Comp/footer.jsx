@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router";
+
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-gray-500">
       <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
@@ -13,18 +16,22 @@ export default function Footer() {
           <div>
             <h2 className="font-semibold mb-5 text-gray-800">Company</h2>
             <ul className="text-sm space-y-2">
-              <li>
-                <a href="#">Home</a>
+              <li
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Home
               </li>
-              <li>
-                <a href="#">About us</a>
+              <li
+                onClick={() => {
+                  navigate("about");
+                }}
+              >
+                About us
               </li>
-              <li>
-                <a href="#">Contact us</a>
-              </li>
-              <li>
-                <a href="#">Privacy policy</a>
-              </li>
+              <li>Contact us</li>
+              <li>Privacy policy</li>
             </ul>
           </div>
           <div>

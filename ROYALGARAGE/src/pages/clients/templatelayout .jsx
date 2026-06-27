@@ -4,7 +4,7 @@ import ClientNav from "./ClientNav";
 export default function Templatelayout() {
   return (
     <>
-      <div>
+      <div className="z-30">
         <ClientNav />
       </div>
       <div>
