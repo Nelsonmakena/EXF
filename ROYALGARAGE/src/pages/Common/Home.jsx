@@ -301,10 +301,10 @@ function Home() {
 
         {/** pg 3 the process  */}
 
-        <section class="section ">
-          <div class=" container-main ">
-            <div class="mx-auto max-w-2xl text-center mb-16 ">
-              <h2 class=" text-header heading-medium ">
+        <section className="section ">
+          <div className=" container-main ">
+            <div className="mx-auto max-w-2xl text-center mb-16 ">
+              <h2 className=" text-header heading-medium ">
                 Auto repair process in four basic steps
               </h2>
             </div>
@@ -314,71 +314,73 @@ function Home() {
                 <img src={car1} alt="" className="h-fit " />
               </div>
               <div className="flex-1">
-                <div class="rounded-xl  p-8 md:p-12">
-                  <div class="max-w-3xl mx-auto">
-                    <div class="relative">
-                      <div class=" bg-secondary absolute left-5 top-2 bottom-2 w-0.5  "></div>
+                <div className="rounded-xl  p-8 md:p-12">
+                  <div className="max-w-3xl mx-auto">
+                    <div className="relative">
+                      <div className=" bg-secondary absolute left-5 top-2 bottom-2 w-0.5  "></div>
 
-                      <div class="space-y-8">
-                        <div class="relative pl-12 ">
-                          <div class="absolute left-0 top-0  rounded-full  h-10 w-10 flex items-center justify-center bg-blue-400">
+                      <div className="space-y-8">
+                        <div className="relative pl-12 ">
+                          <div className="absolute left-0 top-0  rounded-full  h-10 w-10 flex items-center justify-center bg-blue-400">
                             <Glasses />
                           </div>
 
-                          <div class="bg-header rounded-lg p-5 transition-all hover:shadow-md">
-                            <div class="flex items-start justify-between mb-2">
-                              <h3 class="heading-normal fancy">
+                          <div className="bg-header rounded-lg p-5 transition-all hover:shadow-md">
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className="heading-normal fancy">
                                 Assesment and estmates{" "}
                               </h3>
                             </div>
-                            <p class="  text-sm">
+                            <p className="  text-sm">
                               Initial planning and team assembly. Define project
                               scope and objectives.
                             </p>
                           </div>
                         </div>
 
-                        <div class="relative pl-12">
-                          <div class="absolute left-0 top-0  rounded-full border  h-10 w-10 flex items-center justify-center bg-blue-400">
+                        <div className="relative pl-12">
+                          <div className="absolute left-0 top-0  rounded-full border  h-10 w-10 flex items-center justify-center bg-blue-400">
                             <ToolCase />
                           </div>
-                          <div class="bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
-                            <div class="flex items-start justify-between mb-2">
-                              <h3 class="heading-normal fancy">Repair work</h3>
+                          <div className="bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className="heading-normal fancy">
+                                Repair work
+                              </h3>
                             </div>
-                            <p class=" text-sm">
+                            <p className=" text-sm">
                               Create wireframes, mockups, and finalize design
                               system.
                             </p>
                           </div>
                         </div>
 
-                        <div class="relative pl-12">
-                          <div class="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
+                        <div className="relative pl-12">
+                          <div className="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
                             <BrushCleaning />
                           </div>
-                          <div class="bg-header border  rounded-lg p-5 transition-all hover:shadow-md">
-                            <div class="flex items-start justify-between mb-2">
-                              <h3 class="heading-normal fancy">
+                          <div className="bg-header border  rounded-lg p-5 transition-all hover:shadow-md">
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className="heading-normal fancy">
                                 Cleaning and detailing
                               </h3>
                             </div>
-                            <p class=" text-sm">
+                            <p className=" text-sm">
                               Core functionality implementation and backend
                               architecture.
                             </p>
                           </div>
                         </div>
 
-                        <div class="relative pl-12">
-                          <div class="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400">
+                        <div clclassNameass="relative pl-12">
+                          <div className="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400">
                             <Combine />
                           </div>
-                          <div class=" bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
-                            <div class="flex items-start justify-between mb-2">
-                              <h3 class="heading-normal fancy">pick up</h3>
+                          <div className=" bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className="heading-normal fancy">pick up</h3>
                             </div>
-                            <p class=" text-sm">
+                            <p className=" text-sm">
                               Comprehensive testing, bug fixes, and performance
                               optimization.
                             </p>
@@ -396,8 +398,8 @@ function Home() {
         {/** pg 4  img curosel */}
         <section className="contanier-main ">
           <div className="section">
-            <div class="mx-auto max-w-2xl text-center mb-16 ">
-              <h2 class=" text-header heading-medium text-nowrap">
+            <div className="mx-auto max-w-2xl text-center mb-16 ">
+              <h2 className=" text-header heading-medium text-nowrap">
                 Inside RoyalAutoGarage Work In Progress
               </h2>
             </div>

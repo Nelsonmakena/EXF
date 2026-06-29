@@ -51,7 +51,7 @@ function Nav() {
       document.body.style.overflow = "auto";
     };
   }, [smallmenu]);
-  console.log(home);
+
   return (
     <>
       <div
@@ -70,9 +70,9 @@ function Nav() {
           </div>
           <div className="flex ">
             <ul className="flex space-x-3.5 ">
-              {commonnavlinks.map((single) => {
+              {commonnavlinks.map((single, index) => {
                 return (
-                  <li className=" card">
+                  <li key={index} className=" card">
                     <Link to={single.Path}> {single.name} </Link>
                   </li>
                 );
