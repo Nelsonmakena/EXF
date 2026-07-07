@@ -28,7 +28,6 @@ export default function AdminViewProducts() {
         "http://localhost:3000/api/products/allproducts",
       );
       SetProduct(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -173,11 +172,94 @@ export default function AdminViewProducts() {
                   price
                 </span>
               </div>
+
+              {/**edit  product side controls */}
               <div className=" w-3/4 m-2.5 flex items-center justify-center  h-12 ">
-                <button className="w-full h-full  text-white rounded-md   bg-blue-400 shadow-md ">
-                  {" "}
-                  Edit
-                </button>
+                <Sheet>
+                  <SheetTrigger
+                    render={
+                      <button className="w-full h-full  text-white rounded-md   bg-blue-400 shadow-md ">
+                        {" "}
+                        Edit
+                      </button>
+                    }
+                  />
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle className={"text-header heading-normal"}>
+                        {item.product_name}
+                      </SheetTitle>
+                      <SheetDescription></SheetDescription>
+                    </SheetHeader>
+
+                    <form>
+                      <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                        <div className="grid gap-3">
+                          <label> Product name </label>
+                          <Input
+                            name="product_name"
+                            id="productname"
+                            defaultValue={item.product_name}
+                          />
+                        </div>
+                        <div className="grid gap-3">
+                          <label> Product image </label>
+                          <Input
+                            name="product_image"
+                            id="productdescrption"
+                            defaultValue={item.product_name}
+                          />
+                        </div>
+                        <div className="grid gap-3">
+                          <label> Product descrption </label>
+                          <Input
+                            name="product_description"
+                            id="productdescrption"
+                            defaultValue={item.product_descrption}
+                          />
+                        </div>
+                        <div className="grid gap-3">
+                          <label> Product price </label>
+                          <Input
+                            name="product_price"
+                            id="productprice"
+                            defaultValue={item.product_price}
+                          />
+                        </div>
+                        <div className="grid gap-3">
+                          <label> Category </label>
+                          <Input
+                            name="product_category"
+                            id="product_category"
+                            defaultValue={item.product_category}
+                          />
+                        </div>
+                        <div className="grid gap-3">
+                          <label> Discount </label>
+                          <Input
+                            name="product_discount"
+                            id="Discount"
+                            defaultValue={item.product_discount}
+                          />
+                        </div>
+                      </div>
+                      <div className="card flex flex-col gap-2.5 justify-center">
+                        <button
+                          type="submit"
+                          className=" bg-primary w-full rounded-2xl h-14"
+                        >
+                          {" "}
+                          Add product{" "}
+                        </button>
+                      </div>
+                    </form>
+                    <SheetFooter>
+                      <SheetClose
+                        render={<Button variant="outline">Close</Button>}
+                      />
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
               </div>
             </div>
           );

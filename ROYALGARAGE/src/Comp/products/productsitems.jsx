@@ -25,6 +25,8 @@ export default function ProductsItems() {
     const setprice = Number(products.product_price);
     const price = setprice - discount * setprice;
     return price;
+
+    // adding items to cart
   };
   return (
     <section>
@@ -36,8 +38,8 @@ export default function ProductsItems() {
               className="border-border bg-card shadow-md transition-colors rounded-xl p-2 flex flex-col w-46"
             >
               {/* Top row: badge + bookmark */}
-              <div className="flex items-center justify-between mb-2">
-                <span className="bg-lime-300 text-neutral-800 text-xs px-2 py-0.5 rounded-full">
+              <div className="flex items-center  mb-2  ">
+                <span className="bg-accent text-neutral-800 text-xs px-2 py-0.5 rounded-full">
                   <span className="font-bold">
                     {item.product_discount + "%"}
                   </span>{" "}
@@ -55,21 +57,21 @@ export default function ProductsItems() {
               </div>
 
               {/* Product Name */}
-              <p className="text-sm text-neutral-500 mb-2 px-2">
+              <p className="text-sm text-header mb-2 px-2">
                 {item.product_name}
               </p>
 
               {/* Price */}
               <div className="flex items-center gap-2 px-2">
                 <span className="text-sm font-semibold text-neutral-800">
-                  {newprice(item)}
+                  ksh {newprice(item)}
                 </span>
                 <span className="text-xs text-neutral-500 line-through">
-                  {item.product_price}
+                  {item.product_price}/=
                 </span>
                 <div>
                   <button>
-                    <ShoppingCart />{" "}
+                    <ShoppingCart className="text-header" />{" "}
                   </button>
                 </div>
               </div>

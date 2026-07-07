@@ -10,7 +10,7 @@ const app = express();
 const Port = ENV.PORT || 3000;
 
 app.use(express.json());
-app.use(cors({ origin: ENV.FRONTEND_URL }));
+app.use(cors({ origin: "http://localhost:5173" }));
 
 DbConnection();
 

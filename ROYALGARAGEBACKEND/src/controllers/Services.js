@@ -12,3 +12,12 @@ export const getallservices = async (req, res) => {
     console.log(error.message);
   }
 };
+export const addService = async (req, res) => {
+ const{service_name, service_price , service_descprion , service_discount , service_category}=req.body
+ try {
+   const newService= await pool.query("INSERT  ")
+ } catch (error) {
+  
+ }
+
+};
