@@ -17,11 +17,10 @@ import Lottie from "lottie-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-/// fecttching products
-
 export default function AdminViewProducts() {
   const [Product, SetProduct] = useState([]);
 
+  /// fecttching products
   const getProducts = async () => {
     try {
       const response = await axios.get(
@@ -37,8 +36,8 @@ export default function AdminViewProducts() {
     getProducts();
   }, []);
 
-  /// adding products
-  const handlesubmit = (e) => {
+  /// fetching data for adding a product & sending that data
+  const addproduct = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
@@ -47,18 +46,32 @@ export default function AdminViewProducts() {
     console.log(data);
     axios.post("http://localhost:3000/api/products/addproduct", data);
   };
+
+  // fetching data & updating a product  sending it
+
+  const update_product = (e, item) => {
+    e.preventDefault();
+    const productid = item.product_id;
+    console.log(productid);
+
+    const formdata = new FormData(e.target);
+    const data = Object.fromEntries(formdata.entries());
+
+    axios.put(`http://localhost:3000/api/products/update/${productid}`, data);
+  };
   return (
     <section className="w-full container-main">
       <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
         {/** add item  */}
         <div className="bg-card w-46  rounded-xl  shadow-md  card ">
-          <div className=" flex items-center justify-center h-full  border border-dotted  heading-bold ">
+          <div className=" flex items-center justify-center h-full   heading-bold ">
             <Sheet>
               <SheetTrigger
                 render={
                   <button className="w-full h-full">
                     {" "}
                     <Lottie animationData={animatedaddbutton} />
+                    <h1 className="text-body text-header"> add product</h1>
                   </button>
                 }
               />
@@ -71,7 +84,7 @@ export default function AdminViewProducts() {
                   <SheetDescription></SheetDescription>
                 </SheetHeader>
 
-                <form onSubmit={handlesubmit}>
+                <form onSubmit={addproduct}>
                   <div className="grid flex-1 auto-rows-min gap-6 px-4">
                     <div className="grid gap-3">
                       <label> Product name </label>
@@ -127,8 +140,7 @@ export default function AdminViewProducts() {
                       type="submit"
                       className=" bg-primary w-full rounded-2xl h-14"
                     >
-                      {" "}
-                      Add product{" "}
+                      Add product
                     </button>
                   </div>
                 </form>
@@ -142,10 +154,10 @@ export default function AdminViewProducts() {
           </div>
         </div>
 
-        {Product.map((item, index) => {
+        {Product.map((item) => {
           return (
             <div
-              key={index}
+              key={item.product_id}
               className=" bg-card border-border  rounded-xl p-2 flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
             >
               {/* Product Image */}
@@ -192,7 +204,11 @@ export default function AdminViewProducts() {
                       <SheetDescription></SheetDescription>
                     </SheetHeader>
 
-                    <form>
+                    <form
+                      onSubmit={(e) => {
+                        update_product(e, item);
+                      }}
+                    >
                       <div className="grid flex-1 auto-rows-min gap-6 px-4">
                         <div className="grid gap-3">
                           <label> Product name </label>
@@ -249,7 +265,7 @@ export default function AdminViewProducts() {
                           className=" bg-primary w-full rounded-2xl h-14"
                         >
                           {" "}
-                          Add product{" "}
+                          update{" "}
                         </button>
                       </div>
                     </form>

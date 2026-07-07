@@ -1,8 +1,26 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
+import ItemView from "../pop-ups/itemview";
+import { description } from "./../../pages/ADMIN/pages/Datacharts/Totalservices";
 
 export default function ProductsItems() {
+  const [isitemviewopen, Setisitemviewopen] = useState(false);
+  const [selectedproduct, Setselectedproduct] = useState();
+
+  // setting for no scrollabele when the pop_up is open
+  useEffect(() => {
+    if (isitemviewopen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isitemviewopen]);
+
   const [products, Setproducts] = useState([]);
 
   const getProducts = async () => {
@@ -25,21 +43,25 @@ export default function ProductsItems() {
     const setprice = Number(products.product_price);
     const price = setprice - discount * setprice;
     return price;
-
-    // adding items to cart
   };
+
+  // displayiing item standalone
+
+  // adding items to cart
   return (
     <section>
       <div className="grid grid-cols-2  md:flex md:flex-wrap items-stretch justify-center gap-5">
-        {products.map((item, index) => {
+        {products.map((item) => {
           return (
             <div
-              key={index}
+              key={item.product_id}
               className="border-border bg-card shadow-md transition-colors rounded-xl p-2 flex flex-col w-46"
             >
               {/* Top row: badge + bookmark */}
               <div className="flex items-center  mb-2  ">
-                <span className="bg-accent text-neutral-800 text-xs px-2 py-0.5 rounded-full">
+                <span
+                  className={` ${item.product_discount === 0 ? "hidden" : "bg-accent text-neutral-800 text-xs px-2 py-0.5 rounded-full"}`}
+                >
                   <span className="font-bold">
                     {item.product_discount + "%"}
                   </span>{" "}
@@ -57,7 +79,13 @@ export default function ProductsItems() {
               </div>
 
               {/* Product Name */}
-              <p className="text-sm text-header mb-2 px-2">
+              <p
+                onClick={() => {
+                  Setisitemviewopen(!isitemviewopen);
+                  Setselectedproduct(item);
+                }}
+                className="text-sm text-header mb-2 px-2 cursor-pointer"
+              >
                 {item.product_name}
               </p>
 
@@ -78,7 +106,17 @@ export default function ProductsItems() {
             </div>
           );
         })}
+
+        {isitemviewopen && (
+          <ItemView
+            isitemviewopen={isitemviewopen}
+            Setisitemviewopen={Setisitemviewopen}
+            selectedproduct={selectedproduct}
+          />
+        )}
       </div>
+
+      {/*items viewer */}
     </section>
   );
 }
