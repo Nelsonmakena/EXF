@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ClientNav from "./ClientNav";
-import dodge from "/src/assets/dodge.jpg";
+import dodge from "/src/assets/images/dodge.jpg";
 import { XIcon } from "lucide-react";
 import {
   Table,

@@ -6,7 +6,7 @@ export default function Service() {
   const [ActiveTab, SetActiveTab] = useState("services");
   return (
     <>
-      <section className=" flex-col  px-4 py-16 mt-12">
+      <section className=" flex-col  px-4 py-16 mt-12 container-main">
         <div className="flex h-14 space-x-2  m-2.5 p-1  rounded-full">
           <div className="flex items-center ">
             <button

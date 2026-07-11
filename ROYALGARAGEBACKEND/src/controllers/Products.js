@@ -74,7 +74,9 @@ export const updateproduct = async (req, res) => {
         productid,
       ],
     );
-    res.status(200).json(updatedproduct.rows[0]);
+    res
+      .status(200)
+      .json({ succes: true, message: "success product updated succesufully" });
   } catch (error) {
     console.log(error.message);
   }

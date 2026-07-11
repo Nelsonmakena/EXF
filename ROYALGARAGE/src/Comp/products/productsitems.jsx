@@ -4,6 +4,8 @@ import { ShoppingCart } from "lucide-react";
 import ItemView from "../pop-ups/itemview";
 import { description } from "./../../pages/ADMIN/pages/Datacharts/Totalservices";
 
+import car1 from "../../assets/images/car1.png";
+
 export default function ProductsItems() {
   const [isitemviewopen, Setisitemviewopen] = useState(false);
   const [selectedproduct, Setselectedproduct] = useState();
@@ -28,6 +30,7 @@ export default function ProductsItems() {
       const response = await axios.get(
         "http://localhost:3000/api/products/allproducts",
       );
+
       Setproducts(response.data);
     } catch (error) {
       console.log(error);
@@ -50,7 +53,7 @@ export default function ProductsItems() {
   // adding items to cart
   return (
     <section>
-      <div className="grid grid-cols-2  md:flex md:flex-wrap items-stretch justify-center gap-5">
+      <div className="grid grid-cols-2  md:flex md:flex-wrap items-stretch justify-center gap-5 ">
         {products.map((item) => {
           return (
             <div
@@ -70,11 +73,11 @@ export default function ProductsItems() {
               </div>
 
               {/* Product Image */}
-              <div className="flex items-center justify-center h-30 mb-2">
+              <div className="flex items-center justify-center h-30 w-full">
                 <img
-                  src={item.image}
+                  src={`/assets/images/${item.product_image}.jpg`}
                   alt={item.name}
-                  className="max-h-full max-w-full object-contain"
+                  className="max-h-full max-w-full object-contain "
                 />
               </div>
 
@@ -106,17 +109,18 @@ export default function ProductsItems() {
             </div>
           );
         })}
-
-        {isitemviewopen && (
-          <ItemView
-            isitemviewopen={isitemviewopen}
-            Setisitemviewopen={Setisitemviewopen}
-            selectedproduct={selectedproduct}
-          />
-        )}
       </div>
 
       {/*items viewer */}
+
+      {isitemviewopen && (
+        <ItemView
+          isitemviewopen={isitemviewopen}
+          Setisitemviewopen={Setisitemviewopen}
+          selectedproduct={selectedproduct}
+          newprice={newprice}
+        />
+      )}
     </section>
   );
 }

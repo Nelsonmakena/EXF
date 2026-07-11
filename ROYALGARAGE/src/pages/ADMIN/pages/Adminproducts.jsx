@@ -32,11 +32,7 @@ export default function AdminViewProducts() {
     }
   };
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
-  /// fetching data for adding a product & sending that data
+  /// fetching data for adding a product & sending that data to db
   const addproduct = (e) => {
     e.preventDefault();
 
@@ -52,17 +48,30 @@ export default function AdminViewProducts() {
   const update_product = (e, item) => {
     e.preventDefault();
     const productid = item.product_id;
-    console.log(productid);
 
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
 
-    axios.put(`http://localhost:3000/api/products/update/${productid}`, data);
+    const updatedproduct = axios.put(
+      `http://localhost:3000/api/products/update/${productid}`,
+      data,
+    );
+    console.log(data);
+    console.log(update_product);
   };
+  // fetching all product on start of the page on update and on add a new product
+  useEffect(() => {
+    getProducts();
+  }, [update_product, addproduct]);
+
   return (
     <section className="w-full container-main">
       <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
-        {/** add item  */}
+        {/**    add item
+         *
+         *
+         *
+         */}
         <div className="bg-card w-46  rounded-xl  shadow-md  card ">
           <div className=" flex items-center justify-center h-full   heading-bold ">
             <Sheet>
@@ -163,7 +172,7 @@ export default function AdminViewProducts() {
               {/* Product Image */}
               <div className="flex items-center justify-center h-30 mb-2">
                 <img
-                  src=""
+                  src={`/assets/images/${item.product_image}.jpg`}
                   alt=""
                   className="max-h-full max-w-full object-contain"
                 />
@@ -260,13 +269,19 @@ export default function AdminViewProducts() {
                         </div>
                       </div>
                       <div className="card flex flex-col gap-2.5 justify-center">
-                        <button
-                          type="submit"
-                          className=" bg-primary w-full rounded-2xl h-14"
-                        >
-                          {" "}
-                          update{" "}
-                        </button>
+                        {/** close the side sheet and also get the form data
+                         */}
+                        <SheetClose
+                          render={
+                            <button
+                              type="submit"
+                              className=" bg-primary w-full rounded-2xl h-14"
+                            >
+                              {" "}
+                              update{" "}
+                            </button>
+                          }
+                        />
                       </div>
                     </form>
                     <SheetFooter>

@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import logo from "/src/assets/logo.png";
-import profileimage from "/src/assets/profile.png";
+import logo from "/src/assets/images/logo.png";
+
 import { useContext, useState } from "react";
 import { Globalcontext } from "../../../context";
 import { LogOut, Moon, Sun } from "lucide-react";
@@ -125,11 +125,7 @@ export default function AdminNav() {
           className=" card "
           onClick={() => SetUserAccountSmallMenu(!UserAccountSmallMenu)}
         >
-          <img
-            src={profileimage}
-            alt="userimage"
-            className="rounded-full w-14 h-14  "
-          />
+          <img src="" alt="userimage" className="rounded-full w-14 h-14  " />
         </div>
       </div>
       {/**pop up  small menu  */}

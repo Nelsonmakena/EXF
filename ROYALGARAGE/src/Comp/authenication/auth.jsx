@@ -3,19 +3,23 @@ import { Navigate, useLocation } from "react-router";
 import { Globalcontext } from "../../context";
 
 export default function Authenicated({ children }) {
-  const { Isloggedin, Role } = useContext(Globalcontext);
+  const { Isloggedin, Role, authLoading } = useContext(Globalcontext);
 
   const location = useLocation();
   const path = location.pathname;
-  if (!Isloggedin) {
-    if (location.pathname.includes("/admin")) {
-      return <Navigate to="/adminlogin" />;
-    }
-    if (location.pathname.includes("/client")) {
-      return <Navigate to="/login" />;
-    }
-    if (location.pathname.includes("/wk-hm")) {
-      return <Navigate to="/wk" />;
+  if (authLoading) {
+    return console.log("loading ");
+  } else {
+    if (!Isloggedin) {
+      if (location.pathname.includes("/admin")) {
+        return <Navigate to="/adminlogin" />;
+      }
+      if (location.pathname.includes("/client")) {
+        return <Navigate to="/login" />;
+      }
+      if (location.pathname.includes("/wk-hm")) {
+        return <Navigate to="/wk" />;
+      }
     }
   }
 

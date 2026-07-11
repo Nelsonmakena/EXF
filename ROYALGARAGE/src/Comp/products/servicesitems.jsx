@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ServiceItem from "../pop-ups/serviceitems";
 
 export default function ServicesItems() {
   const [services, Setservices] = useState([]);
+  const [isitemviewopen, Setisitemviewopen] = useState(false);
+  const [selectedproduct, Setselectedproduct] = useState();
 
   const getServices = async () => {
     const NewServices = await axios.get(
@@ -17,23 +20,29 @@ export default function ServicesItems() {
 
   return (
     <section className="   ">
-      <div className=" grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
-        {services.map((item, index) => (
+      <div className=" grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5  ">
+        {services.map((item) => (
           <div
-            key={index}
+            key={item.service_id}
             className=" bg-card border-border  rounded-xl p-2 flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
           >
             {/* Product Image */}
             <div className="flex items-center justify-center h-30 mb-2">
               <img
-                src={item.service_image}
+                src={`/assets/images/${item.service_image}.jpg`}
                 alt={item.name}
                 className="max-h-full max-w-full object-contain"
               />
             </div>
 
             {/* Product Name */}
-            <p className="text-sm text-neutral-500 mb-2 px-2">
+            <p
+              onClick={() => {
+                Setselectedproduct(item);
+                Setisitemviewopen(!isitemviewopen);
+              }}
+              className="text-sm text-neutral-500 mb-2 px-2"
+            >
               {item.service_name}
             </p>
 
@@ -55,6 +64,15 @@ export default function ServicesItems() {
           </div>
         ))}
       </div>
+      {/*items viewer */}
+
+      {isitemviewopen && (
+        <ServiceItem
+          isitemviewopen={isitemviewopen}
+          Setisitemviewopen={Setisitemviewopen}
+          selectedproduct={selectedproduct}
+        />
+      )}
     </section>
   );
 }

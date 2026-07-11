@@ -10,16 +10,14 @@ import {
 
 import "aos/dist/aos.css";
 
-import GeneralAutoRepairs from "../../assets/GeneralAutoRepairs.jpg";
-import car1 from "../../assets/car1.png";
-import bg1 from "../../assets/bg1.jpg";
-import bg2 from "../../assets/bg2.jpg";
-import bg3 from "../../assets/bg3.jpg";
-import bg4 from "../../assets/bg4.jpg";
-import img3 from "../../assets/img3.jpg";
-import bg from "../../assets/engine3.jpg";
+import car1 from "../../assets/images/car1.png";
+import bg1 from "../../assets/images/bg1.jpg";
+import bg2 from "../../assets/images/bg2.jpg";
+import bg3 from "../../assets/images/bg3.jpg";
+import bg4 from "../../assets/images/tirereplacement.jpg";
+import bg from "../../assets/images/engine3.jpg";
 import Banner from "../../Comp/banner";
-import img1 from "../../assets/img1.jpg";
+
 function Home() {
   const slides = [
     {
@@ -224,7 +222,7 @@ function Home() {
                     className="relative rounded-3xl overflow-hidden shadow-2xl"
                   >
                     <img
-                      src={img3}
+                      src={car1}
                       alt="Team collaboration"
                       className="w-full h-[500px] sm:h-[600px] object-cover"
                     />

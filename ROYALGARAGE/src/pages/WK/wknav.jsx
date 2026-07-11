@@ -1,7 +1,5 @@
-import logo from "/src/assets/logo.png";
-import x from "/src/assets/x.png";
-import menu from "/src/assets/menu.png";
-import me from "/src/assets/me.webp";
+import logo from "/src/assets/images/logo.png";
+
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 export default function Wknav() {
@@ -39,7 +37,7 @@ export default function Wknav() {
             <div className="   rounded-[50%] w-14 h-14 overflow-hidden shadow-md ">
               <Link to="/profile">
                 {" "}
-                <img src={me} alt="userimage" />
+                <img src="" alt="userimage" />
               </Link>
             </div>
           </div>

@@ -1,50 +1,74 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Link } from "react-router";
-import logo from "/src/assets/logo.png";
-import login from "/src/assets/login2.png";
 
 import logodata from "/src/assets/logoanimation.json";
 
 import Lottie from "lottie-react";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HomeClient from "./HomeClient";
 import { Globalcontext } from "../../context";
+import axios from "axios";
+import { readTransformValue } from "framer-motion";
+import { jwtDecode } from "jwt-decode";
 
 export default function Userlogin() {
   const [state, setState] = useState("login");
+  const [message, Setmessage] = useState();
 
   const navigate = useNavigate();
-  /// clobal state
-  const { SetIsloggedin, SetRole } = useContext(Globalcontext);
-
-  // function userlogin() {
-  //   SetIsloggedin(true);
-  //   SetRole("client");
-  // navigate("/client/dashboard");
-  //}
 
   /// fetching user login data
 
-  const logindata = (e) => {
+  const logindata = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
-    console.log(data);
+
+    try {
+      const user = await axios.post(
+        "http://localhost:3000/api/authenication/client",
+        data,
+      );
+
+      if (user.data.success == true) {
+        localStorage.setItem("token", user.data.token);
+        navigate("/client/dashboard");
+      }
+
+      Setmessage(user.data.message);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   // fetching new user data
 
-  const NewUserData = (e) => {
+  const NewUserData = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
     console.log(data);
 
     // check if password match
-
     if (data.password != data.confrim_password) {
-      return console.log("paswords dont match");
+      const pswderror = "paswords dont match ";
+      return pswderror;
+    }
+
+    try {
+      const newUser = await axios.post(
+        "http://localhost:3000/api/authenication/adduser",
+        data,
+      );
+
+      if (newUser.data.success) {
+        console.log(newUser.data.message);
+      } else {
+        console.log(newUser.data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -105,6 +129,9 @@ export default function Userlogin() {
                   <a className="text-sm  text-muted underline" href="#">
                     Forgot password?
                   </a>
+                </div>
+                <div className=" card ">
+                  <h1> {message} </h1>
                 </div>
 
                 <button
@@ -210,6 +237,7 @@ export default function Userlogin() {
                 <button
                   type="submit"
                   className="mt-8 w-full h-11 rounded-full text-white bg-header hover:opacity-90 transition-opacity"
+                  onClick={() => {}}
                 >
                   Sign up
                 </button>

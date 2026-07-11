@@ -14,7 +14,7 @@ import Vehicles from "../pages/clients/Vehicles";
 import Appointment from "../pages/clients/appointments";
 import Feedback from "../pages/clients/Feedback";
 import ClientServices from "../pages/clients/ClientServices";
-import ProfileEdit from "./ProfileEdit";
+import ProfileEdit from "../pages/clients/ProfileEdit";
 import Cart from "./cart";
 import Admincommon from "../pages/ADMIN/pages/admintemplate";
 import AdminHome from "../pages/ADMIN/pages/adminhome";

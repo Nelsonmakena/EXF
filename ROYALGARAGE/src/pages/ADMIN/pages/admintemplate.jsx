@@ -1,10 +1,9 @@
 import { Outlet } from "react-router";
-import logo from "/src/assets/logo.png";
+import logo from "/src/assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import AdminNav from "./adminnav";
 import { Menu } from "lucide-react";
 
-import profileimage from "/src/assets/profile.png";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/Comp/mode-toggle";

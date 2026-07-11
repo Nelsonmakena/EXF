@@ -1,9 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import logo from "/src/assets/logo.png";
+import logo from "/src/assets/images/logo.png";
 import Userlogin from "../pages/clients/Userlogin";
 import { Globalcontext } from "../context";
-import profileimage from "/src/assets/profile.png";
+
 import logodata from "/src/assets/logoanimation.json";
 import smallmenuanimation from "/src/assets/smallmenu.json";
 

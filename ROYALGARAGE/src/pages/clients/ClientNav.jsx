@@ -1,6 +1,4 @@
-import logo from "/src/assets/logo.png";
-
-import profileimage from "/src/assets/profile.png";
+import logo from "/src/assets/images/logo.png";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
@@ -35,6 +33,11 @@ export default function ClientNav() {
     { name: "Services ", Path: "Userservice" },
     { name: "Appointments ", Path: "appointment" },
   ];
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   useEffect(() => {
     if (SmallMe) {
       document.body.style.overflow = "hidden";
@@ -88,11 +91,7 @@ export default function ClientNav() {
                 SetProfileMenu(!ProfileMenu);
               }}
             >
-              <img
-                src={profileimage}
-                alt="userimage"
-                className="rounded-[50%] w-14 h-14"
-              />
+              <img src="" alt="userimage" className="rounded-[50%] w-14 h-14" />
             </div>
             {ProfileMenu && (
               <div className=" absolute top-24 right-5 bg-card rounded-2xl shadow-md  w-2xs   card ">
@@ -133,9 +132,7 @@ export default function ClientNav() {
                 <div className="card ">
                   <button
                     onClick={() => {
-                      navigate("/");
-                      SetIsloggedin(false);
-                      SetRole(null);
+                      logout();
                     }}
                   >
                     <LogOut className="text-blue-400" />
@@ -235,9 +232,7 @@ export default function ClientNav() {
               <LogOut
                 className="text-blue-400"
                 onClick={() => {
-                  navigate("/");
-                  SetIsloggedin(false);
-                  SetRole(null);
+                  logout();
                 }}
               />
             </div>
@@ -251,7 +246,7 @@ export default function ClientNav() {
                   <div className="  flex  items-center rounded-[50%] w-14 h-14 overflow-hidden shadow-md ">
                     <Link to="profile">
                       {" "}
-                      <img src={profileimage} alt="userimage" />
+                      <img src="" alt="userimage" />
                     </Link>
                   </div>
                 </div>

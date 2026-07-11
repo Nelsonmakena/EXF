@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ClientNav from "./ClientNav";
-import dodge from "/src/assets/dodge.jpg";
+import dodge from "/src/assets/images/dodge.jpg";
 import { Calendar } from "@/components/ui/calendar";
 
 export default function Appointment() {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ClientNav from "./ClientNav";
-import dodge from "/src/assets/dodge.jpg";
+import dodge from "/src/assets/images/dodge.jpg";
 import M100 from "../../Comp/M100";
 import {
   Table,
@@ -80,43 +80,39 @@ export default function Vehicles() {
       Chassis: "123456",
     },
   ]);
-  const [ShowModal, SetShowModal] = useState(false);
-  function Handledelete() {
-    SetShowModal(true);
-    console.log("hello");
-  }
 
   return (
     <>
-      <main>
-        <section className="container-main">
-          <div className="section">
-            <h1 className="heading-normal text-header "> My Cars</h1>
+      <section className="container-main">
+        {/** adding a new vehicle */}
+        <div></div>
 
-            <Table className="">
-              <TableCaption> Registered Vehicles.</TableCaption>
-              <TableHeader>
-                <TableRow className="text-header font-bold">
-                  <TableHead>Number Plate</TableHead>
-                  <TableHead>Model</TableHead>
-                  <TableHead>Color</TableHead>
+        <div className="section">
+          <h1 className="heading-normal text-header "> My Cars</h1>
+
+          <Table className="">
+            <TableCaption> Registered Vehicles.</TableCaption>
+            <TableHeader>
+              <TableRow className="text-header font-bold">
+                <TableHead>Number Plate</TableHead>
+                <TableHead>Model</TableHead>
+                <TableHead>Color</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Vehicle.map((item) => (
+                <TableRow>
+                  <TableCell className="font-medium">
+                    {item.VehicleRegistrationNumber}
+                  </TableCell>
+                  <TableCell>{item.VehicleDetails}</TableCell>
+                  <TableCell>{item.Color}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {Vehicle.map((item) => (
-                  <TableRow>
-                    <TableCell className="font-medium">
-                      {item.VehicleRegistrationNumber}
-                    </TableCell>
-                    <TableCell>{item.VehicleDetails}</TableCell>
-                    <TableCell>{item.Color}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </section>
-      </main>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </section>
     </>
   );
 }

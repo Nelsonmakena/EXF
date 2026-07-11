@@ -9,4 +9,5 @@ export const ENV = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_PORT: process.env.DB_PORT,
   FRONTEND_URL: process.env.Frontend_Url,
+  JWT_SECERECT_KEY: process.env.JWT_SECERECT_KEY,
 };

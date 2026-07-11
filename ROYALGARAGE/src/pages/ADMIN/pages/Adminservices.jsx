@@ -19,7 +19,6 @@ import Lottie from "lottie-react";
 
 export default function AdminViewServices() {
   const [services, Setservices] = useState([]);
-  console.log(services);
 
   /// geting services
   const getServiceslist = async () => {
@@ -33,25 +32,35 @@ export default function AdminViewServices() {
     }
   };
 
-  useEffect(() => {
-    getServiceslist();
-  }, []);
-
   /// updating a service
 
-  const update_service = (e, item) => {
+  const update_service = async (e, item) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-  };
-  // adding a service
-  const addservice = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+    const service_id = item.service_id;
+    console.log(service_id);
 
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    const updatedService = await axios.put(
+      `http://localhost:3000/api/services/updateservice/${service_id}`,
+      data,
+    );
     console.log(data);
   };
+  // adding a service
+  const addService = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    const newService = await axios.post(
+      "http://localhost:3000/api/services/addservice",
+      data,
+    );
+  };
+
+  useEffect(() => {
+    getServiceslist();
+  }, [update_service]);
   return (
     <section className="w-full container-main">
       <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
@@ -64,7 +73,7 @@ export default function AdminViewServices() {
                   <button className="w-full h-full">
                     {" "}
                     <Lottie animationData={animatedaddbutton} />
-                    <h1 className="text-body text-header"> add product</h1>
+                    <h1 className="text-body text-header"> New Service</h1>
                   </button>
                 }
               />
@@ -77,7 +86,11 @@ export default function AdminViewServices() {
                   <SheetDescription></SheetDescription>
                 </SheetHeader>
 
-                <form onSubmit={addservice}>
+                <form
+                  onSubmit={() => {
+                    addService;
+                  }}
+                >
                   <div className="grid flex-1 auto-rows-min gap-6 px-4">
                     <div className="grid gap-3">
                       <label> Service name </label>
@@ -105,12 +118,16 @@ export default function AdminViewServices() {
                     </div>
                   </div>
                   <div className="card flex justify-center">
-                    <button
-                      type="submit"
-                      className=" bg-primary w-full rounded-2xl h-14"
-                    >
-                      Add product
-                    </button>
+                    <SheetClose
+                      render={
+                        <button
+                          type="submit"
+                          className=" bg-primary w-full rounded-2xl h-14"
+                        >
+                          Add product
+                        </button>
+                      }
+                    />
                   </div>
                 </form>
                 <SheetFooter>
@@ -134,7 +151,7 @@ export default function AdminViewServices() {
               {/* Product Image */}
               <div className="flex items-center justify-center h-30 mb-2">
                 <img
-                  src=""
+                  src={`/assets/images/${item.service_image}.jpg`}
                   alt=""
                   className="max-h-full max-w-full object-contain"
                 />
@@ -150,9 +167,6 @@ export default function AdminViewServices() {
               <div className="flex items-center gap-2 px-2">
                 <span className="text-sm font-semibold text-neutral-800">
                   {item.service_price}
-                </span>
-                <span className="text-xs text-neutral-500 line-through">
-                  price
                 </span>
               </div>
 
@@ -182,24 +196,24 @@ export default function AdminViewServices() {
                     >
                       <div className="grid flex-1 auto-rows-min gap-6 px-4">
                         <div className="grid gap-3">
-                          <label> service name </label>
+                          <label> Service name </label>
                           <Input
                             name="service_name"
                             defaultValue={item.service_name}
                           />
                         </div>
                         <div className="grid gap-3">
-                          <label> service image </label>
+                          <label> Service image </label>
                           <Input
                             name="service_image"
-                            defaultValue={item.service_name}
+                            defaultValue={item.service_image}
                           />
                         </div>
                         <div className="grid gap-3">
-                          <label> service descrption </label>
+                          <label> Service descrption </label>
                           <Input
                             name="service_description"
-                            defaultValue={item.service_descrption}
+                            defaultValue={item.service_description}
                           />
                         </div>
                         <div className="grid gap-3">
@@ -225,13 +239,18 @@ export default function AdminViewServices() {
                         </div>
                       </div>
                       <div className="card flex flex-col gap-2.5 justify-center">
-                        <button
-                          type="submit"
-                          className=" bg-primary w-full rounded-2xl h-14"
-                        >
-                          {" "}
-                          update{" "}
-                        </button>
+                        {/*closing the side sheet on click and updating the product */}
+                        <SheetClose
+                          render={
+                            <button
+                              type="submit"
+                              className=" bg-primary w-full rounded-2xl h-14"
+                            >
+                              {" "}
+                              update{" "}
+                            </button>
+                          }
+                        />
                       </div>
                     </form>
                     <SheetFooter>
