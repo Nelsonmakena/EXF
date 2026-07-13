@@ -71,7 +71,7 @@ export const getUserinfo = async (req, res) => {
       /// creating user token
       const accesToken = jwt.sign(
         {
-          user_id: user.rows[0].client_id,
+          client_id: user.rows[0].client_id,
           role: "client",
         },
         ENV.JWT_SECERECT_KEY,
@@ -90,37 +90,12 @@ export const getUserinfo = async (req, res) => {
   }
 };
 
-// admin adding workers
-
-export const addWorker = async (req, res) => {
-  const { email, password } = req.body;
-
-  //checking if aleady worker email is reisterd to the system
-  const exsitingWorker = await pool.query(
-    "SELECT email FROM employee WHERE email=$1",
-    [email],
-  );
-
-  // exit if useremail is already registered
-  if (exsitingWorker.rows.length !== 0) {
-    return res.json({ success: false, message: "worker already registered" });
-  }
-  const dbpasword = bcrypt.hashSync(password, salt);
-  try {
-    const worker = await pool.query(
-      "INSERT INTO employee (email,pswd_key) VALUES ($1,$2) ",
-      [email, dbpasword],
-    );
-    res.status(200).json({ success: true, message: "succefully added " });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
 // worker login
 
 export const worker = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
+
   try {
     /// checking if user exist and also pasoced
     const existingWorker = await pool.query(
@@ -131,7 +106,19 @@ export const worker = async (req, res) => {
       existingWorker.rows.length !== 0 &&
       bcrypt.compareSync(password, existingWorker.rows[0].pswd_key)
     ) {
-      res.json({ success: true, message: "logged in sucefully" });
+      const accesToken = jwt.sign(
+        {
+          employee_id: existingWorker.rows[0].employee_id,
+          role: "worker",
+        },
+        ENV.JWT_SECERECT_KEY,
+        { expiresIn: "60m" },
+      );
+      res.status(200).json({
+        success: true,
+        message: "logged in succefull",
+        token: accesToken,
+      });
     } else {
       res.json({ success: false, message: "email or pasword is incorect" });
     }
@@ -142,5 +129,40 @@ export const worker = async (req, res) => {
 
 // super admin login
 export const admin = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
+  console.log(req.body);
+
+  try {
+    const existingAdmin = await pool.query(
+      "SELECT * FROM admin WHERE username= $1 ",
+      [username],
+    );
+    console.log(existingAdmin);
+    if (existingAdmin.rows.length == 0) {
+      return console.log("user not found ");
+    }
+
+    if (existingAdmin.rows[0].password == password) {
+      const accesToken = jwt.sign(
+        {
+          admin_id: existingAdmin.rows[0].admin_id,
+          role: "admin",
+        },
+        ENV.JWT_SECERECT_KEY,
+        { expiresIn: "60m" },
+      );
+      res.status(200).json({
+        success: true,
+        message: "logged in succefull",
+        token: accesToken,
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "email or pasword is incorect",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
 };

@@ -8,11 +8,18 @@ function Globalstate({ children }) {
   const [authLoading, SetAuthLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem("token");
+    let decoded;
+
+    const time = Math.floor(Date.now() / 1000);
 
     if (token) {
-      const decoded = jwtDecode(token);
+      decoded = jwtDecode(token);
       SetIsloggedin(true);
       SetRole(decoded.role);
+      if (time > decoded.exp) {
+        SetIsloggedin(false);
+        localStorage.removeItem("token");
+      }
     }
 
     SetAuthLoading(false);

@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  addUser,
-  getUserinfo,
-  addWorker,
-  worker,
-} from "../controllers/auth.js";
+import { addUser, getUserinfo, worker, admin } from "../controllers/auth.js";
 
 const Router = express.Router();
 
@@ -16,11 +11,14 @@ Router.post("/adduser", addUser);
 
 Router.post("/client", getUserinfo);
 
+// admin login
+Router.post("/admin", admin);
+
 // admin to add a new worker to the system
-Router.post("/addworker", addWorker);
+//Router.post("/addworker", addWorker);
 
-// get a worker info
+// worker logi
 
-Router.get("/worker", worker);
+Router.post("/worker", worker);
 
 export default Router;

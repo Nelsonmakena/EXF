@@ -19,8 +19,11 @@ export default function ServiceItem({
             <X />
           </button>
         </div>
-        <div className="w-full h-1/2">
-          <img src={selectedproduct.service_image} />
+        <div className="w-full h-1/2 flex justify-center">
+          <img
+            src={`/assets/images/${selectedproduct.service_image}.jpg`}
+            className="max-h-full max-w-full"
+          />
         </div>
         <div className="card ">
           <p>{selectedproduct.service_descrption}</p>

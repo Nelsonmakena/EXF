@@ -29,3 +29,35 @@ export const authenicateMiddleware = (req, res, next) => {
       .json({ success: false, message: "unkwon token info" });
   }
 };
+
+/// admin athentication role based
+export const adminchecker = (req, res, next) => {
+  const { role } = req.userinfo;
+  console.log(role);
+  try {
+    if (role === "admin") {
+      return next();
+    }
+    return res.json({
+      success: false,
+      message: "acces denied you dont have the privillages",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+/// worker authenication role based
+
+export const workerchecker = (req, res, next) => {
+  const { role } = req.userinfo;
+  console.log(role);
+
+  if (role == "worker") {
+    return next();
+  }
+  return res.json({
+    success: false,
+    message: "acces denied you dont have the privillages",
+  });
+};

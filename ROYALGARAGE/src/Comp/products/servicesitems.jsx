@@ -24,14 +24,14 @@ export default function ServicesItems() {
         {services.map((item) => (
           <div
             key={item.service_id}
-            className=" bg-card border-border  rounded-xl p-2 flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
+            className=" bg-card border-border  rounded-xl  flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
           >
             {/* Product Image */}
-            <div className="flex items-center justify-center h-30 mb-2">
+            <div className="flex items-center justify-center h-30 mb-2 ">
               <img
                 src={`/assets/images/${item.service_image}.jpg`}
                 alt={item.name}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full w-full rounded-t-xl  "
               />
             </div>
 
@@ -41,7 +41,7 @@ export default function ServicesItems() {
                 Setselectedproduct(item);
                 Setisitemviewopen(!isitemviewopen);
               }}
-              className="text-sm text-neutral-500 mb-2 px-2"
+              className="text-sm text-neutral-500 mb-2 px-2 cursor-pointer"
             >
               {item.service_name}
             </p>
