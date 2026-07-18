@@ -9,13 +9,14 @@ import { useContext, useEffect, useState } from "react";
 import HomeClient from "./HomeClient";
 import { Globalcontext } from "../../context";
 import axios from "axios";
-import { readTransformValue } from "framer-motion";
-import { jwtDecode } from "jwt-decode";
+import Alerts from "@/Comp/alerts";
 
 export default function Userlogin() {
   const [state, setState] = useState("login");
   const [message, Setmessage] = useState();
-
+  const { SetRole, SetIsloggedin } = useContext(Globalcontext);
+  const [showAlert, SetshowAlert] = useState(false);
+  const [alertMessage, Setalertmessage] = useState();
   const navigate = useNavigate();
 
   /// fetching user login data
@@ -32,6 +33,10 @@ export default function Userlogin() {
       );
 
       if (user.data.success == true) {
+        Setalertmessage(user.data.message);
+        SetshowAlert(true);
+        SetRole("client");
+        SetIsloggedin(true);
         localStorage.setItem("token", user.data.token);
         navigate("/client/dashboard");
       }
@@ -52,8 +57,9 @@ export default function Userlogin() {
 
     // check if password match
     if (data.password != data.confrim_password) {
-      const pswderror = "paswords dont match ";
-      return pswderror;
+      Setalertmessage("pasword dont match");
+      SetshowAlert(true);
+      return;
     }
 
     try {
@@ -71,6 +77,9 @@ export default function Userlogin() {
       console.log(error.message);
     }
   };
+  setTimeout(() => {
+    SetshowAlert(false);
+  }, 1000);
 
   return (
     <>
@@ -119,19 +128,10 @@ export default function Userlogin() {
                   />
                 </div>
 
-                <div className="w-full flex items-center justify-between mt-8 text-gray-500/80">
-                  <div className="flex items-center gap-2">
-                    <input className="h-5" type="checkbox" id="checkbox" />
-                    <label className="text-sm" htmlFor="checkbox">
-                      Remember me
-                    </label>
-                  </div>
+                <div className="w-full flex items-center  mt-8 text-gray-500/80">
                   <a className="text-sm  text-muted underline" href="#">
                     Forgot password?
                   </a>
-                </div>
-                <div className=" card ">
-                  <h1> {message} </h1>
                 </div>
 
                 <button
@@ -255,6 +255,8 @@ export default function Userlogin() {
             </div>
           )}
         </div>
+
+        {showAlert && <Alerts alertMessage={alertMessage} />}
       </section>
     </>
   );

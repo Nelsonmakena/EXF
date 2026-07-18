@@ -5,6 +5,8 @@ export default function ItemView({
   Setisitemviewopen,
   selectedproduct,
 }) {
+  console.log(selectedproduct);
+
   return (
     <div className="w-full   h-screen  fixed top-0  flex items-center justify-center z-50    ">
       <div className=" bg-card flex flex-col items-center card  w-3xl rounded-xl h-3/4  shadow-2xl  ">

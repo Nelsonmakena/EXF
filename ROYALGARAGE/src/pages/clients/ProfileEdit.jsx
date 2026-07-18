@@ -1,19 +1,21 @@
 import { useNavigate } from "react-router";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import Skeletonloader from "../../Comp/loader";
-export default function ProfileEdit() {
-  const navigate = useNavigate();
-  const [confirms, Setconfirms] = useState(false);
-  const [clientInfo, SetclientInfo] = useState(null);
+import { Mail, Map, Phone } from "lucide-react";
+import { Globalcontext } from "@/context";
+import Loader from "@/Comp/loader";
 
+export default function ProfileEdit() {
+  // const { clientinfo, authLoading } = useContext(Globalcontext);
+  const navigate = useNavigate();
+  const [clientinfo, Setclientinfo] = useState(null);
   const [isloading, Setisloading] = useState(true);
-  //const firstletter = clientInfo.first_name;
+
   const getUserInfo = async () => {
     const token = localStorage.getItem("token");
     try {
-      const info = await axios.get(
+      const response = await axios.get(
         "http://localhost:3000/api/client/profileinfo",
         {
           headers: {
@@ -21,115 +23,76 @@ export default function ProfileEdit() {
           },
         },
       );
-      SetclientInfo(info.data);
+
+      Setclientinfo(response.data.data);
+      console.log(response.status);
+      console.log(response.data);
+
       Setisloading(false);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  function Confirm() {
-    Setconfirms(true);
-    navigate("/dashboard");
-  }
-
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  console.log(clientinfo);
+
   if (isloading) {
-    return <Skeletonloader />;
+    return <Loader />;
   }
 
   return (
     <>
-      <section className=" container-main  flex flex-col w-full   min-h-dvh items-center md:flex-row">
+      <section className=" container-main  flex flex-col w-full   min-h-dvh items-center md:flex-row ">
         <div className=" flex  flex-1 h-screen justify-center items-center   ">
           <div className="  rounded-[50%] w-72 h-72 overflow-hidden shadow-md flex items-center justify-center ">
             <h1 className="text-6xl text-header">
-              {clientInfo.first_name.charAt(0)}
+              {clientinfo.first_name.charAt(0)}
             </h1>
             <h1 className="text-6xl text-header-foreground">
-              {clientInfo.second_name.charAt(0)}
+              {clientinfo.second_name.charAt(0)}
             </h1>
           </div>
         </div>
-        <div className=" section flex flex-col flex-1 h-screen  justify-center ">
-          <div className="w-full flex justify-between">
-            <h1 className="p-3.5 font-bold text-blue-400"> My profile </h1>
+        <div className=" section flex flex-col flex-1 h-screen">
+          <div className="w-full flex justify-center  card">
+            <h1 className=" heading-normal font-bold text-blue-400">
+              {" "}
+              profile{" "}
+            </h1>
           </div>
 
-          <div className=" flex-col  h-3/4 ">
-            <form action="">
-              <div className=" w-full flex flex-col   ">
-                <label> email</label>
-                <div className="flex items-center mt-6 w-1/2 bg-transparent border border-gray-300/60 h-12 rounded-md overflow-hidden pl-6 gap-2">
-                  <input
-                    type="email"
-                    defaultValue={clientInfo.email}
-                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
-                    required
-                  />
-                </div>
-              </div>
+          <div className=" flex-col   ">
+            <div className="shadow-md rounded-xl  card flex items-center justify-between">
+              <h1 className="text-body ">{clientinfo.first_name}</h1>
+              <h1 className="text-body">{clientinfo.second_name}</h1>
+              <h1 className=" text-body">{clientinfo.last_name}</h1>
+            </div>
 
-              <div className=" w-full flex gap-2.5   ">
-                <div className="flex items-center mt-6 w-1/2 bg-transparent border border-gray-300/60 h-12 rounded-md overflow-hidden pl-6 gap-2">
-                  <input
-                    type="Text"
-                    defaultValue={clientInfo.first_name}
-                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
-                    required
-                  />
-                </div>
-                <div className="flex items-center mt-6 w-1/2 bg-transparent border border-gray-300/60 h-12 rounded-md overflow-hidden pl-6 gap-2">
-                  <input
-                    type="Text"
-                    defaultValue={clientInfo.last_name}
-                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
-                    required
-                  />
-                </div>
+            <div className="w-full h-1/2 flex justify-between">
+              <div className="card shadow-md rounded-xl  flex flex-col items-center  justify-center w-1/2">
+                <h1> {clientinfo.email}</h1>
+                <Mail />
               </div>
-              <div className=" w-full flex gap-2.5  ">
-                <div className="flex items-center mt-6 w-1/2 bg-transparent border border-gray-300/60 h-12 rounded-md overflow-hidden pl-6 gap-2">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
-                    required
-                  />
-                </div>
-                <div className="flex items-center mt-6 w-1/2 bg-transparent border border-gray-300/60 h-12 rounded-md overflow-hidden pl-6 gap-2">
-                  <input
-                    type="password"
-                    placeholder="confirm Password"
-                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
-                    required
-                  />
-                </div>
+              <div className="card flex flex-col justify-center items-center shadow-md rounded-xl w-1/2">
+                <h1> {clientinfo.address}</h1>
+                <Map />
               </div>
-              <div className=" w-full flex   ">
-                <div className="flex items-center mt-6 w-1/2 bg-transparent border border-gray-300/60 h-12 rounded-md overflow-hidden pl-6 gap-2">
-                  <input
-                    type="text"
-                    //  defaultValue={clientInfo.phonenumber}
-                    placeholder="Phone number"
-                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
-                    required
-                  />
-                </div>
+            </div>
+            <div className="w-full h-1/2 flex justify-between">
+              <div className="card shadow-md rounded-xl  flex flex-col items-center  justify-center w-1/2">
+                <h1> {clientinfo.phonenumber}</h1>
+                <Phone />
               </div>
-
-              <div className="w-full flex  justify-center">
-                <button
-                  onClick={Confirm}
-                  type="submit"
-                  className="mt-8 w-1/2 h-11 rounded-md text-white bg-blue-400 hover:opacity-90 transition-opacity"
-                >
-                  confrim
-                </button>
-              </div>
-            </form>
+            </div>
+            <div className="flex justify-center card ">
+              <button className="h-12 w-26  rounded-md bg-green-400 shadow-md transition duration-400  ">
+                update{" "}
+              </button>
+            </div>
           </div>
         </div>
       </section>

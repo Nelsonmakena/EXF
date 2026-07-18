@@ -1,6 +1,10 @@
-import ClientNav from "../pages/clients/ClientNav";
+import { Globalcontext } from "@/context";
+import { useContext } from "react";
 
 export default function Cart() {
+  const { cart } = useContext(Globalcontext);
+  console.log(cart);
+
   return (
     <>
       <section>

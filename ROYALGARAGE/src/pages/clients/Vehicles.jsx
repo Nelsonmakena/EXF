@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ClientNav from "./ClientNav";
 import dodge from "/src/assets/images/dodge.jpg";
 import M100 from "../../Comp/M100";
@@ -13,105 +13,159 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Sidebar } from "@/components/ui/sidebar";
+
+import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import axios from "axios";
+import Loader from "@/Comp/loader";
+import Alerts from "@/Comp/alerts";
+import { CarIcon } from "lucide-react";
+import { Globalcontext } from "@/context";
+
 export default function Vehicles() {
-  const [Vehicle, SetVehicle] = useState([
-    {
-      VehicleRegistrationNumber: "KAY233",
-      CustomerID: 11,
-      VehicleDetails: "suzuki",
-      Color: "red",
-      Chassis: "10023",
-    },
-    {
-      VehicleRegistrationNumber: "KBZ127Y",
-      CustomerID: 11,
-      VehicleDetails: "mazda",
-      Color: "black",
-      Chassis: "10089",
-    },
-    {
-      VehicleRegistrationNumber: "KBX222Y",
-      CustomerID: 11,
-      VehicleDetails: "TOYOTA",
-      Color: "Black",
-      Chassis: "12345",
-    },
-    {
-      VehicleRegistrationNumber: "KBX224Y",
-      CustomerID: 2,
-      VehicleDetails: "Toyota",
-      Color: "red",
-      Chassis: "1008",
-    },
-    {
-      VehicleRegistrationNumber: "KAT2209",
-      CustomerID: 2,
-      VehicleDetails: "suzuki",
-      Color: "white",
-      Chassis: "123333",
-    },
-    {
-      VehicleRegistrationNumber: "KDA223Z",
-      CustomerID: 3,
-      VehicleDetails: "Nissan",
-      Color: "black",
-      Chassis: "12210W",
-    },
-    {
-      VehicleRegistrationNumber: "KCD245A",
-      CustomerID: 3,
-      VehicleDetails: "Toyota Harrier",
-      Color: "black",
-      Chassis: "45610Q",
-    },
-    {
-      VehicleRegistrationNumber: "KBZ229E",
-      CustomerID: 4,
-      VehicleDetails: "mercedes benz",
-      Color: "yellow",
-      Chassis: "456EW",
-    },
-    {
-      VehicleRegistrationNumber: "KAZ122",
-      CustomerID: 11,
-      VehicleDetails: "Marchi",
-      Color: "black",
-      Chassis: "123456",
-    },
-  ]);
+  const [isloading, Setisloading] = useState(true);
+  const [showAlert, SetshowAlert] = useState(false);
+  const [alertMessage, Setalertmessage] = useState();
+  const [Vehicle, SetVehicle] = useState([]);
+
+  console.log(Vehicle);
+
+  const token = localStorage.getItem("token");
+  //fetch vehicles
+  const fetchvehicles = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/client/vehicle",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      SetVehicle(response.data.data);
+      console.log(response.data.data);
+
+      //Setisloading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const addvehicle = async (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+
+    const data = Object.fromEntries(formdata.entries());
+    try {
+      const add = await axios.post(
+        "http://localhost:3000/api/client/addvehicle",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      Setalertmessage(add.data.message);
+      SetshowAlert(true);
+      console.log(add.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchvehicles();
+  }, []);
+  setTimeout(() => {
+    SetshowAlert(false);
+  }, 1000);
 
   return (
     <>
       <section className="container-main">
-        {/** adding a new vehicle */}
         <div></div>
+        {/** adding a new vehicle */}
+        <div className=" card  flex justify-center items-center">
+          <form
+            onSubmit={addvehicle}
+            className=" card  justify-between w-2xl  shadow-md rounded-2xl"
+          >
+            <div className="flex gap-3">
+              <div className="grid gap-3 w-2xs h-20">
+                <Input
+                  name="liscence_plate"
+                  placeholder="liscence_plate"
+                  required
+                />
+                <Input
+                  name="vehicle_model"
+                  placeholder="vehicle_model"
+                  required
+                />
+              </div>
+              <div className="grid gap-3 w-2xs">
+                <Input
+                  name="vehicle_brand"
+                  placeholder="vehicle_brand"
+                  required
+                />
+                <Input
+                  name="vehicle_color"
+                  placeholder="vehicle_color"
+                  required
+                />
+              </div>
+            </div>
+            <div className=" card w-full flex justify-center ">
+              <button
+                type="submit"
+                className="w-2xs h-12 text-white rounded-md   bg-primary"
+              >
+                Add Vehicle
+              </button>
+            </div>
+          </form>
+        </div>
 
         <div className="section">
-          <h1 className="heading-normal text-header "> My Cars</h1>
-
+          <h1 className="heading-normal font-bold text-header  flex justify-center ">
+            {" "}
+            My Cars
+          </h1>
           <Table className="">
             <TableCaption> Registered Vehicles.</TableCaption>
             <TableHeader>
-              <TableRow className="text-header font-bold">
+              <TableRow className="heading-normal font-bold ">
                 <TableHead>Number Plate</TableHead>
                 <TableHead>Model</TableHead>
+                <TableHead>Brand</TableHead>
                 <TableHead>Color</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {Vehicle.map((item) => (
-                <TableRow>
-                  <TableCell className="font-medium">
-                    {item.VehicleRegistrationNumber}
+                <TableRow key={item.vehicle_id}>
+                  <TableCell className="flex items-center gap-2.5">
+                    <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
+                      {" "}
+                      <h1 className="text-header">{item.liscence_plate} </h1>
+                      <h1 className="text-header-foreground">
+                        {" "}
+                        {item.liscence_plate}{" "}
+                      </h1>
+                    </div>
+                    {item.liscence_plate}
                   </TableCell>
-                  <TableCell>{item.VehicleDetails}</TableCell>
-                  <TableCell>{item.Color}</TableCell>
+                  <TableCell>{item.vehicle_model}</TableCell>
+                  <TableCell>{item.vehicle_brand}</TableCell>
+                  <TableCell>{item.vehicle_color}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
+        {showAlert && <Alerts alertMessage={alertMessage} />}
       </section>
     </>
   );

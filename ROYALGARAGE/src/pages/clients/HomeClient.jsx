@@ -1,6 +1,15 @@
 import ClientNav from "./ClientNav";
+import { Globalcontext } from "../../context";
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import Skeletonloader from "../../Comp/loader";
 
 export default function HomeClient() {
+  // fething user info the passing it to global context  things like profile =name and details load now imdeatly after login
+
+  const { clientinfo, Setclientinfo } = useContext(Globalcontext);
+
+  const [isloading, Setisloading] = useState(true);
   return (
     <>
       <section className=" mt-24 p-3.5 w-full container-main ">
@@ -35,7 +44,7 @@ export default function HomeClient() {
                 Total vehicles
               </p>
             </div>
-            <p className="text-3xl font-bold mb-2 transition-colors duration-200">
+            <p className="text-3xl font-bold mb-2 transition-colors duration-200  flex items-center justify-center">
               10
             </p>
           </div>

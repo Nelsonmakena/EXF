@@ -16,8 +16,10 @@ import { ScrollArea } from "@base-ui/react/scroll-area";
 import buttonanimation from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
 import ProductServiceList from "./ProductsServiceList";
+import axios from "axios";
 
 export default function ClientServices() {
+  const [jobs, Setjobs] = useState([]);
   const [NewServiceTab, SetNewServiceTab] = useState(false);
   const [ServicesList, SetServicesList] = useState([
     {
@@ -105,7 +107,21 @@ export default function ClientServices() {
       VehicleRegistrationNumber: "KDA227Z",
     },
   ]);
+  const token = localStorage.getItem("token");
+  //fectch jobs
 
+  const alljobs = async () => {
+    try {
+      const job = await axios.get("http://localhost:3000/api/client/jobs", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      Setjobs(job.data.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   {
     /**locks scroll to the area of the new tab  */
   }
@@ -120,6 +136,10 @@ export default function ClientServices() {
       document.body.style.overflow = "auto";
     };
   }, [NewServiceTab]);
+  useEffect(() => {
+    alljobs();
+  }, []);
+  console.log(jobs);
   return (
     <>
       <section className="container-main ">
@@ -147,32 +167,43 @@ export default function ClientServices() {
             </h1>
 
             {/**service card  progress for ongoing services  */}
-            <div className=" grid   heading-normal card   bg-cardbg  w-full md:h-40   rounded-2xl shadow-2xl md:w-4xl  gap-normal md:grid-cols-3 ">
-              {/**col-1 */}
-              <div className="flex  md:flex-col justify-between card">
-                <h1 className=" text-primary-foreground">Service name </h1>
-                <h1>Wheel allignment </h1>
-              </div>
+            <div className="flex flex-col gap-normal  justify-center items-center">
+              {jobs.map((item) => {
+                return (
+                  <div
+                    key={item.job_id}
+                    className=" grid   heading-normal card   bg-header  w-full md:h-40   rounded-2xl shadow-2xl md:w-4xl  gap-normal md:grid-cols-3 "
+                  >
+                    {/**col-1 */}
+                    <div className="flex  md:flex-col justify-between card">
+                      <h1 className=" text-primary-foreground">
+                        Service name{" "}
+                      </h1>
+                      <h1>{item.service_name}</h1>
+                    </div>
 
-              {/**col-2 */}
-              <div className="flex md:flex-col justify-between card">
-                <h1 className="text-primary-foreground">Amount </h1>
-                <h1> 10,000/= </h1>
-              </div>
-              {/**col-3 */}
-              <div className="flex md:flex-col justify-between card">
-                <h1 className="text-primary-foreground">Vehicle </h1>
+                    {/**col-2 */}
+                    <div className="flex md:flex-col justify-between card">
+                      <h1 className="text-primary-foreground">Amount </h1>
+                      <h1> 10,000/= </h1>
+                    </div>
+                    {/**col-3 */}
+                    <div className="flex md:flex-col justify-between card">
+                      <h1 className="text-primary-foreground">Vehicle </h1>
 
-                <div className="flex  items-center gap-1.5">
-                  <img
-                    src={dodge}
-                    alt="Avatar"
-                    class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
-                  />
+                      <div className="flex  items-center gap-1.5">
+                        <img
+                          src={dodge}
+                          alt="Avatar"
+                          class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
+                        />
 
-                  <h1> KAY233Y</h1>
-                </div>
-              </div>
+                        <h1> {item.liscence_plate}</h1>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -1,11 +1,19 @@
 import { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 export const Globalcontext = createContext(null);
 function Globalstate({ children }) {
   const [Isloggedin, SetIsloggedin] = useState(null);
   const [Role, SetRole] = useState(null);
   const [authLoading, SetAuthLoading] = useState(true);
+  const [clientinfo, Setclientinfo] = useState([]);
+
+  const [cart, Setcart] = useState([]);
+
+  //fecthing client info
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     let decoded;
@@ -34,6 +42,11 @@ function Globalstate({ children }) {
         SetRole,
         authLoading,
         SetAuthLoading,
+        clientinfo,
+        Setclientinfo,
+
+        cart,
+        Setcart,
       }}
     >
       {children}

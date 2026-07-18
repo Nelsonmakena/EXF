@@ -11,6 +11,7 @@ import {
   MenuIcon,
   Moon,
   Sun,
+  User,
 } from "lucide-react";
 import { ModeToggle } from "@/Comp/mode-toggle";
 import {
@@ -25,12 +26,14 @@ import { useTheme } from "@/comp/theme-provider";
 export default function ClientNav() {
   const { setTheme, theme } = useTheme();
   const navigate = useNavigate();
-  const { SetIsloggedin, SetRole } = useContext(Globalcontext);
+  const { cart, Vehicle } = useContext(Globalcontext);
+
   const [SmallMe, SetSmallMe] = useState(false);
   const [ProfileMenu, SetProfileMenu] = useState(false);
   const navlinks = [
     { name: "Vehicles", Path: "vehicles" },
     { name: "Services ", Path: "Userservice" },
+    { name: "Shop", Path: "shop" },
     { name: "Appointments ", Path: "appointment" },
   ];
 
@@ -80,30 +83,34 @@ export default function ClientNav() {
                 <div className="relative cursor-pointer">
                   <ShoppingBag />
                   <button className="absolute -top-2 -right-3 text-xs text-white bg-orange-600 w-4.5 h-4.5 rounded-full">
-                    3
+                    0
                   </button>
                 </div>
               </Link>
             </div>
             <div
-              className=" flex  items-center  card    "
+              className=" flex  items-center  card  cursor-pointer   "
               onClick={() => {
                 SetProfileMenu(!ProfileMenu);
               }}
             >
-              <img src="" alt="userimage" className="rounded-[50%] w-14 h-14" />
+              <img src="" alt="" />
             </div>
+
+            {/**smal menu pop-up in clinet nav  */}
             {ProfileMenu && (
-              <div className=" absolute top-24 right-5 bg-card rounded-2xl shadow-md  w-2xs   card ">
-                <div className="card text-body">
+              <div className=" absolute top-24 right-5 bg-card rounded-2xl shadow-md  w-2xs   card  z-999">
+                <div className="card  ">
                   <button
                     onClick={() => {
                       navigate("profile");
                       SetProfileMenu(!ProfileMenu);
                     }}
+                    className="flex  w-full h-full justify-between"
                   >
                     {" "}
-                    Profile{" "}
+                    profile
+                    <User className="text-2xl" />
                   </button>
                 </div>
                 <div className=" card  flex  justify-between  ">
@@ -129,12 +136,14 @@ export default function ClientNav() {
                   </div>
                 </div>
 
-                <div className="card ">
+                <div className="card  ">
                   <button
                     onClick={() => {
                       logout();
                     }}
+                    className="flex  w-full justify-between"
                   >
+                    logout
                     <LogOut className="text-blue-400" />
                   </button>
                 </div>

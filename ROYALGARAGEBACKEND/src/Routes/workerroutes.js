@@ -6,10 +6,12 @@ import {
 } from "../midlewares/authenicationmidleware.js";
 
 import {
-  updateprofile,
   profile,
+  updateProfile,
 } from "./../controllers/Worker/workersettings.js";
 const Router = express.Router();
+
+///profile info fetcher
 
 Router.get("/profile", authenicateMiddleware, workerchecker, profile);
 
@@ -17,7 +19,7 @@ Router.post(
   "/updateprofile",
   authenicateMiddleware,
   workerchecker,
-  updateprofile,
+  updateProfile,
 );
 
 export default Router;

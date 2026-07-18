@@ -15,6 +15,7 @@ export default function AdminNav() {
   const { SetIsloggedin, SetRole } = useContext(Globalcontext);
   const navigate = useNavigate();
   const [Services, SetService] = useState(false);
+  const [Managment, SetManagment] = useState(false);
   const [Workers, SetWorkers] = useState(false);
   const [Finance, SetFinance] = useState(false);
   const [Reports, SetReports] = useState(false);
@@ -23,6 +24,7 @@ export default function AdminNav() {
   return (
     <div className="flex flex-col  h-screen justify-between  cursor-pointer  ">
       <div className=" h-3/4 section">
+        {/** menu item 1  */}
         <div className="p-1">
           <button
             onClick={() => {
@@ -34,10 +36,40 @@ export default function AdminNav() {
             Dashboard{" "}
           </button>
         </div>
+        {/** menu item 2  */}
         <div className="p-1">
-          <button className=" h-11 w-full bg-card"> Managment </button>
+          <button
+            onClick={() => {
+              SetManagment(!Managment);
+            }}
+            className=" h-11 w-full bg-card"
+          >
+            {" "}
+            Managment{" "}
+          </button>
+          {Managment && (
+            <div className="  flex  flex-col  px-2.5 gap-1 transition  duration-300">
+              <button
+                className="bg-card h-11  rounded-md "
+                onClick={() => {
+                  navigate("workers");
+                }}
+              >
+                Workers
+              </button>
+              <button
+                className="bg-card h-11 w-full rounded-md "
+                onClick={() => {
+                  navigate("jobs");
+                }}
+              >
+                jobs
+              </button>
+            </div>
+          )}
         </div>
 
+        {/** menu item 3  */}
         <div
           onClick={() => {
             SetService(!Services);

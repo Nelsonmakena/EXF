@@ -17,6 +17,9 @@ export const addUser = async (req, res) => {
     password,
     address,
   } = req.body;
+  if (!req.body) {
+    return console.log("all fields are required");
+  }
 
   const hashpswd = bcrypt.hashSync(password, salt);
 
@@ -130,14 +133,16 @@ export const worker = async (req, res) => {
 // super admin login
 export const admin = async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
+  if (Object.keys(req.body).length == 0) {
+    return console.log("empty fileds");
+  }
 
   try {
     const existingAdmin = await pool.query(
       "SELECT * FROM admin WHERE username= $1 ",
       [username],
     );
-    console.log(existingAdmin);
+
     if (existingAdmin.rows.length == 0) {
       return console.log("user not found ");
     }

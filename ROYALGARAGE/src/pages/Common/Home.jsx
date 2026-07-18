@@ -370,7 +370,7 @@ function Home() {
                           </div>
                         </div>
 
-                        <div clclassNameass="relative pl-12">
+                        <div classNames="relative pl-12">
                           <div className="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400">
                             <Combine />
                           </div>

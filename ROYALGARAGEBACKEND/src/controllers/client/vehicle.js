@@ -7,12 +7,17 @@ export const addVehicle = async (req, res) => {
   const { client_id } = req.userinfo;
   const { vehicle_model, vehicle_brand, vehicle_color, liscence_plate } =
     req.body;
-  console.log(client_id);
+
+  if (Object.keys(req.body).length === 0) {
+    return res
+      .status(401)
+      .json({ success: false, message: "all fileds must be filled" });
+  }
 
   // first we check if the vehcile the client is tring to add already exist  we chek by liscence plate
 
   const existingVehicle = await pool.query(
-    "SELECT * FROM vehicle WHERE liscence_plate = $1",
+    "SELECT liscence_plate FROM vehicle WHERE liscence_plate = $1",
     [liscence_plate],
   );
 
@@ -41,7 +46,7 @@ export const getVehicles = async (req, res) => {
 
   try {
     const vehicle = await pool.query(
-      "SELECT * FROM vehicle WHERE client_id = $1",
+      "SELECT liscence_plate,vehicle_brand,vehicle_color,vehicle_model  FROM vehicle WHERE client_id = $1",
       [client_id],
     );
     res.status(200).json({

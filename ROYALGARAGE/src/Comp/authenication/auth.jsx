@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
 import { Globalcontext } from "../../context";
+import Loader from "../loader";
 
 export default function Authenicated({ children }) {
   const { Isloggedin, Role, authLoading } = useContext(Globalcontext);
@@ -8,7 +9,7 @@ export default function Authenicated({ children }) {
   const location = useLocation();
   const path = location.pathname;
   if (authLoading) {
-    return console.log("loading ");
+    return <Loader />;
   } else {
     if (!Isloggedin) {
       if (location.pathname.includes("/admin")) {

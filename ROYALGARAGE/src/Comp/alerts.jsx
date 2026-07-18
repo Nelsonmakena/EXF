@@ -6,16 +6,13 @@ import {
 } from "@/components/ui/alert";
 import { CheckCircle2Icon } from "lucide-react";
 
-export default function Alerts() {
+export default function Alerts({ alertMessage }) {
   return (
     <section>
-      <Alert className="max-w-md">
+      <Alert className="max-w-md fixed top-24 right-5 ">
         <CheckCircle2Icon />
         <AlertTitle>Account updated successfully</AlertTitle>
-        <AlertDescription>
-          Your profile information has been saved. Changes will be reflected
-          immediately.
-        </AlertDescription>
+        <AlertDescription>{alertMessage}</AlertDescription>
       </Alert>
     </section>
   );

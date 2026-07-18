@@ -15,7 +15,7 @@ import Appointment from "../pages/clients/appointments";
 import Feedback from "../pages/clients/Feedback";
 import ClientServices from "../pages/clients/ClientServices";
 import ProfileEdit from "../pages/clients/ProfileEdit";
-import Cart from "./cart";
+import Cart from "../pages/clients/cart";
 import Admincommon from "../pages/ADMIN/pages/admintemplate";
 import AdminHome from "../pages/ADMIN/pages/adminhome";
 import Employees from "../pages/ADMIN/pages/Employess";
@@ -26,6 +26,10 @@ import Authenicated from "./authenication/auth";
 import { Ad } from "lucide-react";
 import AdminViewProducts from "@/pages/ADMIN/pages/Adminproducts";
 import AdminViewServices from "@/pages/ADMIN/pages/Adminservices";
+import Shop from "@/pages/clients/shop";
+import WorkerView from "@/pages/ADMIN/pages/managment/workerview";
+import jobList from "./../pages/ADMIN/pages/managment/joblist";
+import JobList from "./../pages/ADMIN/pages/managment/joblist";
 
 export default function Routess() {
   return (
@@ -62,6 +66,7 @@ export default function Routess() {
           <Route path="Userservice" element={<ClientServices />} />
           <Route path="profile" element={<ProfileEdit />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="shop" element={<Shop />} />
         </Route>
 
         {/* admin routes  */}
@@ -79,6 +84,8 @@ export default function Routess() {
           <Route path="employee" element={<Employees />} />
           <Route path="products" element={<AdminViewProducts />} />
           <Route path="services" element={<AdminViewServices />} />
+          <Route path="workers" element={<WorkerView />} />
+          <Route path="jobs" element={<JobList />} />
         </Route>
         {/* worker routes  */}
 
