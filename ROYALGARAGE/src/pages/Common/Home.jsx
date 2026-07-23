@@ -270,7 +270,7 @@ function Home() {
 
         <section className=" section  flex flex-col  ">
           <div className=" container-main   flex justify-center items-center gap-normal section-sm   ">
-            <h1 className="text-header heading-medium  ">
+            <h1 data-aos="fade-right" className="text-header heading-medium  ">
               Our Core Services Overview{" "}
             </h1>
             <ArrowRight className=" text-header  heading-bold  " />
@@ -281,8 +281,8 @@ function Home() {
               return (
                 <div
                   key={key}
-                  data-aos="fade-up"
-                  className=" bg-card   border-border flex flex-col  h-84 justify-center items-center  shadow-md  rounded-md p-3.5    "
+                  data-aos="fade-left"
+                  className=" bg-card card border flex flex-col  h-84 justify-center items-center  shadow-md  rounded-md "
                 >
                   <h1 className="font-bold  card  text-secondary">
                     {" "}
@@ -302,23 +302,34 @@ function Home() {
         <section className="section ">
           <div className=" container-main ">
             <div className="mx-auto max-w-2xl text-center mb-16 ">
-              <h2 className=" text-header heading-medium ">
+              <h2
+                data-aos="fade-right"
+                className=" text-header heading-medium "
+              >
                 Auto repair process in four basic steps
               </h2>
             </div>
 
             <div className="flex ">
               <div className="hidden md:flex md:flex-1  items-center">
-                <img src={car1} alt="" className="h-fit " />
+                <img
+                  data-aos="fade-right"
+                  src={car1}
+                  alt=""
+                  className="h-fit "
+                />
               </div>
               <div className="flex-1">
                 <div className="rounded-xl  p-8 md:p-12">
                   <div className="max-w-3xl mx-auto">
                     <div className="relative">
-                      <div className=" bg-secondary absolute left-5 top-2 bottom-2 w-0.5  "></div>
+                      <div
+                        data-aos="fade-up"
+                        className=" bg-secondary absolute left-5 top-2 bottom-2 w-0.5  "
+                      ></div>
 
                       <div className="space-y-8">
-                        <div className="relative pl-12 ">
+                        <div data-aos="fade-left" className="relative pl-12 ">
                           <div className="absolute left-0 top-0  rounded-full  h-10 w-10 flex items-center justify-center bg-blue-400">
                             <Glasses />
                           </div>
@@ -336,7 +347,7 @@ function Home() {
                           </div>
                         </div>
 
-                        <div className="relative pl-12">
+                        <div data-aos="fade-left" className="relative pl-12">
                           <div className="absolute left-0 top-0  rounded-full border  h-10 w-10 flex items-center justify-center bg-blue-400">
                             <ToolCase />
                           </div>
@@ -353,8 +364,8 @@ function Home() {
                           </div>
                         </div>
 
-                        <div className="relative pl-12">
-                          <div className="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
+                        <div data-aos="fade-left" className="relative pl-12">
+                          <div className="absolute left-0 top-0  rounded-full border  border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
                             <BrushCleaning />
                           </div>
                           <div className="bg-header border  rounded-lg p-5 transition-all hover:shadow-md">
@@ -370,13 +381,13 @@ function Home() {
                           </div>
                         </div>
 
-                        <div classNames="relative pl-12">
-                          <div className="absolute left-0 top-0  rounded-full border border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400">
+                        <div data-aos="fade-left" className="relative pl-12">
+                          <div className="absolute left-0 top-0  rounded-full border  border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
                             <Combine />
                           </div>
-                          <div className=" bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
+                          <div className="bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
                             <div className="flex items-start justify-between mb-2">
-                              <h3 className="heading-normal fancy">pick up</h3>
+                              <h3 className="heading-normal fancy">Pick Up</h3>
                             </div>
                             <p className=" text-sm">
                               Comprehensive testing, bug fixes, and performance

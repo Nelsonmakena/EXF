@@ -10,6 +10,8 @@ export const getallservices = async (req, res) => {
     console.log(error.message);
   }
 };
+
+//protectd route only admin privilages
 export const addService = async (req, res) => {
   const {
     service_name,
@@ -42,6 +44,7 @@ export const addService = async (req, res) => {
     console.log(error.message);
   }
 };
+//protected
 export const updateService = async (req, res) => {
   const { service_id } = req.params;
 

@@ -3,24 +3,20 @@ import { useNavigate } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Mail, Map, Phone } from "lucide-react";
-import { Globalcontext } from "@/context";
+
 import Loader from "@/Comp/loader";
 
 export default function ProfileEdit() {
-  // const { clientinfo, authLoading } = useContext(Globalcontext);
   const navigate = useNavigate();
   const [clientinfo, Setclientinfo] = useState(null);
   const [isloading, Setisloading] = useState(true);
 
   const getUserInfo = async () => {
-    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
         "http://localhost:3000/api/client/profileinfo",
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         },
       );
 
@@ -50,10 +46,10 @@ export default function ProfileEdit() {
         <div className=" flex  flex-1 h-screen justify-center items-center   ">
           <div className="  rounded-[50%] w-72 h-72 overflow-hidden shadow-md flex items-center justify-center ">
             <h1 className="text-6xl text-header">
-              {clientinfo.first_name.charAt(0)}
+              {clientinfo.first_name.charAt(0).toUpperCase()}
             </h1>
             <h1 className="text-6xl text-header-foreground">
-              {clientinfo.second_name.charAt(0)}
+              {clientinfo.second_name.charAt(0).toUpperCase()}
             </h1>
           </div>
         </div>

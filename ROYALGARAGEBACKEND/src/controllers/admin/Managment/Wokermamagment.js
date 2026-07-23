@@ -24,10 +24,12 @@ export const addWorker = async (req, res) => {
     );
     res.status(200).json({ success: true, message: "succefully added " });
   } catch (error) {
+    res.json({ success: false, message: error.message });
     console.log(error.message);
   }
 };
 
+// fethcing all worker list{dashborad}
 export const workers = async (req, res) => {
   try {
     const allworkers = await pool.query("SELECT * FROM employee  ");

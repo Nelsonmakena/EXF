@@ -1,13 +1,11 @@
 import ClientNav from "./ClientNav";
-import { Globalcontext } from "../../context";
+
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import Skeletonloader from "../../Comp/loader";
 
 export default function HomeClient() {
   // fething user info the passing it to global context  things like profile =name and details load now imdeatly after login
-
-  const { clientinfo, Setclientinfo } = useContext(Globalcontext);
 
   const [isloading, Setisloading] = useState(true);
   return (

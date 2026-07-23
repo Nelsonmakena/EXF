@@ -2,11 +2,10 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { ShoppingCart } from "lucide-react";
 import Cart from "./cart";
-import { Globalcontext } from "@/context";
 
 export default function Shop() {
   const [products, Setproducts] = useState([]);
-  const { Setcart, cart } = useContext(Globalcontext);
+
   const getProducts = async () => {
     try {
       const response = await axios.get(
@@ -76,7 +75,7 @@ export default function Shop() {
                   <button>
                     <ShoppingCart
                       onClick={() => {
-                        Setcart(item);
+                        Setcart([...cart, item]);
                       }}
                       className="text-header"
                     />{" "}

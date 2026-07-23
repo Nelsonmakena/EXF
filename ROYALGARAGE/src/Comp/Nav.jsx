@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import logo from "/src/assets/images/logo.png";
 import Userlogin from "../pages/clients/Userlogin";
-import { Globalcontext } from "../context";
 
 import logodata from "/src/assets/logoanimation.json";
 import smallmenuanimation from "/src/assets/smallmenu.json";
@@ -12,7 +11,6 @@ import { Search, Menu, X } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 
 function Nav() {
-  const { Isloggedin, SetIsloggedin } = useContext(Globalcontext);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

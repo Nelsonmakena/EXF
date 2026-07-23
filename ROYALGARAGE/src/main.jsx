@@ -3,13 +3,16 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
-import Globalstate from "./context.jsx";
+
+import { Provider } from "react-redux";
+import store from "./Comp/store/store";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <Globalstate>
-      {" "}
-      <App />{" "}
-    </Globalstate>
+    <Provider store={store}>
+      <App />
+      <Toaster />
+    </Provider>
   </BrowserRouter>,
 );

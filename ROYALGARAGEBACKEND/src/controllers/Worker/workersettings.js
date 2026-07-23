@@ -19,7 +19,7 @@ export const profile = async (req, res) => {
   }
 };
 
-// update profile by default the admin only registers email nad pasword
+// update profile by default the admin only registers email and pasword
 
 export const updateProfile = async (req, res) => {
   const { employee_id } = req.userinfo;

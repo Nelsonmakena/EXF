@@ -2,17 +2,20 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "/src/assets/images/logo.png";
 
 import { useContext, useState } from "react";
-import { Globalcontext } from "../../../context";
+
 import { LogOut, Moon, Sun } from "lucide-react";
 
 {
   /* theme setter */
 }
 import { useTheme } from "@/comp/theme-provider";
+import { useDispatch } from "react-redux";
+import { logoutanyone } from "@/Comp/store/authslice";
 
 export default function AdminNav() {
   const { setTheme, theme } = useTheme();
-  const { SetIsloggedin, SetRole } = useContext(Globalcontext);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [Services, SetService] = useState(false);
   const [Managment, SetManagment] = useState(false);
@@ -20,6 +23,10 @@ export default function AdminNav() {
   const [Finance, SetFinance] = useState(false);
   const [Reports, SetReports] = useState(false);
   const [UserAccountSmallMenu, SetUserAccountSmallMenu] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logoutanyone()).then(navigate("/adminlogin"));
+  };
 
   return (
     <div className="flex flex-col  h-screen justify-between  cursor-pointer  ">
@@ -152,18 +159,18 @@ export default function AdminNav() {
         )}
       </div>
       {/**bottom section  */}
-      <div className="  h-24  bg-card rounded-xs ">
+      <div className="  h-24  rounded-xs flex items-center  px-3.5 shadow-md">
         <div
-          className=" card "
+          className=" card bg-card flex items-center justify-center rounded-full w-20 h-20  shadow-xl"
           onClick={() => SetUserAccountSmallMenu(!UserAccountSmallMenu)}
         >
-          <img src="" alt="userimage" className="rounded-full w-14 h-14  " />
+          <h1 className="text-primary font-bold  ">admin</h1>
         </div>
       </div>
       {/**pop up  small menu  */}
       {UserAccountSmallMenu && (
         <div className="bg-card   shadow-md absolute rounded-xl  w-3xs  bottom-5 left-52 z-999  ">
-          <div className="  flex  justify-between shadow-md card ">
+          <div className="  flex  justify-between  card ">
             <div
               className="px-3.5"
               onClick={() => {
@@ -185,15 +192,15 @@ export default function AdminNav() {
               />
             </div>
           </div>
-          <div className=" flex justify-center shadow-md card text-header ">
+          <div className=" flex justify-center card text-header ">
             Account settings
           </div>
           <div
             onClick={() => {
-              navigate("/adminlogin");
+              handleLogout();
               !UserAccountSmallMenu;
             }}
-            className="  flex justify-center hadow-md card text-header"
+            className="  flex justify-center  card text-header"
           >
             Logout
           </div>

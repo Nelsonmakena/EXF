@@ -2,7 +2,7 @@ import logo from "/src/assets/images/logo.png";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-import { Globalcontext } from "../../context";
+
 import {
   Menu,
   X,
@@ -22,11 +22,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/comp/theme-provider";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutanyone } from "@/Comp/store/authslice";
 
 export default function ClientNav() {
   const { setTheme, theme } = useTheme();
   const navigate = useNavigate();
-  const { cart, Vehicle } = useContext(Globalcontext);
+  const { userinfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const [SmallMe, SetSmallMe] = useState(false);
   const [ProfileMenu, SetProfileMenu] = useState(false);
@@ -38,7 +41,7 @@ export default function ClientNav() {
   ];
 
   const logout = () => {
-    localStorage.removeItem("token");
+    dispatch(logoutanyone());
     navigate("/");
   };
   useEffect(() => {
@@ -56,7 +59,7 @@ export default function ClientNav() {
   return (
     <>
       <div className="  flex items-center justify-center text-sm  w-full    font-semibold h-24       ">
-        <nav className=" flex items-center w-full relative h-20   bg-card    rounded-2xl  md:w-3/4  shadow-md  ">
+        <nav className=" flex items-center w-full relative h-20   bg-card    rounded-2xl  md:w-5xl  shadow-md  ">
           {/* bigscreen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between ">
             {/* icon logo */}
@@ -89,12 +92,17 @@ export default function ClientNav() {
               </Link>
             </div>
             <div
-              className=" flex  items-center  card  cursor-pointer   "
+              className=" flex items-center card cursor-pointer"
               onClick={() => {
                 SetProfileMenu(!ProfileMenu);
               }}
             >
-              <img src="" alt="" />
+              <h1 className="text-header-foreground">
+                {userinfo?.first_name[0]?.toUpperCase()}
+              </h1>
+              <h1 className="text-header">
+                {userinfo?.last_name[0]?.toUpperCase()}
+              </h1>
             </div>
 
             {/**smal menu pop-up in clinet nav  */}
@@ -185,7 +193,7 @@ export default function ClientNav() {
           <div className="  flex  flex-col bg-card    w-[50%] h-screen fixed right-0 z-10   gap-14 p-3.5   top-0">
             <div className="flex   items-center card-lg justify-end ">
               <button onClick={() => SetSmallMe(!SmallMe)} className="flex ">
-                <Menu className="h-14 w-10 text-shadow-2xs" />
+                <Menu className="h-10 w-10 text-shadow-2xs text-header-foreground" />
               </button>
             </div>
 
@@ -204,6 +212,7 @@ export default function ClientNav() {
               </ul>
             </div>
 
+            {/**shopping cart comp  */}
             <div className=" flex flex-row  card-lg ">
               <Link className="flex items-center gap-12" to="cart">
                 <h1 className="text-2xl text-blue-400 font-bold"> Cart</h1>
@@ -214,6 +223,7 @@ export default function ClientNav() {
                 </button>
               </div>
             </div>
+            {/**themes */}
             <div className="  flex  justify-between card ">
               <div
                 className="px-3.5"
@@ -236,6 +246,7 @@ export default function ClientNav() {
                 />
               </div>
             </div>
+
             <div className="flex items-center  w-25  card-lg">
               {" "}
               <LogOut
@@ -246,17 +257,20 @@ export default function ClientNav() {
               />
             </div>
 
-            <div className="flex flex-col w-full  fixed bottom-0   ">
-              <div className="w-full border border-blue-400 "></div>
-              <div className="flex w-full mt-4  items-center   ">
-                <h1 className="text-2xl"> Profile </h1>
-
+            <div className="flex flex-col w-full  fixed bottom-0  border  ">
+              <div className="w-full  border-blue-400 "></div>
+              <div
+                onClick={() => navigate("profile")}
+                className="flex w-full mt-4  items-center   "
+              >
                 <div className="flex  px-4">
-                  <div className="  flex  items-center rounded-[50%] w-14 h-14 overflow-hidden shadow-md ">
-                    <Link to="profile">
-                      {" "}
-                      <img src="" alt="userimage" />
-                    </Link>
+                  <div className="  flex border   items-center justify-center rounded-full w-14 h-14 overflow-hidden shadow-md ">
+                    <h1 className="text-header-foreground">
+                      {userinfo?.first_name[0]?.toUpperCase()}
+                    </h1>
+                    <h1 className="text-header">
+                      {userinfo?.last_name[0]?.toUpperCase()}
+                    </h1>
                   </div>
                 </div>
               </div>

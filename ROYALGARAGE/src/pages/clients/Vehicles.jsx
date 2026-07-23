@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import ClientNav from "./ClientNav";
 import dodge from "/src/assets/images/dodge.jpg";
-import M100 from "../../Comp/M100";
+
 import {
   Table,
   TableBody,
@@ -21,7 +21,6 @@ import axios from "axios";
 import Loader from "@/Comp/loader";
 import Alerts from "@/Comp/alerts";
 import { CarIcon } from "lucide-react";
-import { Globalcontext } from "@/context";
 
 export default function Vehicles() {
   const [isloading, Setisloading] = useState(true);

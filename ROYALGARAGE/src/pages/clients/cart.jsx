@@ -1,16 +1,13 @@
-import { Globalcontext } from "@/context";
 import { useContext } from "react";
 
 export default function Cart() {
-  const { cart } = useContext(Globalcontext);
-  console.log(cart);
-
   return (
     <>
       <section>
         <div className=" w-full flex flex-col  md:mt-14 md:flex-row ">
           <div className="  flex flex-col gap-3.5 w-4xl justify-center items-center p-3.5">
-            <div className=" flex  w-full h-64   rounded-2xl shadow-md md:w-3/4 ">
+            {/**service card */}
+            <div className=" flex  w-full h-64   rounded-2xl shadow-md md:w-3/4  ">
               <div className="   flex flex-col  items-center  w-1/3 ">
                 <div className="p-3.5   h-1/2  flex items-center ">
                   <h1 className="font-medium  text-blue-400 ">service name </h1>
@@ -37,6 +34,7 @@ export default function Cart() {
               </div>
             </div>
           </div>
+          {/**side panel total amonun */}
           <div className=" w-full  rounded-2xl shadow-md  overflow-hidden  md:w-1/4 ">
             <div className=" text-green-700 font-medium w-full flex justify-center">
               <h1> Order Summary </h1>

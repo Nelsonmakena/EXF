@@ -1,10 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router";
-import { Globalcontext } from "../../context";
 
 export default function WkLogin() {
-  const { SetIsloggedin, SetRole } = useContext(Globalcontext);
-
   function wklogin() {
     SetIsloggedin(true);
     SetRole("worker");

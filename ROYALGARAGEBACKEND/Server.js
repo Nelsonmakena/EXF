@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieparser from "cookie-parser";
 import Productsroutes from "./src/Routes/Productsroutes.js";
 import Serviceroutes from "./src/Routes/Servicesroutes.js";
 import authroutes from "./src/Routes/authroutes.js";
@@ -14,7 +15,21 @@ const app = express();
 const Port = ENV.PORT || 3000;
 
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cookieparser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: [
+      "Content-type",
+      "Authorization",
+      "cache-control",
+      "Expires",
+      "pragma",
+    ],
+    credentials: true,
+  }),
+);
 
 DbConnection();
 

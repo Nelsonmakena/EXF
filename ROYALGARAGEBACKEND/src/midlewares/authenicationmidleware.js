@@ -1,12 +1,8 @@
 import jwt from "jsonwebtoken";
 import { ENV } from "../../env.js";
 export const authenicateMiddleware = (req, res, next) => {
-  // geting token from the front end headers
-  const authheader = req.headers["authorization"];
-
-  // spliting it to get the token stirng only
-
-  const token = authheader && authheader.split(" ")[1];
+  const token = req.cookies.token;
+  console.log(`token is ${token}`);
 
   if (!token) {
     return res.status(401).json({ success: false, message: "acces denied" });
@@ -15,6 +11,7 @@ export const authenicateMiddleware = (req, res, next) => {
   // decoding the token info
   try {
     const decodedToken = jwt.verify(token, ENV.JWT_SECERECT_KEY);
+    console.log(decodedToken);
 
     req.userinfo = decodedToken;
 

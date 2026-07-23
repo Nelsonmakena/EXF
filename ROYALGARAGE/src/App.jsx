@@ -8,6 +8,8 @@ import "./App.css";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import Routess from "./Comp/Routes";
+import { useDispatch } from "react-redux";
+import { checkAuth } from "./Comp/store/authslice";
 
 function App() {
   const location = useLocation();
@@ -22,7 +24,7 @@ function App() {
 
   return (
     <>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <main className=" w-full overflow-hidden bg-background text-foreground ">
           <Routess />
         </main>

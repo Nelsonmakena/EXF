@@ -3,6 +3,7 @@ import { pool } from "../../Db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { ENV } from "../../env.js";
+
 const salt = bcrypt.genSaltSync(10);
 
 /// adding a new user
@@ -58,6 +59,10 @@ export const addUser = async (req, res) => {
 export const getUserinfo = async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
+  if (Object.keys(req.body).length == 0) {
+    console.log(req.body);
+    return res.json({ success: false, message: "all fileds are required" });
+  }
 
   try {
     const user = await pool.query("SELECT * FROM client WHERE email= $1 ", [
@@ -65,7 +70,7 @@ export const getUserinfo = async (req, res) => {
     ]);
     if (user.rows.length == 0) {
       return res.json({
-        success: "false",
+        success: false,
         message: "user doesnot exisit try again ",
       });
     }
@@ -75,15 +80,22 @@ export const getUserinfo = async (req, res) => {
       const accesToken = jwt.sign(
         {
           client_id: user.rows[0].client_id,
+          first_name: user.rows[0].first_name,
+          last_name: user.rows[0].last_name,
+
           role: "client",
         },
         ENV.JWT_SECERECT_KEY,
         { expiresIn: "60m" },
       );
+
+      res.cookie("token", accesToken, { httpOnly: true, secure: false });
       res.status(200).json({
         success: true,
         message: "logged in succefull",
-        token: accesToken,
+        first_name: user.rows[0].first_name,
+        last_name: user.rows[0].last_name,
+        role: "client",
       });
     } else {
       res.json({ success: false, message: "wrong info " });
@@ -97,7 +109,11 @@ export const getUserinfo = async (req, res) => {
 
 export const worker = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
+
+  if (Object.keys(req.body).length == 0) {
+    console.log(req.body);
+    return res.json({ success: false, message: "all fileds are required" });
+  }
 
   try {
     /// checking if user exist and also pasoced
@@ -117,10 +133,10 @@ export const worker = async (req, res) => {
         ENV.JWT_SECERECT_KEY,
         { expiresIn: "60m" },
       );
+      res.cookie("token", accesToken, { httpOnly: true, secure: false });
       res.status(200).json({
         success: true,
         message: "logged in succefull",
-        token: accesToken,
       });
     } else {
       res.json({ success: false, message: "email or pasword is incorect" });
@@ -156,10 +172,12 @@ export const admin = async (req, res) => {
         ENV.JWT_SECERECT_KEY,
         { expiresIn: "60m" },
       );
+      res.cookie("token", accesToken, { httpOnly: true, secure: false });
       res.status(200).json({
         success: true,
         message: "logged in succefull",
-        token: accesToken,
+        name: "Admin",
+        role: "admin",
       });
     } else {
       return res.json({
@@ -170,4 +188,9 @@ export const admin = async (req, res) => {
   } catch (error) {
     console.log(error.message);
   }
+};
+
+// login out
+export const logOut = async (req, res) => {
+  res.clearCookie("token").json({ success: true, message: "logged out " });
 };

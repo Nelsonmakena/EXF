@@ -1,31 +1,30 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router";
-import { Globalcontext } from "../../../context";
+
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { adminlogin } from "@/Comp/store/authslice";
+import { toast } from "sonner";
 export default function Adminlogin() {
   const navigate = useNavigate();
-  const { SetIsloggedin, SetRole } = useContext(Globalcontext);
+  const dispatch = useDispatch();
+
   //fectching admin data
 
-  const adminLogin = async (e) => {
+  const loginData = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
+    console.log(data);
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/authenication/admin",
-        data,
-      );
-      if (response.data.success == true) {
-        SetRole("admin");
-        SetIsloggedin(true);
-        localStorage.setItem("token", response.data.token);
+    dispatch(adminlogin(data)).then((data) => {
+      if (data?.payload?.success) {
+        toast(data?.payload?.message);
         navigate("/admin/home");
+      } else {
+        toast.error(data?.payload?.message);
       }
-    } catch (error) {
-      console.log(error.message);
-    }
+    });
   };
 
   return (
@@ -35,7 +34,7 @@ export default function Adminlogin() {
           <div className="flex h-screen w-full ">
             <div className="w-full flex flex-col items-center justify-center ">
               <form
-                onSubmit={adminLogin}
+                onSubmit={loginData}
                 className="md:w-96 w-80 flex flex-col items-center justify-center "
               >
                 <h2 className="text-4xl text-gray-900 font-medium">Admin</h2>

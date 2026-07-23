@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { Globalcontext } from "../context";
+
 import Template from "../pages/Common/Common";
 import Home from "../pages/Common/Home";
 import About from "../pages/Common/About";

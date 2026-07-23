@@ -6,18 +6,17 @@ import logodata from "/src/assets/logoanimation.json";
 import Lottie from "lottie-react";
 
 import { useContext, useEffect, useState } from "react";
-import HomeClient from "./HomeClient";
-import { Globalcontext } from "../../context";
-import axios from "axios";
-import Alerts from "@/Comp/alerts";
+
+import { useDispatch } from "react-redux";
+import { loginUser, registerUser } from "@/Comp/store/authslice";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 export default function Userlogin() {
   const [state, setState] = useState("login");
-  const [message, Setmessage] = useState();
-  const { SetRole, SetIsloggedin } = useContext(Globalcontext);
-  const [showAlert, SetshowAlert] = useState(false);
-  const [alertMessage, Setalertmessage] = useState();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   /// fetching user login data
 
@@ -26,25 +25,14 @@ export default function Userlogin() {
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
 
-    try {
-      const user = await axios.post(
-        "http://localhost:3000/api/authenication/client",
-        data,
-      );
-
-      if (user.data.success == true) {
-        Setalertmessage(user.data.message);
-        SetshowAlert(true);
-        SetRole("client");
-        SetIsloggedin(true);
-        localStorage.setItem("token", user.data.token);
+    dispatch(loginUser(data)).then((data) => {
+      if (data?.payload?.success) {
+        toast(data.payload.message);
         navigate("/client/dashboard");
+      } else {
+        toast(data.payload.message);
       }
-
-      Setmessage(user.data.message);
-    } catch (error) {
-      console.log(error.message);
-    }
+    });
   };
 
   // fetching new user data
@@ -57,30 +45,20 @@ export default function Userlogin() {
 
     // check if password match
     if (data.password != data.confrim_password) {
-      Setalertmessage("pasword dont match");
-      SetshowAlert(true);
-      return;
+      return toast.warning("paswords dont match");
     }
 
-    try {
-      const newUser = await axios.post(
-        "http://localhost:3000/api/authenication/adduser",
-        data,
-      );
+    dispatch(registerUser(data)).then((data) => {
+      console.log(data.payload);
 
-      if (newUser.data.success) {
-        console.log(newUser.data.message);
+      if (data?.payload?.success) {
+        toast(data.payload.message);
+        setState("login");
       } else {
-        console.log(newUser.data.message);
+        toast(data?.payload?.message);
       }
-    } catch (error) {
-      console.log(error.message);
-    }
+    });
   };
-  setTimeout(() => {
-    SetshowAlert(false);
-  }, 1000);
-
   return (
     <>
       {/**login and sign in  */}
@@ -192,6 +170,15 @@ export default function Userlogin() {
                     required
                   />
                 </div>
+                <div className="flex  mt-6 items-center w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
+                  <input
+                    type="text"
+                    name="adrress"
+                    placeholder="adress  "
+                    className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
+                    required
+                  />
+                </div>
 
                 <div className="flex  mt-6 items-center w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
                   <input
@@ -255,8 +242,6 @@ export default function Userlogin() {
             </div>
           )}
         </div>
-
-        {showAlert && <Alerts alertMessage={alertMessage} />}
       </section>
     </>
   );

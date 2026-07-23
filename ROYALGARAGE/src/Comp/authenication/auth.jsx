@@ -1,46 +1,62 @@
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
-import { Globalcontext } from "../../context";
+
 import Loader from "../loader";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "../store/authslice";
+import { useEffect } from "react";
 
 export default function Authenicated({ children }) {
-  const { Isloggedin, Role, authLoading } = useContext(Globalcontext);
+  //always checking auth status
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+  const { isLoading, Role, isAuthenicated } = useSelector(
+    (state) => state.auth,
+  );
 
+  console.log(isLoading);
+  console.log(isAuthenicated);
+  console.log(Role);
   const location = useLocation();
   const path = location.pathname;
-  if (authLoading) {
+  if (isLoading) {
     return <Loader />;
-  } else {
-    if (!Isloggedin) {
-      if (location.pathname.includes("/admin")) {
-        return <Navigate to="/adminlogin" />;
-      }
-      if (location.pathname.includes("/client")) {
-        return <Navigate to="/login" />;
-      }
-      if (location.pathname.includes("/wk-hm")) {
-        return <Navigate to="/wk" />;
-      }
+  }
+  if (!isAuthenicated) {
+    if (location.pathname.includes("/admin")) {
+      return <Navigate to="/adminlogin" />;
+    }
+    if (location.pathname.includes("/client")) {
+      console.log(path);
+
+      return <Navigate to="/login" />;
+    }
+    if (location.pathname.includes("/wk-hm")) {
+      return <Navigate to="/wk" />;
     }
   }
 
   if (
-    Isloggedin &&
+    isAuthenicated &&
     (path === "/login" || path === "/adminlogin" || path === "/wk")
   ) {
+    console.log(isAuthenicated);
+
     if (Role === "admin") return <Navigate to="/admin/home" replace />;
     if (Role === "client") return <Navigate to="/client/dashboard" replace />;
     if (Role === "worker") return <Navigate to="/wk-hm" replace />;
   }
 
-  /// role based auth
+  //role based auth
 
   if (Role === "admin" && !path.startsWith("/admin")) {
-    return <Navigate to="/nt" />;
+    return <Navigate to="/admin/home" />;
   }
 
   if (Role === "client" && !path.startsWith("/client")) {
-    return <Navigate to="/nt" />;
+    return <Navigate to="/client/dashboard" />;
   }
 
   if (Role === "worker" && !path.startsWith("/wk-hm")) {
