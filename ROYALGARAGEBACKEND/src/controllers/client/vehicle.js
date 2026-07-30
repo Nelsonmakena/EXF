@@ -46,7 +46,7 @@ export const getVehicles = async (req, res) => {
 
   try {
     const vehicle = await pool.query(
-      "SELECT liscence_plate,vehicle_brand,vehicle_color,vehicle_model  FROM vehicle WHERE client_id = $1",
+      "SELECT liscence_plate,vehicle_brand,vehicle_color,vehicle_model,vehicle_id  FROM vehicle WHERE client_id = $1",
       [client_id],
     );
     res.status(200).json({

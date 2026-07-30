@@ -8,7 +8,7 @@ import {
   workers,
 } from "../controllers/admin/Managment/Wokermamagment.js";
 
-import { AllJobs } from "../controllers/client/jobs.js";
+import { AllJobs, assignJob, unallocatedJobs } from "../controllers/jobs.js";
 const Router = express.Router();
 
 // these are protected admin routes
@@ -24,5 +24,18 @@ Router.get("/workers", authenicateMiddleware, adminchecker, workers);
 // view of all jobs in the system
 
 Router.get("/jobslist", authenicateMiddleware, adminchecker, AllJobs);
+
+// assigning of jobs
+
+Router.post("/assign", authenicateMiddleware, adminchecker, assignJob);
+
+//list of ansigned jobs
+
+Router.get(
+  "/unassinedjobs",
+  authenicateMiddleware,
+  adminchecker,
+  unallocatedJobs,
+);
 
 export default Router;

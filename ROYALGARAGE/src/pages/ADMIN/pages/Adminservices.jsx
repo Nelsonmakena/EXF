@@ -26,7 +26,7 @@ export default function AdminViewServices() {
       const servicedata = await axios.get(
         "http://localhost:3000/api/services/allservices",
       );
-      Setservices(servicedata.data);
+      Setservices(servicedata.data.data);
     } catch (error) {
       console.log(error.message);
     }

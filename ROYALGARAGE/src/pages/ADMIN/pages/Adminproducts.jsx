@@ -56,8 +56,6 @@ export default function AdminViewProducts() {
       `http://localhost:3000/api/products/update/${productid}`,
       data,
     );
-    console.log(data);
-    console.log(update_product);
   };
   // fetching all product on start of the page on update and on add a new product
   useEffect(() => {

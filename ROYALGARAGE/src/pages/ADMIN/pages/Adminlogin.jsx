@@ -15,7 +15,7 @@ export default function Adminlogin() {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
-    console.log(data);
+   
 
     dispatch(adminlogin(data)).then((data) => {
       if (data?.payload?.success) {

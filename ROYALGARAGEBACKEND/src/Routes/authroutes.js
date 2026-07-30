@@ -10,19 +10,16 @@ import { authenicateMiddleware } from "../midlewares/authenicationmidleware.js";
 
 const Router = express.Router();
 
-//add a new user local user
+//new user reegister
 
 Router.post("/register", addUser);
 
-// get user for autheniction // user login
+// user login
 
 Router.post("/login", getUserinfo);
 
 // admin login
 Router.post("/admin", admin);
-
-// admin to add a new worker to the system
-//Router.post("/addworker", addWorker);
 
 // worker login
 
@@ -31,10 +28,10 @@ Router.post("/workerlogin", worker);
 /// checking if user is athenctaed and looged in
 
 Router.get("/checkauth", authenicateMiddleware, (req, res) => {
-  const new_userinfo = req.userinfo;
+  const user = req.userinfo;
   res
     .status(200)
-    .json({ success: true, message: "authenicated", new_userinfo });
+    .json({ success: true, message: "authenicated", user: req.userinfo });
 });
 
 //loggin out

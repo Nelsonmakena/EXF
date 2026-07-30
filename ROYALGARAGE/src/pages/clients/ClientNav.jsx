@@ -39,7 +39,6 @@ export default function ClientNav() {
     { name: "Shop", Path: "shop" },
     { name: "Appointments ", Path: "appointment" },
   ];
-
   const logout = () => {
     dispatch(logoutanyone());
     navigate("/");
@@ -58,8 +57,8 @@ export default function ClientNav() {
 
   return (
     <>
-      <div className="  flex items-center justify-center text-sm  w-full    font-semibold h-24       ">
-        <nav className=" flex items-center w-full relative h-20   bg-card    rounded-2xl  md:w-5xl  shadow-md  ">
+      <div className="  flex items-center justify-center text-sm  w-full font-semibold h-24       ">
+        <nav className=" flex items-center w-full relative h-20   bg-card rounded-2xl  md:w-5xl  shadow-md  ">
           {/* bigscreen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between ">
             {/* icon logo */}

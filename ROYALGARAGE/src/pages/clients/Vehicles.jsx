@@ -12,146 +12,160 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Sidebar } from "@/components/ui/sidebar";
-
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import axios from "axios";
 import Loader from "@/Comp/loader";
 import Alerts from "@/Comp/alerts";
 import { CarIcon } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getVehiclelist, newVehicle } from "@/Comp/store/vehicleslice";
+import { toast } from "sonner";
 
 export default function Vehicles() {
-  const [isloading, Setisloading] = useState(true);
-  const [showAlert, SetshowAlert] = useState(false);
-  const [alertMessage, Setalertmessage] = useState();
-  const [Vehicle, SetVehicle] = useState([]);
-
-  console.log(Vehicle);
-
-  const token = localStorage.getItem("token");
-  //fetch vehicles
-  const fetchvehicles = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/client/vehicle",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      SetVehicle(response.data.data);
-      console.log(response.data.data);
-
-      //Setisloading(false);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  const dispatch = useDispatch();
+  const { vehicles } = useSelector((state) => state.vehicle);
+  console.log(vehicles);
 
   const addvehicle = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
-
     const data = Object.fromEntries(formdata.entries());
-    try {
-      const add = await axios.post(
-        "http://localhost:3000/api/client/addvehicle",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      Setalertmessage(add.data.message);
-      SetshowAlert(true);
-      console.log(add.data);
-    } catch (error) {
-      console.log(error.message);
-    }
+
+    dispatch(newVehicle(data)).then((data) => {
+      if (data.payload.success) {
+        toast(data.payload.message);
+      } else {
+        toast.warning(data.payload.message);
+      }
+    });
   };
   useEffect(() => {
-    fetchvehicles();
+    dispatch(getVehiclelist());
   }, []);
-  setTimeout(() => {
-    SetshowAlert(false);
-  }, 1000);
-
   return (
     <>
       <section className="container-main">
-        <div></div>
-        {/** adding a new vehicle */}
-        <div className=" card  flex justify-center items-center">
-          <form
-            onSubmit={addvehicle}
-            className=" card  justify-between w-2xl  shadow-md rounded-2xl"
-          >
-            <div className="flex gap-3">
-              <div className="grid gap-3 w-2xs h-20">
-                <Input
-                  name="liscence_plate"
-                  placeholder="liscence_plate"
-                  required
-                />
-                <Input
-                  name="vehicle_model"
-                  placeholder="vehicle_model"
-                  required
-                />
-              </div>
-              <div className="grid gap-3 w-2xs">
-                <Input
-                  name="vehicle_brand"
-                  placeholder="vehicle_brand"
-                  required
-                />
-                <Input
-                  name="vehicle_color"
-                  placeholder="vehicle_color"
-                  required
-                />
-              </div>
-            </div>
-            <div className=" card w-full flex justify-center ">
-              <button
-                type="submit"
-                className="w-2xs h-12 text-white rounded-md   bg-primary"
-              >
-                Add Vehicle
-              </button>
-            </div>
-          </form>
-        </div>
-
         <div className="section">
           <h1 className="heading-normal font-bold text-header  flex justify-center ">
             {" "}
             My Cars
           </h1>
           <Table className="">
-            <TableCaption> Registered Vehicles.</TableCaption>
+            <TableCaption>
+              {" "}
+              <Sheet>
+                <SheetTrigger
+                  render={
+                    <button className="w-full h-full">
+                      <h1 className="text-body text-header"> New Vehicle</h1>
+                    </button>
+                  }
+                />
+                <SheetContent side="bottom">
+                  <SheetHeader>
+                    <SheetTitle className={"text-header heading-normal"}>
+                      {" "}
+                      Add Vehicle{" "}
+                    </SheetTitle>
+                    <SheetDescription></SheetDescription>
+                  </SheetHeader>
+
+                  <form
+                    onSubmit={addvehicle}
+                    className=" flex flex-col card  justify-center items-center  w-full"
+                  >
+                    <div className="flex flex-col md:flex-row gap-normal">
+                      <div className="grid gap-3 w-2xs h-20">
+                        <Input
+                          name="liscence_plate"
+                          placeholder="liscence_plate"
+                          required
+                          maxlength={7}
+                        />
+                        <Input
+                          name="vehicle_model"
+                          placeholder="vehicle_model"
+                          required
+                        />
+                      </div>
+                      <div className="grid gap-3 w-2xs">
+                        <Input
+                          name="vehicle_brand"
+                          placeholder="vehicle_brand"
+                          required
+                        />
+                        <Input
+                          name="vehicle_color"
+                          placeholder="vehicle_color"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className=" card w-full flex justify-center ">
+                      <button
+                        type="submit"
+                        className="w-2xs h-12 text-white rounded-md   bg-primary"
+                      >
+                        Add Vehicle
+                      </button>
+                    </div>
+                  </form>
+                  <SheetFooter className="flex justify-center items-center">
+                    <SheetClose
+                      render={
+                        <Button
+                          className="w-2xs flex items-center justify-center"
+                          variant="destructive"
+                        >
+                          Close
+                        </Button>
+                      }
+                    />
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+            </TableCaption>
             <TableHeader>
-              <TableRow className="heading-normal font-bold ">
-                <TableHead>Number Plate</TableHead>
-                <TableHead>Model</TableHead>
-                <TableHead>Brand</TableHead>
-                <TableHead>Color</TableHead>
+              <TableRow className="font-bold">
+                <TableHead className={"font-bold text-secondary"}>
+                  Number Plate
+                </TableHead>
+                <TableHead className={"font-bold text-primary"}>
+                  Model
+                </TableHead>
+                <TableHead className={"font-bold text-secondary"}>
+                  Brand
+                </TableHead>
+                <TableHead className={"font-bold text-primary"}>
+                  Color
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Vehicle.map((item) => (
+              {vehicles.map((item) => (
                 <TableRow key={item.vehicle_id}>
                   <TableCell className="flex items-center gap-2.5">
                     <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
                       {" "}
-                      <h1 className="text-header">{item.liscence_plate} </h1>
+                      <h1 className="text-header font-bold">
+                        {item.liscence_plate[0]}{" "}
+                      </h1>
                       <h1 className="text-header-foreground">
                         {" "}
-                        {item.liscence_plate}{" "}
+                        {item.liscence_plate[6]}{" "}
                       </h1>
                     </div>
                     {item.liscence_plate}
@@ -164,7 +178,9 @@ export default function Vehicles() {
             </TableBody>
           </Table>
         </div>
-        {showAlert && <Alerts alertMessage={alertMessage} />}
+
+        {/** adding a new vehicle */}
+        <div className=" card  flex justify-center items-center"></div>
       </section>
     </>
   );

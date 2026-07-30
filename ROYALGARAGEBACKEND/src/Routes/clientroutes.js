@@ -9,7 +9,7 @@ import {
   getVehicles,
   deleteVehicle,
 } from "../controllers/client/vehicle.js";
-import { job, getAllJobs } from "../controllers/client/jobs.js";
+import { job, getAllJobs, billing } from "../controllers/jobs.js";
 const Router = express.Router();
 
 // authenicated middleware should read authenication mildware (layer 1)
@@ -27,7 +27,7 @@ Router.get("/vehicle", authenicateMiddleware, getVehicles);
 
 // client to delete a vehicle
 
-Router.post("/deletevehicle", authenicateMiddleware, deleteVehicle);
+Router.delete("/deletevehicle", authenicateMiddleware, deleteVehicle);
 
 // client getting a job
 
@@ -36,5 +36,9 @@ Router.post("/newjob", authenicateMiddleware, job);
 // fethng jobs for a client
 
 Router.get("/jobs", authenicateMiddleware, getAllJobs);
+
+//fetcth billing
+
+Router.get("/billing", authenicateMiddleware, billing);
 
 export default Router;

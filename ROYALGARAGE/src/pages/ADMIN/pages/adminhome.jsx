@@ -1,7 +1,21 @@
+import { useEffect } from "react";
 import AdminNav from "./adminnav";
 import { TotalService } from "./Datacharts/Totalservices";
+import { useDispatch, useSelector } from "react-redux";
+import { getWorkerList } from "@/Comp/store/admin/wokerslice";
+import { getJobList } from "@/Comp/store/admin/jobsslice";
 
 export default function AdminHome() {
+  const { workerlist } = useSelector((state) => state.worker);
+  const { jobsList } = useSelector((state) => state.jobs);
+  const dispatch = useDispatch();
+  console.log(workerlist.length);
+  console.log(jobsList.length);
+
+  useEffect(() => {
+    dispatch(getWorkerList());
+    dispatch(getJobList());
+  }, []);
   return (
     <>
       <main className="  ">
@@ -18,7 +32,7 @@ export default function AdminHome() {
                   </p>
                 </div>
                 <p className="text-3xl font-bold mb-2 transition-colors duration-200">
-                  15
+                  {jobsList.length}
                 </p>
               </div>
               <div
@@ -36,7 +50,7 @@ export default function AdminHome() {
               </div>
               <div
                 data-aos="fadeup"
-                className="bg-linear-to-br from-orange-700 to-orange-500 rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl"
+                className="bg-linear-to-br from-orange-700 to-orange-500 rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl  flex flex-col items-center"
               >
                 <div className="flex items-start justify-between mb-4">
                   <p className="text-white/80 text-sm transition-colors duration-200">
@@ -44,7 +58,7 @@ export default function AdminHome() {
                   </p>
                 </div>
                 <p className="text-3xl font-bold mb-2 transition-colors duration-200">
-                  10
+                  {workerlist.length}
                 </p>
               </div>
             </div>

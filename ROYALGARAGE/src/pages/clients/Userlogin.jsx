@@ -41,7 +41,6 @@ export default function Userlogin() {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
-    console.log(data);
 
     // check if password match
     if (data.password != data.confrim_password) {

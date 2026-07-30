@@ -11,50 +11,68 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewWorker, getWorkerList } from "@/Comp/store/admin/wokerslice";
+import { toast } from "sonner";
 
 export default function WorkerView() {
-  const [workerList, SetworkerList] = useState();
-  const [isloading, Setisloading] = useState(true);
-  const token = localStorage.getItem("token");
-  //fething worker list
-  const getWokerLists = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/admin/workers",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      SetworkerList(response.data.data);
-      Setisloading(false);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  //const [workerList, SetworkerList] = useState();
+  const { workerlist } = useSelector((state) => state.worker);
+  const dispatch = useDispatch();
   useEffect(() => {
-    getWokerLists();
+    dispatch(getWorkerList());
   }, []);
-  console.log(workerList);
-  if (isloading) {
-    return <h1>loading</h1>;
-  }
+  console.log(workerlist);
+
+  const addWorker = async (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+    const data = Object.fromEntries(formdata.entries());
+    console.log(data);
+
+    dispatch(addNewWorker(data)).then((data) => {
+      if (data?.payload?.success) {
+        toast(data?.payload?.message, { position: "top-left" });
+      } else {
+        toast.error(data?.payload?.message, { position: "top-left" });
+      }
+    });
+  };
+
   return (
-    <section className="container-main">
+    <section className="container-main  mt-3.5">
+      {/**card info like total employess employess with worke */}
+      <div className="  w-full  flex items-center card   ">
+        <div className="w-30 shadow-md h-20 flex flex-col items-center justify-center bg-accent rounded-md ">
+          <h1>No of Workers</h1>
+          <h1> 5</h1>
+        </div>
+      </div>
+
       <div className="section flex gap-normal ">
-        {/**admin to add a new worker  */}
-        <div className="bg-card w-46  rounded-xl  shadow-md  card ">
-          <div className=" flex items-center justify-center h-full   heading-bold ">
+        <Table className="">
+          <TableCaption>
+            {" "}
             <Sheet>
               <SheetTrigger
                 render={
-                  <button className="bg-primary w-full   rounded-xl">
+                  <h1 className="text-primary cursor-pointer">
                     {" "}
-                    <h1 className="text-body text-card"> New emmployee</h1>
-                  </button>
+                    New emmployee
+                  </h1>
                 }
               />
               <SheetContent>
@@ -66,24 +84,21 @@ export default function WorkerView() {
                   <SheetDescription></SheetDescription>
                 </SheetHeader>
 
-                <form>
-                  <div className=" card flex  flex-col justify-center border  h-full">
+                <form onSubmit={addWorker}>
+                  <div className=" card flex  flex-col justify-center h-full">
                     <div className="grid gap-3">
                       <label> Email </label>
                       <Input name="email" required type={"email"} />
                     </div>
                     <div className="grid gap-3">
-                      <label> password </label>
-                      <Input name="password" required />
+                      <label> Role </label>
+                      <Input name="postion" required />
                     </div>
                   </div>
                   <div className="card flex justify-center">
-                    <button
-                      type="submit"
-                      className=" bg-primary w-full rounded-2xl h-14"
-                    >
-                      Add
-                    </button>
+                    <Button type="submit" className={"w-2xs"}>
+                      add{" "}
+                    </Button>
                   </div>
                 </form>
                 <SheetFooter>
@@ -92,25 +107,61 @@ export default function WorkerView() {
                   />
                 </SheetFooter>
               </SheetContent>
-            </Sheet>
-          </div>
-        </div>
-        {workerList.map((item) => {
-          return (
-            <div className="  card  bg-card rounded-xl w-80 h-96  shadow-2xl">
-              <div className="flex w-full h-1/2 justify-center items-center ">
-                <div className="rounded-full w-30 h-30 border flex justify-center items-center overflow-hidden ">
-                  name
-                </div>
-              </div>
-              {/**deatls section */}
-              <div>
-                <h1>name</h1>
-                <h1>postion</h1>
-              </div>
-            </div>
-          );
-        })}
+            </Sheet>{" "}
+          </TableCaption>
+          <TableHeader>
+            <TableRow className="font-bold">
+              <TableHead className={"font-bold text-secondary"}>Name</TableHead>
+              <TableHead className={"font-bold text-primary"}>Role</TableHead>
+              <TableHead className={"font-bold text-secondary"}>
+                active job{" "}
+              </TableHead>
+              <TableHead className={"font-bold text-primary"}>
+                Assign job{" "}
+              </TableHead>
+              <TableHead className={"font-bold text-primary"}></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {workerlist.map((employee) => {
+              return (
+                <TableRow>
+                  <TableCell className={""}>
+                    <div className="flex  items-center gap-normal">
+                      <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
+                        {" "}
+                        <h1 className="text-accent font-bold">
+                          {employee.first_name == null
+                            ? null
+                            : employee.first_name[0]?.toUpperCase()}
+                        </h1>
+                        <h1 className="text-primary font-bold">
+                          {employee.last_name == null
+                            ? null
+                            : employee.last_name[0].toUpperCase()}
+                        </h1>
+                      </div>
+                      {employee.first_name + " " + employee.last_name}
+                    </div>
+                  </TableCell>
+                  <TableCell>{employee.postion}</TableCell>
+
+                  <TableCell>active job </TableCell>
+                  <TableCell>
+                    <Button> Assign</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button size="lg" className={"bg-accent"}>
+                      {" "}
+                      Send message
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            <TableRow></TableRow>
+          </TableBody>
+        </Table>
       </div>
     </section>
   );

@@ -16,9 +16,6 @@ export default function Authenicated({ children }) {
     (state) => state.auth,
   );
 
-  console.log(isLoading);
-  console.log(isAuthenicated);
-  console.log(Role);
   const location = useLocation();
   const path = location.pathname;
   if (isLoading) {
@@ -59,8 +56,8 @@ export default function Authenicated({ children }) {
     return <Navigate to="/client/dashboard" />;
   }
 
-  if (Role === "worker" && !path.startsWith("/wk-hm")) {
-    return <Navigate to="/nt" />;
+  if (Role === "worker" && !path.startsWith("/w001")) {
+    return <Navigate to="notauthorized" />;
   }
   return <>{children}</>;
 }

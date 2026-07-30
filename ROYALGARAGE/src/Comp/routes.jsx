@@ -18,18 +18,19 @@ import ProfileEdit from "../pages/clients/ProfileEdit";
 import Cart from "../pages/clients/cart";
 import Admincommon from "../pages/ADMIN/pages/admintemplate";
 import AdminHome from "../pages/ADMIN/pages/adminhome";
-import Employees from "../pages/ADMIN/pages/Employess";
 import WkLogin from "../pages/WK/WkLogin";
-import WKhome from "../pages/WK/Wkhome";
+
 import NotAuth from "./notauth";
 import Authenicated from "./authenication/auth";
-import { Ad } from "lucide-react";
+
 import AdminViewProducts from "@/pages/ADMIN/pages/Adminproducts";
 import AdminViewServices from "@/pages/ADMIN/pages/Adminservices";
 import Shop from "@/pages/clients/shop";
 import WorkerView from "@/pages/ADMIN/pages/managment/workerview";
-import jobList from "./../pages/ADMIN/pages/managment/joblist";
-import JobList from "./../pages/ADMIN/pages/managment/joblist";
+import jobList from "../pages/ADMIN/pages/joblist";
+import JobList from "../pages/ADMIN/pages/joblist";
+import WorkerTemplate from "@/pages/WK";
+import WorkerDashborad from "@/pages/WK/dashbaord";
 
 export default function Routess() {
   return (
@@ -47,7 +48,7 @@ export default function Routess() {
         <Route path="*" element={<Pages404 />}></Route>
         <Route path="/adminlogin" element={<Admin />} />
         <Route path="/wk" element={<WkLogin />}></Route>
-        <Route path="/nt" element={<NotAuth />}></Route>
+        <Route path="/notauthorized" element={<NotAuth />}></Route>
 
         {/* client  routes  */}
         <Route
@@ -81,23 +82,30 @@ export default function Routess() {
           }
         >
           <Route path="home" element={<AdminHome />} />
-          <Route path="employee" element={<Employees />} />
-          <Route path="products" element={<AdminViewProducts />} />
-          <Route path="services" element={<AdminViewServices />} />
-          <Route path="workers" element={<WorkerView />} />
-          <Route path="jobs" element={<JobList />} />
+          <Route path="managment">
+            <Route path="workers" element={<WorkerView />} />
+          </Route>
+          <Route path="inventory">
+            <Route path="products" element={<AdminViewProducts />} />
+            <Route path="services" element={<AdminViewServices />} />
+          </Route>
+          <Route path="tasks">
+            <Route path="jobs" element={<JobList />} />
+          </Route>
         </Route>
         {/* worker routes  */}
 
         <Route
-          path="/wk-hm"
+          path="/w001"
           element={
             <Authenicated>
               {" "}
-              <WKhome />
+              <WorkerTemplate />
             </Authenicated>
           }
-        ></Route>
+        >
+          <Route path="dashboard" element={<WorkerDashborad />} />
+        </Route>
       </Routes>
     </>
   );

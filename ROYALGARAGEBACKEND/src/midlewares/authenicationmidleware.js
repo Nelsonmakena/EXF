@@ -2,8 +2,6 @@ import jwt from "jsonwebtoken";
 import { ENV } from "../../env.js";
 export const authenicateMiddleware = (req, res, next) => {
   const token = req.cookies.token;
-  console.log(`token is ${token}`);
-
   if (!token) {
     return res.status(401).json({ success: false, message: "acces denied" });
   }
@@ -11,8 +9,6 @@ export const authenicateMiddleware = (req, res, next) => {
   // decoding the token info
   try {
     const decodedToken = jwt.verify(token, ENV.JWT_SECERECT_KEY);
-    console.log(decodedToken);
-
     req.userinfo = decodedToken;
 
     next();
@@ -52,6 +48,6 @@ export const workerchecker = (req, res, next) => {
   }
   return res.json({
     success: false,
-    message: "acces denied you dont have the privillages",
+    message: "access denied you dont have the privillages",
   });
 };

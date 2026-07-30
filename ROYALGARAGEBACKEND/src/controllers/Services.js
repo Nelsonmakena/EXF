@@ -4,7 +4,7 @@ import { pool } from "../../Db.js";
 export const getallservices = async (req, res) => {
   try {
     const services = await pool.query("SELECT * FROM services ");
-    res.status(201).json(services.rows);
+    res.status(201).json({ succes: true, data: services.rows });
   } catch (error) {
     res.status(400).json(error.message);
     console.log(error.message);

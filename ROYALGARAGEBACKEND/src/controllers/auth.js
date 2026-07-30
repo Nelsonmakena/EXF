@@ -6,7 +6,7 @@ import { ENV } from "../../env.js";
 
 const salt = bcrypt.genSaltSync(10);
 
-/// adding a new user
+/// adding a new user client
 
 export const addUser = async (req, res) => {
   const {
@@ -54,7 +54,7 @@ export const addUser = async (req, res) => {
   }
 };
 
-// login existing user
+// login existing user (client)
 
 export const getUserinfo = async (req, res) => {
   const { email, password } = req.body;
@@ -82,7 +82,6 @@ export const getUserinfo = async (req, res) => {
           client_id: user.rows[0].client_id,
           first_name: user.rows[0].first_name,
           last_name: user.rows[0].last_name,
-
           role: "client",
         },
         ENV.JWT_SECERECT_KEY,
@@ -93,9 +92,11 @@ export const getUserinfo = async (req, res) => {
       res.status(200).json({
         success: true,
         message: "logged in succefull",
-        first_name: user.rows[0].first_name,
-        last_name: user.rows[0].last_name,
-        role: "client",
+        user: {
+          first_name: user.rows[0].first_name,
+          last_name: user.rows[0].last_name,
+          role: "client",
+        },
       });
     } else {
       res.json({ success: false, message: "wrong info " });
@@ -109,6 +110,7 @@ export const getUserinfo = async (req, res) => {
 
 export const worker = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
 
   if (Object.keys(req.body).length == 0) {
     console.log(req.body);
@@ -137,6 +139,11 @@ export const worker = async (req, res) => {
       res.status(200).json({
         success: true,
         message: "logged in succefull",
+        user: {
+          first_name: existingWorker.rows[0].first_name,
+          last_name: existingWorker.rows[0].last_name,
+          role: "worker",
+        },
       });
     } else {
       res.json({ success: false, message: "email or pasword is incorect" });

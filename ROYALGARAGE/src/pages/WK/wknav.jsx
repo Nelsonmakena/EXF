@@ -58,7 +58,7 @@ export default function Wknav() {
               </h1>
             </div>
             <button onClick={() => SetSmallMe(true)} className="flex ">
-              <img src={menu} alt="logo" className="h-7 w-10" />
+              {/* <img src={menu} alt="logo" className="h-7 w-10" /> */}
             </button>
           </div>
         </nav>

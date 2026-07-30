@@ -12,14 +12,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ScrollArea } from "@base-ui/react/scroll-area";
 import buttonanimation from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
 import ProductServiceList from "./ProductsServiceList";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getServiceList } from "@/Comp/store/serviceslice";
 
 export default function ClientServices() {
-  const [jobs, Setjobs] = useState([]);
   const [NewServiceTab, SetNewServiceTab] = useState(false);
   const [ServicesList, SetServicesList] = useState([
     {
@@ -108,20 +119,11 @@ export default function ClientServices() {
     },
   ]);
   const token = localStorage.getItem("token");
-  //fectch jobs
 
-  const alljobs = async () => {
-    try {
-      const job = await axios.get("http://localhost:3000/api/client/jobs", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      Setjobs(job.data.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  const { ongoingServices } = useSelector((state) => state.services);
+  const dispatch = useDispatch();
+  console.log(ongoingServices);
+
   {
     /**locks scroll to the area of the new tab  */
   }
@@ -137,9 +139,9 @@ export default function ClientServices() {
     };
   }, [NewServiceTab]);
   useEffect(() => {
-    alljobs();
+    dispatch(getServiceList());
   }, []);
-  console.log(jobs);
+
   return (
     <>
       <section className="container-main ">
@@ -168,11 +170,11 @@ export default function ClientServices() {
 
             {/**service card  progress for ongoing services  */}
             <div className="flex flex-col gap-normal  justify-center items-center">
-              {jobs.map((item) => {
+              {ongoingServices.map((item) => {
                 return (
                   <div
                     key={item.job_id}
-                    className=" grid   heading-normal card   bg-header  w-full md:h-40   rounded-2xl shadow-2xl md:w-4xl  gap-normal md:grid-cols-3 "
+                    className="w-full  md:w-2xl card  md:flex rounded-2xl justify-between bg-primary shadow-md"
                   >
                     {/**col-1 */}
                     <div className="flex  md:flex-col justify-between card">

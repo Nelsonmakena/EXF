@@ -19,7 +19,7 @@ export const profile = async (req, res) => {
   }
 };
 
-// update profile by default the admin only registers email and pasword
+// update profile by default the admin only registers email and role
 
 export const updateProfile = async (req, res) => {
   const { employee_id } = req.userinfo;
@@ -29,22 +29,14 @@ export const updateProfile = async (req, res) => {
   if (!req.body) {
     return res.json({ success: false, message: "all filled are required" });
   }
-  const { first_name, second_name, lastname, phone_number } = req.body;
+  const { first_name, second_name, last_name, phonenumber, address } = req.body;
 
   const hashpswd = bcrypt.hashSync(password, salt);
 
   try {
     const updatedprofile = await pool.query(
-      "INSERT INTO client (first_name,second_name,last_name, email, phonenumber,pswdkey ,address ) values($1,$2,$3,$4,$5,$6,$7) RETURNING *",
-      [
-        first_name,
-        second_name,
-        last_name,
-        email,
-        phonenumber,
-        hashpswd,
-        address,
-      ],
+      "INSERT INTO employee (first_name,second_name,last_name, phonenumber,address ) values($1,$2,$3,$4,$5) RETURNING *",
+      [first_name, second_name, last_name, phonenumber, address],
     );
     res
       .status(200)
