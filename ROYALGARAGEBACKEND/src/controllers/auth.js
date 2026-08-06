@@ -6,6 +6,14 @@ import { ENV } from "../../env.js";
 
 const salt = bcrypt.genSaltSync(10);
 
+function formatName(name) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 /// adding a new user client
 
 export const addUser = async (req, res) => {
@@ -18,6 +26,7 @@ export const addUser = async (req, res) => {
     password,
     address,
   } = req.body;
+
   if (!req.body) {
     return console.log("all fields are required");
   }

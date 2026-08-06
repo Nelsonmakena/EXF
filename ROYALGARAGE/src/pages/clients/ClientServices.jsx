@@ -1,17 +1,4 @@
 import { useState, useEffect } from "react";
-import ClientNav from "./ClientNav";
-import dodge from "/src/assets/images/dodge.jpg";
-import { XIcon } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Sheet,
   SheetClose,
@@ -22,238 +9,133 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ScrollArea } from "@base-ui/react/scroll-area";
-import buttonanimation from "/src/assets/addbuttondata.json";
-import Lottie from "lottie-react";
-import ProductServiceList from "./ProductsServiceList";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar1 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getServiceList } from "@/Comp/store/serviceslice";
+import { getServices } from "@/Comp/store/serviceslice";
+import { getVehiclelist } from "@/Comp/store/vehicleslice";
 
 export default function ClientServices() {
-  const [NewServiceTab, SetNewServiceTab] = useState(false);
-  const [ServicesList, SetServicesList] = useState([
-    {
-      ServiceName: "Clutch Replacement",
-      VehicleRegistrationNumber: "KAY233",
-    },
-    {
-      ServiceName: "Wheel Alignment",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      ServiceName: "Air Filter Replacement",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      ServiceName: "Wheel Alignment",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      ServiceName: "Air Filter Replacement",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      ServiceName: "Wheel Alignment",
-      VehicleRegistrationNumber: "KAZ122",
-    },
-    {
-      ServiceName: "Oil Change",
-      VehicleRegistrationNumber: "KAZ122",
-    },
-    {
-      ServiceName: "Tire Rotation",
-      VehicleRegistrationNumber: "KAZ122",
-    },
-    {
-      ServiceName: "Air Filter Replacement",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Wheel Alignment",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Windshield Replacement",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Transmission Repair",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Wheel Alignment",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Windshield Replacement",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Transmission Repair",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      ServiceName: "Battery Replacement",
-      VehicleRegistrationNumber: "KAY233",
-    },
-    {
-      ServiceName: "Brake Inspection",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      ServiceName: "Battery Replacement",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      ServiceName: "Fuel System Repair",
-      VehicleRegistrationNumber: "KAY233",
-    },
-    {
-      ServiceName: "Fuel System Repair",
-      VehicleRegistrationNumber: "KDA227Z",
-    },
-    {
-      ServiceName: "Air Conditioning Repair",
-      VehicleRegistrationNumber: "KDA227Z",
-    },
-  ]);
-  const token = localStorage.getItem("token");
-
-  const { ongoingServices } = useSelector((state) => state.services);
+  const { vehicles } = useSelector((state) => state.vehicle);
+  const { availableServiceList } = useSelector((state) => state.services);
   const dispatch = useDispatch();
-  console.log(ongoingServices);
-
-  {
-    /**locks scroll to the area of the new tab  */
-  }
   useEffect(() => {
-    if (NewServiceTab) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [NewServiceTab]);
-  useEffect(() => {
-    dispatch(getServiceList());
+    dispatch(getServices());
+    dispatch(getVehiclelist());
   }, []);
 
   return (
     <>
-      <section className="container-main ">
-        <div className="section">
-          {/* get new service */}
-          <div className="bg-card w-46 card  rounded-xl shadow-md">
-            <div className=" card ">
-              <Lottie animationData={buttonanimation} />
-            </div>
-            <button
-              onClick={() => {
-                SetNewServiceTab(!NewServiceTab);
-                console.log(NewServiceTab);
-              }}
-              className="w-full h-12 text-white rounded-md   bg-primary"
-            >
-              {" "}
-              New Service
-            </button>
-          </div>
-          <div className=" section   ">
-            <h1 className="  heading-normal  text-green-700 ">
-              {" "}
-              Ongoing <span className="text-blue-500"> Services </span>{" "}
-            </h1>
-
-            {/**service card  progress for ongoing services  */}
-            <div className="flex flex-col gap-normal  justify-center items-center">
-              {ongoingServices.map((item) => {
-                return (
-                  <div
-                    key={item.job_id}
-                    className="w-full  md:w-2xl card  md:flex rounded-2xl justify-between bg-primary shadow-md"
-                  >
-                    {/**col-1 */}
-                    <div className="flex  md:flex-col justify-between card">
-                      <h1 className=" text-primary-foreground">
-                        Service name{" "}
-                      </h1>
-                      <h1>{item.service_name}</h1>
-                    </div>
-
-                    {/**col-2 */}
-                    <div className="flex md:flex-col justify-between card">
-                      <h1 className="text-primary-foreground">Amount </h1>
-                      <h1> 10,000/= </h1>
-                    </div>
-                    {/**col-3 */}
-                    <div className="flex md:flex-col justify-between card">
-                      <h1 className="text-primary-foreground">Vehicle </h1>
-
-                      <div className="flex  items-center gap-1.5">
-                        <img
-                          src={dodge}
-                          alt="Avatar"
-                          class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
-                        />
-
-                        <h1> {item.liscence_plate}</h1>
-                      </div>
-                    </div>
+      <section className=" absolute top-24 z-50 bg-none backdrop-blur-2xl w-full max-h-screen  overflow-hidden">
+        <ScrollArea className={"h-screen"}>
+          <div className="container-main grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5  ">
+            {availableServiceList.length == 0 ? (
+              <div>
+                <h1>loading</h1>
+              </div>
+            ) : (
+              availableServiceList.map((item) => (
+                <div
+                  key={item.service_id}
+                  className="border-border  rounded-xl  flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
+                >
+                  {/* Product Image */}
+                  <div className="flex items-center justify-center h-30 mb-2 ">
+                    <img
+                      src={`/assets/images/${item.service_image}.jpg`}
+                      alt={item.name}
+                      className="max-h-full w-full rounded-t-xl  "
+                    />
                   </div>
-                );
-              })}
-            </div>
+
+                  {/* Product Name */}
+                  <p
+                    onClick={() => {
+                      Setselectedproduct(item);
+                      Setisitemviewopen(!isitemviewopen);
+                    }}
+                    className="text-sm text-neutral-500 mb-2 px-2 cursor-pointer"
+                  >
+                    {item.service_name}
+                  </p>
+
+                  {/* Price */}
+                  <div className="flex items-center gap-2 px-2">
+                    <span className="text-sm font-semibold text-neutral-800">
+                      ksh {Number(item.service_price)}
+                    </span>
+                  </div>
+
+                  {/* getting the service logic*/}
+                  <div className=" w-3/4 m-2.5 flex items-center justify-center  h-12 ">
+                    <Sheet>
+                      <SheetTrigger
+                        render={
+                          <button className="w-full h-full  text-white rounded-md   bg-blue-400 shadow-md ">
+                            {" "}
+                            Book Now
+                          </button>
+                        }
+                      />
+                      <SheetContent side="right">
+                        <SheetHeader>
+                          <SheetTitle className={"text-header heading-normal"}>
+                            {item.service_name}
+                          </SheetTitle>
+                          <SheetDescription></SheetDescription>
+                        </SheetHeader>
+
+                        <form>
+                          <div className="flex flex-col w-full justify-center items-center   gap-normal">
+                            <Select className=" border w-2xs shadow-2xl">
+                              <SelectTrigger className="w-2xs shadow-2xl">
+                                <SelectValue placeholder="Select vehicle" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {vehicles.map((item) => (
+                                  <SelectItem
+                                    key={item.liscence_plate}
+                                    value={item.liscence_plate}
+                                  >
+                                    {item.liscence_plate} {item.vehicle_brand}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+
+                            <div className="flex w-full justify-between">
+                              {" "}
+                              <h1> pick day of service </h1> <Calendar1 />{" "}
+                            </div>
+
+                            <Input type="date" />
+                          </div>
+                        </form>
+                        <SheetFooter>
+                          <SheetClose
+                            render={<Button variant="outline">Close</Button>}
+                          />
+                        </SheetFooter>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        </div>
+        </ScrollArea>
       </section>
-      {/**recent services table list */}
-      <section className="container-main">
-        <div className="section">
-          <h1 className=" heading-normal   text-blue-500 ">
-            {" "}
-            Recent <span className="text-green-700"> Services </span>{" "}
-          </h1>
-          <Table>
-            <TableCaption> Recent Services</TableCaption>
-            <TableHeader>
-              <TableRow className="text-header font-bold">
-                <TableHead>Servie Name </TableHead>
-                <TableHead> Car</TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {ServicesList.map((item) => (
-                <TableRow>
-                  <TableCell className="font-medium">
-                    {item.ServiceName}
-                  </TableCell>
-                  <TableCell>{item.VehicleRegistrationNumber}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </section>
-      {/** floating serive list */}
-
-      {NewServiceTab && (
-        <div>
-          <div className=" w-full absolute top-15 z-50 p-3.5 flex justify-end ">
-            <XIcon
-              onClick={() => {
-                SetNewServiceTab(!NewServiceTab);
-              }}
-            />
-          </div>
-
-          <ProductServiceList />
-        </div>
-      )}
     </>
   );
 }

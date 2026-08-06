@@ -31,6 +31,7 @@ import jobList from "../pages/ADMIN/pages/joblist";
 import JobList from "../pages/ADMIN/pages/joblist";
 import WorkerTemplate from "@/pages/WK";
 import WorkerDashborad from "@/pages/WK/dashbaord";
+import RolesView from "@/pages/ADMIN/pages/managment/roles";
 
 export default function Routess() {
   return (
@@ -84,6 +85,7 @@ export default function Routess() {
           <Route path="home" element={<AdminHome />} />
           <Route path="managment">
             <Route path="workers" element={<WorkerView />} />
+            <Route path="roles" element={<RolesView />} />
           </Route>
           <Route path="inventory">
             <Route path="products" element={<AdminViewProducts />} />

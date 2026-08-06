@@ -29,10 +29,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import axios from "axios";
 import Loader from "@/Comp/loader";
 import Alerts from "@/Comp/alerts";
-import { CarIcon } from "lucide-react";
+import { CarIcon, Delete } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVehiclelist, newVehicle } from "@/Comp/store/vehicleslice";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Vehicles() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ export default function Vehicles() {
   useEffect(() => {
     dispatch(getVehiclelist());
   }, []);
+  console.log(vehicles.length);
   return (
     <>
       <section className="container-main">
@@ -152,6 +154,7 @@ export default function Vehicles() {
                 <TableHead className={"font-bold text-primary"}>
                   Color
                 </TableHead>
+                <TableHead className={"font-bold text-primary"}></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -161,7 +164,11 @@ export default function Vehicles() {
                     <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
                       {" "}
                       <h1 className="text-header font-bold">
-                        {item.liscence_plate[0]}{" "}
+                        {vehicles.length == 0 ? (
+                          <Spinner></Spinner>
+                        ) : (
+                          item.liscence_plate[0]
+                        )}{" "}
                       </h1>
                       <h1 className="text-header-foreground">
                         {" "}
@@ -173,6 +180,9 @@ export default function Vehicles() {
                   <TableCell>{item.vehicle_model}</TableCell>
                   <TableCell>{item.vehicle_brand}</TableCell>
                   <TableCell>{item.vehicle_color}</TableCell>
+                  <TableCell>
+                    <Delete />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

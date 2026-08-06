@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
   vehicles: [],
   loading: false,
+  totalVehicle: null,
 };
 
 //fething vehicles
@@ -28,6 +29,35 @@ export const newVehicle = createAsyncThunk("/addvehicle", async (data) => {
   return add.data;
 });
 
+///deleteing a vehicle
+
+export const removeVehicle = createAsyncThunk(
+  "/removevehicle",
+  async (data) => {
+    const response = await axios.delete(
+      "http://localhost:3000/api/client/deletevehicle",
+      data,
+      { withCredentials: true },
+    );
+    console.log(response.data);
+
+    return response.data;
+  },
+);
+
+//number of vehicles
+
+export const total_No_Of_Vehicles = createAsyncThunk("/total", async () => {
+  const response = await axios.get(
+    "http://localhost:3000/api/client/dashboard",
+    {
+      withCredentials: true,
+    },
+  );
+
+  return response.data;
+});
+
 export const vehicleSlice = createSlice({
   name: "vehicles",
   initialState,
@@ -46,7 +76,18 @@ export const vehicleSlice = createSlice({
       .addCase(getVehiclelist.rejected, (state, action) => {
         state.loading = false;
         state.vehicles = {};
-      });
+      })
+      .addCase(newVehicle.fulfilled, (state, action) => {
+        console.log(action.payload.data);
+
+        console.log(state.vehicles);
+        state.vehicles.push(action.payload.data);
+        console.log(state.vehicles);
+      })
+      .addCase(total_No_Of_Vehicles.fulfilled, (state, action) => {
+        state.totalVehicle = action.payload.data.vehicles_number;
+      })
+      .addCase(removeVehicle.fulfilled, (state, action) => {});
   },
 });
 export const { SetVehicle } = vehicleSlice.actions;

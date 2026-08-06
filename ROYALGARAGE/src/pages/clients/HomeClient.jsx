@@ -4,14 +4,24 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import Skeletonloader from "../../Comp/loader";
 import { useDispatch, useSelector } from "react-redux";
-import { getVehiclelist } from "@/Comp/store/vehicleslice";
+import { total_No_Of_Vehicles } from "@/Comp/store/vehicleslice";
+import Lottie from "lottie-react";
+import buttonanimation from "/src/assets/addbuttondata.json";
+import { Spinner } from "@/components/ui/spinner";
+import { useNavigate } from "react-router";
+import { getServiceList } from "@/Comp/store/serviceslice";
 
 export default function HomeClient() {
-  const { vehicles } = useSelector((state) => state.vehicle);
+  const { totalVehicle } = useSelector((state) => state.vehicle);
+  const { ongoingServices } = useSelector((state) => state.services);
+  console.log(totalVehicle);
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
-  console.log(vehicles);
+
   useEffect(() => {
-    dispatch(getVehiclelist());
+    dispatch(total_No_Of_Vehicles());
+    dispatch(getServiceList());
   }, []);
 
   return (
@@ -49,8 +59,80 @@ export default function HomeClient() {
               </p>
             </div>
             <p className="text-3xl font-bold mb-2 transition-colors duration-200  flex items-center justify-center">
-              {vehicles.length}
+              {totalVehicle}
             </p>
+          </div>
+        </div>
+      </section>
+      <section className="container-main ">
+        <div className="section">
+          {/* get new service */}
+          <div className="bg-card w-46 card  rounded-xl shadow-md">
+            <div className=" card ">
+              <Lottie animationData={buttonanimation} />
+            </div>
+            <button
+              onClick={() => {
+                navigate("/client/Userservice");
+              }}
+              className="w-full h-12 text-white rounded-md   bg-primary"
+            >
+              {" "}
+              New Service
+            </button>
+          </div>
+          <div className=" section   ">
+            <h1 className="  text-xl text-green-700 ">
+              {" "}
+              Ongoing <span className="text-blue-500"> Services </span>{" "}
+            </h1>
+
+            {/**service card  progress for ongoing services  */}
+            <div className="flex flex-col gap-normal  justify-center items-center">
+              {ongoingServices.length == 0 ? (
+                <div className="w-full h-20 flex items-center justify-center">
+                  {" "}
+                  <Spinner> </Spinner>
+                </div>
+              ) : (
+                ongoingServices.map((item) => {
+                  return (
+                    <div
+                      key={item.job_id}
+                      className="w-full  md:w-2xl card  md:flex rounded-2xl justify-between bg-primary shadow-md"
+                    >
+                      {/**col-1 */}
+                      <div className="flex  md:flex-col justify-between card">
+                        <h1 className=" text-primary-foreground">
+                          Service name{" "}
+                        </h1>
+                        <h1>{item.service_name}</h1>
+                      </div>
+
+                      {/**col-2 */}
+                      <div className="flex md:flex-col justify-between card">
+                        <h1 className="text-primary-foreground">Amount </h1>
+                        <h1> 10,000/= </h1>
+                      </div>
+                      {/**col-3 */}
+                      <div className="flex md:flex-col justify-between card">
+                        <h1 className="text-primary-foreground">Vehicle </h1>
+
+                        <div className="flex  items-center gap-1.5">
+                          <img
+                            src=""
+                            alt="Avatar"
+                            class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
+                          />
+
+                          <h1> {item.liscence_plate}</h1>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       </section>

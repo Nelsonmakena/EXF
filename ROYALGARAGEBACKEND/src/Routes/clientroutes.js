@@ -10,9 +10,13 @@ import {
   deleteVehicle,
 } from "../controllers/client/vehicle.js";
 import { job, getAllJobs, billing } from "../controllers/jobs.js";
+import { TotalNumbersClient } from "../controllers/dashboarb.js";
 const Router = express.Router();
 
 // authenicated middleware should read authenication mildware (layer 1)
+
+///dashborad
+Router.get("/dashboard", authenicateMiddleware, TotalNumbersClient);
 
 // profile info getter after clients logs in
 Router.get("/profileinfo", authenicateMiddleware, profiledata);

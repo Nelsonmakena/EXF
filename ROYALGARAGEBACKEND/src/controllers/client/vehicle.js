@@ -27,12 +27,14 @@ export const addVehicle = async (req, res) => {
 
   try {
     const newVehicle = await pool.query(
-      "INSERT INTO vehicle (vehicle_model, vehicle_brand, vehicle_color, liscence_plate,client_id ) VALUES($1,$2,$3,$4,$5)",
+      "INSERT INTO vehicle (vehicle_model, vehicle_brand, vehicle_color, liscence_plate,client_id ) VALUES($1,$2,$3,$4,$5) RETURNING * ",
       [vehicle_model, vehicle_brand, vehicle_color, liscence_plate, client_id],
     );
-    res
-      .status(200)
-      .json({ success: true, message: "vehicle added succesefull" });
+    res.status(200).json({
+      success: true,
+      message: "vehicle added succesefull",
+      data: newVehicle.rows[0],
+    });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -65,15 +67,37 @@ export const getVehicles = async (req, res) => {
 export const deleteVehicle = async (req, res) => {
   const { client_id } = req.userinfo;
   const { vehicle_id } = req.body;
+  if (!client_id) {
+    return res.json({ success: false, message: "acces denied" });
+  }
 
   try {
-    const deletecVehicle = await pool.query(
-      "DELETE  FROM vehicle WHERE vehicle_d = $1",
+    const checkVehicle = await pool.query(
+      "SELECT * FROM  vehicle WHERE vehicle_id=$1",
       [vehicle_id],
     );
+    if (checkVehicle.rows.length == 0) {
+      return res.json({ success: false, message: "vehicle not found" });
+    }
+    //firts check you canot remove a vehicle with active job from the system
+
+    const delet = await pool.query(
+      "DELETE FROM vehicle WHERE vehicle_id = $1 AND client_id = $2 AND NOT EXISTS (SELECT 1 FROM jobs WHERE  jobs.vehicle_id = vehicle.vehicle_id AND jobs.job_current_status <> 'completed' )  RETURNING * ",
+      [vehicle_id, client_id],
+    );
+    if (delet.rows.length == 0) {
+      console.log(delet);
+
+      return res.json({
+        success: false,
+        message: "vehicle cannot be removed",
+        delet,
+      });
+    }
     res.status(200).json({
       success: true,
-      message: "vehicle removed succecssfully  ",
+      message: "vehicle removed succecssfully",
+      data: delet.data.rows,
     });
   } catch (error) {
     console.log(error.message);

@@ -156,6 +156,8 @@ const authSlice = createSlice({
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = action.payload.user;
+          console.log(state.userinfo);
+
           state.Role = action.payload.user.role;
           state.isAuthenicated = true;
         } else {
@@ -222,6 +224,7 @@ const authSlice = createSlice({
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = action.payload.user;
+          console.log(state.userinfo);
           state.Role = action.payload.user.role;
           state.isAuthenicated = true;
         } else {

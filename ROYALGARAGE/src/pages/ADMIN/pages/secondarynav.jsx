@@ -51,6 +51,9 @@ export default function SecondaryNav({ hidemenu, Sethidemenu }) {
             <li className="card">
               <Link to=""> Clients </Link>
             </li>
+            <li className="card">
+              <Link to="managment/roles"> Roles </Link>
+            </li>
           </ul>
         </div>
         {/*inventory  items  */}

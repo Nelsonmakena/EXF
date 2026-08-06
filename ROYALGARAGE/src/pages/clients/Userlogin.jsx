@@ -11,9 +11,14 @@ import { useDispatch } from "react-redux";
 import { loginUser, registerUser } from "@/Comp/store/authslice";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import {
+  getVehiclelist,
+  total_No_Of_Vehicles,
+} from "@/Comp/store/vehicleslice";
 
 export default function Userlogin() {
   const [state, setState] = useState("login");
+  const { totalVehicle } = useSelector((state) => state.vehicle);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -172,8 +177,8 @@ export default function Userlogin() {
                 <div className="flex  mt-6 items-center w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
                   <input
                     type="text"
-                    name="adrress"
-                    placeholder="adress  "
+                    name="address"
+                    placeholder="adress"
                     className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full"
                     required
                   />

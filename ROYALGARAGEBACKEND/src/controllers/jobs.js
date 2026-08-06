@@ -7,21 +7,41 @@ export const job = async (req, res) => {
   if (!client_id) {
     console.log("access denied");
   }
-  const { vehicle_id, service_id, service_date } = req.body;
-  // checking if the job alredy exists  // needs fixing since once job is complete that same vivhle cannot do the same
-  // job so needs checking in the jobcompletion status to allow same vehicle to have same service fixed added a service date
-  const checkexistingJob = await pool.query(
-    "SELECT vehicle_id,service_id,dayofservice FROM jobs WHERE vehicle_id =$1 AND service_id =$2 AND dayofservice= $3 ",
-    [vehicle_id, service_id, service_date],
-  );
-  if (checkexistingJob.rows.length !== 0) {
-    return res.json({ success: false, message: "job alredy created" });
-  }
+  const { vehicle_id, appointemnt_day, service_id } = req.body;
+  let job_id;
 
   try {
-    const newJob = await pool.query(
-      "INSERT INTO jobs(vehicle_id,service_id,dayofservice) VALUES ($1,$2,$3) RETURNING * ",
-      [vehicle_id, service_id, service_date],
+    //check if the job exist job is tied to vehicle_id ie one vehicle can have mutliple services
+    const checkJob = await pool.query(
+      "SELECT job_id FROM jobs WHERE vehicle_id = $1 AND job_current_status <> $2",
+      [vehicle_id, "completed"],
+    );
+
+    if (checkJob.rows.length > 0) {
+      job_id = checkJob.rows[0].job_id;
+    } else {
+      const newJob = await pool.query(
+        "INSERT INTO jobs(vehicle_id,appointment_day ) VALUES ($1,$2) RETURNING job_id ",
+        [vehicle_id, appointemnt_day],
+      );
+      console.log(newJob.rows);
+
+      job_id = newJob.rows[0].job_id;
+    }
+    //check if service is already been done to a vehicle
+    const checkServiceStatus = await pool.query(
+      "SELECT  * FROM job_services WHERE job_id = $1 AND service_id = $2 ",
+      [job_id, service_id],
+    );
+    if (checkServiceStatus.rows.length !== 0) {
+      return res.json({
+        success: false,
+        message: "service already in progress",
+      });
+    }
+    const servicesJobs = await pool.query(
+      "INSERT INTO job_services ( service_id ,job_id ) VALUES ($1,$2)",
+      [service_id, job_id],
     );
     res
       .status(200)
@@ -32,7 +52,7 @@ export const job = async (req, res) => {
   }
 };
 
-// fetching services  for client (client subcribed jobs ) (getmethod)
+// fetching list services  for client (client subcribed jobs ) (getmethod)
 
 export const getAllJobs = async (req, res) => {
   const { client_id } = req.userinfo;
@@ -41,7 +61,7 @@ export const getAllJobs = async (req, res) => {
   }
   try {
     const job = await pool.query(
-      "SELECT liscence_plate,vehicle_brand,vehicle_model, vehicle_color,service_name,job_id FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN services ON jobs.service_id =services.service_id  WHERE client_id=$1",
+      " SELECT * FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN job_services ON job_services.job_id= jobs.job_id JOIN services ON  job_services.service_id =services.service_id   WHERE client_id=$1",
       [client_id],
     );
     res.status(200).json({ success: true, data: job.rows });
@@ -115,7 +135,7 @@ export const billing = async (req, res) => {
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name ,job_id FROM jobs JOIN services ON jobs.service_id =services.service_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id",
+      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id ",
     );
     res.status(200).json({ success: true, data: job.rows });
   } catch (error) {
@@ -126,19 +146,22 @@ export const AllJobs = async (req, res) => {
 ///assgin jobs to workers (post method)
 
 export const assignJob = async (req, res) => {
-  const { employee_id, job_id } = req.body;
+  const { employee_id, job_services_id } = req.body;
+
   if (Object.keys(req.body).length == 0) {
     return res.json("all fields are required");
   }
 
   try {
-    const Assign = await pool.query(
-      "INSERT INTO jobsallocation (employee_id, job_id ) VALUES ($1,$2) RETURNING * ",
-      [employee_id, job_id],
+    const assignJob = await pool.query(
+      "UPDATE job_services SET employee_id = $1 Where job_services_id = $2 RETURNING *",
+      [employee_id, job_services_id],
     );
-    res
-      .status(200)
-      .json({ success: true, message: "job assigned to ", data: Assign.rows });
+    res.status(200).json({
+      success: true,
+      message: "job assigned to ",
+      // data: assignJob.rows,
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -147,11 +170,9 @@ export const assignJob = async (req, res) => {
 //fetching unallocated jobs (get-method)
 
 export const unallocatedJobs = async (req, res) => {
-  const job_allocation_status = null;
   try {
     const listOfUnaloccatedJobs = await pool.query(
-      "SELECT * FROM jobs LEFT JOIN jobsallocation ON jobsallocation.job_id =jobs.job_id WHERE job_allocation_status = $1",
-      [job_allocation_status],
+      "SELECT * FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id WHERE employee_id ISNULL ",
     );
     res.status(200).json({ success: true, data: listOfUnaloccatedJobs.rows });
   } catch (error) {
