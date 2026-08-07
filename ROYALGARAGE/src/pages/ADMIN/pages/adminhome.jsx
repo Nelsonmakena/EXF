@@ -6,11 +6,9 @@ import { getWorkerList } from "@/Comp/store/admin/wokerslice";
 import { getJobList } from "@/Comp/store/admin/jobsslice";
 
 export default function AdminHome() {
-  const { workerlist } = useSelector((state) => state.worker);
+  const { workerList } = useSelector((state) => state.worker);
   const { jobsList } = useSelector((state) => state.jobs);
   const dispatch = useDispatch();
-  console.log(workerlist.length);
-  console.log(jobsList.length);
 
   useEffect(() => {
     dispatch(getWorkerList());
@@ -58,7 +56,7 @@ export default function AdminHome() {
                   </p>
                 </div>
                 <p className="text-3xl font-bold mb-2 transition-colors duration-200">
-                  {workerlist.length}
+                  {workerList.length}
                 </p>
               </div>
             </div>

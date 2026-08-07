@@ -90,13 +90,13 @@ export const addWorker = async (req, res) => {
   }
 };
 
-// fethcing all worker list
+// fetching all worker list
 export const workers = async (req, res) => {
   try {
-    const allworkers = await pool.query(
-      "SELECT first_name,last_name,postion,second_name,employee_id  FROM employee  ",
+    const allWorkers = await pool.query(
+      "SELECT first_name,last_name,second_name,employee_id , role_name  FROM employee JOIN roles on roles.role_id = employee.role_id  ",
     );
-    res.status(200).json({ success: true, data: allworkers.rows });
+    res.status(200).json({ success: true, data: allWorkers.rows });
   } catch (error) {
     console.log(error.message);
   }

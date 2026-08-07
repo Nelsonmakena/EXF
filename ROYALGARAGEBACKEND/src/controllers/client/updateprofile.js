@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 const salt = bcrypt.genSaltSync(10);
 //veiw profile data
-export const profiledata = async (req, res) => {
+export const profileData = async (req, res) => {
   const { client_id, role } = req.userinfo;
   try {
     const clientdata = await pool.query(

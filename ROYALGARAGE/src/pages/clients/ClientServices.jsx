@@ -27,6 +27,12 @@ import { getServices } from "@/Comp/store/serviceslice";
 import { getVehiclelist } from "@/Comp/store/vehicleslice";
 
 export default function ClientServices() {
+  const [jobData, setJobData] = useState({
+    vehicle_id: "",
+    appointemnt_day: "",
+    service_id: "",
+  });
+
   const { vehicles } = useSelector((state) => state.vehicle);
   const { availableServiceList } = useSelector((state) => state.services);
   const dispatch = useDispatch();
@@ -34,6 +40,16 @@ export default function ClientServices() {
     dispatch(getServices());
     dispatch(getVehiclelist());
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setJobData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  console.log(jobData);
 
   return (
     <>
@@ -98,13 +114,28 @@ export default function ClientServices() {
 
                         <form>
                           <div className="flex flex-col w-full justify-center items-center   gap-normal">
-                            <Select className=" border w-2xs shadow-2xl">
-                              <SelectTrigger className="w-2xs shadow-2xl">
+                            <label htmlFor="select vehicle ">
+                              {" "}
+                              choose vehicle to be serviced
+                            </label>
+                            <Select
+                              value={jobData.vehicle_id}
+                              onValueChange={(value) =>
+                                setJobData((prev) => ({
+                                  ...prev,
+                                  vehicle_id: value,
+                                }))
+                              }
+                              className=" border w-2xs shadow-2xl"
+                            >
+                              <SelectTrigger className="w-2xs shadow-2xl ">
                                 <SelectValue placeholder="Select vehicle" />
                               </SelectTrigger>
                               <SelectContent>
                                 {vehicles.map((item) => (
                                   <SelectItem
+                                    className={"tracking-wide font-bold"}
+                                    name="vehicle_id"
                                     key={item.liscence_plate}
                                     value={item.liscence_plate}
                                   >
@@ -114,12 +145,18 @@ export default function ClientServices() {
                               </SelectContent>
                             </Select>
 
-                            <div className="flex w-full justify-between">
+                            <div className="flex w-full justify-between p-3.5">
                               {" "}
                               <h1> pick day of service </h1> <Calendar1 />{" "}
                             </div>
 
-                            <Input type="date" />
+                            <Input
+                              className={"p-3.5"}
+                              type="date"
+                              name="appointemnt_day"
+                              onChange={handleChange}
+                              value={jobData.appointemnt_day}
+                            />
                           </div>
                         </form>
                         <SheetFooter>

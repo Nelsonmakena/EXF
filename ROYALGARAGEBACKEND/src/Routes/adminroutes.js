@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  authenicateMiddleware,
+  authenticateMiddleware,
   adminchecker,
 } from "../midlewares/authenicationmidleware.js";
 import {
@@ -23,7 +23,7 @@ const Router = express.Router();
 //       .json({ success: false, message: "all fileds must be filled" });
 //   }
 // });
-Router.use(authenicateMiddleware, adminchecker);
+Router.use(authenticateMiddleware, adminchecker);
 
 // these are protected admin routes
 
@@ -33,18 +33,18 @@ Router.get("/dashboard", totalNumbers);
 
 /// adding worker roles
 
-Router.post("/newrole", addNewRole);
+Router.post("/new-role", addNewRole);
 
 /// displaying the role list
 
-Router.get("/rolelist", roleList);
+Router.get("/role-list", roleList);
 
 //removing a role from the system
-Router.delete("/removerole", removeRole);
+Router.delete("/remove-role", removeRole);
 
-// adding workes to the system
+// adding workers to the system
 
-Router.post("/addworker", addWorker);
+Router.post("/add-worker", addWorker);
 
 // view of all workers
 
@@ -52,7 +52,7 @@ Router.get("/workers", workers);
 
 // view of all jobs in the system
 
-Router.get("/jobslist", AllJobs);
+Router.get("/jobs-list", AllJobs);
 
 // assigning of jobs
 
@@ -60,9 +60,9 @@ Router.patch("/assign", assignJob);
 
 //list of ansigned jobs
 
-Router.get("/unassinedjobs", unallocatedJobs);
+Router.get("/unassigned-jobs", unallocatedJobs);
 // list of employess with no jobs
 
-Router.get("/nowork", nonAssignedWorkerList);
+Router.get("/no-work", nonAssignedWorkerList);
 
 export default Router;

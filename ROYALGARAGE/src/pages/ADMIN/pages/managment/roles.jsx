@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "sonner";
-import { roleList } from "@/Comp/store/admin/wokerslice";
+import { newRole, roleList } from "@/Comp/store/admin/wokerslice";
 
 export default function RolesView() {
   //const [workerList, SetworkerList] = useState();
@@ -36,6 +36,15 @@ export default function RolesView() {
   useEffect(() => {
     dispatch(roleList());
   }, []);
+
+  const newRoleData = async (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+    console.log(formdata);
+    const data = Object.fromEntries(formdata.entries());
+    console.log(data);
+    dispatch(newRole(data)).then((data) => {});
+  };
 
   return (
     <section className="container-main  mt-3.5">
@@ -54,35 +63,38 @@ export default function RolesView() {
             <Sheet>
               <SheetTrigger
                 render={
-                  <h1 className="text-primary cursor-pointer">
-                    {" "}
-                    New emmployee
-                  </h1>
+                  <h1 className="text-primary cursor-pointer"> + New Role</h1>
                 }
               />
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle className={"text-header heading-normal"}>
                     {" "}
-                    New Employee{" "}
+                    Roles{" "}
                   </SheetTitle>
                   <SheetDescription></SheetDescription>
                 </SheetHeader>
 
-                <form>
-                  <div className=" card flex  flex-col justify-center h-full">
-                    <div className="grid gap-3">
-                      <label> Email </label>
-                      <Input name="email" required type={"email"} />
-                    </div>
-                    <div className="grid gap-3">
-                      <label> Role </label>
-                      <Input name="postion" required />
-                    </div>
+                <form onSubmit={newRoleData}>
+                  <div className="flex  flex-col  gap-normal px-3.5">
+                    <Input
+                      className={"h-12"}
+                      placeholder=" role name "
+                      name="role_name"
+                    ></Input>
+                    <Input
+                      className={"h-12"}
+                      placeholder=" role description "
+                      name="role_descprtion"
+                    ></Input>
                   </div>
-                  <div className="card flex justify-center">
-                    <Button type="submit" className={"w-2xs"}>
-                      add{" "}
+                  <div className="mt-3.5 flex items-center justify-center">
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      className={"w-2xs h-12"}
+                    >
+                      add Role
                     </Button>
                   </div>
                 </form>
@@ -92,7 +104,7 @@ export default function RolesView() {
                   />
                 </SheetFooter>
               </SheetContent>
-            </Sheet>{" "}
+            </Sheet>
           </TableCaption>
           <TableHeader>
             <TableRow className="font-bold">

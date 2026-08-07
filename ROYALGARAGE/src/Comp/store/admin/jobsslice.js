@@ -13,9 +13,12 @@ const initialState = {
 
 // geting list of all pending jobs
 export const getJobList = createAsyncThunk("/admin/jobs", async () => {
-  const response = await axios.get("http://localhost:3000/api/admin/jobslist", {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    "http://localhost:3000/api/admin/jobs-list",
+    {
+      withCredentials: true,
+    },
+  );
   return response.data;
 });
 

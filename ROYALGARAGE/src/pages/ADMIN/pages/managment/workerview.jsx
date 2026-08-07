@@ -21,21 +21,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewWorker, getWorkerList } from "@/Comp/store/admin/wokerslice";
+import {
+  addNewWorker,
+  getWorkerList,
+  roleList,
+} from "@/Comp/store/admin/wokerslice";
 import { toast } from "sonner";
 
 export default function WorkerView() {
-  //const [workerList, SetworkerList] = useState();
-  const { workerlist } = useSelector((state) => state.worker);
+  const { workerList, roles } = useSelector((state) => state.worker);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getWorkerList());
+    if (workerList.length == 0) {
+      dispatch(getWorkerList());
+    }
+    if (roles.length == 0) {
+      dispatch(roleList());
+    }
   }, []);
-  console.log(workerlist);
 
   const addWorker = async (e) => {
     e.preventDefault();
@@ -51,6 +65,7 @@ export default function WorkerView() {
       }
     });
   };
+  console.log(roles);
 
   return (
     <section className="container-main  mt-3.5">
@@ -92,7 +107,23 @@ export default function WorkerView() {
                     </div>
                     <div className="grid gap-3">
                       <label> Role </label>
-                      <Input name="postion" required />
+                      <Select className=" border w-2xs shadow-2xl">
+                        <SelectTrigger className="w-2xs shadow-2xl ">
+                          <SelectValue placeholder="Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {roles.map((item) => (
+                            <SelectItem
+                              className={"tracking-wide font-bold rounded-none"}
+                              name="vehicle_id"
+                              key={item.role_id}
+                              value={item.role_name}
+                            >
+                              {item.role_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                   <div className="card flex justify-center">
@@ -123,7 +154,7 @@ export default function WorkerView() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {workerlist.map((employee) => {
+            {workerList.map((employee) => {
               return (
                 <TableRow>
                   <TableCell className={""}>

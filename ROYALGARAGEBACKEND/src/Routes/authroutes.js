@@ -6,7 +6,7 @@ import {
   admin,
   logOut,
 } from "../controllers/auth.js";
-import { authenicateMiddleware } from "../midlewares/authenicationmidleware.js";
+import { authenticateMiddleware } from "../midlewares/authenicationmidleware.js";
 
 const Router = express.Router();
 
@@ -27,7 +27,7 @@ Router.post("/workerlogin", worker);
 
 /// checking if user is athenctaed and looged in
 
-Router.get("/checkauth", authenicateMiddleware, (req, res) => {
+Router.get("/checkauth", authenticateMiddleware, (req, res) => {
   const user = req.userinfo;
   res
     .status(200)

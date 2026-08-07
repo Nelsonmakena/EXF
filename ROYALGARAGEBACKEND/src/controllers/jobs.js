@@ -52,7 +52,7 @@ export const job = async (req, res) => {
   }
 };
 
-// fetching list services  for client (client subcribed jobs ) (getmethod)
+// fetching list services  for client (client subscribed jobs ) (get-method)
 
 export const getAllJobs = async (req, res) => {
   const { client_id } = req.userinfo;

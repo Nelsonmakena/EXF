@@ -4,6 +4,7 @@ import vehicleReducer from "./vehicleslice";
 import servicesReducer from "./serviceslice";
 import workerSlice from "./admin/wokerslice";
 import jobSlice from "./admin/jobsslice";
+import dateSlice from "./appointmentsdates";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     services: servicesReducer,
     worker: workerSlice,
     jobs: jobSlice,
+    appoitnmentDates: dateSlice,
   },
 });
 

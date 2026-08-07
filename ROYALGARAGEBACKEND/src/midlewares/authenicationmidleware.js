@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { ENV } from "../../env.js";
-export const authenicateMiddleware = (req, res, next) => {
+export const authenticateMiddleware = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ success: false, message: "acces denied" });

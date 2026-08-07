@@ -6,16 +6,16 @@ import {
 import axios from "axios";
 
 const initialState = {
-  workerlist: [],
+  workerList: [],
   roles: [],
 };
 
 ///all worker related logic fro the admin is here
 
-//role in sytem
-export const roleList = createAsyncThunk("admin/rolelist", async () => {
+//role in system
+export const roleList = createAsyncThunk("admin/role-list", async () => {
   const response = await axios.get(
-    "http://localhost:3000/api/admin/rolelist",
+    "http://localhost:3000/api/admin/role-list",
 
     { withCredentials: true },
   );
@@ -25,9 +25,9 @@ export const roleList = createAsyncThunk("admin/rolelist", async () => {
 
 //adding roles
 
-export const newRole = createAsyncThunk("admin/newrole", async (data) => {
-  const response = await axios.put(
-    "http://localhost:3000/api/admin/newrole",
+export const newRole = createAsyncThunk("admin/new-role", async (data) => {
+  const response = await axios.post(
+    "http://localhost:3000/api/admin/new-role",
     data,
     { withCredentials: true },
   );
@@ -52,7 +52,7 @@ export const addNewWorker = createAsyncThunk(
     console.log(data);
 
     const response = await axios.post(
-      "http://localhost:3000/api/admin/addworker",
+      "http://localhost:3000/api/admin/add-worker",
       data,
       { withCredentials: true },
     );
@@ -67,7 +67,7 @@ const workerSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getWorkerList.fulfilled, (state, action) => {
-        state.workerlist = action.payload.data;
+        state.workerList = action.payload.data;
       })
       .addCase(roleList.fulfilled, (state, action) => {
         state.roles = action.payload.data;

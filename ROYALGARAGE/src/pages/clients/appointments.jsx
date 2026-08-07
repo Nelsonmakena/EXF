@@ -1,88 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClientNav from "./ClientNav";
 import dodge from "/src/assets/images/dodge.jpg";
 import { Calendar } from "@/components/ui/calendar";
+import { useDispatch, useSelector } from "react-redux";
+import { getAppointmentDatesClient } from "../../Comp/store/appointmentsdates";
+import { Card, CardTitle } from "@/components/ui/card";
+import Service from "./../Common/Services";
 
 export default function Appointment() {
-  const [appointementsdta, Setappointementsdta] = useState([
-    {
-      DateOfAppointment: "2024-04-3",
-      TimeOfAppointment: "12-00",
+  const { dates } = useSelector((state) => state.appoitnmentDates);
+  const [selectedDate, setSelectedDate] = useState();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAppointmentDatesClient());
+  }, []);
 
-      status: "Postponed",
-      VehicleRegistrationNumber: "KAY233",
-    },
-    {
-      DateOfAppointment: "2024-03-12",
-      TimeOfAppointment: "14-14-00",
+  const selectedDateString = selectedDate
+    ? `${selectedDate.getFullYear()}-${String(
+        selectedDate.getMonth() + 1,
+      ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`
+    : "";
 
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KBZ127Y",
-    },
-    {
-      DateOfAppointment: "2024-05-02",
-      TimeOfAppointment: "12-00",
+  const selectedAppointments = dates.filter(
+    (date) => date.appointment_day === selectedDateString,
+  );
 
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KBX22Y",
-    },
-    {
-      DateOfAppointment: "2024-05-03",
-      TimeOfAppointment: "10-00",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KAY233",
-    },
-    {
-      DateOfAppointment: "2024-02-20",
-      TimeOfAppointment: "2pm",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      DateOfAppointment: "2024-12-10",
-      TimeOfAppointment: "10-00",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KDC123T",
-    },
-    {
-      DateOfAppointment: "2024-12-05",
-      TimeOfAppointment: "8 am ",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KDA277Z",
-    },
-    {
-      DateOfAppointment: "2024-05-02",
-      TimeOfAppointment: "03-00",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KAZ122",
-    },
-    {
-      DateOfAppointment: "2023-2-12",
-      TimeOfAppointment: "2pm",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KAY22",
-    },
-    {
-      DateOfAppointment: "2024-03-20",
-      TimeOfAppointment: "5pm",
-
-      status: "Awaiting",
-      VehicleRegistrationNumber: "KBX224Y",
-    },
-  ]);
   return (
     <>
-      <title>Appointmets</title>
-
-      <section className="container-main">
-        <div className=" section  border">
-          <Calendar className={"w-2xs"} />
+      <section className="container-main flex w-full">
+        <div className=" section flex-1   ">
+          <Calendar
+            mode="single"
+            className={"w-2xs"}
+            selected={selectedDate}
+            onSelect={setSelectedDate}
+            modifiers={{
+              booked: dates.map((date) => new Date(date.appointment_day)),
+            }}
+            modifiersClassNames={{
+              booked: "bg-accent",
+            }}
+          />
+        </div>
+        <div className="flex flex-col section flex-1 gap-normal ">
+          <div className="flex justify-center card ">
+            <p>{selectedDate?.toString().split(" ").slice(0, 4).join(" ")}</p>
+          </div>
+          {dates
+            .filter((date) => date.appointment_day === selectedDateString)
+            .map((date) => (
+              <div className="w-full h-20  rounded-md  shadow-md  card bg-accent/20">
+                <div className="flex  justify-between  items-center ">
+                  <h1>{date.service_name}</h1> <h1>{date.liscence_plate}</h1>
+                </div>
+              </div>
+            ))}
         </div>
       </section>
     </>
