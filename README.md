@@ -1,1 +1,3 @@
 This project involves transforming an existing native Java application into a web-based solution. The frontend is built with React and ShadCN UI, providing a responsive interface that works effectively on both desktop and mobile devices. The backend is developed using Express.js and PostgreSQL to handle application logic and data management. The web version retains the core functionality of the original application while improving accessibility, maintainability, and cross-platform compatibility.
+
+<img width="1434" height="740" alt="image" src="https://github.com/user-attachments/assets/5abd0897-2123-4421-92f8-ab21d9cc6006" />
