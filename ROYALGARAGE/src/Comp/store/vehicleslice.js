@@ -7,20 +7,20 @@ const initialState = {
   totalVehicle: null,
 };
 
-//fething vehicles
+//fetching vehicles
 export const getVehiclelist = createAsyncThunk("/vehicles", async () => {
   const response = await axios.get("http://localhost:3000/api/client/vehicle", {
     withCredentials: true,
   });
-  console.log(response);
+
   return response.data;
 });
 
 //adding vehicles
 
-export const newVehicle = createAsyncThunk("/addvehicle", async (data) => {
+export const newVehicle = createAsyncThunk("/addVehicle", async (data) => {
   const add = await axios.post(
-    "http://localhost:3000/api/client/addvehicle",
+    "http://localhost:3000/api/client/add-vehicle",
     data,
     { withCredentials: true },
   );
@@ -29,17 +29,20 @@ export const newVehicle = createAsyncThunk("/addvehicle", async (data) => {
   return add.data;
 });
 
-///deleteing a vehicle
+///deleting a vehicle
 
 export const removeVehicle = createAsyncThunk(
-  "/removevehicle",
-  async (data) => {
+  "/removeVehicle",
+  async (vehicle_id) => {
     const response = await axios.delete(
-      "http://localhost:3000/api/client/deletevehicle",
-      data,
-      { withCredentials: true },
+      "http://localhost:3000/api/client/delete-vehicle",
+      {
+        data: {
+          vehicle_id: vehicle_id,
+        },
+        withCredentials: true,
+      },
     );
-    console.log(response.data);
 
     return response.data;
   },
@@ -87,7 +90,15 @@ export const vehicleSlice = createSlice({
       .addCase(total_No_Of_Vehicles.fulfilled, (state, action) => {
         state.totalVehicle = action.payload.data.vehicles_number;
       })
-      .addCase(removeVehicle.fulfilled, (state, action) => {});
+      .addCase(removeVehicle.fulfilled, (state, action) => {
+        console.log(action.payload);
+        if (action.payload.success) {
+          const deletedVehicleId = action.payload.data.vehicle_id;
+          state.vehicles = state.vehicles.filter(
+            (vehicle) => vehicle.vehicle_id !== deletedVehicleId,
+          );
+        }
+      });
   },
 });
 export const { SetVehicle } = vehicleSlice.actions;

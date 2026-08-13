@@ -16,51 +16,37 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getServiceList,
+  newService,
+  updateServices,
+} from "@/Comp/store/serviceslice";
 
 export default function AdminViewServices() {
-  const [services, Setservices] = useState([]);
-
-  /// geting services
-  const getServiceslist = async () => {
-    try {
-      const servicedata = await axios.get(
-        "http://localhost:3000/api/services/allservices",
-      );
-      Setservices(servicedata.data.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  const dispatch = useDispatch();
+  const { availableServiceList } = useSelector((state) => state.services);
 
   /// updating a service
 
   const update_service = async (e, item) => {
     e.preventDefault();
-    const service_id = item.service_id;
-    console.log(service_id);
-
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    const updatedService = await axios.put(
-      `http://localhost:3000/api/services/updateservice/${service_id}`,
-      data,
-    );
-    console.log(data);
+    data.service_id = item.service_id;
+    dispatch(updateServices(data));
   };
   // adding a service
   const addService = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    const newService = await axios.post(
-      "http://localhost:3000/api/services/addservice",
-      data,
-    );
+    dispatch(newService(data));
   };
 
   useEffect(() => {
-    getServiceslist();
-  }, [update_service]);
+    dispatch(getServiceList());
+  }, []);
   return (
     <section className="w-full container-main">
       <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
@@ -142,7 +128,7 @@ export default function AdminViewServices() {
 
         {/*list of services */}
 
-        {services.map((item) => {
+        {availableServiceList.map((item) => {
           return (
             <div
               key={item.service_id}

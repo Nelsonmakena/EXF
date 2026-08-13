@@ -10,7 +10,7 @@ import { authenticateMiddleware } from "../midlewares/authenicationmidleware.js"
 
 const Router = express.Router();
 
-//new user reegister
+//new user register
 
 Router.post("/register", addUser);
 
@@ -23,7 +23,7 @@ Router.post("/admin", admin);
 
 // worker login
 
-Router.post("/workerlogin", worker);
+Router.post("/worker-login", worker);
 
 /// checking if user is athenctaed and looged in
 

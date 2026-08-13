@@ -68,36 +68,33 @@ export const deleteVehicle = async (req, res) => {
   const { client_id } = req.userinfo;
   const { vehicle_id } = req.body;
   if (!client_id) {
-    return res.json({ success: false, message: "acces denied" });
+    return res.json({ success: false, message: "access denied" });
   }
 
   try {
     const checkVehicle = await pool.query(
-      "SELECT * FROM  vehicle WHERE vehicle_id=$1",
-      [vehicle_id],
+      "SELECT * FROM  vehicle WHERE vehicle_id=$1 AND client_id = $2",
+      [vehicle_id, client_id],
     );
     if (checkVehicle.rows.length == 0) {
       return res.json({ success: false, message: "vehicle not found" });
     }
-    //firts check you canot remove a vehicle with active job from the system
+    //first check you cannot remove a vehicle with active job from the system
 
     const delet = await pool.query(
       "DELETE FROM vehicle WHERE vehicle_id = $1 AND client_id = $2 AND NOT EXISTS (SELECT 1 FROM jobs WHERE  jobs.vehicle_id = vehicle.vehicle_id AND jobs.job_current_status <> 'completed' )  RETURNING * ",
       [vehicle_id, client_id],
     );
     if (delet.rows.length == 0) {
-      console.log(delet);
-
       return res.json({
         success: false,
         message: "vehicle cannot be removed",
-        delet,
       });
     }
     res.status(200).json({
       success: true,
-      message: "vehicle removed succecssfully",
-      data: delet.data.rows,
+      message: "vehicle removed successfully",
+      data: delet.rows[0].vehicle_id,
     });
   } catch (error) {
     console.log(error.message);

@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "sonner";
 import { newRole, roleList } from "@/Comp/store/admin/wokerslice";
+import { Trash } from "lucide-react";
 
 export default function RolesView() {
   //const [workerList, SetworkerList] = useState();
@@ -46,16 +47,12 @@ export default function RolesView() {
     dispatch(newRole(data)).then((data) => {});
   };
 
+  const removeRole = async (e) => {
+    e.preventDefault();
+  };
+
   return (
     <section className="container-main  mt-3.5">
-      {/**card info like total employess employess with worke */}
-      <div className="  w-full  flex items-center card   ">
-        <div className="w-30 shadow-md h-20 flex flex-col items-center justify-center bg-accent rounded-md ">
-          <h1>No of Workers</h1>
-          <h1> 5</h1>
-        </div>
-      </div>
-
       <div className="section flex gap-normal ">
         <Table className="">
           <TableCaption>
@@ -112,8 +109,9 @@ export default function RolesView() {
                 Role Name{" "}
               </TableHead>
               <TableHead className={"font-bold text-primary"}>
-                Role descprtion
+                Role description
               </TableHead>
+              <TableHead className={"font-bold text-primary"}></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -122,6 +120,7 @@ export default function RolesView() {
                 <TableRow>
                   <TableCell className={""}>{item.role_name}</TableCell>
                   <TableCell>{item.role_descprtion}</TableCell>
+                  <TableCell className={"text-destructive"}></TableCell>
                 </TableRow>
               );
             })}

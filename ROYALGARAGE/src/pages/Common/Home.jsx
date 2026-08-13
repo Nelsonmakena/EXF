@@ -282,7 +282,7 @@ function Home() {
                 <div
                   key={key}
                   data-aos="fade-left"
-                  className=" bg-card card border flex flex-col  h-84 justify-center items-center  shadow-md  rounded-md "
+                  className=" bg-card card  flex flex-col  h-84 justify-center items-center  shadow-md  rounded-md "
                 >
                   <h1 className="font-bold  card  text-secondary">
                     {" "}

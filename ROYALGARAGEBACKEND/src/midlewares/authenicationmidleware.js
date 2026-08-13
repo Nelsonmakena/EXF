@@ -40,7 +40,7 @@ export const adminchecker = (req, res, next) => {
 
 /// worker authenication role based
 
-export const workerchecker = (req, res, next) => {
+export const workerChecker = (req, res, next) => {
   const { role } = req.userinfo;
 
   if (role == "worker") {

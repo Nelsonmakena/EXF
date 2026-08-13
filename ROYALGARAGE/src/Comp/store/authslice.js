@@ -77,7 +77,7 @@ export const workerlogin = createAsyncThunk(
 
   async (data) => {
     const response = await axios.post(
-      "http://localhost:3000/api/authenication/workerlogin",
+      "http://localhost:3000/api/authenication/worker-login",
       data,
       { withCredentials: true },
     );

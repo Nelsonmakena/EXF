@@ -13,15 +13,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Sidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,9 +28,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import axios from "axios";
 import Loader from "@/Comp/loader";
 import Alerts from "@/Comp/alerts";
-import { CarIcon, Delete } from "lucide-react";
+import { Trash, CarFront } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getVehiclelist, newVehicle } from "@/Comp/store/vehicleslice";
+import {
+  getVehiclelist,
+  newVehicle,
+  removeVehicle,
+} from "@/Comp/store/vehicleslice";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -40,10 +43,11 @@ export default function Vehicles() {
   const { vehicles } = useSelector((state) => state.vehicle);
   console.log(vehicles);
 
-  const addvehicle = async (e) => {
+  const addVehicle = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
+    console.log(data);
 
     dispatch(newVehicle(data)).then((data) => {
       if (data.payload.success) {
@@ -53,10 +57,12 @@ export default function Vehicles() {
       }
     });
   };
+
+  // const deleteVehicle
   useEffect(() => {
     dispatch(getVehiclelist());
   }, []);
-  console.log(vehicles.length);
+
   return (
     <>
       <section className="container-main">
@@ -67,29 +73,26 @@ export default function Vehicles() {
           </h1>
           <Table className="">
             <TableCaption>
-              {" "}
-              <Sheet>
-                <SheetTrigger
+              {/* addding a new vehicle  */}
+              <Dialog>
+                <DialogTrigger
                   render={
-                    <button className="w-full h-full">
+                    <button className="w-2xs flex flex-row items-center gap-normal">
+                      <CarFront className="text-accent" />
                       <h1 className="text-body text-header"> New Vehicle</h1>
                     </button>
                   }
-                />
-                <SheetContent side="bottom">
-                  <SheetHeader>
-                    <SheetTitle className={"text-header heading-normal"}>
-                      {" "}
-                      Add Vehicle{" "}
-                    </SheetTitle>
-                    <SheetDescription></SheetDescription>
-                  </SheetHeader>
-
+                ></DialogTrigger>
+                <DialogContent className={" bg-card"}>
+                  <DialogHeader>
+                    <DialogTitle> Add Vehicle</DialogTitle>
+                    <DialogDescription></DialogDescription>
+                  </DialogHeader>
                   <form
-                    onSubmit={addvehicle}
+                    onSubmit={addVehicle}
                     className=" flex flex-col card  justify-center items-center  w-full"
                   >
-                    <div className="flex flex-col md:flex-row gap-normal">
+                    <div className="flex flex-col  gap-normal">
                       <div className="grid gap-3 w-2xs h-20">
                         <Input
                           name="liscence_plate"
@@ -125,21 +128,10 @@ export default function Vehicles() {
                       </button>
                     </div>
                   </form>
-                  <SheetFooter className="flex justify-center items-center">
-                    <SheetClose
-                      render={
-                        <Button
-                          className="w-2xs flex items-center justify-center"
-                          variant="destructive"
-                        >
-                          Close
-                        </Button>
-                      }
-                    />
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
+                </DialogContent>
+              </Dialog>
             </TableCaption>
+            {/* list of vehicles  */}
             <TableHeader>
               <TableRow className="font-bold">
                 <TableHead className={"font-bold text-secondary"}>
@@ -180,8 +172,48 @@ export default function Vehicles() {
                   <TableCell>{item.vehicle_model}</TableCell>
                   <TableCell>{item.vehicle_brand}</TableCell>
                   <TableCell>{item.vehicle_color}</TableCell>
+                  {/* remove a vehicle  */}
                   <TableCell>
-                    <Delete />
+                    <Dialog>
+                      <DialogTrigger render={<Trash />}></DialogTrigger>
+                      <DialogContent className={" bg-card backdrop-blur-md"}>
+                        <DialogHeader>
+                          <DialogTitle className={"flex justify-center"}>
+                            {item.liscence_plate}
+                          </DialogTitle>
+                          <DialogDescription></DialogDescription>
+                        </DialogHeader>
+                        <h1 className=" w-full flex justify-center">
+                          Are you sure you want to remove this vehicle
+                        </h1>
+                        <div className="p-3.5">
+                          This action cannot be undone. This will permanently
+                          delete your vehicle and remove its data from our
+                          servers.
+                        </div>
+                        <div className="w-full flex items-center justify-between h-36">
+                          <Button
+                            className={"w-40"}
+                            onClick={async () => {
+                              dispatch(removeVehicle(item.vehicle_id)).then(
+                                (data) => {
+                                  data.payload.success
+                                    ? toast(data.payload.message)
+                                    : toast(data.payload.message);
+                                },
+                              );
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                          <DialogClose asChild>
+                            <Button variant="destructive" className={"w-40"}>
+                              Cancel
+                            </Button>
+                          </DialogClose>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </TableCell>
                 </TableRow>
               ))}

@@ -111,8 +111,8 @@ export default function HomeClient() {
 
                       {/**col-2 */}
                       <div className="flex md:flex-col justify-between card">
-                        <h1 className="text-primary-foreground">Amount </h1>
-                        <h1> 10,000/= </h1>
+                        <h1 className="text-primary-foreground"> progress </h1>
+                        <h1> progress </h1>
                       </div>
                       {/**col-3 */}
                       <div className="flex md:flex-col justify-between card">

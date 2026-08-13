@@ -1,38 +1,12 @@
 import { useState, useEffect } from "react";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Calendar1 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getServices } from "@/Comp/store/serviceslice";
 import { getVehiclelist } from "@/Comp/store/vehicleslice";
+import { Spinner } from "@/components/ui/spinner";
+
+import ServiceCard from "./ServiceCard";
 
 export default function ClientServices() {
-  const [jobData, setJobData] = useState({
-    vehicle_id: "",
-    appointemnt_day: "",
-    service_id: "",
-  });
-
   const { vehicles } = useSelector((state) => state.vehicle);
   const { availableServiceList } = useSelector((state) => state.services);
   const dispatch = useDispatch();
@@ -40,138 +14,29 @@ export default function ClientServices() {
     dispatch(getServices());
     dispatch(getVehiclelist());
   }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  console.log(jobData);
+  console.log(availableServiceList);
 
   return (
     <>
-      <section className=" absolute top-24 z-50 bg-none backdrop-blur-2xl w-full max-h-screen  overflow-hidden">
-        <ScrollArea className={"h-screen"}>
-          <div className="container-main grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5  ">
-            {availableServiceList.length == 0 ? (
-              <div>
-                <h1>loading</h1>
-              </div>
-            ) : (
-              availableServiceList.map((item) => (
-                <div
-                  key={item.service_id}
-                  className="border-border  rounded-xl  flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
-                >
-                  {/* Product Image */}
-                  <div className="flex items-center justify-center h-30 mb-2 ">
-                    <img
-                      src={`/assets/images/${item.service_image}.jpg`}
-                      alt={item.name}
-                      className="max-h-full w-full rounded-t-xl  "
-                    />
-                  </div>
-
-                  {/* Product Name */}
-                  <p
-                    onClick={() => {
-                      Setselectedproduct(item);
-                      Setisitemviewopen(!isitemviewopen);
-                    }}
-                    className="text-sm text-neutral-500 mb-2 px-2 cursor-pointer"
-                  >
-                    {item.service_name}
-                  </p>
-
-                  {/* Price */}
-                  <div className="flex items-center gap-2 px-2">
-                    <span className="text-sm font-semibold text-neutral-800">
-                      ksh {Number(item.service_price)}
-                    </span>
-                  </div>
-
-                  {/* getting the service logic*/}
-                  <div className=" w-3/4 m-2.5 flex items-center justify-center  h-12 ">
-                    <Sheet>
-                      <SheetTrigger
-                        render={
-                          <button className="w-full h-full  text-white rounded-md   bg-blue-400 shadow-md ">
-                            {" "}
-                            Book Now
-                          </button>
-                        }
-                      />
-                      <SheetContent side="right">
-                        <SheetHeader>
-                          <SheetTitle className={"text-header heading-normal"}>
-                            {item.service_name}
-                          </SheetTitle>
-                          <SheetDescription></SheetDescription>
-                        </SheetHeader>
-
-                        <form>
-                          <div className="flex flex-col w-full justify-center items-center   gap-normal">
-                            <label htmlFor="select vehicle ">
-                              {" "}
-                              choose vehicle to be serviced
-                            </label>
-                            <Select
-                              value={jobData.vehicle_id}
-                              onValueChange={(value) =>
-                                setJobData((prev) => ({
-                                  ...prev,
-                                  vehicle_id: value,
-                                }))
-                              }
-                              className=" border w-2xs shadow-2xl"
-                            >
-                              <SelectTrigger className="w-2xs shadow-2xl ">
-                                <SelectValue placeholder="Select vehicle" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {vehicles.map((item) => (
-                                  <SelectItem
-                                    className={"tracking-wide font-bold"}
-                                    name="vehicle_id"
-                                    key={item.liscence_plate}
-                                    value={item.liscence_plate}
-                                  >
-                                    {item.liscence_plate} {item.vehicle_brand}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-
-                            <div className="flex w-full justify-between p-3.5">
-                              {" "}
-                              <h1> pick day of service </h1> <Calendar1 />{" "}
-                            </div>
-
-                            <Input
-                              className={"p-3.5"}
-                              type="date"
-                              name="appointemnt_day"
-                              onChange={handleChange}
-                              value={jobData.appointemnt_day}
-                            />
-                          </div>
-                        </form>
-                        <SheetFooter>
-                          <SheetClose
-                            render={<Button variant="outline">Close</Button>}
-                          />
-                        </SheetFooter>
-                      </SheetContent>
-                    </Sheet>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </ScrollArea>
+      <section className=" container-main mt-10 w-full ">
+        <div className="container-main grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5  ">
+          {availableServiceList.length == 0 ? (
+            <div className="w-full h-screen flex items-center justify-center">
+              <Spinner></Spinner>
+            </div>
+          ) : (
+            availableServiceList.map((item) => (
+              <ServiceCard
+                key={item.service_id}
+                name={item.service_name}
+                price={item.service_price}
+                image={item.service_image}
+                id={item.service_id}
+                vehicles={vehicles}
+              />
+            ))
+          )}
+        </div>
       </section>
     </>
   );

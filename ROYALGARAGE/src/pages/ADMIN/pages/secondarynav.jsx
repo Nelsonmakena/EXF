@@ -78,6 +78,9 @@ export default function SecondaryNav({ hidemenu, Sethidemenu }) {
               <Link to="tasks/jobs"> Jobs </Link>
             </li>
             <li className="card">
+              <Link to=""> InProgress </Link>
+            </li>
+            <li className="card">
               <Link to=""> Completed </Link>
             </li>
           </ul>

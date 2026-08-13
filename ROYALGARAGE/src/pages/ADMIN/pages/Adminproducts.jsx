@@ -16,51 +16,38 @@ import animatedaddbutton from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProducts,
+  newProduct,
+  updateProducts,
+} from "@/Comp/store/serviceslice";
 
 export default function AdminViewProducts() {
-  const [Product, SetProduct] = useState([]);
+  const dispatch = useDispatch();
+  const { availableProductList } = useSelector((state) => state.services);
 
-  /// fecttching products
-  const getProducts = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/products/allproducts",
-      );
-      SetProduct(response.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  /// fetching data for adding a product & sending that data to db
-  const addproduct = (e) => {
+  /// fetching data for adding a product
+  const addProduct = (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
-
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
-    axios.post("http://localhost:3000/api/products/addproduct", data);
+    dispatch(newProduct());
   };
 
   // fetching data & updating a product  sending it
 
   const update_product = (e, item) => {
     e.preventDefault();
-    const productid = item.product_id;
-
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
-
-    const updatedproduct = axios.put(
-      `http://localhost:3000/api/products/update/${productid}`,
-      data,
-    );
+    data.productId = item.product_id;
+    dispatch(updateProducts(data));
   };
-  // fetching all product on start of the page on update and on add a new product
+
   useEffect(() => {
-    getProducts();
-  }, [update_product, addproduct]);
+    dispatch(getProducts());
+  }, []);
 
   return (
     <section className="w-full container-main">
@@ -91,29 +78,20 @@ export default function AdminViewProducts() {
                   <SheetDescription></SheetDescription>
                 </SheetHeader>
 
-                <form onSubmit={addproduct}>
+                <form onSubmit={addProduct}>
                   <div className="grid flex-1 auto-rows-min gap-6 px-4">
                     <div className="grid gap-3">
                       <label> Product name </label>
-                      <Input
-                        name="product_name"
-                        id="productname"
-                        defaultValue="Product-name"
-                      />
+                      <Input name="product_name" defaultValue="Product-name" />
                     </div>
                     <div className="grid gap-3">
                       <label> Product image </label>
-                      <Input
-                        name="product_image"
-                        id="productdescrption"
-                        defaultValue="image"
-                      />
+                      <Input name="product_image" defaultValue="image" />
                     </div>
                     <div className="grid gap-3">
                       <label> Product descrption </label>
                       <Input
                         name="product_description"
-                        id="productdescrption"
                         defaultValue="product-descrption"
                       />
                     </div>
@@ -121,25 +99,16 @@ export default function AdminViewProducts() {
                       <label> Product price </label>
                       <Input
                         name="product_price"
-                        id="productprice"
                         defaultValue="product-price"
                       />
                     </div>
                     <div className="grid gap-3">
                       <label> Category </label>
-                      <Input
-                        name="product_category"
-                        id="product_category"
-                        defaultValue="General"
-                      />
+                      <Input name="product_category" defaultValue="General" />
                     </div>
                     <div className="grid gap-3">
                       <label> Discount </label>
-                      <Input
-                        name="product_discount"
-                        id="Discount"
-                        defaultValue="Discount"
-                      />
+                      <Input name="product_discount" defaultValue="Discount" />
                     </div>
                   </div>
                   <div className="card flex justify-center">
@@ -161,7 +130,7 @@ export default function AdminViewProducts() {
           </div>
         </div>
 
-        {Product.map((item) => {
+        {availableProductList.map((item) => {
           return (
             <div
               key={item.product_id}

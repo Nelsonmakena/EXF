@@ -40,6 +40,7 @@ import {
 import { toast } from "sonner";
 
 export default function WorkerView() {
+  const [role, setRole] = useState();
   const { workerList, roles } = useSelector((state) => state.worker);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -56,6 +57,8 @@ export default function WorkerView() {
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
     console.log(data);
+    data.role = role;
+    console.log(data);
 
     dispatch(addNewWorker(data)).then((data) => {
       if (data?.payload?.success) {
@@ -66,6 +69,7 @@ export default function WorkerView() {
     });
   };
   console.log(roles);
+  console.log(role);
 
   return (
     <section className="container-main  mt-3.5">
@@ -107,7 +111,11 @@ export default function WorkerView() {
                     </div>
                     <div className="grid gap-3">
                       <label> Role </label>
-                      <Select className=" border w-2xs shadow-2xl">
+                      <Select
+                        value={role}
+                        onValueChange={setRole}
+                        className=" border w-2xs shadow-2xl"
+                      >
                         <SelectTrigger className="w-2xs shadow-2xl ">
                           <SelectValue placeholder="Role" />
                         </SelectTrigger>

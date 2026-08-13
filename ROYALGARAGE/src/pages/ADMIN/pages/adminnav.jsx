@@ -19,7 +19,7 @@ import {
 import { useTheme } from "@/comp/theme-provider";
 import { useDispatch } from "react-redux";
 import { logoutanyone } from "@/Comp/store/authslice";
-import { Home01 } from "@untitledui/icons";
+import { ClipboardList, PackageSearch } from "lucide-react";
 
 export default function AdminNav() {
   const { setTheme, theme } = useTheme();
@@ -68,14 +68,20 @@ export default function AdminNav() {
           }}
           className={`${path.includes("/admin/inventory") ? "bg-card rounded-l-2xl tracking-widest" : " font-bold bg-none text-header"}   w-full h-15 card flex items-center justify-center`}
         >
+          <PackageSearch
+            className={`${path.includes("/admin/inventory") ? "mr-3.5 flex" : "hidden"}`}
+          />
           Inventory
         </button>
         <button
           onClick={() => {
             navigate("tasks/jobs");
           }}
-          className={`${path.includes("/admin/tasks") ? "bg-card rounded-l-2xl tracking-widest" : " font-bold bg-none text-header"}   w-full h-15 card flex items-center justify-center`}
+          className={`${path.includes("/admin/tasks") ? "bg-card rounded-l-2xl tracking-widest " : " font-bold bg-none text-header"}   w-full h-15 card flex items-center justify-center`}
         >
+          <ClipboardList
+            className={`${path.includes("/admin/tasks") ? "mr-3.5 flex" : "hidden"}`}
+          />
           Tasks
         </button>
         <button

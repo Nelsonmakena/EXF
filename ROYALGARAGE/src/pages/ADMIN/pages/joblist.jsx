@@ -8,21 +8,45 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { getJobList } from "@/Comp/store/admin/jobsslice";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { getWorkerList } from "@/Comp/store/admin/wokerslice";
 
 export default function JobList() {
   const { jobsList } = useSelector((state) => state.jobs);
+  const { workerList } = useSelector((state) => state.worker);
+
+  const [assignWorker, setAssignWorker] = useState({
+    employee_id: "",
+    job_services_id: "",
+  });
   const dispatch = useDispatch();
-  //fething job list
+  //fetching job list
 
   useEffect(() => {
     dispatch(getJobList());
+    dispatch(getWorkerList());
   }, []);
-  console.log(jobsList);
+  console.log(workerList);
 
   return (
     <section className="conatiner-main ">
@@ -30,7 +54,7 @@ export default function JobList() {
         {/**job card  */}
 
         <Table className="">
-          <TableCaption> pendig jobs .</TableCaption>
+          <TableCaption> pending jobs .</TableCaption>
           <TableHeader>
             <TableRow className="font-bold">
               <TableHead className={"font-bold text-secondary"}>
@@ -44,31 +68,86 @@ export default function JobList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {jobsList.map((item) => {
-              return (
-                <TableRow>
-                  <TableCell>{item.first_name + item.last_name}</TableCell>
-                  <TableCell className="flex items-center gap-2.5">
-                    <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
-                      {" "}
-                      <h1 className="text-header font-bold">
-                        {item.liscence_plate[0]}{" "}
-                      </h1>
-                      <h1 className="text-header-foreground">
+            {jobsList.length == 0 ? (
+              <Spinner></Spinner>
+            ) : (
+              jobsList.map((item) => {
+                return (
+                  <TableRow>
+                    <TableCell>{item.first_name + item.last_name}</TableCell>
+                    <TableCell className="flex items-center gap-2.5">
+                      <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
                         {" "}
-                        {item.liscence_plate[6]}{" "}
-                      </h1>
-                    </div>
-                    {item.liscence_plate}
-                  </TableCell>
+                        <h1 className="text-header font-bold">
+                          {item.liscence_plate[0]}{" "}
+                        </h1>
+                        <h1 className="text-header-foreground">
+                          {" "}
+                          {item.liscence_plate[6]}{" "}
+                        </h1>
+                      </div>
+                      {item.liscence_plate}
+                    </TableCell>
 
-                  <TableCell>{item.service_name}</TableCell>
-                  <TableCell>
-                    <Button> Assign</Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    <TableCell>{item.service_name}</TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger
+                          render={<Button> Assign</Button>}
+                        ></DialogTrigger>
+                        <DialogContent className={"bg-card "}>
+                          <DialogHeader>
+                            <DialogTitle>{item.service_name}</DialogTitle>
+                            <DialogDescription></DialogDescription>
+                          </DialogHeader>
+                          <form>
+                            <div className="flex flex-col w-full justify-center items-center   gap-normal">
+                              <label htmlFor="select vehicle ">
+                                {" "}
+                                choose vehicle to be serviced
+                              </label>
+                              <Select
+                                value={assignWorker.employee_id}
+                                onValueChange={(value) =>
+                                  setAssignWorker((prev) => ({
+                                    ...prev,
+                                    employee_id: value,
+                                  }))
+                                }
+                                className=" border w-2xs shadow-2xl"
+                              >
+                                <SelectTrigger className="w-2xs shadow-2xl ">
+                                  <SelectValue placeholder="Select Employee" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-none backdrop-blur-md">
+                                  {workerList.map((worker) => (
+                                    <SelectItem
+                                      className={"tracking-wide font-bold"}
+                                      key={worker.employee_id}
+                                      value={worker.employee_id}
+                                    >
+                                      hello
+                                      {/* {worker.first_name} {worker.last_name} */}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+
+                              <button
+                                type="submit"
+                                className="w-2xs h-12 text-white rounded-md   bg-primary"
+                              >
+                                Confirm
+                              </button>
+                            </div>
+                          </form>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>

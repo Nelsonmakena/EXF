@@ -40,7 +40,7 @@ Router.delete("/delete-vehicle", deleteVehicle);
 
 // client getting a job
 
-Router.post("/new-job", job);
+Router.put("/new-job", job);
 
 // fethng jobs for a client
 

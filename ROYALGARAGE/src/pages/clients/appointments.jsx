@@ -27,22 +27,8 @@ export default function Appointment() {
 
   return (
     <>
-      <section className="container-main flex w-full">
-        <div className=" section flex-1   ">
-          <Calendar
-            mode="single"
-            className={"w-2xs"}
-            selected={selectedDate}
-            onSelect={setSelectedDate}
-            modifiers={{
-              booked: dates.map((date) => new Date(date.appointment_day)),
-            }}
-            modifiersClassNames={{
-              booked: "bg-accent",
-            }}
-          />
-        </div>
-        <div className="flex flex-col section flex-1 gap-normal ">
+      <section className="container-main flex  flex-col w-full md:flex-row">
+        <div className="flex flex-col section gap-normal  md:flex-1 ">
           <div className="flex justify-center card ">
             <p>{selectedDate?.toString().split(" ").slice(0, 4).join(" ")}</p>
           </div>
@@ -55,6 +41,20 @@ export default function Appointment() {
                 </div>
               </div>
             ))}
+        </div>
+        <div className="flex justify-center section md:flex-1  ">
+          <Calendar
+            mode="single"
+            className={"w-2xs"}
+            selected={selectedDate}
+            onSelect={setSelectedDate}
+            modifiers={{
+              booked: dates.map((date) => new Date(date.appointment_day)),
+            }}
+            modifiersClassNames={{
+              booked: "bg-accent",
+            }}
+          />
         </div>
       </section>
     </>

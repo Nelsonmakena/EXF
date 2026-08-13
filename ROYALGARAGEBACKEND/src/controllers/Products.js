@@ -6,7 +6,7 @@ export const getallproducts = async (req, res) => {
   try {
     const products = await pool.query("SELECT * FROM Products ");
 
-    res.status(201).json(products.rows);
+    res.status(201).json({ success: true, data: products.rows });
   } catch (error) {
     console.log(error.message);
   }

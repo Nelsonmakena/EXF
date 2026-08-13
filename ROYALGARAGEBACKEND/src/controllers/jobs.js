@@ -11,7 +11,7 @@ export const job = async (req, res) => {
   let job_id;
 
   try {
-    //check if the job exist job is tied to vehicle_id ie one vehicle can have mutliple services
+    //check if the job exist job is tied to vehicle_id ie one vehicle can have multiple services
     const checkJob = await pool.query(
       "SELECT job_id FROM jobs WHERE vehicle_id = $1 AND job_current_status <> $2",
       [vehicle_id, "completed"],
@@ -129,13 +129,32 @@ export const billing = async (req, res) => {
   }
 };
 
-///adimin section
+///employees
 
-// fetching all jobs for admin view (getmethod)
+///fetch job list for an employee assigned to him
+export const employeeJobList = async (req, res) => {
+  const { employee_id } = req.userinfo;
+  try {
+    const response = await pool.query(
+      "SELECT * FROM job_services WHERE employee_id = $1 ",
+      [employee_id],
+    );
+    res.status(200).json({
+      success: true,
+      data: response.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+///admin section
+
+// fetching all jobs for admin view (get-method)
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id ",
+      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name ,job_services_id FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id ",
     );
     res.status(200).json({ success: true, data: job.rows });
   } catch (error) {
@@ -154,7 +173,7 @@ export const assignJob = async (req, res) => {
 
   try {
     const assignJob = await pool.query(
-      "UPDATE job_services SET employee_id = $1 Where job_services_id = $2 RETURNING *",
+      "UPDATE job_services SET employee_id = $1 Where job_services_id = $2 ",
       [employee_id, job_services_id],
     );
     res.status(200).json({

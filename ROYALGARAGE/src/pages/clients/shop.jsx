@@ -2,36 +2,37 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { ShoppingCart } from "lucide-react";
 import Cart from "./cart";
+import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "@/components/ui/spinner";
+import { addCart, getProducts } from "@/Comp/store/serviceslice";
 
 export default function Shop() {
-  const [products, Setproducts] = useState([]);
+  const dispatch = useDispatch();
+  const { loading, availableProductList, cart } = useSelector(
+    (state) => state.services,
+  );
 
-  const getProducts = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/products/allproducts",
-      );
+  // if (loading) {
+  //   return <Spinner></Spinner>;
+  // }
 
-      Setproducts(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    getProducts();
+    dispatch(getProducts());
   }, []);
-  /// calulting discount in the product object
-  const newprice = (products) => {
+
+  /// calculating discount in the product object
+  const newPrice = (products) => {
     const discount = Number(products.product_discount) / 100;
-    const setprice = Number(products.product_price);
-    const price = setprice - discount * setprice;
+    const setPrice = Number(products.product_price);
+    const price = setPrice - discount * setPrice;
     return price;
   };
+  console.log(cart);
 
   return (
     <section className="container-main">
       <div className="grid grid-cols-2  md:flex md:flex-wrap items-stretch justify-center gap-5 ">
-        {products.map((item) => {
+        {availableProductList.map((item) => {
           return (
             <div
               key={item.product_id}
@@ -66,7 +67,7 @@ export default function Shop() {
               {/* Price */}
               <div className="flex items-center gap-2 px-2">
                 <span className="text-sm font-semibold text-neutral-800">
-                  ksh {newprice(item)}
+                  ksh {newPrice(item)}
                 </span>
                 <span className="text-xs text-neutral-500 line-through">
                   {item.product_price}/=
@@ -75,7 +76,7 @@ export default function Shop() {
                   <button>
                     <ShoppingCart
                       onClick={() => {
-                        Setcart([...cart, item]);
+                        dispatch(addCart(item));
                       }}
                       className="text-header"
                     />{" "}

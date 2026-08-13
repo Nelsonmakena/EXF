@@ -2,7 +2,16 @@ import logo from "/src/assets/images/logo.png";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Menu,
   X,
@@ -14,21 +23,19 @@ import {
   User,
 } from "lucide-react";
 import { ModeToggle } from "@/Comp/mode-toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/comp/theme-provider";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutanyone } from "@/Comp/store/authslice";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function ClientNav() {
   const { setTheme, theme } = useTheme();
   const navigate = useNavigate();
   const { userinfo } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.services);
+
   const dispatch = useDispatch();
 
   const [SmallMe, SetSmallMe] = useState(false);
@@ -54,6 +61,7 @@ export default function ClientNav() {
       document.body.style.overflow = "auto";
     };
   }, [SmallMe]);
+  console.log(cart);
 
   return (
     <>
@@ -84,45 +92,37 @@ export default function ClientNav() {
               <Link to="cart">
                 <div className="relative cursor-pointer">
                   <ShoppingBag />
-                  <button className="absolute -top-2 -right-3 text-xs text-white bg-orange-600 w-4.5 h-4.5 rounded-full">
-                    0
+                  <button
+                    className={`absolute -top-2 -right-3 text-xs text-white w-4.5 h-4.5 rounded-full${cart.length === 0 ? " bg-orange-600" : " bg-accent"}`}
+                  >
+                    {cart.length}
                   </button>
                 </div>
               </Link>
             </div>
-            <div
-              className=" flex items-center card cursor-pointer"
-              onClick={() => {
-                SetProfileMenu(!ProfileMenu);
-              }}
-            >
-              <h1 className="text-header-foreground">
-                {userinfo?.first_name[0]?.toUpperCase()}
-              </h1>
-              <h1 className="text-header">
-                {userinfo?.last_name[0]?.toUpperCase()}
-              </h1>
-            </div>
-
-            {/**smal menu pop-up in clinet nav  */}
-            {ProfileMenu && (
-              <div className=" absolute top-24 right-5 bg-card rounded-2xl shadow-md  w-2xs   card  z-999">
-                <div className="card  ">
-                  <button
-                    onClick={() => {
-                      navigate("profile");
-                      SetProfileMenu(!ProfileMenu);
-                    }}
-                    className="flex  w-full h-full justify-between"
-                  >
-                    {" "}
-                    profile
-                    <User className="text-2xl" />
-                  </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className=" flex items-center card cursor-pointer  rounded-full">
+                  <h1 className="text-header-foreground">
+                    {userinfo?.first_name[0]?.toUpperCase()}
+                  </h1>
+                  <h1 className="text-header">
+                    {userinfo?.last_name[0]?.toUpperCase()}
+                  </h1>
                 </div>
-                <div className=" card  flex  justify-between  ">
-                  <div
-                    className="px-3.5"
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className={
+                  "w-2xs p-3.5 flex flex-col  gap-normal border-none  "
+                }
+              >
+                <DropdownMenuItem className={"flex justify-between"}>
+                  {" "}
+                  <User /> profile
+                </DropdownMenuItem>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuGroup className="flex justify-between">
+                  <DropdownMenuItem
                     onClick={() => {
                       setTheme("dark");
                     }}
@@ -130,9 +130,8 @@ export default function ClientNav() {
                     <Moon
                       className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
                     />
-                  </div>
-                  <div
-                    className="px-3.5"
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
                     onClick={() => {
                       setTheme("light");
                     }}
@@ -140,22 +139,21 @@ export default function ClientNav() {
                     <Sun
                       className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
                     />
-                  </div>
-                </div>
-
-                <div className="card  ">
-                  <button
-                    onClick={() => {
-                      logout();
-                    }}
-                    className="flex  w-full justify-between"
-                  >
-                    logout
-                    <LogOut className="text-blue-400" />
-                  </button>
-                </div>
-              </div>
-            )}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuItem
+                  className={"flex justify-between font-bold"}
+                  variant="destructive"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  logout
+                  <LogOut />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           {/* smallscreen menu  */}
           <div className="flex   w-full  items-center justify-between container-main md:hidden ">
@@ -173,110 +171,62 @@ export default function ClientNav() {
                 </span>{" "}
               </h1>
             </div>
-            <button
-              onClick={() => SetSmallMe(!SmallMe)}
-              className="flex  items-center w-15 h-full  "
-            >
-              <Menu className="w-12 h-10" />
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Menu className="w-12 h-10" />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className={"w-full flex  gap-normal mt-5 "}>
+                <DropdownMenuItem className={"flex "}>
+                  <>
+                    <ul className=" grid grid-cols-2   ">
+                      {navlinks.map((single) => {
+                        return (
+                          <li className="card-lg">
+                            <Link to={single.Path}> {single.name} </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuGroup className="grid  justify-between">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTheme("dark");
+                    }}
+                  >
+                    <Moon
+                      className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTheme("light");
+                    }}
+                  >
+                    <Sun
+                      className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuItem
+                  className={"flex flex-col justify-center"}
+                  variant="destructive"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  logout
+                  <LogOut />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </nav>
       </div>
-      {SmallMe && (
-        <div
-          onClick={() => {
-            SetSmallMe(!SmallMe);
-          }}
-          className="w-full h-screen  fixed top-0 backdrop-blur-xs z-999 "
-        >
-          <div className="  flex  flex-col bg-card    w-[50%] h-screen fixed right-0 z-10   gap-14 p-3.5   top-0">
-            <div className="flex   items-center card-lg justify-end ">
-              <button onClick={() => SetSmallMe(!SmallMe)} className="flex ">
-                <Menu className="h-10 w-10 text-shadow-2xs text-header-foreground" />
-              </button>
-            </div>
-
-            <div className=" w-full">
-              <ul className=" flex  flex-col text-2xl text-[#0c98ee]   space-y-8  font-semibold  ">
-                {navlinks.map((single) => {
-                  return (
-                    <li
-                      onClick={() => SetSmallMe(!SmallMe)}
-                      className="card-lg"
-                    >
-                      <Link to={single.Path}> {single.name} </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            {/**shopping cart comp  */}
-            <div className=" flex flex-row  card-lg ">
-              <Link className="flex items-center gap-12" to="cart">
-                <h1 className="text-2xl text-blue-400 font-bold"> Cart</h1>
-              </Link>
-              <div className="relative cursor-pointer">
-                <button className="absolute -top-2 -right-3 text-xs text-white bg-orange-600 w-4.5 h-4.5 rounded-full">
-                  3
-                </button>
-              </div>
-            </div>
-            {/**themes */}
-            <div className="  flex  justify-between card ">
-              <div
-                className="px-3.5"
-                onClick={() => {
-                  setTheme("dark");
-                }}
-              >
-                <Moon
-                  className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
-                />
-              </div>
-              <div
-                className="px-3.5"
-                onClick={() => {
-                  setTheme("light");
-                }}
-              >
-                <Sun
-                  className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center  w-25  card-lg">
-              {" "}
-              <LogOut
-                className="text-blue-400"
-                onClick={() => {
-                  logout();
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col w-full  fixed bottom-0  border  ">
-              <div className="w-full  border-blue-400 "></div>
-              <div
-                onClick={() => navigate("profile")}
-                className="flex w-full mt-4  items-center   "
-              >
-                <div className="flex  px-4">
-                  <div className="  flex border   items-center justify-center rounded-full w-14 h-14 overflow-hidden shadow-md ">
-                    <h1 className="text-header-foreground">
-                      {userinfo?.first_name[0]?.toUpperCase()}
-                    </h1>
-                    <h1 className="text-header">
-                      {userinfo?.last_name[0]?.toUpperCase()}
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

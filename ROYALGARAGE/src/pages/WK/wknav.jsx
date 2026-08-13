@@ -8,9 +8,9 @@ export default function Wknav() {
 
   return (
     <>
-      <div className="  flex items-center justify-center text-sm  w-full   font-semibold h-20  overflow-hidden    ">
+      <div className="  flex items-center justify-center text-sm  w-full   font-semibold h-20  overflow-hidden     ">
         <nav className=" w-full  md:w-3/4    relative h-17.5 flex items-center    text-black transition-all  shadow-md rounded-2xl  px-1.5">
-          {/* bigscreen menu  */}{" "}
+          {/* big-screen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between">
             <div
               className="flex items-center"
@@ -27,10 +27,6 @@ export default function Wknav() {
               </li>
               <li>
                 <Link to="/Userservice"> Pending </Link>
-              </li>
-
-              <li>
-                <Link to="/appointment "> Earnings </Link>
               </li>
             </ul>
 
