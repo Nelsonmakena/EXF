@@ -25,16 +25,16 @@ Router.post("/admin", admin);
 
 Router.post("/worker-login", worker);
 
-/// checking if user is athenctaed and looged in
+/// checking if user is authenticated and logged in
 
 Router.get("/checkauth", authenticateMiddleware, (req, res) => {
   const user = req.userinfo;
   res
     .status(200)
-    .json({ success: true, message: "authenicated", user: req.userinfo });
+    .json({ success: true, message: "authenticated", user: req.userinfo });
 });
 
-//loggin out
+//login out
 Router.get("/logout", logOut);
 
 export default Router;

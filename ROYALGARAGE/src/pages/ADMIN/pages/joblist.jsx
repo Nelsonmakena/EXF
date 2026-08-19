@@ -30,8 +30,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { getWorkerList } from "@/Comp/store/admin/wokerslice";
+import { useNavigate, useParams } from "react-router";
 
 export default function JobList() {
+  const navigate = useNavigate();
   const { jobsList } = useSelector((state) => state.jobs);
   const { workerList } = useSelector((state) => state.worker);
 
@@ -47,9 +49,10 @@ export default function JobList() {
     dispatch(getWorkerList());
   }, []);
   console.log(workerList);
+  console.log(jobsList);
 
   return (
-    <section className="conatiner-main ">
+    <section className="container-main ">
       <div className=" section flex flex-col gap-normal">
         {/**job card  */}
 
@@ -57,11 +60,9 @@ export default function JobList() {
           <TableCaption> pending jobs .</TableCaption>
           <TableHeader>
             <TableRow className="font-bold">
-              <TableHead className={"font-bold text-secondary"}>
-                client_name
-              </TableHead>
+              <TableHead className={"font-bold text-secondary"}>Name</TableHead>
               <TableHead className={"font-bold text-primary"}>
-                client_vehicle
+                vehicle
               </TableHead>
               <TableHead className={"font-bold text-secondary"}>Job</TableHead>
               <TableHead className={"font-bold text-primary"}>Assign</TableHead>
@@ -91,58 +92,13 @@ export default function JobList() {
 
                     <TableCell>{item.service_name}</TableCell>
                     <TableCell>
-                      <Dialog>
-                        <DialogTrigger
-                          render={<Button> Assign</Button>}
-                        ></DialogTrigger>
-                        <DialogContent className={"bg-card "}>
-                          <DialogHeader>
-                            <DialogTitle>{item.service_name}</DialogTitle>
-                            <DialogDescription></DialogDescription>
-                          </DialogHeader>
-                          <form>
-                            <div className="flex flex-col w-full justify-center items-center   gap-normal">
-                              <label htmlFor="select vehicle ">
-                                {" "}
-                                choose vehicle to be serviced
-                              </label>
-                              <Select
-                                value={assignWorker.employee_id}
-                                onValueChange={(value) =>
-                                  setAssignWorker((prev) => ({
-                                    ...prev,
-                                    employee_id: value,
-                                  }))
-                                }
-                                className=" border w-2xs shadow-2xl"
-                              >
-                                <SelectTrigger className="w-2xs shadow-2xl ">
-                                  <SelectValue placeholder="Select Employee" />
-                                </SelectTrigger>
-                                <SelectContent className="bg-none backdrop-blur-md">
-                                  {workerList.map((worker) => (
-                                    <SelectItem
-                                      className={"tracking-wide font-bold"}
-                                      key={worker.employee_id}
-                                      value={worker.employee_id}
-                                    >
-                                      hello
-                                      {/* {worker.first_name} {worker.last_name} */}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-
-                              <button
-                                type="submit"
-                                className="w-2xs h-12 text-white rounded-md   bg-primary"
-                              >
-                                Confirm
-                              </button>
-                            </div>
-                          </form>
-                        </DialogContent>
-                      </Dialog>
+                      <Button
+                        onClick={() => {
+                          navigate(`${item.job_services_id}`);
+                        }}
+                      >
+                        Assign
+                      </Button>
                     </TableCell>
                   </TableRow>
                 );

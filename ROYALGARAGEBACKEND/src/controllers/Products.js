@@ -2,7 +2,7 @@ import express from "express";
 import { pool } from "../../Db.js";
 
 // getting all products
-export const getallproducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
     const products = await pool.query("SELECT * FROM Products ");
 
@@ -11,12 +11,12 @@ export const getallproducts = async (req, res) => {
     console.log(error.message);
   }
 };
-// geting a single product by id
-const getsingleproduct = (req, res) => {};
+// getting a single product by id
+const getSingleProduct = (req, res) => {};
 
 // adding items  post method
 
-export const addproduct = async (req, res) => {
+export const addProduct = async (req, res) => {
   const {
     product_name,
     product_price,
@@ -30,7 +30,7 @@ export const addproduct = async (req, res) => {
     if (Object.keys(req.body).length === 0) {
       return res.status(401).json({ succes: "false", message: "null info" });
     }
-    const Newproduct = await pool.query(
+    const NewProduct = await pool.query(
       "INSERT  INTO products( product_name,product_price,product_descrption, product_discount,product_image,product_category )  VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
       [
         product_name,
@@ -41,14 +41,14 @@ export const addproduct = async (req, res) => {
         product_category,
       ],
     );
-    res.status(201).json(Newproduct.rows[0]);
+    res.status(201).json(NewProduct.rows[0]);
   } catch (error) {
     console.log(error.message);
   }
 };
 
 /// update a product
-export const updateproduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
   const { productid } = req.params;
   const {
     product_name,
@@ -76,7 +76,27 @@ export const updateproduct = async (req, res) => {
     );
     res
       .status(200)
-      .json({ succes: true, message: "success product updated succesufully" });
+      .json({ success: true, message: "success product updated successfully" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  const { product_id } = req.params;
+  if (!product_id) {
+    return res.json({ message: "invalid product id " });
+  }
+  try {
+    const response = await pool.query(
+      "DELETE FROM products WHERE product_id = $1 RETURNING *",
+      [product_id],
+    );
+    res.status(200).json({
+      success: true,
+      message: "product deleted successfully",
+      data: response.rows[0],
+    });
   } catch (error) {
     console.log(error.message);
   }

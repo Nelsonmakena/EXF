@@ -3,12 +3,12 @@ import { ENV } from "../../env.js";
 export const authenticateMiddleware = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.status(401).json({ success: false, message: "acces denied" });
+    return res.status(401).json({ success: false, message: "access denied" });
   }
 
   // decoding the token info
   try {
-    const decodedToken = jwt.verify(token, ENV.JWT_SECERECT_KEY);
+    const decodedToken = jwt.verify(token, ENV.JWT_SECRET_KEY);
     req.userinfo = decodedToken;
 
     next();
@@ -17,12 +17,12 @@ export const authenticateMiddleware = (req, res, next) => {
 
     return res
       .status(401)
-      .json({ success: false, message: "unkwon token info" });
+      .json({ success: false, message: "unknown token info" });
   }
 };
 
-/// admin athentication role based
-export const adminchecker = (req, res, next) => {
+/// admin authentication role based
+export const adminChecker = (req, res, next) => {
   const { role } = req.userinfo;
 
   try {
@@ -31,14 +31,14 @@ export const adminchecker = (req, res, next) => {
     }
     return res.json({
       success: false,
-      message: "acces denied you dont have the privillages",
+      message: "access denied you don't have the privileges",
     });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-/// worker authenication role based
+/// worker authentication role based
 
 export const workerChecker = (req, res, next) => {
   const { role } = req.userinfo;
@@ -48,6 +48,6 @@ export const workerChecker = (req, res, next) => {
   }
   return res.json({
     success: false,
-    message: "access denied you dont have the privillages",
+    message: "access denied you don't have the privileges",
   });
 };

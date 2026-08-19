@@ -40,7 +40,7 @@ import {
 import { toast } from "sonner";
 
 export default function WorkerView() {
-  const [role, setRole] = useState();
+  const [role_id, setRole_id] = useState();
   const { workerList, roles } = useSelector((state) => state.worker);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function WorkerView() {
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
     console.log(data);
-    data.role = role;
+    data.role_id = role_id;
     console.log(data);
 
     dispatch(addNewWorker(data)).then((data) => {
@@ -68,19 +68,10 @@ export default function WorkerView() {
       }
     });
   };
-  console.log(roles);
-  console.log(role);
+  console.log(workerList);
 
   return (
     <section className="container-main  mt-3.5">
-      {/**card info like total employess employess with worke */}
-      <div className="  w-full  flex items-center card   ">
-        <div className="w-30 shadow-md h-20 flex flex-col items-center justify-center bg-accent rounded-md ">
-          <h1>No of Workers</h1>
-          <h1> 5</h1>
-        </div>
-      </div>
-
       <div className="section flex gap-normal ">
         <Table className="">
           <TableCaption>
@@ -88,10 +79,7 @@ export default function WorkerView() {
             <Sheet>
               <SheetTrigger
                 render={
-                  <h1 className="text-primary cursor-pointer">
-                    {" "}
-                    New emmployee
-                  </h1>
+                  <h1 className="text-primary cursor-pointer"> New employee</h1>
                 }
               />
               <SheetContent>
@@ -112,14 +100,18 @@ export default function WorkerView() {
                     <div className="grid gap-3">
                       <label> Role </label>
                       <Select
-                        value={role}
-                        onValueChange={setRole}
+                        onValueChange={(role_name) => {
+                          const id = roles.find(
+                            (item) => item.role_name === role_name,
+                          );
+                          setRole_id(id.role_id);
+                        }}
                         className=" border w-2xs shadow-2xl"
                       >
                         <SelectTrigger className="w-2xs shadow-2xl ">
                           <SelectValue placeholder="Role" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className={"bg-card"}>
                           {roles.map((item) => (
                             <SelectItem
                               className={"tracking-wide font-bold rounded-none"}
@@ -170,20 +162,22 @@ export default function WorkerView() {
                       <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
                         {" "}
                         <h1 className="text-accent font-bold">
-                          {employee.first_name == null
+                          {employee?.first_name == null
                             ? null
                             : employee.first_name[0]?.toUpperCase()}
                         </h1>
                         <h1 className="text-primary font-bold">
-                          {employee.last_name == null
+                          {employee?.last_name == null
                             ? null
                             : employee.last_name[0].toUpperCase()}
                         </h1>
                       </div>
-                      {employee.first_name + " " + employee.last_name}
+                      {employee?.first_name == null
+                        ? employee?.email
+                        : employee?.first_name + " " + employee?.last_name}
                     </div>
                   </TableCell>
-                  <TableCell>{employee.postion}</TableCell>
+                  <TableCell>{employee?.role_name}</TableCell>
 
                   <TableCell>active job </TableCell>
                   <TableCell>

@@ -14,8 +14,6 @@ export default function ProfileEdit() {
 
   useEffect(() => {
     dispatch(profile()).then((data) => {
-      console.log(data.payload.success);
-
       if (data.payload.success) {
         setClientInfo(data.payload.data);
       } else {

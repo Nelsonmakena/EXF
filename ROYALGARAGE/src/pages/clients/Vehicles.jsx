@@ -1,7 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import ClientNav from "./ClientNav";
-import dodge from "/src/assets/images/dodge.jpg";
-
 import {
   Table,
   TableBody,
@@ -25,10 +22,8 @@ import { Sidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import axios from "axios";
-import Loader from "@/Comp/loader";
-import Alerts from "@/Comp/alerts";
-import { Trash, CarFront } from "lucide-react";
+
+import { CarFront, Cog, CircleX } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getVehiclelist,
@@ -172,10 +167,54 @@ export default function Vehicles() {
                   <TableCell>{item.vehicle_model}</TableCell>
                   <TableCell>{item.vehicle_brand}</TableCell>
                   <TableCell>{item.vehicle_color}</TableCell>
-                  {/* remove a vehicle  */}
-                  <TableCell>
+                  {/* edit a row   */}
+                  <TableCell className={"flex justify-between  "}>
                     <Dialog>
-                      <DialogTrigger render={<Trash />}></DialogTrigger>
+                      <DialogTrigger
+                        render={<Cog className="text-accent" />}
+                      ></DialogTrigger>
+                      <DialogContent className={" bg-card backdrop-blur-md"}>
+                        <DialogHeader>
+                          <DialogTitle className={"flex justify-center"}>
+                            {item.liscence_plate}
+                          </DialogTitle>
+                          <DialogDescription></DialogDescription>
+                        </DialogHeader>
+                        <h1 className=" w-full flex justify-center">
+                          Are you sure you want to remove this vehicle
+                        </h1>
+                        <div className="p-3.5">
+                          This action cannot be undone. This will permanently
+                          delete your vehicle and remove its data from our
+                          servers.
+                        </div>
+                        <div className="w-full flex items-center justify-between h-36">
+                          <Button
+                            className={"w-40"}
+                            onClick={async () => {
+                              dispatch(removeVehicle(item.vehicle_id)).then(
+                                (data) => {
+                                  data.payload.success
+                                    ? toast(data.payload.message)
+                                    : toast(data.payload.message);
+                                },
+                              );
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                          <DialogClose asChild>
+                            <Button variant="destructive" className={"w-40"}>
+                              Cancel
+                            </Button>
+                          </DialogClose>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                    <Dialog>
+                      <DialogTrigger
+                        render={<CircleX className="text-destructive" />}
+                      ></DialogTrigger>
                       <DialogContent className={" bg-card backdrop-blur-md"}>
                         <DialogHeader>
                           <DialogTitle className={"flex justify-center"}>

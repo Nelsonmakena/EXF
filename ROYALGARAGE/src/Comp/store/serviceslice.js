@@ -18,14 +18,21 @@ export const newProduct = createAsyncThunk("/new-product", async (data) => {
     data,
     { withCredentials: true },
   );
-  return (await response).data;
+  return response.data;
+});
+
+///deleting a product
+
+export const removeProduct = createAsyncThunk("/remove", async () => {
+  const response = axios.delete();
+  return response.data;
 });
 
 //fetching product list
 
 export const getProducts = createAsyncThunk("/products", async () => {
   const response = await axios.get(
-    "http://localhost:3000/api/products/allproducts",
+    "http://localhost:3000/api/products/all-products",
   );
   return response.data;
 });

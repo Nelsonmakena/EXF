@@ -42,7 +42,7 @@ export default function ClientNav() {
   const [ProfileMenu, SetProfileMenu] = useState(false);
   const navlinks = [
     { name: "Vehicles", Path: "vehicles" },
-    { name: "Services ", Path: "Userservice" },
+    { name: "Services ", Path: "services" },
     { name: "Shop", Path: "shop" },
     { name: "Appointments ", Path: "appointment" },
   ];
@@ -50,18 +50,6 @@ export default function ClientNav() {
     dispatch(logoutanyone());
     navigate("/");
   };
-  useEffect(() => {
-    if (SmallMe) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [SmallMe]);
-  console.log(cart);
 
   return (
     <>
@@ -113,15 +101,19 @@ export default function ClientNav() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 className={
-                  "w-2xs p-3.5 flex flex-col  gap-normal border-none  "
+                  "w-2xs p-4.5 flex flex-col  gap-normal border-none   "
                 }
               >
-                <DropdownMenuItem className={"flex justify-between"}>
-                  {" "}
+                <DropdownMenuItem
+                  className={"flex"}
+                  onClick={() => {
+                    navigate("profile");
+                  }}
+                >
                   <User /> profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator></DropdownMenuSeparator>
-                <DropdownMenuGroup className="flex justify-between">
+                <DropdownMenuGroup className="flex justify-between ">
                   <DropdownMenuItem
                     onClick={() => {
                       setTheme("dark");
@@ -143,14 +135,14 @@ export default function ClientNav() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator></DropdownMenuSeparator>
                 <DropdownMenuItem
-                  className={"flex justify-between font-bold"}
+                  className={"flex "}
                   variant="destructive"
                   onClick={() => {
                     logout();
                   }}
                 >
-                  logout
                   <LogOut />
+                  logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -173,25 +165,25 @@ export default function ClientNav() {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Menu className="w-12 h-10" />
+                <Menu className="w-10 h-10" />
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className={"w-full flex  gap-normal mt-5 "}>
-                <DropdownMenuItem className={"flex "}>
-                  <>
-                    <ul className=" grid grid-cols-2   ">
-                      {navlinks.map((single) => {
-                        return (
-                          <li className="card-lg">
-                            <Link to={single.Path}> {single.name} </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </>
+              <DropdownMenuContent
+                className={"w-2xs flex flex-col  gap-normal mt-5 "}
+              >
+                <DropdownMenuItem className={"flex  "}>
+                  <ul className=" ">
+                    {navlinks.map((single) => {
+                      return (
+                        <li className="card">
+                          <Link to={single.Path}> {single.name} </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator></DropdownMenuSeparator>
-                <DropdownMenuGroup className="grid  justify-between">
+                <DropdownMenuGroup className="flex justify-between px-2.5">
                   <DropdownMenuItem
                     onClick={() => {
                       setTheme("dark");
@@ -213,7 +205,7 @@ export default function ClientNav() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator></DropdownMenuSeparator>
                 <DropdownMenuItem
-                  className={"flex flex-col justify-center"}
+                  className={"flex "}
                   variant="destructive"
                   onClick={() => {
                     logout();

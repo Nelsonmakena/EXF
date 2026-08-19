@@ -78,14 +78,12 @@ export const vehicleSlice = createSlice({
       })
       .addCase(getVehiclelist.rejected, (state, action) => {
         state.loading = false;
-        state.vehicles = {};
+        state.vehicles = [];
       })
       .addCase(newVehicle.fulfilled, (state, action) => {
-        console.log(action.payload.data);
-
-        console.log(state.vehicles);
-        state.vehicles.push(action.payload.data);
-        console.log(state.vehicles);
+        if (action.payload.success) {
+          state.vehicles.push(action.payload.data);
+        }
       })
       .addCase(total_No_Of_Vehicles.fulfilled, (state, action) => {
         state.totalVehicle = action.payload.data.vehicles_number;
@@ -93,7 +91,7 @@ export const vehicleSlice = createSlice({
       .addCase(removeVehicle.fulfilled, (state, action) => {
         console.log(action.payload);
         if (action.payload.success) {
-          const deletedVehicleId = action.payload.data.vehicle_id;
+          const deletedVehicleId = action.payload.data;
           state.vehicles = state.vehicles.filter(
             (vehicle) => vehicle.vehicle_id !== deletedVehicleId,
           );

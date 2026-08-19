@@ -8,12 +8,10 @@ const salt = bcrypt.genSaltSync(10);
 //adding a new role
 export const addNewRole = async (req, res) => {
   const { role_name, role_descprtion } = req.body;
-  console.log("hello");
-
   if (Object.keys(req.body).length == 0) {
     return res
       .status(401)
-      .json({ success: false, message: "all fileds must be filled" });
+      .json({ success: false, message: "all fields must be filled" });
   }
 
   try {
@@ -23,7 +21,7 @@ export const addNewRole = async (req, res) => {
     );
     res.status(200).json({
       success: true,
-      message: "role added succesefull",
+      message: "role added successfully",
       data: add.rows[0],
     });
   } catch (error) {
@@ -48,15 +46,17 @@ export const roleList = async (req, res) => {
 
 export const removeRole = async (req, res) => {
   const { role_id } = req.body;
+  console.log(role_id);
+
   try {
     const remove = await pool.query(
-      "DELETE FROM role where role_id = $1 RETURNING * ",
+      "DELETE FROM roles where role_id = $1 RETURNING * ",
       [role_id],
     );
     res.status(200).json({
       success: true,
-      message: "role removed succesefull",
-      data: remove.rows,
+      message: "role removed successfully",
+      data: remove.rows[0],
     });
   } catch (error) {
     console.log(error.message);
@@ -68,22 +68,29 @@ export const removeRole = async (req, res) => {
 export const addWorker = async (req, res) => {
   const { email, role_id } = req.body;
   const password = ENV.DEFAULT_PASSWORD;
+  console.log(req.body);
 
-  const exsitingWorker = await pool.query(
+  const existingWorker = await pool.query(
     "SELECT email FROM employee WHERE email=$1",
     [email],
   );
 
-  if (exsitingWorker.rows.length !== 0) {
+  if (existingWorker.rows.length !== 0) {
     return res.json({ success: false, message: "worker already registered" });
   }
-  const dbpasword = bcrypt.hashSync(password, salt);
+  const dbPassword = bcrypt.hashSync(password, salt);
   try {
     const worker = await pool.query(
-      "INSERT INTO employee (email,pswd_key,role_id) VALUES ($1,$2,$3) ",
-      [email, dbpasword, role_id],
+      "INSERT INTO employee (email,pswd_key,role_id) VALUES ($1,$2,$3) RETURNING *",
+      [email, dbPassword, role_id],
     );
-    res.status(200).json({ success: true, message: "succefully added " });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "successfully added ",
+        data: worker.rows[0],
+      });
   } catch (error) {
     res.json({ success: false, message: error.message });
     console.log(error.message);
@@ -94,7 +101,7 @@ export const addWorker = async (req, res) => {
 export const workers = async (req, res) => {
   try {
     const allWorkers = await pool.query(
-      "SELECT first_name,last_name,second_name,employee_id , role_name  FROM employee JOIN roles on roles.role_id = employee.role_id  ",
+      "SELECT first_name,last_name,second_name,employee_id , role_name ,email FROM employee JOIN roles on roles.role_id = employee.role_id",
     );
     res.status(200).json({ success: true, data: allWorkers.rows });
   } catch (error) {

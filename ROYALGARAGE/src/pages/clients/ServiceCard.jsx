@@ -27,7 +27,7 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
   const [open, setOpen] = useState(false);
   const [jobData, setJobData] = useState({
     vehicle_id: "",
-    appointemnt_day: "",
+    appointment_day: "",
     service_id: "",
   });
   const handleChange = (e) => {
@@ -54,30 +54,27 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
   };
 
   return (
-    <div className="border-border  rounded-xl  flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400">
+    <div className="border-border bg-card rounded-xl shadow-xs  flex flex-col w-46  hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
-      <div className="flex items-center justify-center h-30 mb-2 ">
+      <div className="  w-full  flex items-center justify-center h-30 mb-2 ">
         <img
           src={`/assets/images/${image}.jpg`}
           alt={name}
           className="max-h-full w-full rounded-t-xl  "
         />
       </div>
+      <div className="card  flex flex-col gap-normal ">
+        <p className="text-sm text-primary cursor-pointer ">{name}</p>
 
-      {/* Product Name */}
-      <p className="text-sm text-neutral-500 mb-2 px-2 cursor-pointer">
-        {name}
-      </p>
-
-      {/* Price */}
-      <div className="flex items-center gap-2 px-2">
-        <span className="text-sm font-semibold text-neutral-800">
-          ksh {Number(price)}
+        <span className="text-sm font-semibold text-accent">
+          {Number(price).toLocaleString("en-ke", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
-      </div>
 
-      {/* getting the service logic*/}
-      <div className=" w-3/4 m-2.5 flex items-center justify-center  h-12 ">
+        {/* getting the service logic*/}
+
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger
             render={
@@ -88,7 +85,7 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                     service_id: id,
                   }))
                 }
-                className=" text-white rounded-md  shadow-md h-10   "
+                className=" text-white rounded-md  shadow-xs h-10   "
               >
                 {" "}
                 Book Now

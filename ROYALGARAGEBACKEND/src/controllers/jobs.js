@@ -7,7 +7,7 @@ export const job = async (req, res) => {
   if (!client_id) {
     console.log("access denied");
   }
-  const { vehicle_id, appointemnt_day, service_id } = req.body;
+  const { vehicle_id, appointment_day, service_id } = req.body;
   let job_id;
 
   try {
@@ -22,7 +22,7 @@ export const job = async (req, res) => {
     } else {
       const newJob = await pool.query(
         "INSERT INTO jobs(vehicle_id,appointment_day ) VALUES ($1,$2) RETURNING job_id ",
-        [vehicle_id, appointemnt_day],
+        [vehicle_id, appointment_day],
       );
       console.log(newJob.rows);
 

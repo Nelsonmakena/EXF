@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 
 const initialState = {
-  isAuthenicated: false,
+  isAuthenticated: false,
   isLoading: true,
   userinfo: null,
   Role: null,
@@ -17,7 +17,7 @@ export const profile = createAsyncThunk(
 
   async () => {
     const response = await axios.get(
-      "http://localhost:3000/api/client/profileinfo",
+      "http://localhost:3000/api/client/profile-info",
 
       { withCredentials: true },
     );
@@ -127,7 +127,7 @@ export const logoutanyone = createAsyncThunk(
 );
 
 const authSlice = createSlice({
-  name: "authenication",
+  name: "authentication",
   initialState,
   reducers: {
     SetUserinfo: (state, action) => {},
@@ -141,13 +141,13 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.userinfo = null;
         state.Role = null;
-        state.isAuthenicated = false;
+        state.isAuthenticated = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
         state.Role = null;
-        state.isAuthenicated = false;
+        state.isAuthenticated = false;
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
@@ -159,19 +159,19 @@ const authSlice = createSlice({
           console.log(state.userinfo);
 
           state.Role = action.payload.user.role;
-          state.isAuthenicated = true;
+          state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
           state.Role = null;
-          state.isAuthenicated = false;
+          state.isAuthenticated = false;
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
         state.Role = null;
-        state.isAuthenicated = false;
+        state.isAuthenticated = false;
       })
       .addCase(adminlogin.pending, (state) => {
         state.isLoading = true;
@@ -181,19 +181,19 @@ const authSlice = createSlice({
           state.isLoading = false;
           state.userinfo = action.payload.name;
           state.Role = action.payload.role;
-          state.isAuthenicated = true;
+          state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
           state.Role = null;
-          state.isAuthenicated = false;
+          state.isAuthenticated = false;
         }
       })
       .addCase(adminlogin.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
         state.Role = null;
-        state.isAuthenicated = false;
+        state.isAuthenticated = false;
       })
       .addCase(workerlogin.pending, (state) => {
         state.isLoading = true;
@@ -203,7 +203,7 @@ const authSlice = createSlice({
           state.isLoading = false;
           state.userinfo = action.payload.name;
           state.Role = action.payload.role;
-          state.isAuthenicated = true;
+          state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
@@ -215,7 +215,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.userinfo = null;
         state.Role = null;
-        state.isAuthenicated = false;
+        state.isAuthenticated = false;
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
@@ -226,26 +226,26 @@ const authSlice = createSlice({
           state.userinfo = action.payload.user;
           console.log(state.userinfo);
           state.Role = action.payload.user.role;
-          state.isAuthenicated = true;
+          state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
           state.Role = null;
-          state.isAuthenicated = false;
+          state.isAuthenticated = false;
         }
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
         state.Role = null;
-        state.isAuthenicated = false;
+        state.isAuthenticated = false;
       })
       .addCase(logoutanyone.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = null;
           state.Role = null;
-          state.isAuthenicated = false;
+          state.isAuthenticated = false;
         }
       });
   },

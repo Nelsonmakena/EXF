@@ -21,7 +21,7 @@ import AdminHome from "../pages/ADMIN/pages/adminhome";
 import WkLogin from "../pages/WK/WkLogin";
 
 import NotAuth from "./notauth";
-import Authenicated from "./authenication/auth";
+import Authenticated from "./authenication/auth";
 
 import AdminViewProducts from "@/pages/ADMIN/pages/Adminproducts";
 import AdminViewServices from "@/pages/ADMIN/pages/Adminservices";
@@ -55,17 +55,17 @@ export default function Routess() {
         <Route
           path="/client"
           element={
-            <Authenicated>
+            <Authenticated>
               {" "}
               <Templatelayout />{" "}
-            </Authenicated>
+            </Authenticated>
           }
         >
           <Route path="dashboard" element={<HomeClient />} />
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="appointment" element={<Appointment />} />
           <Route path="feedback" element={<Feedback />} />
-          <Route path="Userservice" element={<ClientServices />} />
+          <Route path="services" element={<ClientServices />} />
           <Route path="profile" element={<ProfileEdit />} />
           <Route path="cart" element={<Cart />} />
           <Route path="shop" element={<Shop />} />
@@ -76,10 +76,10 @@ export default function Routess() {
         <Route
           path="/admin"
           element={
-            <Authenicated>
+            <Authenticated>
               {" "}
               <Admincommon />{" "}
-            </Authenicated>
+            </Authenticated>
           }
         >
           <Route path="home" element={<AdminHome />} />
@@ -100,10 +100,10 @@ export default function Routess() {
         <Route
           path="/w001"
           element={
-            <Authenicated>
+            <Authenticated>
               {" "}
               <WorkerTemplate />
-            </Authenicated>
+            </Authenticated>
           }
         >
           <Route path="dashboard" element={<WorkerDashborad />} />

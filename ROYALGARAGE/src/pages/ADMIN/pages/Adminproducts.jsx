@@ -22,6 +22,7 @@ import {
   newProduct,
   updateProducts,
 } from "@/Comp/store/serviceslice";
+import { Trash } from "lucide-react";
 
 export default function AdminViewProducts() {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ export default function AdminViewProducts() {
   }, []);
 
   return (
-    <section className="w-full container-main">
+    <section className="w-full ">
       <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
         {/**    add item
          *
@@ -251,10 +252,12 @@ export default function AdminViewProducts() {
                         />
                       </div>
                     </form>
+
                     <SheetFooter>
-                      <SheetClose
-                        render={<Button variant="outline">Close</Button>}
-                      />
+                      <Button className={"h-12"}>
+                        {" "}
+                        <Trash />
+                      </Button>
                     </SheetFooter>
                   </SheetContent>
                 </Sheet>

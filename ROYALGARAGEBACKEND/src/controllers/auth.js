@@ -6,15 +6,7 @@ import { ENV } from "../../env.js";
 
 const salt = bcrypt.genSaltSync(10);
 
-function formatName(name) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-}
-
-/// adding a new user client
+// adding a new user client
 
 export const addUser = async (req, res) => {
   const {
@@ -31,21 +23,21 @@ export const addUser = async (req, res) => {
     return console.log("all fields are required");
   }
 
-  const hashpswd = bcrypt.hashSync(password, salt);
+  const hashPassword = bcrypt.hashSync(password, salt);
 
   /// check whether the user exists
 
-  const existinguser = await pool.query(
+  const existingUser = await pool.query(
     "SELECT email FROM client WHERE email = $1   ",
     [email],
   );
-  if (existinguser.rows.length !== 0) {
-    return res.json({ success: false, message: "user alerdy exits " });
+  if (existingUser.rows.length !== 0) {
+    return res.json({ success: false, message: "user already exits " });
   }
 
   /// adding the user to the db
   try {
-    const newuser = await pool.query(
+    const newUser = await pool.query(
       "INSERT INTO client (first_name,second_name,last_name, email, phonenumber,pswdkey ,address ) values($1,$2,$3,$4,$5,$6,$7) RETURNING *",
       [
         first_name,
@@ -53,11 +45,11 @@ export const addUser = async (req, res) => {
         last_name,
         email,
         phonenumber,
-        hashpswd,
+        hashPassword,
         address,
       ],
     );
-    res.status(200).json({ success: true, message: "regirstation complete" });
+    res.status(200).json({ success: true, message: "registration complete" });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -70,7 +62,7 @@ export const getUserinfo = async (req, res) => {
   console.log(req.body);
   if (Object.keys(req.body).length == 0) {
     console.log(req.body);
-    return res.json({ success: false, message: "all fileds are required" });
+    return res.json({ success: false, message: "all fields are required" });
   }
 
   try {
@@ -80,27 +72,27 @@ export const getUserinfo = async (req, res) => {
     if (user.rows.length == 0) {
       return res.json({
         success: false,
-        message: "user doesnot exisit try again ",
+        message: "user doesn't exist try again ",
       });
     }
 
     if (bcrypt.compareSync(password, user.rows[0].pswdkey)) {
       /// creating user token
-      const accesToken = jwt.sign(
+      const accessToken = jwt.sign(
         {
           client_id: user.rows[0].client_id,
           first_name: user.rows[0].first_name,
           last_name: user.rows[0].last_name,
           role: "client",
         },
-        ENV.JWT_SECERECT_KEY,
+        ENV.JWT_SECRET_KEY,
         { expiresIn: "60m" },
       );
 
-      res.cookie("token", accesToken, { httpOnly: true, secure: false });
+      res.cookie("token", accessToken, { httpOnly: true, secure: false });
       res.status(200).json({
         success: true,
-        message: "logged in succefull",
+        message: "logged in successfully",
         user: {
           first_name: user.rows[0].first_name,
           last_name: user.rows[0].last_name,
@@ -123,11 +115,11 @@ export const worker = async (req, res) => {
 
   if (Object.keys(req.body).length == 0) {
     console.log(req.body);
-    return res.json({ success: false, message: "all fileds are required" });
+    return res.json({ success: false, message: "all fields are required" });
   }
 
   try {
-    /// checking if user exist and also pasoced
+    /// checking if user exist and also password
     const existingWorker = await pool.query(
       "SELECT * FROM employee WHERE email = $1",
       [email],
@@ -136,18 +128,18 @@ export const worker = async (req, res) => {
       existingWorker.rows.length !== 0 &&
       bcrypt.compareSync(password, existingWorker.rows[0].pswd_key)
     ) {
-      const accesToken = jwt.sign(
+      const accessToken = jwt.sign(
         {
           employee_id: existingWorker.rows[0].employee_id,
           role: "worker",
         },
-        ENV.JWT_SECERECT_KEY,
+        ENV.JWT_SECRET_KEY,
         { expiresIn: "60m" },
       );
-      res.cookie("token", accesToken, { httpOnly: true, secure: false });
+      res.cookie("token", accessToken, { httpOnly: true, secure: false });
       res.status(200).json({
         success: true,
-        message: "logged in succefull",
+        message: "logged in successfully",
         user: {
           first_name: existingWorker.rows[0].first_name,
           last_name: existingWorker.rows[0].last_name,
@@ -155,7 +147,7 @@ export const worker = async (req, res) => {
         },
       });
     } else {
-      res.json({ success: false, message: "email or pasword is incorect" });
+      res.json({ success: false, message: "email or password is incorrect" });
     }
   } catch (error) {
     console.log(error.message);
@@ -166,7 +158,7 @@ export const worker = async (req, res) => {
 export const admin = async (req, res) => {
   const { username, password } = req.body;
   if (Object.keys(req.body).length == 0) {
-    return console.log("empty fileds");
+    return console.log("empty fields");
   }
 
   try {
@@ -180,25 +172,25 @@ export const admin = async (req, res) => {
     }
 
     if (existingAdmin.rows[0].password == password) {
-      const accesToken = jwt.sign(
+      const accessToken = jwt.sign(
         {
           admin_id: existingAdmin.rows[0].admin_id,
           role: "admin",
         },
-        ENV.JWT_SECERECT_KEY,
+        ENV.JWT_SECRET_KEY,
         { expiresIn: "60m" },
       );
-      res.cookie("token", accesToken, { httpOnly: true, secure: false });
+      res.cookie("token", accessToken, { httpOnly: true, secure: false });
       res.status(200).json({
         success: true,
-        message: "logged in succefull",
+        message: "logged in successfully",
         name: "Admin",
         role: "admin",
       });
     } else {
       return res.json({
         success: false,
-        message: "email or pasword is incorect",
+        message: "email or password is incorrect",
       });
     }
   } catch (error) {

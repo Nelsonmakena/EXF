@@ -1,30 +1,41 @@
 import express from "express";
 import {
-  getallproducts,
-  addproduct,
-  updateproduct,
+  getAllProducts,
+  addProduct,
+  updateProduct,
+  deleteProduct,
 } from "../controllers/Products.js";
 import {
   authenticateMiddleware,
-  adminchecker,
+  adminChecker,
 } from "./../midlewares/authenicationmidleware.js";
 
 // express router
 const Router = express.Router();
 
 //fetch all products
-Router.get("/allproducts", getallproducts);
+Router.get("/all-products", getAllProducts);
 
 // add new product
-Router.put("/addproduct", authenticateMiddleware, adminchecker, addproduct);
+Router.put("/add-product", authenticateMiddleware, adminChecker, addProduct);
 
 // update a product
 
 Router.patch(
   "/update/:productid",
   authenticateMiddleware,
-  adminchecker,
-  updateproduct,
+  adminChecker,
+  updateProduct,
 );
+//delete a product
+Router.delete(
+  "/delete/:product_id",
+  authenticateMiddleware,
+  adminChecker,
+  deleteProduct,
+);
+//update product Quantity
+
+// Router.patch();
 
 export default Router;

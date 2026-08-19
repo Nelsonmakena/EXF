@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../store/authslice";
 import { useEffect } from "react";
 
-export default function Authenicated({ children }) {
+export default function Authenticated({ children }) {
   //always checking auth status
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
-  const { isLoading, Role, isAuthenicated } = useSelector(
+  const { isLoading, Role, isAuthenticated } = useSelector(
     (state) => state.auth,
   );
 
@@ -21,13 +21,11 @@ export default function Authenicated({ children }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!isAuthenicated) {
+  if (!isAuthenticated) {
     if (location.pathname.includes("/admin")) {
       return <Navigate to="/adminlogin" />;
     }
     if (location.pathname.includes("/client")) {
-      console.log(path);
-
       return <Navigate to="/login" />;
     }
     if (location.pathname.includes("/wk-hm")) {
@@ -36,11 +34,9 @@ export default function Authenicated({ children }) {
   }
 
   if (
-    isAuthenicated &&
+    isAuthenticated &&
     (path === "/login" || path === "/adminlogin" || path === "/wk")
   ) {
-    console.log(isAuthenicated);
-
     if (Role === "admin") return <Navigate to="/admin/home" replace />;
     if (Role === "client") return <Navigate to="/client/dashboard" replace />;
     if (Role === "worker") return <Navigate to="/wk-hm" replace />;

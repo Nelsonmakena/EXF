@@ -12,7 +12,7 @@ const initialState = {
 
 ///all worker related logic fro the admin is here
 
-//role in system
+//role list in system
 export const roleList = createAsyncThunk("admin/role-list", async () => {
   const response = await axios.get(
     "http://localhost:3000/api/admin/role-list",
@@ -35,8 +35,28 @@ export const newRole = createAsyncThunk("admin/new-role", async (data) => {
   return response.data;
 });
 
-// geting worker list
-export const getWorkerList = createAsyncThunk("admin/workerlist", async () => {
+//removing roles
+export const deleteRole = createAsyncThunk(
+  "/deleteVehicle",
+  async (role_id) => {
+    console.log(role_id);
+
+    const response = await axios.delete(
+      "http://localhost:3000/api/admin/remove-role",
+      {
+        data: {
+          role_id: role_id,
+        },
+        withCredentials: true,
+      },
+    );
+
+    return response.data;
+  },
+);
+
+// getting worker list
+export const getWorkerList = createAsyncThunk("admin/worker-list", async () => {
   const response = await axios.get(
     "http://localhost:3000/api/admin/workers",
 
@@ -47,7 +67,7 @@ export const getWorkerList = createAsyncThunk("admin/workerlist", async () => {
 });
 //adding a worker
 export const addNewWorker = createAsyncThunk(
-  "admin/newworker",
+  "admin/new-worker",
   async (data) => {
     console.log(data);
 
@@ -72,8 +92,24 @@ const workerSlice = createSlice({
       .addCase(roleList.fulfilled, (state, action) => {
         state.roles = action.payload.data;
       })
+      .addCase(addNewWorker.fulfilled, (state, action) => {
+        if (action.payload.success) {
+          state.workerList.push(action.payload.data);
+        }
+      })
       .addCase(newRole.fulfilled, (state, action) => {
         state.roles.push(action.payload.data);
+      })
+      .addCase(deleteRole.fulfilled, (state, action) => {
+        console.log(action.payload.data);
+        const deletedRoleID = action.payload.data.role_id;
+        console.log(deletedRoleID);
+
+        if (action.payload.success) {
+          state.roles = state.roles.filter(
+            (role) => role.role_id !== deletedRoleID,
+          );
+        }
       });
   },
 });

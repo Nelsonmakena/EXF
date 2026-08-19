@@ -1,7 +1,7 @@
 import express from "express";
 import {
   authenticateMiddleware,
-  adminchecker,
+  adminChecker,
 } from "../midlewares/authenicationmidleware.js";
 import {
   addNewRole,
@@ -16,14 +16,8 @@ import { totalNumbers } from "../controllers/dashboarb.js";
 
 import { AllJobs, assignJob, unallocatedJobs } from "../controllers/jobs.js";
 const Router = express.Router();
-// Router.use((req, res) => {
-//   if (Object.keys(req.body).length === 0) {
-//     return res
-//       .status(401)
-//       .json({ success: false, message: "all fileds must be filled" });
-//   }
-// });
-Router.use(authenticateMiddleware, adminchecker);
+
+Router.use(authenticateMiddleware, adminChecker);
 
 // these are protected admin routes
 
@@ -58,10 +52,10 @@ Router.get("/jobs-list", AllJobs);
 
 Router.patch("/assign", assignJob);
 
-//list of ansigned jobs
+//list of unsigned jobs
 
 Router.get("/unassigned-jobs", unallocatedJobs);
-// list of employess with no jobs
+// list of employees with no jobs
 
 Router.get("/no-work", nonAssignedWorkerList);
 

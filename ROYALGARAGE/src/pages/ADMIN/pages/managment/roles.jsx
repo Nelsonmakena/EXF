@@ -21,22 +21,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "sonner";
-import { newRole, roleList } from "@/Comp/store/admin/wokerslice";
-import { Trash } from "lucide-react";
+import { deleteRole, newRole, roleList } from "@/Comp/store/admin/wokerslice";
+import { Trash, Trash2 } from "lucide-react";
 
 export default function RolesView() {
-  //const [workerList, SetworkerList] = useState();
+  const [open, SetOPen] = useState(false);
   const { roles } = useSelector((state) => state.worker);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(roleList());
   }, []);
+  console.log(roles);
 
   const newRoleData = async (e) => {
     e.preventDefault();
@@ -44,7 +53,13 @@ export default function RolesView() {
     console.log(formdata);
     const data = Object.fromEntries(formdata.entries());
     console.log(data);
-    dispatch(newRole(data)).then((data) => {});
+    dispatch(newRole(data)).then((data) => {
+      if (data.payload.success) {
+        SetOPen(false);
+      } else {
+        SetOPen(true);
+      }
+    });
   };
 
   const removeRole = async (e) => {
@@ -57,7 +72,7 @@ export default function RolesView() {
         <Table className="">
           <TableCaption>
             {" "}
-            <Sheet>
+            <Sheet open={open} onOpenChange={SetOPen}>
               <SheetTrigger
                 render={
                   <h1 className="text-primary cursor-pointer"> + New Role</h1>
@@ -120,7 +135,29 @@ export default function RolesView() {
                 <TableRow>
                   <TableCell className={""}>{item.role_name}</TableCell>
                   <TableCell>{item.role_descprtion}</TableCell>
-                  <TableCell className={"text-destructive"}></TableCell>
+                  <TableCell className={"text-destructive"}>
+                    <Dialog>
+                      <DialogTrigger render={<Trash2 />}></DialogTrigger>
+                      <DialogContent className={"bg-card "}>
+                        <DialogHeader>
+                          <DialogTitle>{item.service_name}</DialogTitle>
+                          <DialogDescription></DialogDescription>
+                        </DialogHeader>
+                        <div className="h-36 flex flex-col justify-between card ">
+                          <h1>
+                            Are you sure you want to delete the above role
+                          </h1>
+                          <Button
+                            onClick={() => {
+                              dispatch(deleteRole(item.role_id));
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
                 </TableRow>
               );
             })}
