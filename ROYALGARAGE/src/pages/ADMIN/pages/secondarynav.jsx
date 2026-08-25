@@ -15,20 +15,20 @@ import { useLocation } from "react-router";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { logoutanyone } from "@/Comp/store/authslice";
+
 import { useTheme } from "@/comp/theme-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { logoutAnyone } from "@/Comp/store/authslice";
 
 export default function SecondaryNav({ hidemenu, Sethidemenu }) {
   const { setTheme, theme } = useTheme();
   const location = useLocation();
   const path = location.pathname;
-  const [ProfileMenu, SetProfileMenu] = useState(false);
   const dispatch = useDispatch();
 
   const logout = () => {
-    dispatch(logoutanyone());
-    navigate("/");
+    dispatch(logoutAnyone());
+    navigate("/admin-login");
   };
   return (
     <section className=" w-full flex items-center  ">
@@ -40,19 +40,19 @@ export default function SecondaryNav({ hidemenu, Sethidemenu }) {
           />
         </div>
 
-        {/*mamangemnt items  */}
+        {/*management items  */}
         <div
-          className={`${path.includes("/admin/managment") ? "flex " : "hidden "} `}
+          className={`${path.includes("/admin/management") ? "flex " : "hidden "} `}
         >
           <ul className="flex  items-center space-x-8 md:pl-28  navbartext ">
             <li className="card">
-              <Link to="managment/workers"> Workers </Link>
+              <Link to="management/workers"> Workers </Link>
             </li>
             <li className="card">
               <Link to=""> Clients </Link>
             </li>
             <li className="card">
-              <Link to="managment/roles"> Roles </Link>
+              <Link to="management/roles"> Roles </Link>
             </li>
           </ul>
         </div>
@@ -78,7 +78,7 @@ export default function SecondaryNav({ hidemenu, Sethidemenu }) {
               <Link to="tasks/jobs"> Jobs </Link>
             </li>
             <li className="card">
-              <Link to=""> InProgress </Link>
+              <Link to="tasks/in-progress"> InProgress </Link>
             </li>
             <li className="card">
               <Link to=""> Completed </Link>

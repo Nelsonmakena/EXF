@@ -28,7 +28,7 @@ export default function Authenticated({ children }) {
     if (location.pathname.includes("/client")) {
       return <Navigate to="/login" />;
     }
-    if (location.pathname.includes("/wk-hm")) {
+    if (location.pathname.includes("/w001")) {
       return <Navigate to="/wk" />;
     }
   }

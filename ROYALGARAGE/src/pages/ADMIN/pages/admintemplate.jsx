@@ -20,7 +20,7 @@ export default function Admincommon() {
         </div>
 
         <div
-          className={`flex flex-col w-full bg-card ${hidemenu ? "rounded-none " : "rounded-tl-[60px] rounded-bl-[30px]"} `}
+          className={`flex flex-col w-full bg-card overflow-hidden ${hidemenu ? "rounded-none " : "rounded-tl-[60px] rounded-bl-[30px]"} `}
         >
           <ScrollArea className="h-screen  ">
             <div className=" flex py-4 justify-between  h-20  w-full card ">

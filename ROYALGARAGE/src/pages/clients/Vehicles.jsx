@@ -68,7 +68,7 @@ export default function Vehicles() {
           </h1>
           <Table className="">
             <TableCaption>
-              {/* addding a new vehicle  */}
+              {/* adding a new vehicle  */}
               <Dialog>
                 <DialogTrigger
                   render={

@@ -19,6 +19,8 @@ export const getVehiclelist = createAsyncThunk("/vehicles", async () => {
 //adding vehicles
 
 export const newVehicle = createAsyncThunk("/addVehicle", async (data) => {
+  console.log(data);
+
   const add = await axios.post(
     "http://localhost:3000/api/client/add-vehicle",
     data,

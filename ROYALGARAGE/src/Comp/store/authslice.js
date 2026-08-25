@@ -102,12 +102,12 @@ export const checkAuth = createAsyncThunk(
         },
       },
     );
-
+    console.log(response.data);
     return response.data;
   },
 );
 //login out anyone
-export const logoutanyone = createAsyncThunk(
+export const logoutAnyone = createAsyncThunk(
   "/auth/logout",
 
   async () => {
@@ -240,7 +240,7 @@ const authSlice = createSlice({
         state.Role = null;
         state.isAuthenticated = false;
       })
-      .addCase(logoutanyone.fulfilled, (state, action) => {
+      .addCase(logoutAnyone.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = null;

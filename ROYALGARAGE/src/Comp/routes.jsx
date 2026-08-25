@@ -30,8 +30,16 @@ import WorkerView from "@/pages/ADMIN/pages/managment/workerview";
 import jobList from "../pages/ADMIN/pages/joblist";
 import JobList from "../pages/ADMIN/pages/joblist";
 import WorkerTemplate from "@/pages/WK";
-import WorkerDashborad from "@/pages/WK/dashbaord";
 import RolesView from "@/pages/ADMIN/pages/managment/roles";
+import WkJobs from "@/pages/WK/jobs";
+import WkMessages from "@/pages/WK/messages";
+import WkJobCard from "@/pages/WK/jobcard";
+import WkSchedule from "@/pages/WK/schedule";
+import AdminJobCard from "@/pages/ADMIN/pages/adminJobCard";
+import WorkerDashboard from "@/pages/WK/dashbaord";
+import InprogressJobs from "@/pages/ADMIN/pages/inProgresJobs";
+import Messages from "@/pages/ADMIN/pages/messages";
+import SingleMessage from "@/pages/ADMIN/pages/singlemessage";
 
 export default function Routess() {
   return (
@@ -47,7 +55,7 @@ export default function Routess() {
         </Route>
         <Route path="/login" element={<Userlogin />} />
         <Route path="*" element={<Pages404 />}></Route>
-        <Route path="/adminlogin" element={<Admin />} />
+        <Route path="/admin-login" element={<Admin />} />
         <Route path="/wk" element={<WkLogin />}></Route>
         <Route path="/notauthorized" element={<NotAuth />}></Route>
 
@@ -77,13 +85,12 @@ export default function Routess() {
           path="/admin"
           element={
             <Authenticated>
-              {" "}
-              <Admincommon />{" "}
+              <Admincommon />
             </Authenticated>
           }
         >
           <Route path="home" element={<AdminHome />} />
-          <Route path="managment">
+          <Route path="management">
             <Route path="workers" element={<WorkerView />} />
             <Route path="roles" element={<RolesView />} />
           </Route>
@@ -91,8 +98,14 @@ export default function Routess() {
             <Route path="products" element={<AdminViewProducts />} />
             <Route path="services" element={<AdminViewServices />} />
           </Route>
+          <Route path="messages" element={<Messages />}>
+            <Route path="messages/:id" element={<SingleMessage />} />
+          </Route>
           <Route path="tasks">
             <Route path="jobs" element={<JobList />} />
+            <Route path="in-progress" element={<InprogressJobs />} />
+
+            <Route path="jobs/:job_services_id" element={<AdminJobCard />} />
           </Route>
         </Route>
         {/* worker routes  */}
@@ -106,7 +119,11 @@ export default function Routess() {
             </Authenticated>
           }
         >
-          <Route path="dashboard" element={<WorkerDashborad />} />
+          <Route path="dashboard" element={<WorkerDashboard />} />
+          <Route path="schedule" element={<WkSchedule />} />
+          <Route path="jobs" element={<WkJobs />} />
+          <Route path="jobs/:jobId" element={<WkJobCard />} />
+          <Route path="messages" element={<WkMessages />} />
         </Route>
       </Routes>
     </>

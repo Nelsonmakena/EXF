@@ -17,7 +17,7 @@ export const totalNumbers = async (req, res) => {
 export const TotalNumbersClient = async (req, res) => {
   const { client_id } = req.userinfo;
   if (!client_id) {
-    return res.json({ success: false, message: "acces denied" });
+    return res.json({ success: false, message: "access denied" });
   }
   try {
     const response = await pool.query(

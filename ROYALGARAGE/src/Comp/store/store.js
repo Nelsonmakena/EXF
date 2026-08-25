@@ -2,9 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authslice";
 import vehicleReducer from "./vehicleslice";
 import servicesReducer from "./serviceslice";
-import workerSlice from "./admin/wokerslice";
-import jobSlice from "./admin/jobsslice";
+import workerSlice from "./wokerslice";
+import jobSlice from "./jobsslice";
 import dateSlice from "./appointmentsdates";
+import dashboardSlice from "./dashboardstarts";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     worker: workerSlice,
     jobs: jobSlice,
     appoitnmentDates: dateSlice,
+    dashboard: dashboardSlice,
   },
 });
 

@@ -23,13 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getJobList } from "@/Comp/store/admin/jobsslice";
+import { getJobList } from "@/Comp/store/jobsslice";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { getWorkerList } from "@/Comp/store/admin/wokerslice";
+import { getWorkerList } from "@/Comp/store/wokerslice";
 import { useNavigate, useParams } from "react-router";
 
 export default function JobList() {

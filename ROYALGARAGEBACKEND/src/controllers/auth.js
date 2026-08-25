@@ -24,6 +24,7 @@ export const addUser = async (req, res) => {
   }
 
   const hashPassword = bcrypt.hashSync(password, salt);
+  const date = Date().split("G", 1).toString();
 
   /// check whether the user exists
 
@@ -38,7 +39,7 @@ export const addUser = async (req, res) => {
   /// adding the user to the db
   try {
     const newUser = await pool.query(
-      "INSERT INTO client (first_name,second_name,last_name, email, phonenumber,pswdkey ,address ) values($1,$2,$3,$4,$5,$6,$7) RETURNING *",
+      "INSERT INTO client (first_name,second_name,last_name, email, phonenumber,pswdkey ,address, created_at ) values($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
       [
         first_name,
         second_name,
@@ -47,6 +48,7 @@ export const addUser = async (req, res) => {
         phonenumber,
         hashPassword,
         address,
+        date,
       ],
     );
     res.status(200).json({ success: true, message: "registration complete" });
@@ -143,6 +145,7 @@ export const worker = async (req, res) => {
         user: {
           first_name: existingWorker.rows[0].first_name,
           last_name: existingWorker.rows[0].last_name,
+          email: existingWorker.rows[0].email,
           role: "worker",
         },
       });

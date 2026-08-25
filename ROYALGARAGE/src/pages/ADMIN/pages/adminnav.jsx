@@ -9,6 +9,7 @@ import {
   HomeIcon,
   LayoutDashboardIcon,
   LogOut,
+  MessagesSquare,
   Moon,
   Sun,
 } from "lucide-react";
@@ -18,8 +19,9 @@ import {
 }
 import { useTheme } from "@/comp/theme-provider";
 import { useDispatch } from "react-redux";
-import { logoutanyone } from "@/Comp/store/authslice";
+
 import { ClipboardList, PackageSearch } from "lucide-react";
+import { logoutAnyone } from "@/Comp/store/authslice";
 
 export default function AdminNav() {
   const { setTheme, theme } = useTheme();
@@ -28,17 +30,11 @@ export default function AdminNav() {
   const path = location.pathname;
 
   const navigate = useNavigate();
-  const [UserAccountSmallMenu, SetUserAccountSmallMenu] = useState(false);
-
-  const handleLogout = () => {
-    dispatch(logoutanyone()).then(navigate("/adminlogin"));
-  };
-  console.log(path);
 
   return (
     <div className="flex flex-col  h-screen justify-between  cursor-pointer bg-secondary  ">
       <div className=" h-3/4 section flex flex-col gap-normal">
-        {/** menu  dahsboard */}
+        {/** menu  dashboard */}
 
         <button
           onClick={() => {
@@ -52,15 +48,15 @@ export default function AdminNav() {
           Dashboard
         </button>
 
-        {/** menu  managnment  */}
+        {/** menu  management  */}
 
         <button
           onClick={() => {
-            navigate("managment/workers");
+            navigate("management/workers");
           }}
-          className={`${path.includes("/admin/managment") ? "bg-card rounded-l-2xl tracking-widest" : " font-bold bg-none text-header"}   w-full h-15 card flex items-center justify-center`}
+          className={`${path.includes("/admin/management") ? "bg-card rounded-l-2xl tracking-widest" : " font-bold bg-none text-header"}   w-full h-15 card flex items-center justify-center`}
         >
-          Managment
+          Management
         </button>
         <button
           onClick={() => {
@@ -83,6 +79,17 @@ export default function AdminNav() {
             className={`${path.includes("/admin/tasks") ? "mr-3.5 flex" : "hidden"}`}
           />
           Tasks
+        </button>
+        <button
+          onClick={() => {
+            navigate("messages");
+          }}
+          className={`${path.includes("/admin/messages") ? "bg-card rounded-l-2xl tracking-widest " : " font-bold bg-none text-header"}   w-full h-15 card flex items-center justify-center`}
+        >
+          <MessagesSquare
+            className={`${path.includes("/admin/messages") ? "mr-3.5 flex" : "hidden"}`}
+          />
+          Messages
         </button>
         <button
           onClick={() => {

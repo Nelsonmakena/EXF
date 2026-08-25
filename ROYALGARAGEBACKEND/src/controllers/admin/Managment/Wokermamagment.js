@@ -84,13 +84,11 @@ export const addWorker = async (req, res) => {
       "INSERT INTO employee (email,pswd_key,role_id) VALUES ($1,$2,$3) RETURNING *",
       [email, dbPassword, role_id],
     );
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "successfully added ",
-        data: worker.rows[0],
-      });
+    res.status(200).json({
+      success: true,
+      message: "successfully added ",
+      data: worker.rows[0],
+    });
   } catch (error) {
     res.json({ success: false, message: error.message });
     console.log(error.message);
@@ -113,7 +111,7 @@ export const workers = async (req, res) => {
 export const nonAssignedWorkerList = async (req, res) => {
   try {
     const list = await pool.query(
-      "SELECT * FROM employee CENTER JOIN jobsallocation ON jobsallocation.employee_id = employee.employee_id ",
+      "SELECT employee.* FROM employee LEFT JOIN job_services ON job_services.employee_id = employee.employee_id WHERE job_services.employee_id IS NULL;",
     );
     res.status(200).json({ success: true, data: list.rows });
   } catch (error) {

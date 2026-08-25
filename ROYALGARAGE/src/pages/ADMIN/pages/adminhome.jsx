@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import AdminNav from "./adminnav";
 import { TotalService } from "./Datacharts/Totalservices";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorkerList } from "@/Comp/store/admin/wokerslice";
-import { getJobList } from "@/Comp/store/admin/jobsslice";
+import { getWorkerList } from "@/Comp/store/wokerslice";
+import { getJobList } from "@/Comp/store/jobsslice";
+import { useNavigate } from "react-router";
 
 export default function AdminHome() {
+  const navigate = useNavigate();
   const { workerList } = useSelector((state) => state.worker);
   const { jobsList } = useSelector((state) => state.jobs);
   const dispatch = useDispatch();
@@ -19,12 +21,16 @@ export default function AdminHome() {
       <section className=" w-full  flex flex-col  section">
         <div className="grid grid-cols-1 card md:grid-cols-3 gap-6">
           <div
+            onClick={() => navigate("/admin/tasks/jobs")}
             data-aos="fadeup"
             className=" bg-linear-to-br from-violet-500 to-purple-600  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl"
           >
-            <div className="flex items-start justify-between mb-4">
+            <div
+              className="flex items-start justify-between mb-4 *:
+            "
+            >
               <p className="text-white/80 text-sm transition-colors duration-200">
-                Services in progres
+                pending jobs
               </p>
             </div>
             <p className="text-3xl font-bold mb-2 transition-colors duration-200">

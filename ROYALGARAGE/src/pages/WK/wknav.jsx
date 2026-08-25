@@ -1,11 +1,36 @@
 import logo from "/src/assets/images/logo.png";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
+import { User, Moon, Sun, LogOut, Menu } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAnyone } from "@/Comp/store/authslice";
+import { useTheme } from "@/comp/theme-provider";
 export default function Wknav() {
-  const [SmallMe, SetSmallMe] = useState(false);
-  const navigate = useNavigate();
+  const { setTheme, theme } = useTheme();
+  const dispatch = useDispatch();
+  const { userinfo } = useSelector((state) => state.auth);
 
+  const navigate = useNavigate();
+  const navLinks = [
+    { name: "Jobs", Path: "jobs" },
+    { name: "Schedule ", Path: "schedule" },
+    { name: "Messages", Path: "messages" },
+  ];
+
+  const logout = () => {
+    dispatch(logoutAnyone());
+    navigate("/wk");
+  };
   return (
     <>
       <div className="  flex items-center justify-center text-sm  w-full   font-semibold h-20  overflow-hidden     ">
@@ -15,27 +40,78 @@ export default function Wknav() {
             <div
               className="flex items-center"
               onClick={() => {
-                navigate("/wk-hm");
+                navigate("dashboard");
               }}
             >
               <img src={logo} alt="logo" className="h-16 w-16 " />
             </div>
-
-            <ul className="flex     text-xs text-green-700 items-center space-x-8 md:pl-28 md:text-xl">
-              <li>
-                <Link to="/dashboard"> Jobs </Link>
-              </li>
-              <li>
-                <Link to="/Userservice"> Pending </Link>
-              </li>
+            <ul className="flex  items-center space-x-8 md:pl-28  navbartext ">
+              {navLinks.map((single) => {
+                return (
+                  <li className="card">
+                    <Link to={single.Path}> {single.name} </Link>
+                  </li>
+                );
+              })}
             </ul>
-
-            <div className="   rounded-[50%] w-14 h-14 overflow-hidden shadow-md ">
-              <Link to="/profile">
-                {" "}
-                <img src="" alt="userimage" />
-              </Link>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className=" flex items-center card cursor-pointer  rounded-full">
+                  {/* <h1 className="text-header-foreground">
+                    {userinfo?.first_name[0]?.toUpperCase()}
+                  </h1>
+                  <h1 className="text-header">
+                    {userinfo?.last_name[0]?.toUpperCase()}
+                  </h1> */}
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className={
+                  "w-2xs p-4.5 flex flex-col  gap-normal border-none   "
+                }
+              >
+                <DropdownMenuItem
+                  className={"flex"}
+                  onClick={() => {
+                    navigate("profile");
+                  }}
+                >
+                  <User /> profile
+                </DropdownMenuItem>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuGroup className="flex justify-between ">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTheme("dark");
+                    }}
+                  >
+                    <Moon
+                      className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTheme("light");
+                    }}
+                  >
+                    <Sun
+                      className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuItem
+                  className={"flex "}
+                  variant="destructive"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  <LogOut />
+                  logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           {/* smallscreen menu  */}
           <div className="flex h-full  w-full  items-center justify-between md:hidden px-3.5">
@@ -53,46 +129,62 @@ export default function Wknav() {
                 </span>{" "}
               </h1>
             </div>
-            <button onClick={() => SetSmallMe(true)} className="flex ">
-              {/* <img src={menu} alt="logo" className="h-7 w-10" /> */}
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Menu className="w-10 h-10" />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                className={"w-2xs flex flex-col  gap-normal mt-5 "}
+              >
+                <DropdownMenuItem className={"flex  "}>
+                  <ul className=" ">
+                    {navLinks.map((single) => {
+                      return (
+                        <li className="card">
+                          <Link to={single.Path}> {single.name} </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuGroup className="flex justify-between px-2.5">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTheme("dark");
+                    }}
+                  >
+                    <Moon
+                      className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setTheme("light");
+                    }}
+                  >
+                    <Sun
+                      className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
+                    />
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator></DropdownMenuSeparator>
+                <DropdownMenuItem
+                  className={"flex "}
+                  variant="destructive"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  logout
+                  <LogOut />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </nav>
       </div>
-      {SmallMe == true ? (
-        <div className=" border flex  flex-col bg-white  w-[50%] h-screen absolute right-0 z-10  gap-14 p-3.5   top-0">
-          <div>
-            <button onClick={() => SetSmallMe(false)} className="flex ">
-              <img src={x} alt="logo" className="h-7 w-7" />
-            </button>
-          </div>
-
-          <div className=" w-full mt-10 ">
-            <ul className=" flex  flex-col text-2xl text-[#0c98ee]   space-y-8  font-semibold  ">
-              <li>
-                <Link to="/dashboard"> Jobs </Link>
-              </li>
-              <li>
-                <Link to="/Userservice"> Pending</Link>
-              </li>
-              <li>
-                <Link to="/vehicles"> Earnings </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="flex w-full justify-between">
-            <h1 className="text-2xl"> Profile </h1>
-
-            <div className="   rounded-[50%] w-14 h-14 overflow-hidden shadow-md ">
-              <Link to="/profile">
-                {" "}
-                <img src={me} alt="userimage" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </>
   );
 }

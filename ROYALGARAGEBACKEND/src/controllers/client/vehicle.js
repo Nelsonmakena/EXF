@@ -11,10 +11,10 @@ export const addVehicle = async (req, res) => {
   if (Object.keys(req.body).length === 0) {
     return res
       .status(401)
-      .json({ success: false, message: "all fileds must be filled" });
+      .json({ success: false, message: "all fields must be filled" });
   }
 
-  // first we check if the vehcile the client is tring to add already exist  we chek by liscence plate
+  // first we check if the vehicle the client is trying to add already exist  we check by license plate
 
   const existingVehicle = await pool.query(
     "SELECT liscence_plate FROM vehicle WHERE liscence_plate = $1",

@@ -70,7 +70,7 @@ export const getAllJobs = async (req, res) => {
   }
 };
 
-//biling fething services to be billled
+//bling fetching services to be billed
 
 export const billing = async (req, res) => {
   const { client_id } = req.userinfo;
@@ -134,14 +134,96 @@ export const billing = async (req, res) => {
 ///fetch job list for an employee assigned to him
 export const employeeJobList = async (req, res) => {
   const { employee_id } = req.userinfo;
+  if (!employee_id) {
+    return res.json({ success: false, message: "access denied" });
+  }
   try {
     const response = await pool.query(
-      "SELECT * FROM job_services WHERE employee_id = $1 ",
+      "SELECT status,service_name,liscence_plate,appointment_day,job_services_id FROM job_services JOIN services ON services.service_id=job_services.service_id  JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id  WHERE employee_id = $1 AND status is NULL  ORDER BY appointment_day ASC",
       [employee_id],
     );
     res.status(200).json({
       success: true,
       data: response.rows,
+    });
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// list of all accepted ie in progress job for employee
+export const InProgressEmployee = async (req, res) => {
+  const { employee_id } = req.userinfo;
+  if (!employee_id) {
+    return res.json({ success: false, message: "access denied" });
+  }
+  try {
+    const response = await pool.query(
+      "SELECT status,service_name,liscence_plate,appointment_day,job_services_id FROM job_services JOIN services ON services.service_id=job_services.service_id  JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id  WHERE employee_id = $1 AND status =$2  ORDER BY appointment_day ASC",
+      [employee_id, "accepted"],
+    );
+    res.status(200).json({
+      success: true,
+      data: response.rows,
+    });
+    console.log(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+//employee accepting a job
+export const acceptJob = async (req, res) => {
+  const { employee_id } = req.userinfo;
+  if (!employee_id) {
+    return res.json({ success: false, message: "access denied" });
+  }
+  const { job_services_id } = req.body;
+  if (!req.body) {
+    return res.json("all filled must be filled");
+  }
+  const date = Date().split("G", 1).toString();
+  console.log(req.body);
+
+  try {
+    const checkId = await pool.query(
+      "SELECT * FROM job_services WHERE job_services_id = $1 AND employee_id=$2 AND status IS NULL ",
+      [job_services_id, employee_id],
+    );
+    console.log(checkId.rows);
+
+    if (checkId.rows.length == 0) {
+      return res.status(400).json({ success: false });
+    }
+    const updateJobService = await pool.query(
+      "UPDATE job_services SET status=$1, started_at=$2 WHERE job_services_id = $3  RETURNING *",
+      ["accepted", date, job_services_id],
+    );
+    res.status(200).json({
+      success: true,
+      message: "job accepted",
+      data: updateJobService.rows[0],
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// job status updater
+export const updateJobStatus = async (req, res) => {
+  const { employee_id } = req.userinfo;
+  if (!employee_id) {
+    return res.json({ success: false, message: "access denied" });
+  }
+  const { trackStatus, job_services_id } = req.body;
+  try {
+    const updateStatus = await pool.query(
+      "INSERT INTO job_services_tracking (job_service_id,track_status) VALUES($1,$2)",
+      [job_services_id, trackStatus],
+    );
+    res.status(200).json({
+      success: true,
+      message: "job updated successfully",
     });
   } catch (error) {
     console.log(error.message);
@@ -150,11 +232,11 @@ export const employeeJobList = async (req, res) => {
 
 ///admin section
 
-// fetching all jobs for admin view (get-method)
+// fetching all jobs for admin view (get-method) non assigned jobs
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name ,job_services_id FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id ",
+      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name ,job_services_id FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id WHERE employee_id IS NULL ",
     );
     res.status(200).json({ success: true, data: job.rows });
   } catch (error) {
@@ -162,7 +244,20 @@ export const AllJobs = async (req, res) => {
   }
 };
 
-///assgin jobs to workers (post method)
+//fetching in progress jobs
+
+export const inProgress = async (req, res) => {
+  try {
+    const response = await pool.query(
+      "SELECT appointment_day,appointment_day,vehicle_model,liscence_plate,service_name,employee.email  FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id JOIN employee ON employee.employee_id = job_services.employee_id  WHERE job_services.employee_id IS NOT NULL",
+    );
+    res.status(200).json({ success: true, data: response.rows });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+///assign jobs to workers (post method)
 
 export const assignJob = async (req, res) => {
   const { employee_id, job_services_id } = req.body;
@@ -197,5 +292,22 @@ export const unallocatedJobs = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
+  }
+};
+
+///details for a specific job
+
+export const jobDetails = async (req, res) => {
+  const { job_services_id } = req.params;
+  console.log(job_services_id);
+
+  try {
+    const response = await pool.query(
+      "SELECT * FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id WHERE job_services_id=$1",
+      [job_services_id],
+    );
+    res.status(200).json({ success: true, data: response.rows });
+  } catch (error) {
+    console.log(error.message);
   }
 };

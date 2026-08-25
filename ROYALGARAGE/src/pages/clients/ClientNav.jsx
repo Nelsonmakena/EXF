@@ -27,7 +27,7 @@ import { ModeToggle } from "@/Comp/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/comp/theme-provider";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutanyone } from "@/Comp/store/authslice";
+import { logoutAnyone } from "@/Comp/store/authslice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function ClientNav() {
@@ -40,14 +40,14 @@ export default function ClientNav() {
 
   const [SmallMe, SetSmallMe] = useState(false);
   const [ProfileMenu, SetProfileMenu] = useState(false);
-  const navlinks = [
+  const navLinks = [
     { name: "Vehicles", Path: "vehicles" },
     { name: "Services ", Path: "services" },
     { name: "Shop", Path: "shop" },
     { name: "Appointments ", Path: "appointment" },
   ];
   const logout = () => {
-    dispatch(logoutanyone());
+    dispatch(logoutAnyone());
     navigate("/");
   };
 
@@ -55,7 +55,7 @@ export default function ClientNav() {
     <>
       <div className="  flex items-center justify-center text-sm  w-full font-semibold h-24       ">
         <nav className=" flex items-center w-full relative h-20   bg-card rounded-2xl  md:w-5xl  shadow-md  ">
-          {/* bigscreen menu  */}{" "}
+          {/* big screen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between ">
             {/* icon logo */}
             <div
@@ -68,7 +68,7 @@ export default function ClientNav() {
             </div>
             {/*menu  */}
             <ul className="flex  items-center space-x-8 md:pl-28  navbartext ">
-              {navlinks.map((single) => {
+              {navLinks.map((single) => {
                 return (
                   <li className="card">
                     <Link to={single.Path}> {single.name} </Link>
@@ -147,7 +147,7 @@ export default function ClientNav() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          {/* smallscreen menu  */}
+          {/* small screen menu  */}
           <div className="flex   w-full  items-center justify-between container-main md:hidden ">
             <div
               onClick={() => {
@@ -173,7 +173,7 @@ export default function ClientNav() {
               >
                 <DropdownMenuItem className={"flex  "}>
                   <ul className=" ">
-                    {navlinks.map((single) => {
+                    {navLinks.map((single) => {
                       return (
                         <li className="card">
                           <Link to={single.Path}> {single.name} </Link>
