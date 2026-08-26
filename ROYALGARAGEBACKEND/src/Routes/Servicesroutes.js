@@ -7,7 +7,7 @@ import express from "express";
 
 const Router = express.Router();
 
-Router.get("/allservices", getallservices);
-Router.post("/addservice", addService);
-Router.put("/updateservice/:service_id", updateService);
+Router.get("/all-services", getallservices);
+Router.post("/add-service", addService);
+Router.put("/update-service/:service_id", updateService);
 export default Router;

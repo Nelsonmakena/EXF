@@ -1,6 +1,4 @@
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
-import { useContext } from "react";
-
 import Template from "../pages/Common/Common";
 import Home from "../pages/Common/Home";
 import About from "../pages/Common/About";
@@ -8,7 +6,6 @@ import Service from "../pages/Common/Services";
 import Userlogin from "../pages/clients/Userlogin";
 import Pages404 from "./Pages404";
 import Admin from "../pages/ADMIN/pages";
-import Templatelayout from "../pages/clients/templatelayout ";
 import HomeClient from "../pages/clients/HomeClient";
 import Vehicles from "../pages/clients/Vehicles";
 import Appointment from "../pages/clients/appointments";
@@ -16,18 +13,14 @@ import Feedback from "../pages/clients/Feedback";
 import ClientServices from "../pages/clients/ClientServices";
 import ProfileEdit from "../pages/clients/ProfileEdit";
 import Cart from "../pages/clients/cart";
-import Admincommon from "../pages/ADMIN/pages/admintemplate";
 import AdminHome from "../pages/ADMIN/pages/adminhome";
 import WkLogin from "../pages/WK/WkLogin";
-
 import NotAuth from "./notauth";
 import Authenticated from "./authenication/auth";
-
 import AdminViewProducts from "@/pages/ADMIN/pages/Adminproducts";
 import AdminViewServices from "@/pages/ADMIN/pages/Adminservices";
 import Shop from "@/pages/clients/shop";
 import WorkerView from "@/pages/ADMIN/pages/managment/workerview";
-import jobList from "../pages/ADMIN/pages/joblist";
 import JobList from "../pages/ADMIN/pages/joblist";
 import WorkerTemplate from "@/pages/WK";
 import RolesView from "@/pages/ADMIN/pages/managment/roles";
@@ -40,15 +33,17 @@ import WorkerDashboard from "@/pages/WK/dashbaord";
 import InprogressJobs from "@/pages/ADMIN/pages/inProgresJobs";
 import Messages from "@/pages/ADMIN/pages/messages";
 import SingleMessage from "@/pages/ADMIN/pages/singlemessage";
+import ClientIndex from "../pages/clients/clientIndex";
+import AdminIndex from "../pages/ADMIN/pages/adminIndex";
 
-export default function Routess() {
+export default function AppRoutes() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/royalgarage/home" />} />
+        <Route path="/" element={<Navigate to="/royal-garage/home" />} />
 
         {/**common */}
-        <Route path="/royalgarage" element={<Template />}>
+        <Route path="/royal-garage" element={<Template />}>
           <Route path="home" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="services" element={<Service />} />
@@ -57,15 +52,14 @@ export default function Routess() {
         <Route path="*" element={<Pages404 />}></Route>
         <Route path="/admin-login" element={<Admin />} />
         <Route path="/wk" element={<WkLogin />}></Route>
-        <Route path="/notauthorized" element={<NotAuth />}></Route>
+        <Route path="/not-authorized" element={<NotAuth />}></Route>
 
         {/* client  routes  */}
         <Route
           path="/client"
           element={
             <Authenticated>
-              {" "}
-              <Templatelayout />{" "}
+              <ClientIndex />
             </Authenticated>
           }
         >
@@ -80,12 +74,11 @@ export default function Routess() {
         </Route>
 
         {/* admin routes  */}
-
         <Route
           path="/admin"
           element={
             <Authenticated>
-              <Admincommon />
+              <AdminIndex />
             </Authenticated>
           }
         >
@@ -108,8 +101,8 @@ export default function Routess() {
             <Route path="jobs/:job_services_id" element={<AdminJobCard />} />
           </Route>
         </Route>
-        {/* worker routes  */}
 
+        {/* worker routes  */}
         <Route
           path="/w001"
           element={

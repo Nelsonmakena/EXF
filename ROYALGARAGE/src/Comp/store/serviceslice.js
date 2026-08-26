@@ -62,10 +62,11 @@ export const newService = createAsyncThunk("/new-service", async (data) => {
   );
   return response.data;
 });
+
 //fetching serviceList
 export const getServices = createAsyncThunk("/services", async () => {
   const response = await axios.get(
-    "http://localhost:3000/api/services/allservices",
+    "http://localhost:3000/api/services/all-services",
   );
   return response.data;
 });
@@ -83,26 +84,6 @@ export const updateServices = createAsyncThunk(
     return response.data;
   },
 );
-
-//getting a new job
-
-export const newJob = createAsyncThunk("/new-job", async (data) => {
-  const response = await axios.put(
-    "http://localhost:3000/api/client/new-job",
-    data,
-    { withCredentials: true },
-  );
-  return response.data;
-});
-
-//fetching ongoing jobs list
-
-export const getServiceList = createAsyncThunk("/serviceList", async () => {
-  const response = await axios.get("http://localhost:3000/api/client/jobs", {
-    withCredentials: true,
-  });
-  return response.data;
-});
 
 export const ServiceSlice = createSlice({
   name: "serviceSlice",
@@ -129,9 +110,6 @@ export const ServiceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getServiceList.fulfilled, (state, action) => {
-        state.ongoingServices = action.payload.data;
-      })
       .addCase(getServices.rejected, (state) => {
         state.availableServiceList = [];
       })

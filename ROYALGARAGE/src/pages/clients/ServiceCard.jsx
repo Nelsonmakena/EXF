@@ -20,8 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { getVehiclelist } from "@/Comp/store/vehicleslice";
-import { newJob } from "@/Comp/store/serviceslice";
+
 import { toast } from "sonner";
+import { newJob } from "@/Comp/store/jobsslice";
 export default function ServiceCard({ name, price, image, id, vehicles }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);

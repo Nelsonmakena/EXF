@@ -10,6 +10,24 @@ const initialState = {
   jobsList: [],
   inProgress: [],
 };
+//client
+//getting a new job
+export const newJob = createAsyncThunk("/new-job", async (data) => {
+  const response = await axios.put(
+    "http://localhost:3000/api/client/new-job",
+    data,
+    { withCredentials: true },
+  );
+  return response.data;
+});
+
+//fetching ongoing jobs list
+export const getServiceList = createAsyncThunk("/serviceList", async () => {
+  const response = await axios.get("http://localhost:3000/api/client/jobs", {
+    withCredentials: true,
+  });
+  return response.data;
+});
 
 //admin
 //in progress job list
@@ -95,6 +113,9 @@ const jobSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getServiceList.fulfilled, (state, action) => {
+        state.inProgress = action.payload.data;
+      })
       .addCase(getJobList.fulfilled, (state, action) => {
         state.jobsList = action.payload.data;
       })

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import ClientNav from "./ClientNav";
 
-export default function Templatelayout() {
+export default function ClientIndex() {
   return (
     <>
       <div className="z-30">

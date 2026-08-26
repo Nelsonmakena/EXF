@@ -14,7 +14,7 @@ const store = configureStore({
     services: servicesReducer,
     worker: workerSlice,
     jobs: jobSlice,
-    appoitnmentDates: dateSlice,
+    appointmentsDates: dateSlice,
     dashboard: dashboardSlice,
   },
 });

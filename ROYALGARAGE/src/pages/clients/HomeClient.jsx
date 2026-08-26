@@ -9,12 +9,12 @@ import Lottie from "lottie-react";
 import buttonanimation from "/src/assets/addbuttondata.json";
 import { Spinner } from "@/components/ui/spinner";
 import { useNavigate } from "react-router";
-import { getServiceList } from "@/Comp/store/serviceslice";
+import { getServiceList } from "@/Comp/store/jobsslice";
 
 export default function HomeClient() {
   const { totalVehicle } = useSelector((state) => state.vehicle);
-  const { ongoingServices } = useSelector((state) => state.services);
-  console.log(totalVehicle);
+  const { inProgress } = useSelector((state) => state.jobs);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -89,13 +89,13 @@ export default function HomeClient() {
 
             {/**service card  progress for ongoing services  */}
             <div className="flex flex-col gap-normal  justify-center items-center">
-              {ongoingServices.length == 0 ? (
+              {inProgress.length == 0 ? (
                 <div className="w-full h-20 flex items-center justify-center">
                   {" "}
                   <Spinner> </Spinner>
                 </div>
               ) : (
-                ongoingServices.map((item) => {
+                inProgress.map((item) => {
                   return (
                     <div
                       key={item.job_id}

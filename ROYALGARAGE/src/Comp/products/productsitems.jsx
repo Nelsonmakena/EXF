@@ -1,60 +1,30 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
-import ItemView from "../pop-ups/itemview";
-import { description } from "./../../pages/ADMIN/pages/Datacharts/Totalservices";
-
-import car1 from "../../assets/images/car1.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../store/serviceslice";
 
 export default function ProductsItems() {
-  const [isitemviewopen, Setisitemviewopen] = useState(false);
-  const [selectedproduct, Setselectedproduct] = useState();
+  const { availableProductList } = useSelector((state) => state.services);
+  const dispatch = useDispatch();
 
-  // setting for no scrollabele when the pop_up is open
   useEffect(() => {
-    if (isitemviewopen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isitemviewopen]);
-
-  const [products, Setproducts] = useState([]);
-
-  const getProducts = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/products/allproducts",
-      );
-
-      Setproducts(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getProducts();
+    dispatch(getProducts());
   }, []);
 
-  /// calulting discount in the product object
-  const newprice = (products) => {
+  /// calculating  discount in the product object
+  const newPrice = (products) => {
     const discount = Number(products.product_discount) / 100;
-    const setprice = Number(products.product_price);
-    const price = setprice - discount * setprice;
+    const setPrice = Number(products.product_price);
+    const price = setPrice - discount * setPrice;
     return price;
   };
-
-  // displayiing item standalone
 
   // adding items to cart
   return (
     <section>
       <div className="grid grid-cols-2  md:flex md:flex-wrap items-stretch justify-center gap-5 ">
-        {products.map((item) => {
+        {availableProductList.map((item) => {
           return (
             <div
               key={item.product_id}
@@ -82,20 +52,14 @@ export default function ProductsItems() {
               </div>
 
               {/* Product Name */}
-              <p
-                onClick={() => {
-                  Setisitemviewopen(!isitemviewopen);
-                  Setselectedproduct(item);
-                }}
-                className="text-sm text-header mb-2 px-2 cursor-pointer"
-              >
+              <p className="text-sm text-header mb-2 px-2 cursor-pointer">
                 {item.product_name}
               </p>
 
               {/* Price */}
               <div className="flex items-center gap-2 px-2">
                 <span className="text-sm font-semibold text-neutral-800">
-                  ksh {newprice(item)}
+                  ksh {newPrice(item)}
                 </span>
                 <span className="text-xs text-neutral-500 line-through">
                   {item.product_price}/=
@@ -110,17 +74,6 @@ export default function ProductsItems() {
           );
         })}
       </div>
-
-      {/*items viewer */}
-
-      {isitemviewopen && (
-        <ItemView
-          isitemviewopen={isitemviewopen}
-          Setisitemviewopen={Setisitemviewopen}
-          selectedproduct={selectedproduct}
-          newprice={newprice}
-        />
-      )}
     </section>
   );
 }

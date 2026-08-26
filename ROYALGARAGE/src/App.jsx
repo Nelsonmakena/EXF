@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { ThemeProvider } from "@/comp/theme-provider";
-
 import AOS from "aos";
 import "aos/dist/aos.css";
-
 import "./App.css";
 import { Route, Routes, useLocation } from "react-router-dom";
-
-import Routess from "./Comp/Routes";
-import { useDispatch } from "react-redux";
-import { checkAuth } from "./Comp/store/authslice";
+import AppRoutes from "./Comp/routes";
 
 function App() {
   const location = useLocation();
@@ -26,7 +21,7 @@ function App() {
     <>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <main className=" w-full overflow-hidden bg-background text-foreground ">
-          <Routess />
+          <AppRoutes />
         </main>
       </ThemeProvider>
     </>

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/Comp/mode-toggle";
 import SecondaryNav from "./secondarynav";
-export default function Admincommon() {
+export default function AdminIndex() {
   const [hidemenu, Sethidemenu] = useState(false);
   return (
     <>

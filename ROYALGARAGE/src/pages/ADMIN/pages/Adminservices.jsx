@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getServiceList,
+  getServices,
   newService,
   updateServices,
 } from "@/Comp/store/serviceslice";
@@ -27,6 +27,9 @@ export default function AdminViewServices() {
   const dispatch = useDispatch();
   const { availableServiceList } = useSelector((state) => state.services);
 
+  useEffect(() => {
+    getServices();
+  }, []);
   /// updating a service
 
   const update_service = async (e, item) => {
@@ -44,9 +47,6 @@ export default function AdminViewServices() {
     dispatch(newService(data));
   };
 
-  useEffect(() => {
-    dispatch(getServiceList());
-  }, []);
   return (
     <section className="w-full container-main">
       <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">

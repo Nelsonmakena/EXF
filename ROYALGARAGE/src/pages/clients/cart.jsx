@@ -1,42 +1,65 @@
-import { useContext } from "react";
-
+import { addCart } from "@/Comp/store/serviceslice";
+import { Ad, Minus, Plus, ShoppingCart } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 export default function Cart() {
+  const { cart } = useSelector((state) => state.services);
+  const dispatch = useDispatch();
+  console.log(cart);
+  let amount = 0;
+  let totalDiscount = 0;
+  let totalAmount = 0;
+
+  const checkout = () => {
+    for (const item in cart) {
+      let price = Number(cart[item].product_price);
+      let discount = (Number(cart[item].product_discount) / 100) * price;
+      let netAmount = price - discount;
+      amount += price;
+      totalDiscount += discount;
+      totalAmount += netAmount;
+    }
+
+    return (amount, totalDiscount, totalAmount);
+  };
+  checkout();
   return (
-    <>
-      <section>
-        <div className=" w-full flex flex-col  md:mt-14 md:flex-row ">
-          <div className="  flex flex-col gap-3.5 w-4xl justify-center items-center p-3.5">
-            {/**service card */}
-            <div className=" flex  w-full h-64   rounded-2xl shadow-md md:w-3/4  ">
-              <div className="   flex flex-col  items-center  w-1/3 ">
-                <div className="p-3.5   h-1/2  flex items-center ">
-                  <h1 className="font-medium  text-blue-400 ">service name </h1>
+    <section className="container-main flex gap-normal">
+      {cart.length == 0 ? (
+        <div className="w-full h-screen flex items-center justify-center ">
+          <ShoppingCart />
+          <h1>cart is empty</h1>
+        </div>
+      ) : (
+        <>
+          {" "}
+          <div>
+            {cart.map((item, index) => {
+              return (
+                <div className="border w-2xl h-30 flex items-center justify-center gap-normal">
+                  <img
+                    src={`/assets/images/${item.product_image}.jpg`}
+                    alt="alt"
+                    className="w-20 h-20 border rounded-md object-cover"
+                  />
+                  <h1> {item.product_name} </h1>
+                  <div className="flex  gap-normal  ">
+                    <Minus className="text-destructive" />
+                    <h1>{item.quantity} </h1>
+                    <Plus
+                      className="text-primary"
+                      onClick={() => {
+                        dispatch(addCart(item));
+                      }}
+                    />
+                  </div>
+                  <h1>{item.product_price}</h1>
                 </div>
-                <div className="   p-3.5  h-1/2 text-shadow-xs ">
-                  <h1>Wheel allignment </h1>
-                </div>
-              </div>
-              <div className="   flex flex-col  items-center  w-1/3 ">
-                <div className="p-3.5   h-1/2  flex items-center ">
-                  <h1 className="font-medium  text-blue-400 ">Amount </h1>
-                </div>
-                <div className="   p-3.5  h-1/2 text-green-700 font-medium text-shadow-xs  ">
-                  <h1> 10,000/= </h1>
-                </div>
-              </div>
-              <div className="   flex flex-col  items-center  w-1/3 ">
-                <div className="p-3.5   h-1/2  flex items-center ">
-                  <h1 className="font-medium  text-blue-400 ">vehicle </h1>
-                </div>
-                <div className="   p-3.5  h-1/2  text-shadow-xs ">
-                  <h1>KAY233Y</h1>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
-          {/**side panel total amonun */}
-          <div className=" w-full  rounded-2xl shadow-md  overflow-hidden  md:w-1/4 ">
-            <div className=" text-green-700 font-medium w-full flex justify-center">
+          {/**side panel total amount */}
+          <div className=" w-2xs  rounded-2xl  ">
+            <div className=" text-primary  font-medium w-full flex justify-center">
               <h1> Order Summary </h1>
             </div>
             <div className="flex flex-col p-3.5 mt-3.5">
@@ -48,12 +71,12 @@ export default function Cart() {
                 <h1> Total billed </h1>
                 <h1 className="text-green-700 font-medium text-shadow-md">
                   {" "}
-                  300{" "}
+                  {amount}{" "}
                 </h1>
               </div>
               <div className=" flex w-full justify-between px-4 h-12">
-                <h1> VAT </h1>
-                <h1 className="text-red-700 font-medium"> 16% </h1>
+                <h1> discount </h1>
+                <h1 className="text-red-700 font-medium">{totalDiscount}</h1>
               </div>
               <div className=" flex w-full justify-between  h-px border-b-2 border-orange-700  mb-2.5 "></div>
 
@@ -61,7 +84,7 @@ export default function Cart() {
                 <h1> Total </h1>
                 <h1 className="text-green-700 font-medium text-shadow-md">
                   {" "}
-                  500{" "}
+                  {totalAmount}{" "}
                 </h1>
               </div>
 
@@ -75,8 +98,8 @@ export default function Cart() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </>
+        </>
+      )}
+    </section>
   );
 }

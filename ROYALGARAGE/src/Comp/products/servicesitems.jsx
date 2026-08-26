@@ -1,27 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ServiceItem from "../pop-ups/serviceitems";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getServices } from "../store/serviceslice";
 export default function ServicesItems() {
-  const [services, Setservices] = useState([]);
-  const [isitemviewopen, Setisitemviewopen] = useState(false);
-  const [selectedproduct, Setselectedproduct] = useState();
-
-  const getServices = async () => {
-    const NewServices = await axios.get(
-      "http://localhost:3000/api/services/allservices",
-    );
-    Setservices(NewServices.data);
-  };
+  const dispatch = useDispatch();
+  const { availableServiceList } = useSelector((state) => state.services);
 
   useEffect(() => {
-    getServices();
+    dispatch(getServices());
   }, []);
 
   return (
     <section className="   ">
       <div className=" grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5  ">
-        {services.map((item) => (
+        {availableServiceList.map((item) => (
           <div
             key={item.service_id}
             className=" bg-card border-border  rounded-xl  flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
@@ -36,13 +28,7 @@ export default function ServicesItems() {
             </div>
 
             {/* Product Name */}
-            <p
-              onClick={() => {
-                Setselectedproduct(item);
-                Setisitemviewopen(!isitemviewopen);
-              }}
-              className="text-sm text-neutral-500 mb-2 px-2 cursor-pointer"
-            >
+            <p className="text-sm text-neutral-500 mb-2 px-2 cursor-pointer">
               {item.service_name}
             </p>
 
@@ -64,15 +50,6 @@ export default function ServicesItems() {
           </div>
         ))}
       </div>
-      {/*items viewer */}
-
-      {isitemviewopen && (
-        <ServiceItem
-          isitemviewopen={isitemviewopen}
-          Setisitemviewopen={Setisitemviewopen}
-          selectedproduct={selectedproduct}
-        />
-      )}
     </section>
   );
 }

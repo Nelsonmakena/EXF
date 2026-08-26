@@ -8,7 +8,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import Service from "./../Common/Services";
 
 export default function Appointment() {
-  const { dates } = useSelector((state) => state.appoitnmentDates);
+  const { dates } = useSelector((state) => state.appointmentsDates);
   const [selectedDate, setSelectedDate] = useState();
   const dispatch = useDispatch();
   useEffect(() => {

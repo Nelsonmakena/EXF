@@ -36,7 +36,7 @@ import { Spinner } from "@/components/ui/spinner";
 export default function Vehicles() {
   const dispatch = useDispatch();
   const { vehicles } = useSelector((state) => state.vehicle);
-  console.log(vehicles);
+  const [open, setOpen] = useState(false);
 
   const addVehicle = async (e) => {
     e.preventDefault();
@@ -46,8 +46,10 @@ export default function Vehicles() {
 
     dispatch(newVehicle(data)).then((data) => {
       if (data.payload.success) {
+        setOpen(false);
         toast(data.payload.message);
       } else {
+        setOpen(true);
         toast.warning(data.payload.message);
       }
     });
@@ -69,7 +71,7 @@ export default function Vehicles() {
           <Table className="">
             <TableCaption>
               {/* adding a new vehicle  */}
-              <Dialog>
+              <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger
                   render={
                     <button className="w-2xs flex flex-row items-center gap-normal">
