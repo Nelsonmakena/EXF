@@ -3,14 +3,16 @@ import { pool } from "../../../Db.js";
 import bcrypt from "bcryptjs";
 
 const salt = bcrypt.genSaltSync(10);
-//veiw profile data
+
+//view profile data
 export const profileData = async (req, res) => {
-  const { client_id, role } = req.userinfo;
+  const { client_id } = req.userinfo;
   try {
     const clientdata = await pool.query(
       "SELECT address,email,first_name,second_name,last_name,phonenumber FROM client WHERE client_id = $1 ",
       [client_id],
     );
+
     res.json({ success: true, data: clientdata.rows[0] });
   } catch (error) {
     console.log(error.message);

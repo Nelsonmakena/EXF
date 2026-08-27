@@ -131,18 +131,23 @@ export default function Vehicles() {
             {/* list of vehicles  */}
             <TableHeader>
               <TableRow className="font-bold">
-                <TableHead className={"font-bold text-secondary"}>
+                <TableHead
+                  className={"font-bold text-secondary tracking-widest"}
+                >
                   Number Plate
                 </TableHead>
-                <TableHead className={"font-bold text-primary"}>
+                <TableHead className={"font-bold text-primary tracking-widest"}>
                   Model
                 </TableHead>
-                <TableHead className={"font-bold text-secondary"}>
+                <TableHead
+                  className={"font-bold text-secondary tracking-widest"}
+                >
                   Brand
                 </TableHead>
-                <TableHead className={"font-bold text-primary"}>
+                <TableHead className={"font-bold text-primary tracking-widest"}>
                   Color
                 </TableHead>
+                <TableHead className={"font-bold text-primary"}></TableHead>
                 <TableHead className={"font-bold text-primary"}></TableHead>
               </TableRow>
             </TableHeader>
@@ -170,10 +175,15 @@ export default function Vehicles() {
                   <TableCell>{item.vehicle_brand}</TableCell>
                   <TableCell>{item.vehicle_color}</TableCell>
                   {/* edit a row   */}
-                  <TableCell className={"flex justify-between  "}>
+                  <TableCell>
                     <Dialog>
                       <DialogTrigger
-                        render={<Cog className="text-accent" />}
+                        render={
+                          <>
+                            <Cog className="text-accent" />
+                            <h1 className="text-xs">update</h1>
+                          </>
+                        }
                       ></DialogTrigger>
                       <DialogContent className={" bg-card backdrop-blur-md"}>
                         <DialogHeader>
@@ -213,9 +223,16 @@ export default function Vehicles() {
                         </div>
                       </DialogContent>
                     </Dialog>
+                  </TableCell>
+                  <TableCell>
                     <Dialog>
                       <DialogTrigger
-                        render={<CircleX className="text-destructive" />}
+                        render={
+                          <>
+                            <CircleX className="text-destructive" />
+                            <h1 className="text-xs">remove</h1>
+                          </>
+                        }
                       ></DialogTrigger>
                       <DialogContent className={" bg-card backdrop-blur-md"}>
                         <DialogHeader>

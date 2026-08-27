@@ -5,13 +5,13 @@ export default function Cart() {
   const { cart } = useSelector((state) => state.services);
   const dispatch = useDispatch();
   console.log(cart);
-  let amount = 0;
-  let totalDiscount = 0;
-  let totalAmount = 0;
 
   const checkout = () => {
+    let amount = 0;
+    let totalDiscount = 0;
+    let totalAmount = 0;
     for (const item in cart) {
-      let price = Number(cart[item].product_price);
+      let price = Number(cart[item].product_price) * cart[item].quantity;
       let discount = (Number(cart[item].product_discount) / 100) * price;
       let netAmount = price - discount;
       amount += price;
@@ -19,9 +19,9 @@ export default function Cart() {
       totalAmount += netAmount;
     }
 
-    return (amount, totalDiscount, totalAmount);
+    return { amount, totalDiscount, totalAmount };
   };
-  checkout();
+  const { amount, totalDiscount, totalAmount } = checkout();
   return (
     <section className="container-main flex gap-normal">
       {cart.length == 0 ? (

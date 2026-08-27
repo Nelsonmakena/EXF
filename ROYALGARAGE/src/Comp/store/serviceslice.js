@@ -104,6 +104,14 @@ export const ServiceSlice = createSlice({
         });
       }
     },
+    reduceQuantity: (state, action) => {
+      const item = state.cart.find(
+        (cart) => cart.product_id === action.payload.product_id,
+      );
+      if (item.quantity > 1) {
+        item.quantity -= 1;
+      }
+    },
     removeCart: (state) => {
       state.cart = [];
     },

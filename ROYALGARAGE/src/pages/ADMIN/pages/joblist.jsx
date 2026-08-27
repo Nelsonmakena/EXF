@@ -48,8 +48,6 @@ export default function JobList() {
     dispatch(getJobList());
     dispatch(getWorkerList());
   }, []);
-  console.log(workerList);
-  console.log(jobsList);
 
   return (
     <section className="container-main ">
@@ -72,9 +70,9 @@ export default function JobList() {
             {jobsList.length == 0 ? (
               <Spinner></Spinner>
             ) : (
-              jobsList.map((item) => {
+              jobsList.map((item, index) => {
                 return (
-                  <TableRow>
+                  <TableRow key={index}>
                     <TableCell>{item.first_name + item.last_name}</TableCell>
                     <TableCell className="flex items-center gap-2.5">
                       <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">

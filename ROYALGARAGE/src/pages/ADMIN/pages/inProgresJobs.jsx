@@ -14,11 +14,12 @@ import {
 import { useEffect } from "react";
 import { getInprogressJobs } from "@/Comp/store/jobsslice";
 export default function InprogressJobs() {
+  const { inProgress } = useSelector((state) => state.jobs);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getInprogressJobs());
   }, []);
-  const { inProgress } = useSelector((state) => state.jobs);
+
   return (
     <section className="section-sm">
       {" "}

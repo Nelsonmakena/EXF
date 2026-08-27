@@ -59,9 +59,20 @@ export const getJobList = createAsyncThunk("/admin/jobs", async () => {
 
 // assigning job to worker
 export const AssignJob = createAsyncThunk("/assign", async (data) => {
-  const response = axios.patch("http://localhost:3000/api/admin/assign", data, {
-    withCredentials: true,
-  });
+  const response = await axios.patch(
+    "http://localhost:3000/api/admin/assign",
+    data,
+    {
+      withCredentials: true,
+    },
+  );
+  return response.data;
+});
+//info for a job
+export const jobInfo = createAsyncThunk("/job-info", async (job_service_id) => {
+  const response = await axios.get(
+    `http://localhost:3000/api/admin/job-details/${job_service_id}`,
+  );
   return response.data;
 });
 
@@ -117,6 +128,8 @@ const jobSlice = createSlice({
         state.inProgress = action.payload.data;
       })
       .addCase(getJobList.fulfilled, (state, action) => {
+        console.log(action.payload);
+
         state.jobsList = action.payload.data;
       })
       .addCase(myJobList.fulfilled, (state, action) => {
@@ -132,6 +145,7 @@ const jobSlice = createSlice({
         );
       })
       .addCase(getInprogressJobs.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.inProgress = action.payload.data;
       });
   },

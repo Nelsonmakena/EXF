@@ -23,7 +23,7 @@ export default function Authenticated({ children }) {
   }
   if (!isAuthenticated) {
     if (location.pathname.includes("/admin")) {
-      return <Navigate to="/adminlogin" />;
+      return <Navigate to="/admin-login" />;
     }
     if (location.pathname.includes("/client")) {
       return <Navigate to="/login" />;

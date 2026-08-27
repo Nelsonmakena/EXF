@@ -81,7 +81,7 @@ export default function ClientNav() {
                 <div className="relative cursor-pointer">
                   <ShoppingBag />
                   <button
-                    className={`absolute -top-2 -right-3 text-xs text-white w-4.5 h-4.5 rounded-full${cart.length === 0 ? " bg-orange-600" : " bg-accent"}`}
+                    className={`absolute -top-2 -right-3 text-xs text-white w-4.5 h-4.5 rounded-full${cart.length === 0 ? "hidden" : " bg-accent"}`}
                   >
                     {cart.length}
                   </button>
