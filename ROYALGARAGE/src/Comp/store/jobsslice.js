@@ -9,6 +9,7 @@ const initialState = {
   assignedJobs: [],
   jobsList: [],
   inProgress: [],
+  jobInformation: null,
 };
 //client
 //getting a new job
@@ -59,6 +60,8 @@ export const getJobList = createAsyncThunk("/admin/jobs", async () => {
 
 // assigning job to worker
 export const AssignJob = createAsyncThunk("/assign", async (data) => {
+  console.log(data);
+
   const response = await axios.patch(
     "http://localhost:3000/api/admin/assign",
     data,
@@ -66,12 +69,15 @@ export const AssignJob = createAsyncThunk("/assign", async (data) => {
       withCredentials: true,
     },
   );
+  console.log(response.data);
+
   return response.data;
 });
 //info for a job
 export const jobInfo = createAsyncThunk("/job-info", async (job_service_id) => {
   const response = await axios.get(
     `http://localhost:3000/api/admin/job-details/${job_service_id}`,
+    { withCredentials: true },
   );
   return response.data;
 });
@@ -128,8 +134,6 @@ const jobSlice = createSlice({
         state.inProgress = action.payload.data;
       })
       .addCase(getJobList.fulfilled, (state, action) => {
-        console.log(action.payload);
-
         state.jobsList = action.payload.data;
       })
       .addCase(myJobList.fulfilled, (state, action) => {
@@ -145,8 +149,10 @@ const jobSlice = createSlice({
         );
       })
       .addCase(getInprogressJobs.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.inProgress = action.payload.data;
+      })
+      .addCase(jobInfo.fulfilled, (state, action) => {
+        state.jobInformation = action.payload.data;
       });
   },
 });

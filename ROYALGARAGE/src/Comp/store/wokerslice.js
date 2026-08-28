@@ -8,6 +8,7 @@ import axios from "axios";
 const initialState = {
   workerList: [],
   roles: [],
+  noWork: [],
 };
 
 ///all worker related logic fro the admin is here
@@ -65,6 +66,21 @@ export const getWorkerList = createAsyncThunk("admin/worker-list", async () => {
 
   return response.data;
 });
+
+//list of workers with no active jobs
+export const getNonUnassigned = createAsyncThunk(
+  "admin/non-unassigned",
+  async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/admin/no-work",
+
+      { withCredentials: true },
+    );
+
+    return response.data;
+  },
+);
+
 //adding a worker
 export const addNewWorker = createAsyncThunk(
   "admin/new-worker",
@@ -101,15 +117,15 @@ const workerSlice = createSlice({
         state.roles.push(action.payload.data);
       })
       .addCase(deleteRole.fulfilled, (state, action) => {
-        console.log(action.payload.data);
         const deletedRoleID = action.payload.data.role_id;
-        console.log(deletedRoleID);
-
         if (action.payload.success) {
           state.roles = state.roles.filter(
             (role) => role.role_id !== deletedRoleID,
           );
         }
+      })
+      .addCase(getNonUnassigned.fulfilled, (state, action) => {
+        state.noWork = action.payload.data;
       });
   },
 });

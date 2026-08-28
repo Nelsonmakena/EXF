@@ -97,7 +97,6 @@ export default function AppRoutes() {
           <Route path="tasks">
             <Route path="jobs" element={<JobList />} />
             <Route path="in-progress" element={<InprogressJobs />} />
-
             <Route path="jobs/:job_services_id" element={<AdminJobCard />} />
           </Route>
         </Route>

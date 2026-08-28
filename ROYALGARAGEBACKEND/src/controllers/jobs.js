@@ -299,14 +299,15 @@ export const unallocatedJobs = async (req, res) => {
 
 export const jobDetails = async (req, res) => {
   const { job_services_id } = req.params;
-  console.log(job_services_id);
 
   try {
     const response = await pool.query(
-      "SELECT * FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id WHERE job_services_id=$1",
+      "SELECT appointment_day,liscence_plate,first_name,second_name,email,vehicle_brand,job_services_id,job_creation_time,service_name,service_image  FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id JOIN services ON job_services.service_id=services.service_id WHERE job_services_id=$1",
       [job_services_id],
     );
-    res.status(200).json({ success: true, data: response.rows });
+    console.log(response.rows[0]);
+
+    res.status(200).json({ success: true, data: response.rows[0] });
   } catch (error) {
     console.log(error.message);
   }

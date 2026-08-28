@@ -37,12 +37,7 @@ export default function JobList() {
   const { jobsList } = useSelector((state) => state.jobs);
   const { workerList } = useSelector((state) => state.worker);
 
-  const [assignWorker, setAssignWorker] = useState({
-    employee_id: "",
-    job_services_id: "",
-  });
   const dispatch = useDispatch();
-  //fetching job list
 
   useEffect(() => {
     dispatch(getJobList());
@@ -53,7 +48,6 @@ export default function JobList() {
     <section className="container-main ">
       <div className=" section flex flex-col gap-normal">
         {/**job card  */}
-
         <Table className="">
           <TableCaption> pending jobs .</TableCaption>
           <TableHeader>
@@ -62,7 +56,9 @@ export default function JobList() {
               <TableHead className={"font-bold text-primary"}>
                 vehicle
               </TableHead>
-              <TableHead className={"font-bold text-secondary"}>Job</TableHead>
+              <TableHead className={"font-bold text-secondary"}>
+                service
+              </TableHead>
               <TableHead className={"font-bold text-primary"}>Assign</TableHead>
             </TableRow>
           </TableHeader>
@@ -73,7 +69,9 @@ export default function JobList() {
               jobsList.map((item, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableCell>{item.first_name + item.last_name}</TableCell>
+                    <TableCell>
+                      {item.first_name + " " + item.last_name}
+                    </TableCell>
                     <TableCell className="flex items-center gap-2.5">
                       <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
                         {" "}

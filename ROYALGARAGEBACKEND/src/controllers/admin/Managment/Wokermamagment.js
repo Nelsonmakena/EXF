@@ -111,7 +111,7 @@ export const workers = async (req, res) => {
 export const nonAssignedWorkerList = async (req, res) => {
   try {
     const list = await pool.query(
-      "SELECT employee.* FROM employee LEFT JOIN job_services ON job_services.employee_id = employee.employee_id WHERE job_services.employee_id IS NULL;",
+      "SELECT role_name,employee.employee_id,email  FROM employee  LEFT JOIN job_services ON job_services.employee_id = employee.employee_id JOIN roles ON roles.role_id=employee.role_id WHERE job_services.employee_id IS NULL ORDER BY role_name ASC;",
     );
     res.status(200).json({ success: true, data: list.rows });
   } catch (error) {
