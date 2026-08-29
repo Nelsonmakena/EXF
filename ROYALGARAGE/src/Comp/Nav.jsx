@@ -19,7 +19,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/comp/theme-provider";
+import { useTheme } from "@/Comp/theme-provider";
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);

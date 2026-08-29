@@ -10,7 +10,7 @@ import {
 
 import "aos/dist/aos.css";
 
-import car1 from "../../assets/images/car1.png";
+
 import bg1 from "../../assets/images/bg1.jpg";
 import bg2 from "../../assets/images/bg2.jpg";
 import bg3 from "../../assets/images/bg3.jpg";
@@ -222,7 +222,7 @@ function Home() {
                     className="relative rounded-3xl overflow-hidden shadow-2xl"
                   >
                     <img
-                      src={car1}
+                      src=""
                       alt="Team collaboration"
                       className="w-full h-[500px] sm:h-[600px] object-cover"
                     />
@@ -314,7 +314,7 @@ function Home() {
               <div className="hidden md:flex md:flex-1  items-center">
                 <img
                   data-aos="fade-right"
-                  src={car1}
+                  src=""
                   alt=""
                   className="h-fit "
                 />
@@ -412,7 +412,7 @@ function Home() {
                 Inside RoyalAutoGarage Work In Progress
               </h2>
             </div>
-            <div className=" grid  grid-cols-1 gap-normal md:grid-cols-3 card  ">
+            <div className="` grid  grid-cols-1 gap-normal md:grid-cols-3 card  ">
               <div className="flex flex-col ">
                 <div className="section-sm ">
                   <img className="shadow-md rounded-2xl" src={bg} alt="" />

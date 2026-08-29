@@ -16,7 +16,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useTheme } from "@/comp/theme-provider";
+import { useTheme } from "@/Comp/theme-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logoutAnyone } from "@/Comp/store/authslice";
 

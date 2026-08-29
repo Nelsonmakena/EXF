@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "@/comp/theme-provider";
+import { ThemeProvider } from "@/Comp/theme-provider";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./App.css";

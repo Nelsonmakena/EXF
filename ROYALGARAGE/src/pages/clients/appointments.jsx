@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ClientNav from "./ClientNav";
-import dodge from "/src/assets/images/dodge.jpg";
 import { Calendar } from "@/components/ui/calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppointmentDatesClient } from "../../Comp/store/appointmentsdates";

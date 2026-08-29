@@ -14,7 +14,7 @@ import { User, Moon, Sun, LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAnyone } from "@/Comp/store/authslice";
-import { useTheme } from "@/comp/theme-provider";
+import { useTheme } from "@/Comp/theme-provider";
 export default function Wknav() {
   const { setTheme, theme } = useTheme();
   const dispatch = useDispatch();

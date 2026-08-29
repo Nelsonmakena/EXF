@@ -17,7 +17,7 @@ import {
 {
   /* theme setter */
 }
-import { useTheme } from "@/comp/theme-provider";
+import { useTheme } from "@/Comp/theme-provider";
 import { useDispatch } from "react-redux";
 
 import { ClipboardList, PackageSearch } from "lucide-react";
