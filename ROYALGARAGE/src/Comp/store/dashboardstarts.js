@@ -8,10 +8,9 @@ const initialState = {
 //worker dashboard stats
 
 export const getWorkerDashboard = createAsyncThunk("/worker", async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/worker/dashboard",
-    { withCredentials: true },
-  );
+  const response = await axios.get("/api/worker/dashboard", {
+    withCredentials: true,
+  });
   return response.data;
 });
 const dashboardSlice = createSlice({

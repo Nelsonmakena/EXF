@@ -14,17 +14,15 @@ const initialState = {
 //client
 //getting a new job
 export const newJob = createAsyncThunk("/new-job", async (data) => {
-  const response = await axios.put(
-    "http://localhost:3000/api/client/new-job",
-    data,
-    { withCredentials: true },
-  );
+  const response = await axios.put("/api/client/new-job", data, {
+    withCredentials: true,
+  });
   return response.data;
 });
 
 //fetching ongoing jobs list
 export const getServiceList = createAsyncThunk("/serviceList", async () => {
-  const response = await axios.get("http://localhost:3000/api/client/jobs", {
+  const response = await axios.get("/api/client/jobs", {
     withCredentials: true,
   });
   return response.data;
@@ -35,24 +33,18 @@ export const getServiceList = createAsyncThunk("/serviceList", async () => {
 export const getInprogressJobs = createAsyncThunk(
   "/admin/in-progress",
   async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/admin/in-progress",
-      {
-        withCredentials: true,
-      },
-    );
+    const response = await axios.get("/api/admin/in-progress", {
+      withCredentials: true,
+    });
     return response.data;
   },
 );
 
 // getting list of all pending jobs
 export const getJobList = createAsyncThunk("/admin/jobs", async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/admin/jobs-list",
-    {
-      withCredentials: true,
-    },
-  );
+  const response = await axios.get("/api/admin/jobs-list", {
+    withCredentials: true,
+  });
   return response.data;
 });
 
@@ -62,23 +54,18 @@ export const getJobList = createAsyncThunk("/admin/jobs", async () => {
 export const AssignJob = createAsyncThunk("/assign", async (data) => {
   console.log(data);
 
-  const response = await axios.patch(
-    "http://localhost:3000/api/admin/assign",
-    data,
-    {
-      withCredentials: true,
-    },
-  );
+  const response = await axios.patch("/api/admin/assign", data, {
+    withCredentials: true,
+  });
   console.log(response.data);
 
   return response.data;
 });
 //info for a job
 export const jobInfo = createAsyncThunk("/job-info", async (job_service_id) => {
-  const response = await axios.get(
-    `http://localhost:3000/api/admin/job-details/${job_service_id}`,
-    { withCredentials: true },
-  );
+  const response = await axios.get(`/api/admin/job-details/${job_service_id}`, {
+    withCredentials: true,
+  });
   return response.data;
 });
 
@@ -87,7 +74,7 @@ export const jobInfo = createAsyncThunk("/job-info", async (job_service_id) => {
 export const assignedJobsList = createAsyncThunk(
   "/worker/assigned",
   async () => {
-    const response = await axios.get("http://localhost:3000/api/worker/jobs", {
+    const response = await axios.get("/api/worker/jobs", {
       withCredentials: true,
     });
     return response.data;
@@ -96,12 +83,9 @@ export const assignedJobsList = createAsyncThunk(
 
 //getting job list of in progress jobs
 export const myJobList = createAsyncThunk("/worker/inprogress", async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/worker/in-progress",
-    {
-      withCredentials: true,
-    },
-  );
+  const response = await axios.get("/api/worker/in-progress", {
+    withCredentials: true,
+  });
   return response.data;
 });
 
@@ -112,7 +96,7 @@ export const acceptJob = createAsyncThunk(
     console.log(job_services_id);
 
     const response = await axios.post(
-      "http://localhost:3000/api/worker/accept",
+      "/api/worker/accept",
       {
         job_services_id: job_services_id,
       },

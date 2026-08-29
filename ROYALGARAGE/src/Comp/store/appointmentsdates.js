@@ -10,10 +10,9 @@ const initialState = {
 export const getAppointmentDatesClient = createAsyncThunk(
   "/client_dates",
   async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/client/appointment-list",
-      { withCredentials: true },
-    );
+    const response = await axios.get("/api/client/appointment-list", {
+      withCredentials: true,
+    });
     return response.data;
   },
 );

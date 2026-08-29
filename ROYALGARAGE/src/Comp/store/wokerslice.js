@@ -16,7 +16,7 @@ const initialState = {
 //role list in system
 export const roleList = createAsyncThunk("admin/role-list", async () => {
   const response = await axios.get(
-    "http://localhost:3000/api/admin/role-list",
+    "/api/admin/role-list",
 
     { withCredentials: true },
   );
@@ -27,11 +27,9 @@ export const roleList = createAsyncThunk("admin/role-list", async () => {
 //adding roles
 
 export const newRole = createAsyncThunk("admin/new-role", async (data) => {
-  const response = await axios.post(
-    "http://localhost:3000/api/admin/new-role",
-    data,
-    { withCredentials: true },
-  );
+  const response = await axios.post("/api/admin/new-role", data, {
+    withCredentials: true,
+  });
 
   return response.data;
 });
@@ -42,15 +40,12 @@ export const deleteRole = createAsyncThunk(
   async (role_id) => {
     console.log(role_id);
 
-    const response = await axios.delete(
-      "http://localhost:3000/api/admin/remove-role",
-      {
-        data: {
-          role_id: role_id,
-        },
-        withCredentials: true,
+    const response = await axios.delete("/api/admin/remove-role", {
+      data: {
+        role_id: role_id,
       },
-    );
+      withCredentials: true,
+    });
 
     return response.data;
   },
@@ -59,7 +54,7 @@ export const deleteRole = createAsyncThunk(
 // getting worker list
 export const getWorkerList = createAsyncThunk("admin/worker-list", async () => {
   const response = await axios.get(
-    "http://localhost:3000/api/admin/workers",
+    "/api/admin/workers",
 
     { withCredentials: true },
   );
@@ -72,7 +67,7 @@ export const getNonUnassigned = createAsyncThunk(
   "admin/non-unassigned",
   async () => {
     const response = await axios.get(
-      "http://localhost:3000/api/admin/no-work",
+      "/api/admin/no-work",
 
       { withCredentials: true },
     );
@@ -87,11 +82,9 @@ export const addNewWorker = createAsyncThunk(
   async (data) => {
     console.log(data);
 
-    const response = await axios.post(
-      "http://localhost:3000/api/admin/add-worker",
-      data,
-      { withCredentials: true },
-    );
+    const response = await axios.post("/api/admin/add-worker", data, {
+      withCredentials: true,
+    });
     return response.data;
   },
 );

@@ -18,11 +18,9 @@ export const registerUser = createAsyncThunk(
   "/auth/register",
 
   async (data) => {
-    const response = await axios.post(
-      "http://localhost:3000/api/authenication/register",
-      data,
-      { withCredentials: true },
-    );
+    const response = await axios.post("/api/authenication/register", data, {
+      withCredentials: true,
+    });
 
     return response.data;
   },
@@ -33,11 +31,9 @@ export const loginUser = createAsyncThunk(
   "/auth/login",
 
   async (data) => {
-    const response = await axios.post(
-      "http://localhost:3000/api/authenication/login",
-      data,
-      { withCredentials: true },
-    );
+    const response = await axios.post("/api/authenication/login", data, {
+      withCredentials: true,
+    });
 
     return response.data;
   },
@@ -48,11 +44,9 @@ export const adminlogin = createAsyncThunk(
   "/auth/admin",
 
   async (data) => {
-    const response = await axios.post(
-      "http://localhost:3000/api/authenication/admin",
-      data,
-      { withCredentials: true },
-    );
+    const response = await axios.post("/api/authenication/admin", data, {
+      withCredentials: true,
+    });
 
     return response.data;
   },
@@ -64,11 +58,9 @@ export const workerlogin = createAsyncThunk(
   "/auth/worker",
 
   async (data) => {
-    const response = await axios.post(
-      "http://localhost:3000/api/authenication/worker-login",
-      data,
-      { withCredentials: true },
-    );
+    const response = await axios.post("/api/authenication/worker-login", data, {
+      withCredentials: true,
+    });
 
     return response.data;
   },
@@ -80,16 +72,12 @@ export const checkAuth = createAsyncThunk(
   "/auth/checkAuth",
 
   async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/authenication/checkauth",
-      {
-        withCredentials: true,
-        headers: {
-          "cache-control":
-            "no-store, no-cache, must-revalidate,proxy-revalidate",
-        },
+    const response = await axios.get("/api/authenication/checkauth", {
+      withCredentials: true,
+      headers: {
+        "cache-control": "no-store, no-cache, must-revalidate,proxy-revalidate",
       },
-    );
+    });
     console.log(response.data);
     return response.data;
   },
@@ -99,16 +87,12 @@ export const logoutAnyone = createAsyncThunk(
   "/auth/logout",
 
   async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/authenication/logout",
-      {
-        withCredentials: true,
-        headers: {
-          "cache-control":
-            "no-store, no-cache, must-revalidate,proxy-revalidate",
-        },
+    const response = await axios.get("/api/authenication/logout", {
+      withCredentials: true,
+      headers: {
+        "cache-control": "no-store, no-cache, must-revalidate,proxy-revalidate",
       },
-    );
+    });
 
     return response.data;
   },
@@ -121,7 +105,7 @@ export const getClientProfile = createAsyncThunk(
 
   async () => {
     const response = await axios.get(
-      "http://localhost:3000/api/client/profile-info",
+      "/api/client/profile-info",
 
       { withCredentials: true },
     );

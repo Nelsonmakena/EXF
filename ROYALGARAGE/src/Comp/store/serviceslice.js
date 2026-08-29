@@ -13,11 +13,9 @@ const initialState = {
 //adding a product
 
 export const newProduct = createAsyncThunk("/new-product", async (data) => {
-  const response = axios.put(
-    "http://localhost:3000/api/products/addproduct",
-    data,
-    { withCredentials: true },
-  );
+  const response = axios.put("/api/products/addproduct", data, {
+    withCredentials: true,
+  });
   return response.data;
 });
 
@@ -31,9 +29,7 @@ export const removeProduct = createAsyncThunk("/remove", async () => {
 //fetching product list
 
 export const getProducts = createAsyncThunk("/products", async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/products/all-products",
-  );
+  const response = await axios.get("/api/products/all-products");
   return response.data;
 });
 
@@ -43,7 +39,7 @@ export const updateProducts = createAsyncThunk(
   "/update-product",
   async (data) => {
     const response = await axios.put(
-      `http://localhost:3000/api/products/update/${data.productid}`,
+      `/api/products/update/${data.productid}`,
       data,
       { withCredentials: true },
     );
@@ -53,21 +49,15 @@ export const updateProducts = createAsyncThunk(
 
 //adding a new service
 export const newService = createAsyncThunk("/new-service", async (data) => {
-  const response = await axios.put(
-    "http://localhost:3000/api/services/addservice",
-    data,
-    {
-      withCredentials: true,
-    },
-  );
+  const response = await axios.put("/api/services/addservice", data, {
+    withCredentials: true,
+  });
   return response.data;
 });
 
 //fetching serviceList
 export const getServices = createAsyncThunk("/services", async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/services/all-services",
-  );
+  const response = await axios.get("/api/services/all-services");
   return response.data;
 });
 
@@ -77,7 +67,7 @@ export const updateServices = createAsyncThunk(
   "/update-Services",
   async (data) => {
     const response = await axios.put(
-      `http://localhost:3000/api/services/updateservice/${data.service_id}`,
+      `/api/services/updateservice/${data.service_id}`,
       data,
       { withCredentials: true },
     );

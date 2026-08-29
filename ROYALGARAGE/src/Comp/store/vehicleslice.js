@@ -9,7 +9,7 @@ const initialState = {
 
 //fetching vehicles
 export const getVehiclelist = createAsyncThunk("/vehicles", async () => {
-  const response = await axios.get("http://localhost:3000/api/client/vehicle", {
+  const response = await axios.get("/api/client/vehicle", {
     withCredentials: true,
   });
 
@@ -21,11 +21,9 @@ export const getVehiclelist = createAsyncThunk("/vehicles", async () => {
 export const newVehicle = createAsyncThunk("/addVehicle", async (data) => {
   console.log(data);
 
-  const add = await axios.post(
-    "http://localhost:3000/api/client/add-vehicle",
-    data,
-    { withCredentials: true },
-  );
+  const add = await axios.post("/api/client/add-vehicle", data, {
+    withCredentials: true,
+  });
   console.log(add.data);
 
   return add.data;
@@ -36,15 +34,12 @@ export const newVehicle = createAsyncThunk("/addVehicle", async (data) => {
 export const removeVehicle = createAsyncThunk(
   "/removeVehicle",
   async (vehicle_id) => {
-    const response = await axios.delete(
-      "http://localhost:3000/api/client/delete-vehicle",
-      {
-        data: {
-          vehicle_id: vehicle_id,
-        },
-        withCredentials: true,
+    const response = await axios.delete("/api/client/delete-vehicle", {
+      data: {
+        vehicle_id: vehicle_id,
       },
-    );
+      withCredentials: true,
+    });
 
     return response.data;
   },
@@ -53,12 +48,9 @@ export const removeVehicle = createAsyncThunk(
 //number of vehicles
 
 export const total_No_Of_Vehicles = createAsyncThunk("/total", async () => {
-  const response = await axios.get(
-    "http://localhost:3000/api/client/dashboard",
-    {
-      withCredentials: true,
-    },
-  );
+  const response = await axios.get("/api/client/dashboard", {
+    withCredentials: true,
+  });
 
   return response.data;
 });
