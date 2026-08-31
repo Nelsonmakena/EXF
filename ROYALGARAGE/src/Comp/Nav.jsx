@@ -95,19 +95,25 @@ function Nav() {
             <DropdownMenuContent
               className={"w-2xs flex flex-col  gap-normal mt-5 "}
             >
-              <DropdownMenuItem className={"flex  "}>
-                <ul className=" ">
-                  {commonNavLinks.map((single) => {
-                    return (
-                      <li className="card">
-                        <Link to={single.Path}> {single.name} </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </DropdownMenuItem>
+              <ul className=" ">
+                {commonNavLinks.map((single) => {
+                  return (
+                    <li className="card w-2xs">
+                      <DropdownMenuItem
+                        className={"flex  "}
+                        onClick={() => {
+                          navigate(single.Path);
+                        }}
+                      >
+                        {single.name}
+                      </DropdownMenuItem>
+                    </li>
+                  );
+                })}
+              </ul>
+
               <DropdownMenuSeparator></DropdownMenuSeparator>
-              <DropdownMenuGroup className="flex justify-between px-2.5">
+              <DropdownMenuGroup className="flex justify-between px-4.5">
                 <DropdownMenuItem
                   onClick={() => {
                     setTheme("dark");
@@ -127,7 +133,7 @@ function Nav() {
                   />
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator></DropdownMenuSeparator>
+
               <DropdownMenuItem className={"flex  justify-center"}>
                 <Button
                   className={"w-43 h-10"}

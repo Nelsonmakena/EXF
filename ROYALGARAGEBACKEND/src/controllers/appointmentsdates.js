@@ -8,7 +8,7 @@ export const appointmentsDatesList = async (req, res) => {
   }
   try {
     const appointmentsList = await pool.query(
-      " SELECT appointment_day,service_name,liscence_plate FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN job_services ON job_services.job_id= jobs.job_id JOIN services ON  job_services.service_id =services.service_id   WHERE client_id=$1",
+      " SELECT appointment_day,service_name,license_plate FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN job_services ON job_services.job_id= jobs.job_id JOIN services ON  job_services.service_id =services.service_id   WHERE client_id=$1",
       [client_id],
     );
     res.status(200).json({ success: true, data: appointmentsList.rows });
@@ -21,7 +21,7 @@ export const appointmentsDatesList = async (req, res) => {
 export const adminAppointmentsDatesList = async (req, res) => {
   try {
     const appointmentsList = await pool.query(
-      " SELECT appointment_day,service_name,liscence_plate FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN job_services ON job_services.job_id= jobs.job_id JOIN services ON  job_services.service_id =services.service_id   ",
+      " SELECT appointment_day,service_name,license_plate FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN job_services ON job_services.job_id= jobs.job_id JOIN services ON  job_services.service_id =services.service_id   ",
     );
     res.status(200).json({ success: true, data: appointmentsList.rows });
   } catch (error) {

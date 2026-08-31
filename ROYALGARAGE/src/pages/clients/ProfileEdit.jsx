@@ -23,10 +23,7 @@ export default function ProfileEdit() {
 
   return (
     <>
-      <section className=" container-main  w-full  ">
-        <h1 className="w-full  flex justify-center card font-bold text-xl text-accent">
-          My profile
-        </h1>
+      <section className="  w-full  ">
         <div className="w-full  flex items-center  card bg-card-bg rounded-md gap-normal h-30  font-bold tracking-widest text-card ">
           <h1 className="ml-3.5">{profileInfo?.first_name}</h1>
           <h1>{profileInfo?.second_name[0]}.</h1>

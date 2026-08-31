@@ -36,7 +36,7 @@ export default function Appointment() {
             .map((date) => (
               <div className="w-full h-20  rounded-md  shadow-md  card bg-accent/20">
                 <div className="flex  justify-between  items-center ">
-                  <h1>{date.service_name}</h1> <h1>{date.liscence_plate}</h1>
+                  <h1>{date.service_name}</h1> <h1>{date.license_plate}</h1>
                 </div>
               </div>
             ))}

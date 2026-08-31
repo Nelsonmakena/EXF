@@ -1,6 +1,7 @@
 import { addCart } from "@/Comp/store/serviceslice";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 export default function ProductCard({
   product,
   product_discount,
@@ -57,6 +58,7 @@ export default function ProductCard({
             <ShoppingCart
               onClick={() => {
                 dispatch(addCart(product));
+                toast(`${product_name} added to cart`);
               }}
               className="text-header"
             />{" "}

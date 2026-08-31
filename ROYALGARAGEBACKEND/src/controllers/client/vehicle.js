@@ -5,7 +5,7 @@ import { pool } from "../../../Db.js";
 
 export const addVehicle = async (req, res) => {
   const { client_id } = req.userinfo;
-  const { vehicle_model, vehicle_brand, vehicle_color, liscence_plate } =
+  const { vehicle_model, vehicle_brand, vehicle_color, license_plate } =
     req.body;
 
   if (Object.keys(req.body).length === 0) {
@@ -17,8 +17,8 @@ export const addVehicle = async (req, res) => {
   // first we check if the vehicle the client is trying to add already exist  we check by license plate
 
   const existingVehicle = await pool.query(
-    "SELECT liscence_plate FROM vehicle WHERE liscence_plate = $1",
-    [liscence_plate],
+    "SELECT license_plate FROM vehicle WHERE license_plate = $1",
+    [license_plate],
   );
 
   if (existingVehicle.rows != 0) {
@@ -27,8 +27,8 @@ export const addVehicle = async (req, res) => {
 
   try {
     const newVehicle = await pool.query(
-      "INSERT INTO vehicle (vehicle_model, vehicle_brand, vehicle_color, liscence_plate,client_id ) VALUES($1,$2,$3,$4,$5) RETURNING * ",
-      [vehicle_model, vehicle_brand, vehicle_color, liscence_plate, client_id],
+      "INSERT INTO vehicle (vehicle_model, vehicle_brand, vehicle_color, license_plate,client_id ) VALUES($1,$2,$3,$4,$5) RETURNING * ",
+      [vehicle_model, vehicle_brand, vehicle_color, license_plate, client_id],
     );
     res.status(200).json({
       success: true,
@@ -48,7 +48,7 @@ export const getVehicles = async (req, res) => {
 
   try {
     const vehicle = await pool.query(
-      "SELECT liscence_plate,vehicle_brand,vehicle_color,vehicle_model,vehicle_id  FROM vehicle WHERE client_id = $1",
+      "SELECT license_plate,vehicle_brand,vehicle_color,vehicle_model,vehicle_id  FROM vehicle WHERE client_id = $1",
       [client_id],
     );
     res.status(200).json({

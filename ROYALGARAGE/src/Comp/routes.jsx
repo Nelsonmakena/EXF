@@ -35,6 +35,7 @@ import Messages from "@/pages/ADMIN/pages/messages";
 import SingleMessage from "@/pages/ADMIN/pages/singlemessage";
 import ClientIndex from "../pages/clients/clientIndex";
 import AdminIndex from "../pages/ADMIN/pages/adminIndex";
+import ClientJob from "@/pages/clients/clientJob";
 
 export default function AppRoutes() {
   return (
@@ -71,6 +72,7 @@ export default function AppRoutes() {
           <Route path="profile" element={<ProfileEdit />} />
           <Route path="cart" element={<Cart />} />
           <Route path="shop" element={<Shop />} />
+          <Route path=":job_services_id" element={<ClientJob />} />
         </Route>
 
         {/* admin routes  */}

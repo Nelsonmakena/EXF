@@ -21,7 +21,7 @@ export const job = async (req, res) => {
       job_id = checkJob.rows[0].job_id;
     } else {
       const newJob = await pool.query(
-        "INSERT INTO jobs(vehicle_id,appointment_day ) VALUES ($1,$2) RETURNING job_id ",
+        "INSERT INTO jobs(vehicle_id,appointment_day) VALUES ($1,$2) RETURNING job_id ",
         [vehicle_id, appointment_day],
       );
       console.log(newJob.rows);
@@ -83,7 +83,7 @@ export const billing = async (req, res) => {
   }
   try {
     const billingItems = await pool.query(
-      "SELECT service_name, service_price,liscence_plate ,job_id, is_it_billed FROM jobs JOIN services ON jobs.service_id = services.service_id  JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id WHERE client_id = $1 AND is_it_billed =$2  ",
+      "SELECT service_name, service_price,license_plate ,job_id, is_it_billed FROM jobs JOIN services ON jobs.service_id = services.service_id  JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id WHERE client_id = $1 AND is_it_billed =$2  ",
       [client_id, is_it_billed],
     );
     console.log(billingItems.rows);
@@ -97,7 +97,7 @@ export const billing = async (req, res) => {
     for (const item in billingItems.rows) {
       totalprice += Number(billingItems.rows[item].service_price);
       services +=
-        billingItems.rows[item].liscence_plate +
+        billingItems.rows[item].license_plate +
         " " +
         billingItems.rows[item].service_name;
     }
@@ -139,7 +139,7 @@ export const employeeJobList = async (req, res) => {
   }
   try {
     const response = await pool.query(
-      "SELECT status,service_name,liscence_plate,appointment_day,job_services_id FROM job_services JOIN services ON services.service_id=job_services.service_id  JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id  WHERE employee_id = $1 AND status is NULL  ORDER BY appointment_day ASC",
+      "SELECT status,service_name,license_plate,appointment_day,job_services_id FROM job_services JOIN services ON services.service_id=job_services.service_id  JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id  WHERE employee_id = $1 AND status is NULL  ORDER BY appointment_day ASC",
       [employee_id],
     );
     res.status(200).json({
@@ -160,7 +160,7 @@ export const InProgressEmployee = async (req, res) => {
   }
   try {
     const response = await pool.query(
-      "SELECT status,service_name,liscence_plate,appointment_day,job_services_id FROM job_services JOIN services ON services.service_id=job_services.service_id  JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id  WHERE employee_id = $1 AND status =$2  ORDER BY appointment_day ASC",
+      "SELECT status,service_name,license_plate,appointment_day,job_services_id FROM job_services JOIN services ON services.service_id=job_services.service_id  JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id  WHERE employee_id = $1 AND status =$2  ORDER BY appointment_day ASC",
       [employee_id, "accepted"],
     );
     res.status(200).json({
@@ -236,7 +236,7 @@ export const updateJobStatus = async (req, res) => {
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,liscence_plate,vehicle_brand,vehicle_color,service_name ,job_services_id FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id WHERE employee_id IS NULL ",
+      "SELECT first_name,last_name,phonenumber,email,license_plate,vehicle_brand,vehicle_color,service_name ,job_services_id FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id WHERE employee_id IS NULL ",
     );
     res.status(200).json({ success: true, data: job.rows });
   } catch (error) {
@@ -249,7 +249,7 @@ export const AllJobs = async (req, res) => {
 export const inProgress = async (req, res) => {
   try {
     const response = await pool.query(
-      "SELECT appointment_day,appointment_day,vehicle_model,liscence_plate,service_name,employee.email  FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id JOIN employee ON employee.employee_id = job_services.employee_id  WHERE job_services.employee_id IS NOT NULL",
+      "SELECT appointment_day,appointment_day,vehicle_model,license_plate,service_name,employee.email  FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id JOIN employee ON employee.employee_id = job_services.employee_id  WHERE job_services.employee_id IS NOT NULL",
     );
     res.status(200).json({ success: true, data: response.rows });
   } catch (error) {
@@ -302,7 +302,7 @@ export const jobDetails = async (req, res) => {
 
   try {
     const response = await pool.query(
-      "SELECT appointment_day,liscence_plate,first_name,second_name,email,vehicle_brand,job_services_id,job_creation_time,service_name,service_image  FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id JOIN services ON job_services.service_id=services.service_id WHERE job_services_id=$1",
+      "SELECT appointment_day,license_plate,first_name,second_name,email,vehicle_brand,job_services_id,job_creation_time,service_name,service_image  FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id JOIN services ON job_services.service_id=services.service_id WHERE job_services_id=$1",
       [job_services_id],
     );
     console.log(response.rows[0]);

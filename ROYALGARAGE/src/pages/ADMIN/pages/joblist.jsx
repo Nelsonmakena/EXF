@@ -76,14 +76,14 @@ export default function JobList() {
                       <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
                         {" "}
                         <h1 className="text-header font-bold">
-                          {item.liscence_plate[0]}{" "}
+                          {item.license_plate[0]}{" "}
                         </h1>
                         <h1 className="text-header-foreground">
                           {" "}
-                          {item.liscence_plate[6]}{" "}
+                          {item.license_plate[6]}{" "}
                         </h1>
                       </div>
-                      {item.liscence_plate}
+                      {item.license_plate}
                     </TableCell>
 
                     <TableCell>{item.service_name}</TableCell>

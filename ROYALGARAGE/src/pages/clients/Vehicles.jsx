@@ -63,7 +63,7 @@ export default function Vehicles() {
   return (
     <>
       <section className="container-main">
-        <div className="section">
+        <div className="">
           <h1 className="heading-normal font-bold text-header  flex justify-center ">
             {" "}
             My Cars
@@ -92,8 +92,8 @@ export default function Vehicles() {
                     <div className="flex flex-col  gap-normal">
                       <div className="grid gap-3 w-2xs h-20">
                         <Input
-                          name="liscence_plate"
-                          placeholder="liscence_plate"
+                          name="license_plate"
+                          placeholder="license_plate"
                           required
                           maxlength={7}
                         />
@@ -161,15 +161,15 @@ export default function Vehicles() {
                         {vehicles.length == 0 ? (
                           <Spinner></Spinner>
                         ) : (
-                          item.liscence_plate[0]
+                          item.license_plate[0]
                         )}{" "}
                       </h1>
                       <h1 className="text-header-foreground">
                         {" "}
-                        {item.liscence_plate[6]}{" "}
+                        {item.license_plate[6]}{" "}
                       </h1>
                     </div>
-                    {item.liscence_plate}
+                    {item.license_plate}
                   </TableCell>
                   <TableCell>{item.vehicle_model}</TableCell>
                   <TableCell>{item.vehicle_brand}</TableCell>
@@ -188,7 +188,7 @@ export default function Vehicles() {
                       <DialogContent className={" bg-card backdrop-blur-md"}>
                         <DialogHeader>
                           <DialogTitle className={"flex justify-center"}>
-                            {item.liscence_plate}
+                            {item.license_plate}
                           </DialogTitle>
                           <DialogDescription></DialogDescription>
                         </DialogHeader>
@@ -237,7 +237,7 @@ export default function Vehicles() {
                       <DialogContent className={" bg-card backdrop-blur-md"}>
                         <DialogHeader>
                           <DialogTitle className={"flex justify-center"}>
-                            {item.liscence_plate}
+                            {item.license_plate}
                           </DialogTitle>
                           <DialogDescription></DialogDescription>
                         </DialogHeader>

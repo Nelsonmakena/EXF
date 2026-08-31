@@ -48,7 +48,7 @@ export default function InprogressJobs() {
                   <TableCell className="flex items-center gap-2.5">
                     <div className="flex gap-normal">
                       <h1> {item.vehicle_model}</h1>
-                      <h1> {item.liscence_plate}</h1>
+                      <h1> {item.license_plate}</h1>
                     </div>
                   </TableCell>
                   <TableCell>{item.service_name}</TableCell>

@@ -48,8 +48,9 @@ export default function ClientNav() {
   ];
   const logout = () => {
     dispatch(logoutAnyone());
-    navigate("/");
+    navigate("/login");
   };
+  console.log(userinfo);
 
   return (
     <>
@@ -153,7 +154,7 @@ export default function ClientNav() {
               onClick={() => {
                 navigate("dashboard");
               }}
-              className=" flex items-center cursor-pointer  h-14 "
+              className=" flex items-center cursor-pointer  h-14  "
             >
               <h1 className="text-orange-700  font-bold text-xl ">
                 Royal <span className="text-blue-400">Auto </span>
@@ -169,21 +170,36 @@ export default function ClientNav() {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent
-                className={"w-2xs flex flex-col  gap-normal mt-5 "}
+                className={"w-2xs flex flex-col  gap-normal mt-5 p-0 "}
               >
-                <DropdownMenuItem className={"flex  "}>
-                  <ul className=" ">
-                    {navLinks.map((single) => {
-                      return (
-                        <li className="card">
-                          <Link to={single.Path}> {single.name} </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                <DropdownMenuItem
+                  onClick={() => navigate("profile")}
+                  className="bg-primary  text-white h-20 text-md font-bold flex items-center justify-center rounded-b-none"
+                >
+                  <h1>{userinfo?.first_name}</h1>
+                  <h1>{userinfo?.last_name}</h1>
+                </DropdownMenuItem>
+                <ul className=" ">
+                  {navLinks.map((single) => {
+                    return (
+                      <li className="card w-2xs">
+                        <DropdownMenuItem
+                          className={"flex  "}
+                          onClick={() => {
+                            navigate(single.Path);
+                          }}
+                        >
+                          {single.name}
+                        </DropdownMenuItem>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <DropdownMenuItem onClick={() => navigate("cart")}>
+                  <h1 className="card">Cart</h1>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator></DropdownMenuSeparator>
-                <DropdownMenuGroup className="flex justify-between px-2.5">
+                <DropdownMenuGroup className="flex justify-between px-4.5">
                   <DropdownMenuItem
                     onClick={() => {
                       setTheme("dark");
@@ -203,16 +219,18 @@ export default function ClientNav() {
                     />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator></DropdownMenuSeparator>
-                <DropdownMenuItem
-                  className={"flex "}
-                  variant="destructive"
-                  onClick={() => {
-                    logout();
-                  }}
-                >
-                  logout
-                  <LogOut />
+
+                <DropdownMenuItem className={"flex "}>
+                  <Button
+                    className={"w-full h-12"}
+                    variant="destructive"
+                    onClick={() => {
+                      logout();
+                    }}
+                  >
+                    logout
+                    <LogOut />
+                  </Button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -10,7 +10,6 @@ import {
 
 import "aos/dist/aos.css";
 
-
 import bg1 from "../../assets/images/bg1.jpg";
 import bg2 from "../../assets/images/bg2.jpg";
 import bg3 from "../../assets/images/bg3.jpg";
@@ -277,20 +276,15 @@ function Home() {
           </div>
 
           <div className=" container-main grid grid-cols-2  md:grid-cols-4  gap-x-8 gap-y-3.5 p-2.5   ">
-            {CoreServices.map((singleitem, key) => {
+            {CoreServices.map((item, key) => {
               return (
                 <div
                   key={key}
-                  data-aos="fade-left"
-                  className=" bg-card card  flex flex-col  h-84 justify-center items-center  shadow-md  rounded-md "
+                  data-aos="fade-up"
+                  className=" bg-card  flex flex-col  h-84 justify-between items-center  shadow-md  rounded-md card "
                 >
-                  <h1 className="font-bold  card  text-secondary">
-                    {" "}
-                    {singleitem.heading}{" "}
-                  </h1>
-                  <p className=" card  text-xs md:text-sm">
-                    {singleitem.paragraph}
-                  </p>
+                  <h1 className="font-bold text-primary"> {item.heading} </h1>
+                  <p className=" text-xs md:text-sm">{item.paragraph}</p>
                 </div>
               );
             })}
@@ -312,12 +306,7 @@ function Home() {
 
             <div className="flex ">
               <div className="hidden md:flex md:flex-1  items-center">
-                <img
-                  data-aos="fade-right"
-                  src=""
-                  alt=""
-                  className="h-fit "
-                />
+                <img data-aos="fade-right" src="" alt="" className="h-fit " />
               </div>
               <div className="flex-1">
                 <div className="rounded-xl  p-8 md:p-12">

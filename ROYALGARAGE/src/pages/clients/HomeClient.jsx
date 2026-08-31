@@ -1,5 +1,13 @@
-import ClientNav from "./ClientNav";
-
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import Skeletonloader from "../../Comp/loader";
@@ -23,10 +31,11 @@ export default function HomeClient() {
     dispatch(total_No_Of_Vehicles());
     dispatch(getServiceList());
   }, []);
+  console.log(inProgress);
 
   return (
     <>
-      <section className=" mt-24 p-3.5 w-full container-main ">
+      <section className=" section p-3.5 w-full">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           <div className=" bg-linear-to-br from-violet-500 to-purple-600  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl">
             <div className="flex items-start justify-between mb-4">
@@ -73,7 +82,7 @@ export default function HomeClient() {
             </div>
             <button
               onClick={() => {
-                navigate("/client/Userservice");
+                navigate("/client/services");
               }}
               className="w-full h-12 text-white rounded-md   bg-primary"
             >
@@ -88,50 +97,52 @@ export default function HomeClient() {
             </h1>
 
             {/**service card  progress for ongoing services  */}
-            <div className="flex flex-col gap-normal  justify-center items-center">
-              {inProgress.length == 0 ? (
-                <div className="w-full h-20 flex items-center justify-center">
-                  {" "}
-                  <Spinner> </Spinner>
-                </div>
-              ) : (
-                inProgress.map((item) => {
-                  return (
-                    <div
-                      key={item.job_id}
-                      className="w-full  md:w-2xl card  md:flex rounded-2xl justify-between bg-primary shadow-md"
+            <div className="w-full ">
+              <Table className="">
+                <TableCaption></TableCaption>
+
+                <TableHeader>
+                  <TableRow className="font-bold">
+                    <TableHead
+                      className={"font-bold text-secondary tracking-widest"}
                     >
-                      {/**col-1 */}
-                      <div className="flex  md:flex-col justify-between card">
-                        <h1 className=" text-primary-foreground">
-                          Service name{" "}
-                        </h1>
-                        <h1>{item.service_name}</h1>
-                      </div>
-
-                      {/**col-2 */}
-                      <div className="flex md:flex-col justify-between card">
-                        <h1 className="text-primary-foreground"> progress </h1>
-                        <h1> progress </h1>
-                      </div>
-                      {/**col-3 */}
-                      <div className="flex md:flex-col justify-between card">
-                        <h1 className="text-primary-foreground">Vehicle </h1>
-
-                        <div className="flex  items-center gap-1.5">
+                      Service
+                    </TableHead>
+                    <TableHead
+                      className={"font-bold text-primary tracking-widest"}
+                    >
+                      Progress
+                    </TableHead>
+                    <TableHead
+                      className={"font-bold text-secondary tracking-widest"}
+                    >
+                      vehicle
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                {inProgress.map((item, index) => (
+                  <TableRow
+                    key={index}
+                    className={"cursor-pointer"}
+                    onClick={() => navigate(`/client/${item.job_services_id}`)}
+                  >
+                    <TableCell className={``}>
+                      <div className="flex items-center gap-normal">
+                        <div className="rounded-full w-12 h-12 overflow-hidden ">
                           <img
-                            src=""
-                            alt="Avatar"
-                            class="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-white sm:h-10 sm:w-10"
+                            src={`/assets/images/${item.service_image}.jpg`}
+                            alt={name}
+                            className="rounded-full object-fill w-12 h-12"
                           />
-
-                          <h1> {item.liscence_plate}</h1>
                         </div>
+                        <p>{item.service_name}</p>
                       </div>
-                    </div>
-                  );
-                })
-              )}
+                    </TableCell>
+                    <TableCell></TableCell>
+                    <TableCell>{item.license_plate}</TableCell>
+                  </TableRow>
+                ))}
+              </Table>
             </div>
           </div>
         </div>

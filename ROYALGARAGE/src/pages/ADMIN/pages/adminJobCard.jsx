@@ -47,9 +47,7 @@ export default function AdminJobCard() {
           <h1 className="text-slate-500 tracking-widest font-bold">
             vehicle details:
           </h1>
-          <p>
-            {jobInformation?.liscence_plate + jobInformation?.vehicle_brand}
-          </p>
+          <p>{jobInformation?.license_plate + jobInformation?.vehicle_brand}</p>
         </div>
         <div className="flex  gap-normal">
           <h1 className="text-slate-500 tracking-widest font-bold">

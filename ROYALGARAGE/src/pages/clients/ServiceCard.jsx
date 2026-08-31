@@ -38,6 +38,8 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
       [name]: value,
     }));
   };
+  console.log(jobData);
+
   const newJobSubmission = async (e) => {
     e.preventDefault();
 
@@ -45,7 +47,7 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
       if (data.payload.success) {
         toast(data.payload.message);
         setOpen(false);
-        jobData.appointemnt_day = "";
+        jobData.appointment_day = "";
         jobData.vehicle_id = "";
       } else {
         toast(data.payload.message);
@@ -107,14 +109,14 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                 <Select
                   onValueChange={(licensePlate) => {
                     const vehicle = vehicles.find(
-                      (item) => item.liscence_plate === licensePlate,
+                      (item) => item.license_plate === licensePlate,
                     );
                     setJobData((prev) => ({
                       ...prev,
                       vehicle_id: vehicle.vehicle_id,
                     }));
                   }}
-                  className=" border w-2xs shadow-2xl"
+                  className=" border  shadow-2xl"
                 >
                   <SelectTrigger className="w-2xs shadow-2xl ">
                     <SelectValue placeholder="Select vehicle" />
@@ -124,10 +126,10 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                       <SelectItem
                         className={"tracking-wide font-bold"}
                         name="vehicle_id"
-                        key={item.liscence_plate}
-                        value={item.liscence_plate}
+                        key={item.license_plate}
+                        value={item.license_plate}
                       >
-                        {item.liscence_plate} {item.vehicle_brand}
+                        {item.license_plate} {item.vehicle_brand}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -142,9 +144,9 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                   className={"p-3.5 w-2xs"}
                   type="date"
                   min={new Date().toISOString().split("T")[0]}
-                  name="appointemnt_day"
+                  name="appointment_day"
                   onChange={handleChange}
-                  value={jobData.appointemnt_day}
+                  value={jobData.appointment_day}
                   required
                 />
                 <button
