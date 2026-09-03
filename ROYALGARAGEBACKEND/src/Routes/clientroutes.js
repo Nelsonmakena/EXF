@@ -9,7 +9,7 @@ import {
   getVehicles,
   deleteVehicle,
 } from "../controllers/client/vehicle.js";
-import { job, getAllJobs, billing } from "../controllers/jobs.js";
+import { job, getAllJobs, billing, jobInfo } from "../controllers/jobs.js";
 import { TotalNumbersClient } from "../controllers/dashboarb.js";
 import { appointmentsDatesList } from "../controllers/appointmentsdates.js";
 const Router = express.Router();
@@ -42,11 +42,15 @@ Router.delete("/delete-vehicle", deleteVehicle);
 
 Router.put("/new-job", job);
 
-// fethng jobs for a client
+// fetching jobs for a client
 
 Router.get("/jobs", getAllJobs);
 
-//fetcth billing
+// info for a job
+
+Router.get("/jobs/:job_id", jobInfo);
+
+//fetch billing
 
 Router.get("/billing", billing);
 

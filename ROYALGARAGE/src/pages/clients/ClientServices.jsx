@@ -18,7 +18,7 @@ export default function ClientServices() {
 
   return (
     <>
-      <section className=" container-main  ">
+      <section className=" section-sm">
         <div className="grid grid-cols-2   md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5  ">
           {availableServiceList.length == 0 ? (
             <div className="w-full h-screen flex items-center justify-center">

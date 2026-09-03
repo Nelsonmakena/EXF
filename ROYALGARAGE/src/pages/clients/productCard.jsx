@@ -2,6 +2,8 @@ import { addCart } from "@/Comp/store/serviceslice";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+import { currencyFormat } from "@/utils/currencyFormater";
+import { Button } from "@/components/ui/button";
 export default function ProductCard({
   product,
   product_discount,
@@ -16,12 +18,12 @@ export default function ProductCard({
     const discount = Number(product_discount) / 100;
     const setPrice = Number(product_price);
     const price = setPrice - discount * setPrice;
-    return price;
+    return currencyFormat(price);
   };
   return (
-    <div className="card bg-card shadow-md transition-colors rounded-xl flex flex-col w-46">
+    <div className=" bg-card shadow-md transition-colors rounded-xl flex flex-col md:w-46">
       {/* Top row: badge + bookmark */}
-      <div className="flex items-center  mb-2  ">
+      <div className="flex items-center  mb-2 p-1.5  ">
         <div
           className={` ${product_discount === 0 || null ? "hidden" : "bg-accent text-neutral-800 text-xs px-2 py-0.5 rounded-full"}`}
         >
@@ -40,29 +42,32 @@ export default function ProductCard({
         />
       </div>
 
-      {/* Product Name */}
-      <p className="text-sm text-header mb-2 px-2 cursor-pointer">
-        {product_name}
-      </p>
+      <div className="card">
+        <p className="text-sm text-header mb-2 cursor-pointer">
+          {product_name}
+        </p>
 
-      {/* Price */}
-      <div className="flex items-center gap-2 px-2">
-        <span className="text-sm font-semibold text-neutral-800">
-          ksh {newPrice()}
-        </span>
-        <span className="text-xs text-neutral-500 line-through">
-          {product_price}/=
-        </span>
-        <div>
-          <button>
-            <ShoppingCart
-              onClick={() => {
-                dispatch(addCart(product));
-                toast(`${product_name} added to cart`);
-              }}
-              className="text-header"
-            />{" "}
-          </button>
+        <div className="flex flex-col  items-center gap-2 md:flex-row">
+          <div className="flex items-center gap-normal">
+            <h1 className="text-xs md:hidden">Was</h1>
+            <span className="text-xs text-destructive line-through">
+              {currencyFormat(product_price)}
+            </span>
+          </div>
+          <span className="text-sm font-semibold text-accent">
+            {newPrice()}
+          </span>
+        </div>
+        <div className="w-full flex justify-end mt-2.5">
+          <Button
+            size="icon"
+            onClick={() => {
+              dispatch(addCart(product));
+              toast(`${product_name} added to cart`);
+            }}
+          >
+            <ShoppingCart className="text-white" />{" "}
+          </Button>
         </div>
       </div>
     </div>

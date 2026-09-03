@@ -44,57 +44,89 @@ export default function JobList() {
     dispatch(getWorkerList());
   }, []);
 
+  // if (jobsList.length == 0) {
+  //   return <h1>loading </h1>;
+  // }
+
   return (
     <section className="container-main ">
       <div className=" section flex flex-col gap-normal">
         {/**job card  */}
         <Table className="">
           <TableCaption> pending jobs .</TableCaption>
+
           <TableHeader>
             <TableRow className="font-bold">
-              <TableHead className={"font-bold text-secondary"}>Name</TableHead>
-              <TableHead className={"font-bold text-primary"}>
-                vehicle
-              </TableHead>
               <TableHead className={"font-bold text-secondary"}>
-                service
+                Details
+              </TableHead>
+              <TableHead className={"font-bold text-primary"}>Client</TableHead>
+              <TableHead className={"font-bold text-secondary"}>
+                services
               </TableHead>
               <TableHead className={"font-bold text-primary"}>Assign</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {jobsList.length == 0 ? (
               <Spinner></Spinner>
             ) : (
               jobsList.map((item, index) => {
                 return (
-                  <TableRow key={index}>
+                  <TableRow
+                    key={index}
+                    className="group cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-secondary  "
+                  >
                     <TableCell>
-                      {item.first_name + " " + item.last_name}
-                    </TableCell>
-                    <TableCell className="flex items-center gap-2.5">
-                      <div className="border w-10 h-10 flex justify-center items-center  rounded-full overflow-hidden ">
-                        {" "}
-                        <h1 className="text-header font-bold">
-                          {item.license_plate[0]}{" "}
-                        </h1>
-                        <h1 className="text-header-foreground">
-                          {" "}
-                          {item.license_plate[6]}{" "}
-                        </h1>
-                      </div>
-                      {item.license_plate}
-                    </TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted/20">
+                          {item.vehicle.plate[0]}
+                          {item.vehicle.plate[6]}
+                        </div>
 
-                    <TableCell>{item.service_name}</TableCell>
+                        <div>
+                          <p className="font-semibold text-primary tracking-widest ">
+                            {item.vehicle.plate}
+                          </p>
+
+                          <p className="mt-0.5 text-xs text-gray-500">
+                            {item.vehicle.model} {item.vehicle.brand}
+                            <span className="mx-1.5">•</span>
+                            {item.vehicle.color}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
                     <TableCell>
-                      <Button
-                        onClick={() => {
-                          navigate(`${item.job_services_id}`);
-                        }}
-                      >
-                        Assign
-                      </Button>
+                      <div className="flex items-center gap-3">
+                        <div className="grid gap-1">
+                          <h1 className="font-bold ">{item.client.name}</h1>
+                          <span className="tracking-widest text-secondary ">
+                            {" "}
+                            {item.client.phone}
+                          </span>
+                          <p className="text-xs text-gray-500  ">
+                            {item.client.email}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {item?.services?.map((service) => {
+                        <div className="flex">
+                          <div>
+                            <h1>{service.service_name}</h1>
+                          </div>
+                        </div>;
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Button onClick={() => navigate(`${item.job_id}`)}>
+                          Assign
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

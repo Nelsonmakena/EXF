@@ -48,13 +48,43 @@ export const getVehicles = async (req, res) => {
 
   try {
     const vehicle = await pool.query(
-      "SELECT license_plate,vehicle_brand,vehicle_color,vehicle_model,vehicle_id  FROM vehicle WHERE client_id = $1",
+      "SELECT license_plate,vehicle_brand,vehicle_color,vehicle_model,appointment_day,vehicle.vehicle_id,service_id  FROM vehicle LEFT JOIN jobs ON jobs.vehicle_id=vehicle.vehicle_id LEFT JOIN job_services ON jobs.job_id=job_services.job_id WHERE client_id = $1",
       [client_id],
     );
+    const results = vehicle.rows.reduce((acc, item) => {
+      let findVehicle = acc.find(
+        (vehicle) => vehicle.vehicle_id === item.vehicle_id,
+      );
+
+      if (!findVehicle) {
+        findVehicle = {
+          vehicle_id: item.vehicle_id,
+          appointment_day: item.appointment_day,
+          details: {
+            model: item.vehicle_model,
+            color: item.vehicle_color,
+            brand: item.vehicle_brand,
+            plate: item.license_plate,
+          },
+          services: [],
+        };
+
+        acc.push(findVehicle);
+      }
+
+      if (item.service_id) {
+        findVehicle.services.push({
+          service_id: item.service_id,
+          service_name: item.service_name,
+        });
+      }
+
+      return acc;
+    }, []);
     res.status(200).json({
       success: true,
       message: "vehicle list ",
-      data: vehicle.rows,
+      data: results,
     });
   } catch (error) {
     console.log(error.message);

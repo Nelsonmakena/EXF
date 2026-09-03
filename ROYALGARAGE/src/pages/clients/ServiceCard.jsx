@@ -23,6 +23,7 @@ import { getVehiclelist } from "@/Comp/store/vehicleslice";
 
 import { toast } from "sonner";
 import { newJob } from "@/Comp/store/jobsslice";
+import { currencyFormat } from "@/utils/currencyFormater";
 export default function ServiceCard({ name, price, image, id, vehicles }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -57,24 +58,27 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
   };
 
   return (
-    <div className="border-border bg-card rounded-xl shadow-xs  flex flex-col w-46  hover:-translate-y-1 transition duration-400">
+    <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-48   hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
-      <div className="  w-full  flex items-center justify-center h-30 mb-2 ">
+      <div className="  w-full  flex items-center justify-center h-30 ">
         <img
           src={`/assets/images/${image}.jpg`}
           alt={name}
           className="max-h-full w-full rounded-t-xl  "
         />
       </div>
-      <div className="card  flex flex-col gap-normal ">
-        <p className="text-sm text-primary cursor-pointer ">{name}</p>
-
-        <span className="text-sm font-semibold text-accent">
-          {Number(price).toLocaleString("en-ke", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-        </span>
+      <div className="flex flex-col gap-normal ">
+        <div className="flex  px-2 py-3">
+          <p className="text-sm text-primary cursor-pointer py-3 px-1  ">
+            {name}
+          </p>
+        </div>
+        <div className="inline-flex items-center justify-center">
+          <h1 className="text-gray-500 inline-flex">Price</h1>
+          <span className="text-sm font-semibold text-accent py-3 px-4">
+            {currencyFormat(price)}
+          </span>
+        </div>
 
         {/* getting the service logic*/}
 
@@ -88,7 +92,7 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                     service_id: id,
                   }))
                 }
-                className=" text-white rounded-md  shadow-xs h-10   "
+                className=" text-white rounded-b-xl  rounded-t-none  h-12   "
               >
                 {" "}
                 Book Now

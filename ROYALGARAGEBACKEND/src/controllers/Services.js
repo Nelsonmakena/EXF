@@ -3,7 +3,9 @@ import { pool } from "../../Db.js";
 
 export const getallservices = async (req, res) => {
   try {
-    const services = await pool.query("SELECT * FROM services ");
+    const services = await pool.query(
+      "SELECT * FROM services ORDER BY service_name ASC ",
+    );
     res.status(201).json({ succes: true, data: services.rows });
   } catch (error) {
     res.status(400).json(error.message);

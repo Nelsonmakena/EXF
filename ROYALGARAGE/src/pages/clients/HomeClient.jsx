@@ -1,3 +1,4 @@
+import { CalendarDays, Car, Palette } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -17,11 +18,11 @@ import Lottie from "lottie-react";
 import buttonanimation from "/src/assets/addbuttondata.json";
 import { Spinner } from "@/components/ui/spinner";
 import { useNavigate } from "react-router";
-import { getServiceList } from "@/Comp/store/jobsslice";
+import { getClientJobs } from "@/Comp/store/jobsslice";
 
 export default function HomeClient() {
   const { totalVehicle } = useSelector((state) => state.vehicle);
-  const { inProgress } = useSelector((state) => state.jobs);
+  const { clientJobs } = useSelector((state) => state.jobs);
 
   const navigate = useNavigate();
 
@@ -29,9 +30,9 @@ export default function HomeClient() {
 
   useEffect(() => {
     dispatch(total_No_Of_Vehicles());
-    dispatch(getServiceList());
+    dispatch(getClientJobs());
   }, []);
-  console.log(inProgress);
+  console.log(clientJobs);
 
   return (
     <>
@@ -86,63 +87,69 @@ export default function HomeClient() {
               }}
               className="w-full h-12 text-white rounded-md   bg-primary"
             >
-              {" "}
               New Service
             </button>
           </div>
-          <div className=" section   ">
+          <div className="section-sm  ">
             <h1 className="  text-xl text-green-700 ">
-              {" "}
-              Ongoing <span className="text-blue-500"> Services </span>{" "}
+              Ongoing <span className="text-blue-500"> Services </span>
             </h1>
 
             {/**service card  progress for ongoing services  */}
-            <div className="w-full ">
-              <Table className="">
-                <TableCaption></TableCaption>
-
-                <TableHeader>
-                  <TableRow className="font-bold">
-                    <TableHead
-                      className={"font-bold text-secondary tracking-widest"}
-                    >
-                      Service
-                    </TableHead>
-                    <TableHead
-                      className={"font-bold text-primary tracking-widest"}
-                    >
-                      Progress
-                    </TableHead>
-                    <TableHead
-                      className={"font-bold text-secondary tracking-widest"}
-                    >
-                      vehicle
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                {inProgress.map((item, index) => (
-                  <TableRow
-                    key={index}
-                    className={"cursor-pointer"}
-                    onClick={() => navigate(`/client/${item.job_services_id}`)}
-                  >
-                    <TableCell className={``}>
-                      <div className="flex items-center gap-normal">
-                        <div className="rounded-full w-12 h-12 overflow-hidden ">
-                          <img
-                            src={`/assets/images/${item.service_image}.jpg`}
-                            alt={name}
-                            className="rounded-full object-fill w-12 h-12"
-                          />
-                        </div>
-                        <p>{item.service_name}</p>
+            <div className="flex flex-col gap-normal ">
+              {clientJobs.map((item, index) => (
+                <div
+                  onClick={() => navigate(`/client/${item.job_id}`)}
+                  key={index}
+                  className="rounded-2xl border border-primary/20 bg-white p-5 shadow-sm"
+                >
+                  {/* Vehicle */}
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100">
+                      <Car size={23} className="text-gray-700" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        {item.vehicle_model}
+                      </h2>
+                      <p className="mt-1 text-sm font-medium text-gray-500">
+                        {item.vehicle_brand}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Details */}
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    {/* Color */}
+                    <div className="flex items-center gap-3">
+                      <Palette size={18} className="text-gray-400" />
+                      <div>
+                        <p className="text-xs text-gray-500"> Color </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {item.vehicle_color}
+                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell></TableCell>
-                    <TableCell>{item.license_plate}</TableCell>
-                  </TableRow>
-                ))}
-              </Table>
+                    </div>
+                    {/* Appointment */}
+                    <div className="flex items-center gap-3">
+                      <CalendarDays size={18} className="text-gray-400" />
+                      <div>
+                        <p className="text-xs text-gray-500">Appointment</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {item.appointment_day}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Status */}
+                  <div className="mt-6 border-t border-gray-100 pt-5">
+                    <p className="text-xs text-gray-500"> Job Status </p>
+                    <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5 text-xs font-medium text-orange-700">
+                      <span className="h-2 w-2 rounded-full bg-orange-500" />
+                      {item.job_current_status}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

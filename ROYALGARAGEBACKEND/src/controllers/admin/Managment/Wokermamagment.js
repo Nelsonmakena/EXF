@@ -99,21 +99,9 @@ export const addWorker = async (req, res) => {
 export const workers = async (req, res) => {
   try {
     const allWorkers = await pool.query(
-      "SELECT first_name,last_name,second_name,employee_id , role_name ,email FROM employee JOIN roles on roles.role_id = employee.role_id",
+      "SELECT first_name,last_name,second_name,employee.employee_id , role_name ,email FROM employee JOIN roles on roles.role_id = employee.role_id LEFT JOIN job_services ON job_services.employee_id=employee.employee_id",
     );
     res.status(200).json({ success: true, data: allWorkers.rows });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-//list of workers with no assigned jobs
-export const nonAssignedWorkerList = async (req, res) => {
-  try {
-    const list = await pool.query(
-      "SELECT role_name,employee.employee_id,email  FROM employee  LEFT JOIN job_services ON job_services.employee_id = employee.employee_id JOIN roles ON roles.role_id=employee.role_id WHERE job_services.employee_id IS NULL ORDER BY role_name ASC;",
-    );
-    res.status(200).json({ success: true, data: list.rows });
   } catch (error) {
     console.log(error.message);
   }

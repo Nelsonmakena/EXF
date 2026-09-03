@@ -173,7 +173,7 @@
 
   /* 📐 Card padding */
   .card {
-    @apply p-4 md:p-6;
+    @apply p-3 md:p-6;
   }
 
   /* 📊 Big card padding */
@@ -188,39 +188,5 @@
 
   .gap-large {
     @apply gap-6 md:gap-8;
-  }
-  /* fonts part*/
-
-  /* 🧠 Main heading */
-  .heading-bold {
-    @apply text-2xl sm:text-3xl md:text-4xl  font-bold p-2.5;
-  }
-
-  /* 🧠 Section heading */
-  .heading-medium {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold p-2.5;
-  }
-
-  /* 🧠 Sub heading */
-  .heading-normal {
-    @apply text-lg sm:text-xl md:text-2xl font-medium p-2.5;
-  }
-
-  /* 📝 Body text */
-  .text-body {
-    @apply text-sm sm:text-base md:text-lg leading-relaxed;
-  }
-
-  /* 🧾 Small text */
-  .text-small {
-    @apply text-xs sm:text-sm text-muted-foreground;
-  }
-  .fancy {
-    font-family: "Sora", cursive;
-  }
-  .navbartext {
-    @apply tracking-wide text-sm sm:text-sm md:text-base lg:text-base xl:text-lg;
-    font-family: "Space Grotesk";
-    font-weight: 600;
   }
 }

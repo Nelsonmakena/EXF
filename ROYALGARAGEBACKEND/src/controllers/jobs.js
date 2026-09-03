@@ -16,8 +16,11 @@ export const job = async (req, res) => {
       "SELECT job_id FROM jobs WHERE vehicle_id = $1 AND job_current_status <> $2",
       [vehicle_id, "completed"],
     );
+    console.log("CHECK JOB:", checkJob.rows);
 
     if (checkJob.rows.length > 0) {
+      console.log(checkJob.rows);
+
       job_id = checkJob.rows[0].job_id;
     } else {
       const newJob = await pool.query(
@@ -52,7 +55,7 @@ export const job = async (req, res) => {
   }
 };
 
-// fetching list services  for client (client subscribed jobs ) (get-method)
+// fetching list jobs  for client (client subscribed jobs ) (get-method)
 
 export const getAllJobs = async (req, res) => {
   const { client_id } = req.userinfo;
@@ -61,10 +64,55 @@ export const getAllJobs = async (req, res) => {
   }
   try {
     const job = await pool.query(
-      " SELECT * FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN job_services ON job_services.job_id= jobs.job_id JOIN services ON  job_services.service_id =services.service_id   WHERE client_id=$1",
+      " SELECT * FROM jobs JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id   WHERE client_id=$1 ORDER BY appointment_day ASC",
       [client_id],
     );
     res.status(200).json({ success: true, data: job.rows });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+// getting details for a specific job client
+
+export const jobInfo = async (req, res) => {
+  const { job_id } = req.params;
+
+  try {
+    const jobDetails = await pool.query(
+      "SELECT * FROM job_services JOIN jobs ON job_services.job_id = jobs.job_id JOIN services ON services.service_id=job_services.service_id  LEFT JOIN employee ON employee.employee_id=job_services.employee_id  JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id WHERE job_services.job_id=$1 ",
+      [job_id],
+    );
+    const results = jobDetails.rows.reduce((acc, item) => {
+      if (!acc.job_id) {
+        acc.job_id = item.job_id;
+        acc.appointment_day = item.appointment_day;
+
+        acc.vehicle = {
+          vehicle_id: item.vehicle_id,
+          model: item.vehicle_model,
+          brand: item.vehicle_brand,
+          color: item.vehicle_color,
+          license_plate: item.license_plate,
+        };
+
+        acc.services = [];
+      }
+
+      acc.services.push({
+        service_id: item.service_id,
+        service_name: item.service_name,
+        service_price: item.service_price,
+        status: item.status,
+        employee_id: item.employee_id,
+        employee_name: item.first_name + item.last_name,
+        employee_email: item.email,
+        status: item.status,
+      });
+
+      return acc;
+    }, {});
+
+    res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.log(error.message);
   }
@@ -236,9 +284,46 @@ export const updateJobStatus = async (req, res) => {
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,license_plate,vehicle_brand,vehicle_color,service_name ,job_services_id FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id WHERE employee_id IS NULL ",
+      "SELECT first_name,last_name,phonenumber,email,license_plate,vehicle_brand,vehicle_color,service_name ,job_services_id ,jobs.job_id, status  FROM jobs  JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id WHERE employee_id IS NULL ",
     );
-    res.status(200).json({ success: true, data: job.rows });
+
+    const result = job.rows.reduce((acc, item) => {
+      const existingJob = acc.find((job) => job.job_id === item.job_id);
+
+      if (!existingJob) {
+        const newJob = {
+          job_id: item.job_id,
+
+          vehicle: {
+            vehicle_id: item.vehicle_id,
+            model: item.vehicle_model,
+            brand: item.vehicle_brand,
+            color: item.vehicle_color,
+            plate: item.license_plate,
+          },
+          client: {
+            name: item.first_name + " " + item.last_name,
+            email: item.email,
+            phone: item.phonenumber,
+          },
+
+          services: [],
+        };
+
+        acc.push(newJob);
+      }
+
+      const job = acc.find((job) => job.job_id === item.job_id);
+
+      job.services.push({
+        job_services_id: item.job_services_id,
+        service_name: item.service_name,
+        status: item.status,
+      });
+
+      return acc;
+    }, []);
+    res.status(200).json({ success: true, data: result, row: job.rows });
   } catch (error) {
     console.log(error.message);
   }
@@ -278,20 +363,6 @@ export const assignJob = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-  }
-};
-
-//fetching unallocated jobs (get-method)
-
-export const unallocatedJobs = async (req, res) => {
-  try {
-    const listOfUnaloccatedJobs = await pool.query(
-      "SELECT * FROM jobs JOIN job_services ON job_services.job_id =jobs.job_id WHERE employee_id ISNULL ",
-    );
-    res.status(200).json({ success: true, data: listOfUnaloccatedJobs.rows });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
   }
 };
 

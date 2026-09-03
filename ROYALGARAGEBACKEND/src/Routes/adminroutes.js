@@ -9,7 +9,6 @@ import {
   removeRole,
   addWorker,
   workers,
-  nonAssignedWorkerList,
 } from "../controllers/admin/Managment/Wokermamagment.js";
 
 import { totalNumbers } from "../controllers/dashboarb.js";
@@ -17,7 +16,6 @@ import { totalNumbers } from "../controllers/dashboarb.js";
 import {
   AllJobs,
   assignJob,
-  unallocatedJobs,
   inProgress,
   jobDetails,
 } from "../controllers/jobs.js";
@@ -53,12 +51,6 @@ Router.get("/in-progress", inProgress);
 
 // assigning of jobs
 Router.patch("/assign", assignJob);
-
-//list of unsigned jobs
-Router.get("/unassigned-jobs", unallocatedJobs);
-
-// list of employees with no jobs
-Router.get("/no-work", nonAssignedWorkerList);
 
 //job details
 Router.get("/job-details/:job_services_id", jobDetails);

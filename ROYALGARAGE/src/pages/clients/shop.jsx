@@ -18,8 +18,8 @@ export default function Shop() {
   }, []);
 
   return (
-    <section className="container-main">
-      <div className="grid grid-cols-2  md:flex md:flex-wrap items-stretch justify-center gap-5 ">
+    <section className="section-sm ">
+      <div className="grid grid-cols-2 md:flex md:flex-wrap items-stretch justify-center gap-5 ">
         {availableProductList.map((item) => (
           <ProductCard
             product={item}

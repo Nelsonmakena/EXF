@@ -36,6 +36,7 @@ import SingleMessage from "@/pages/ADMIN/pages/singlemessage";
 import ClientIndex from "../pages/clients/clientIndex";
 import AdminIndex from "../pages/ADMIN/pages/adminIndex";
 import ClientJob from "@/pages/clients/clientJob";
+import NullComponent from "./../pages/null";
 
 export default function AppRoutes() {
   return (
@@ -49,6 +50,7 @@ export default function AppRoutes() {
           <Route path="about" element={<About />} />
           <Route path="services" element={<Service />} />
         </Route>
+        <Route path="/null" element={<NullComponent />}></Route>
         <Route path="/login" element={<Userlogin />} />
         <Route path="*" element={<Pages404 />}></Route>
         <Route path="/admin-login" element={<Admin />} />
@@ -72,7 +74,7 @@ export default function AppRoutes() {
           <Route path="profile" element={<ProfileEdit />} />
           <Route path="cart" element={<Cart />} />
           <Route path="shop" element={<Shop />} />
-          <Route path=":job_services_id" element={<ClientJob />} />
+          <Route path=":job_id" element={<ClientJob />} />
         </Route>
 
         {/* admin routes  */}
@@ -99,7 +101,7 @@ export default function AppRoutes() {
           <Route path="tasks">
             <Route path="jobs" element={<JobList />} />
             <Route path="in-progress" element={<InprogressJobs />} />
-            <Route path="jobs/:job_services_id" element={<AdminJobCard />} />
+            <Route path="jobs/:job_id" element={<AdminJobCard />} />
           </Route>
         </Route>
 

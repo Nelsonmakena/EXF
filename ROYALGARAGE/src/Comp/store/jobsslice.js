@@ -8,7 +8,7 @@ import axios from "axios";
 const initialState = {
   assignedJobs: [],
   jobsList: [],
-  inProgress: [],
+  clientJobs: [],
   jobInformation: null,
 };
 //client
@@ -21,12 +21,26 @@ export const newJob = createAsyncThunk("/new-job", async (data) => {
 });
 
 //fetching ongoing jobs list
-export const getServiceList = createAsyncThunk("/serviceList", async () => {
+export const getClientJobs = createAsyncThunk("/serviceList", async () => {
   const response = await axios.get("/api/client/jobs", {
     withCredentials: true,
   });
   return response.data;
 });
+
+//client jon info
+export const clientJobInfo = createAsyncThunk(
+  "/client-job-info",
+  async (job_id) => {
+    console.log(job_id);
+
+    const response = await axios.get(`/api/client/jobs/${job_id}`, {
+      withCredentials: true,
+    });
+
+    return response.data;
+  },
+);
 
 //admin
 //in progress job list
@@ -114,8 +128,8 @@ const jobSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getServiceList.fulfilled, (state, action) => {
-        state.inProgress = action.payload.data;
+      .addCase(getClientJobs.fulfilled, (state, action) => {
+        state.clientJobs = action.payload.data;
       })
       .addCase(getJobList.fulfilled, (state, action) => {
         state.jobsList = action.payload.data;
@@ -136,6 +150,9 @@ const jobSlice = createSlice({
         state.inProgress = action.payload.data;
       })
       .addCase(jobInfo.fulfilled, (state, action) => {
+        state.jobInformation = action.payload.data;
+      })
+      .addCase(clientJobInfo.fulfilled, (state, action) => {
         state.jobInformation = action.payload.data;
       });
   },
