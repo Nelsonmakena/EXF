@@ -6,7 +6,7 @@ export const getallservices = async (req, res) => {
     const services = await pool.query(
       "SELECT * FROM services ORDER BY service_name ASC ",
     );
-    res.status(201).json({ succes: true, data: services.rows });
+    res.status(201).json({ success: true, data: services.rows });
   } catch (error) {
     res.status(400).json(error.message);
     console.log(error.message);

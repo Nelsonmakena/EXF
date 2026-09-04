@@ -14,7 +14,6 @@ export default function ClientServices() {
     dispatch(getServices());
     dispatch(getVehiclelist());
   }, []);
-  console.log(availableServiceList);
 
   return (
     <>

@@ -53,5 +53,5 @@ Router.get("/in-progress", inProgress);
 Router.patch("/assign", assignJob);
 
 //job details
-Router.get("/job-details/:job_services_id", jobDetails);
+Router.get("/job-details/:job_id", jobDetails);
 export default Router;

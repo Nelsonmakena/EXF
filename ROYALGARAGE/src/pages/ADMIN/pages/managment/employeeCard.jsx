@@ -5,6 +5,7 @@ export default function EmployeeCard({
   showAssignButton = false,
 }) {
   const isAvailable = employee.status === "available";
+  console.log(employee);
 
   return (
     <div
@@ -19,19 +20,21 @@ export default function EmployeeCard({
           {/* Avatar */}
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold">
             <span className="text-primary">
-              {employee.first_name[0].toUpperCase()}{" "}
+              {employee.info.first_name[0].toUpperCase()}{" "}
             </span>
             <span className="text-secondary">
-              {employee.last_name[0].toLowerCase()}
+              {employee.info.last_name[0].toLowerCase()}
             </span>
           </div>
 
           <div className="min-w-0">
             <h3 className="truncate text-sm font-semibold text-gray-900">
-              {employee.first_name} {employee.last_name}
+              {employee.info.first_name} {employee.info.last_name}
             </h3>
 
-            <p className="mt-0.5 text-xs text-gray-500">{employee.role_name}</p>
+            <p className="mt-0.5 text-xs text-gray-500">
+              {employee.info.role_name}
+            </p>
           </div>
         </div>
 
@@ -53,7 +56,8 @@ export default function EmployeeCard({
 
       <div className="mt-4 flex items-center justify-between">
         <span className="text-xs text-gray-500">
-          {employee.jobs} active {employee.jobs === 1 ? "job" : "jobs"}
+          {employee.jobs.length} active{" "}
+          {employee.jobs.length === 1 ? "job" : "jobs"}
         </span>
 
         {isAvailable && showAssignButton && (
@@ -78,7 +82,7 @@ export default function EmployeeCard({
 
         {!isAvailable && (
           <span className="text-xs font-medium text-gray-400">
-            {employee.currentJob}
+            {/* {employee.currentJob} */}
           </span>
         )}
       </div>

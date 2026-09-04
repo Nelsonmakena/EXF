@@ -51,6 +51,8 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function Vehicles() {
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const dispatch = useDispatch();
   const { vehicles } = useSelector((state) => state.vehicle);
   const [open, setOpen] = useState(false);
@@ -165,195 +167,177 @@ export default function Vehicles() {
             </TableHeader>
             <TableBody>
               {vehicles.map((item) => (
-                <TableRow
-                  key={item.vehicle_id}
-                  className="group cursor-pointer transition-colors hover:bg-gray-50"
-                >
-                  <TableCell className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted/20">
-                        {item.details.plate[0]}
-                        {item.details.plate[6]}
-                      </div>
-
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {item.details.plate}
-                        </p>
-
-                        <p className="mt-0.5 text-xs text-gray-500">
-                          {item.details.model} {item.details.brand}
-                          <span className="mx-1.5">•</span>
-                          {item.details.color}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <TableCell>
-                      <div
-                        className={` ${!item.appointment_day ? "hidden" : "flex items-center gap-2"}`}
-                      >
-                        <CalendarDays size={16} className="text-gray-400" />
+                <>
+                  <TableRow
+                    key={item.vehicle_id}
+                    className="group cursor-pointer transition-colors hover:bg-gray-50"
+                  >
+                    <TableCell className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted/20">
+                          {item.details.plate[0]}
+                          {item.details.plate[6]}
+                        </div>
 
                         <div>
-                          <p className="text-sm font-medium text-gray-800">
-                            {item.appointment_day}
+                          <p className="font-semibold text-gray-900">
+                            {item.details.plate}
                           </p>
 
-                          <p className="text-xs text-gray-400">Appointment</p>
+                          <p className="mt-0.5 text-xs text-gray-500">
+                            {item.details.model} {item.details.brand}
+                            <span className="mx-1.5">•</span>
+                            {item.details.color}
+                          </p>
                         </div>
                       </div>
                     </TableCell>
-                  </TableCell>
-                  <TableCell>
-                    <div
-                      className={`${item.services.length == 0 ? "hidden" : "inline-flex border items-center gap-2 rounded-lg bg-gray-50 px-3 py-2"} `}
-                    >
-                      <Clock3 size={15} className="text-gray-400" />
-
-                      <span className="text-sm font-medium text-gray-700">
-                        {item.services.length}
-                      </span>
-
-                      <span className="text-xs text-gray-500">
-                        {item.services.length === 1
-                          ? "Service"
-                          : "Services" + " " + "in progress"}
-                      </span>
-                    </div>
-                  </TableCell>
-
-                  <TableCell>
-                    <div className="flex items-center">
-                      <DropdownMenu className="">
-                        <DropdownMenuTrigger>
-                          <Ellipsis />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          className={"bg-none backdrop-blur-md min-w-40 "}
+                    <TableCell>
+                      <TableCell>
+                        <div
+                          className={` ${!item.appointment_day ? "hidden" : "flex items-center gap-2"}`}
                         >
-                          <DropdownMenuItem className={""}>
-                            <Dialog asChild>
-                              <DialogTrigger
-                                render={
-                                  <Button
-                                    variant="outline"
-                                    className={"w-full"}
-                                  >
-                                    update
-                                  </Button>
-                                }
-                              ></DialogTrigger>
-                              <DialogContent
-                                className={" bg-card backdrop-blur-md"}
+                          <CalendarDays size={16} className="text-gray-400" />
+
+                          <div>
+                            <p className="text-sm font-medium text-gray-800">
+                              {item.appointment_day}
+                            </p>
+
+                            <p className="text-xs text-gray-400">Appointment</p>
+                          </div>
+                        </div>
+                      </TableCell>
+                    </TableCell>
+                    <TableCell>
+                      <div
+                        className={`${item.services.length == 0 ? "hidden" : "inline-flex border items-center gap-2 rounded-lg bg-gray-50 px-3 py-2"} `}
+                      >
+                        <Clock3 size={15} className="text-gray-400" />
+
+                        <span className="text-sm font-medium text-gray-700">
+                          {item.services.length}
+                        </span>
+
+                        <span className="text-xs text-gray-500">
+                          {item.services.length === 1
+                            ? "Service"
+                            : "Services" + " " + "in progress"}
+                        </span>
+                      </div>
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="flex items-center">
+                        <DropdownMenu className="">
+                          <DropdownMenuTrigger>
+                            <Ellipsis />
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            className={"bg-none backdrop-blur-md min-w-40 "}
+                          >
+                            <DropdownMenuItem className={""}>
+                              <Button
+                                variant="outline"
+                                className={"w-full"}
+                                onClick={() => setOpenUpdate(true)}
                               >
-                                <DialogHeader>
-                                  <DialogTitle
-                                    className={"flex justify-center"}
-                                  >
-                                    {item.license_plate}
-                                  </DialogTitle>
-                                  <DialogDescription></DialogDescription>
-                                </DialogHeader>
-                                <h1 className=" w-full flex justify-center">
-                                  Are you sure you want to remove this vehicle
-                                </h1>
-                                <div className="p-3.5">
-                                  This action cannot be undone. This will
-                                  permanently delete your vehicle and remove its
-                                  data from our servers.
-                                </div>
-                                <div className="w-full flex items-center justify-between h-36">
-                                  <Button
-                                    className={"w-40"}
-                                    onClick={async () => {
-                                      dispatch(
-                                        removeVehicle(item.vehicle_id),
-                                      ).then((data) => {
-                                        data.payload.success
-                                          ? toast(data.payload.message)
-                                          : toast(data.payload.message);
-                                      });
-                                    }}
-                                  >
-                                    Confirm
-                                  </Button>
-                                  <DialogClose asChild>
-                                    <Button
-                                      variant="destructive"
-                                      className={"w-40"}
-                                    >
-                                      Cancel
-                                    </Button>
-                                  </DialogClose>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Dialog>
-                              <DialogTrigger
-                                render={
-                                  <Button
-                                    variant="destructive"
-                                    className=" inline-flex px-4 w-full"
-                                  >
-                                    Delete
-                                  </Button>
-                                }
-                              ></DialogTrigger>
-                              <DialogContent
-                                className={" bg-card backdrop-blur-md"}
+                                update
+                              </Button>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Button
+                                variant="destructive"
+                                className=" inline-flex px-4 w-full"
+                                onClick={() => setOpenDelete(true)}
                               >
-                                <DialogHeader>
-                                  <DialogTitle
-                                    className={"flex justify-center"}
-                                  >
-                                    {item.license_plate}
-                                  </DialogTitle>
-                                  <DialogDescription></DialogDescription>
-                                </DialogHeader>
-                                <h1 className=" w-full flex justify-center">
-                                  Are you sure you want to remove this vehicle
-                                </h1>
-                                <div className="p-3.5">
-                                  This action cannot be undone. This will
-                                  permanently delete your vehicle and remove its
-                                  data from our servers.
-                                </div>
-                                <div className="w-full flex items-center justify-between h-36">
-                                  <Button
-                                    className={"w-40"}
-                                    onClick={async () => {
-                                      dispatch(
-                                        removeVehicle(item.vehicle_id),
-                                      ).then((data) => {
-                                        data.payload.success
-                                          ? toast(data.payload.message)
-                                          : toast(data.payload.message);
-                                      });
-                                    }}
-                                  >
-                                    Confirm
-                                  </Button>
-                                  <DialogClose asChild>
-                                    <Button
-                                      variant="destructive"
-                                      className={"w-40"}
-                                    >
-                                      Cancel
-                                    </Button>
-                                  </DialogClose>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </TableCell>
-                </TableRow>
+                                Delete
+                              </Button>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <Dialog open={openUpdate} onOpenChange={setOpenUpdate}>
+                    <DialogContent className={" bg-card backdrop-blur-md"}>
+                      <DialogHeader>
+                        <DialogTitle className={"flex justify-center"}>
+                          {item.license_plate}
+                        </DialogTitle>
+                        <DialogDescription></DialogDescription>
+                      </DialogHeader>
+                      <h1 className=" w-full flex justify-center">
+                        Are you sure you want to remove this vehicle
+                      </h1>
+                      <div className="p-3.5">
+                        This action cannot be undone. This will permanently
+                        delete your vehicle and remove its data from our
+                        servers.
+                      </div>
+                      <div className="w-full flex items-center justify-between h-36">
+                        <Button
+                          className={"w-40"}
+                          onClick={async () => {
+                            dispatch(removeVehicle(item.vehicle_id)).then(
+                              (data) => {
+                                data.payload.success
+                                  ? toast(data.payload.message)
+                                  : toast(data.payload.message);
+                              },
+                            );
+                          }}
+                        >
+                          Confirm
+                        </Button>
+                        <DialogClose asChild>
+                          <Button variant="destructive" className={"w-40"}>
+                            Cancel
+                          </Button>
+                        </DialogClose>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+                    <DialogContent className={" bg-card backdrop-blur-md"}>
+                      <DialogHeader>
+                        <DialogTitle className={"flex justify-center"}>
+                          {item.license_plate}
+                        </DialogTitle>
+                        <DialogDescription></DialogDescription>
+                      </DialogHeader>
+                      <h1 className=" w-full flex justify-center">
+                        Are you sure you want to remove this vehicle
+                      </h1>
+                      <div className="p-3.5">
+                        This action cannot be undone. This will permanently
+                        delete your vehicle and remove its data from our
+                        servers.
+                      </div>
+                      <div className="w-full flex items-center justify-between h-36">
+                        <Button
+                          className={"w-40"}
+                          onClick={async () => {
+                            dispatch(removeVehicle(item.vehicle_id)).then(
+                              (data) => {
+                                data.payload.success
+                                  ? toast(data.payload.message)
+                                  : toast(data.payload.message);
+                              },
+                            );
+                          }}
+                        >
+                          Confirm
+                        </Button>
+                        <DialogClose asChild>
+                          <Button variant="destructive" className={"w-40"}>
+                            Cancel
+                          </Button>
+                        </DialogClose>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </>
               ))}
             </TableBody>
           </Table>

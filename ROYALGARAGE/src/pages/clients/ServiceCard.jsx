@@ -111,9 +111,9 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                   choose vehicle to be serviced
                 </label>
                 <Select
-                  onValueChange={(licensePlate) => {
+                  onValueChange={(plate) => {
                     const vehicle = vehicles.find(
-                      (item) => item.license_plate === licensePlate,
+                      (item) => item.details.plate === plate,
                     );
                     setJobData((prev) => ({
                       ...prev,
@@ -130,10 +130,10 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
                       <SelectItem
                         className={"tracking-wide font-bold"}
                         name="vehicle_id"
-                        key={item.license_plate}
-                        value={item.license_plate}
+                        key={item.details.plate}
+                        value={item.details.plate}
                       >
-                        {item.license_plate} {item.vehicle_brand}
+                        {item.details.plate} {item.details.brand}
                       </SelectItem>
                     ))}
                   </SelectContent>

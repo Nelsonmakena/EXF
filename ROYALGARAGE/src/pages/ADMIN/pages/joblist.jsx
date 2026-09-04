@@ -8,29 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { getJobList } from "@/Comp/store/jobsslice";
-import axios from "axios";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { getWorkerList } from "@/Comp/store/wokerslice";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
+import { CheckCircle2 } from "lucide-react";
 
 export default function JobList() {
   const navigate = useNavigate();
@@ -47,14 +34,13 @@ export default function JobList() {
   // if (jobsList.length == 0) {
   //   return <h1>loading </h1>;
   // }
+  console.log(jobsList);
 
   return (
-    <section className="container-main ">
-      <div className=" section flex flex-col gap-normal">
+    <section className="section-sm">
+      <div className=" bg-card">
         {/**job card  */}
         <Table className="">
-          <TableCaption> pending jobs .</TableCaption>
-
           <TableHeader>
             <TableRow className="font-bold">
               <TableHead className={"font-bold text-secondary"}>
@@ -113,13 +99,17 @@ export default function JobList() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {item?.services?.map((service) => {
+                      {item?.services?.map((service) => (
                         <div className="flex">
-                          <div>
+                          <div className="inline-flex items-center space-x-1.5 ">
+                            <CheckCircle2
+                              className="text-primary font-bold"
+                              size={10}
+                            />
                             <h1>{service.service_name}</h1>
                           </div>
-                        </div>;
-                      })}
+                        </div>
+                      ))}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center">

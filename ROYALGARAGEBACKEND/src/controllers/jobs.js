@@ -369,16 +369,42 @@ export const assignJob = async (req, res) => {
 ///details for a specific job
 
 export const jobDetails = async (req, res) => {
-  const { job_services_id } = req.params;
+  const { job_id } = req.params;
 
   try {
     const response = await pool.query(
-      "SELECT appointment_day,license_plate,first_name,second_name,email,vehicle_brand,job_services_id,job_creation_time,service_name,service_image  FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id JOIN services ON job_services.service_id=services.service_id WHERE job_services_id=$1",
-      [job_services_id],
+      "SELECT  first_name , second_name , last_name , job_services_id , vehicle.vehicle_id , vehicle_color , vehicle_model, vehicle_brand , job_creation_time , service_name, service_image FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id JOIN services ON job_services.service_id=services.service_id WHERE job_services.job_id=$1",
+      [job_id],
     );
-    console.log(response.rows[0]);
+    const result = response.rows.reduce((acc, item) => {
+      if (!acc.job_services_id) {
+        acc.job_services_id = item.job_services_id;
+        console.log(acc.job_services_id);
 
-    res.status(200).json({ success: true, data: response.rows[0] });
+        acc.client = {
+          name: item.first_name + item.last_name,
+          email: item.email,
+          phone: item.phonenumber,
+        };
+        acc.vehicle = {
+          vehicle_id: item.vehicle_id,
+          model: item.vehicle_model,
+          brand: item.vehicle_brand,
+          color: item.vehicle_color,
+          plate: item.license_plate,
+        };
+        acc.serviceInfo = [];
+      }
+      acc.serviceInfo.push({
+        job_services_id: item.job_services_id,
+        requestedAt: item.job_creation_time,
+        service_name: item.service_name,
+        service_image: item.service_image,
+      });
+
+      return acc;
+    }, {});
+    res.status(200).json({ success: true, data: result });
   } catch (error) {
     console.log(error.message);
   }
