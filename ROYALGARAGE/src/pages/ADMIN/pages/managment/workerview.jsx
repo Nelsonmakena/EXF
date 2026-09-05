@@ -38,14 +38,11 @@ import EmployeeCard from "./employeeCard";
 
 export default function WorkerView() {
   const [role_id, setRole_id] = useState();
-  const { workerList, roles } = useSelector((state) => state.worker);
+  const { workerList } = useSelector((state) => state.worker);
   const dispatch = useDispatch();
   useEffect(() => {
     if (workerList.length == 0) {
       dispatch(getWorkerList());
-    }
-    if (roles.length == 0) {
-      dispatch(roleList());
     }
   }, []);
 
@@ -69,7 +66,7 @@ export default function WorkerView() {
 
   return (
     <section className="section-sm">
-      <div className=" grid grid-cols-2 gap-normal ">
+      <div className=" grid grid-cols-3 gap-normal card ">
         {workerList.map((item, index) => (
           <EmployeeCard employee={item} />
         ))}

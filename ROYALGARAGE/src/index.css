@@ -173,7 +173,7 @@
 
   /* 📐 Card padding */
   .card {
-    @apply p-3 md:p-6;
+    @apply p-3 md:p-5;
   }
 
   /* 📊 Big card padding */

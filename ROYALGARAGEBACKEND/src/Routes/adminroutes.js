@@ -19,6 +19,9 @@ import {
   inProgress,
   jobDetails,
 } from "../controllers/jobs.js";
+
+import { Clients } from "./../controllers/client/clientinfo.js";
+
 const Router = express.Router();
 
 Router.use(authenticateMiddleware, adminChecker);
@@ -54,4 +57,7 @@ Router.patch("/assign", assignJob);
 
 //job details
 Router.get("/job-details/:job_id", jobDetails);
+
+//client list
+Router.get("/clients", Clients);
 export default Router;

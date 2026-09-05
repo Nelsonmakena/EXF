@@ -1,17 +1,18 @@
+import { useState } from "react";
+
 export default function EmployeeCard({
   employee,
   selected,
   onSelect,
   showAssignButton = false,
 }) {
-  const isAvailable = employee.status === "available";
-  console.log(employee);
+  const isAvailable = !employee.jobs.length;
 
   return (
     <div
-      className={`rounded-xl border p-4 transition ${
-        selected
-          ? "border-blue-500 bg-blue-50/50"
+      className={`rounded-xl border p-4 transition cursor-pointer ${
+        isAvailable
+          ? "border-accent/20 bg-blue-50/50 hover:border-secondary/20"
           : "border-primary/20 bg-card hover:border-primary"
       }`}
     >
@@ -32,9 +33,7 @@ export default function EmployeeCard({
               {employee.info.first_name} {employee.info.last_name}
             </h3>
 
-            <p className="mt-0.5 text-xs text-gray-500">
-              {employee.info.role_name}
-            </p>
+            <p className="mt-0.5 text-xs text-gray-500">{employee.info.role}</p>
           </div>
         </div>
 
