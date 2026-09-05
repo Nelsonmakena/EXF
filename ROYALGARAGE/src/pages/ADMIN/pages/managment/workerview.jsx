@@ -68,7 +68,7 @@ export default function WorkerView() {
     <section className="section-sm">
       <div className=" grid grid-cols-3 gap-normal card ">
         {workerList.map((item, index) => (
-          <EmployeeCard employee={item} />
+          <EmployeeCard key={index} employee={item} />
         ))}
       </div>
     </section>

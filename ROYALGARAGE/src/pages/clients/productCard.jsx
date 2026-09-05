@@ -2,7 +2,7 @@ import { addCart } from "@/Comp/store/serviceslice";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { currencyFormat } from "@/utils/currencyFormater";
+import { currencyFormat } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 export default function ProductCard({
   product,

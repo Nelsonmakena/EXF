@@ -22,7 +22,9 @@ import {
 import { useTheme } from "@/Comp/theme-provider";
 
 function Nav() {
-  const [scrolled, setScrolled] = useState(false);
+  const [showNav, setShowNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   const navigate = useNavigate();
   const { setTheme, theme } = useTheme();
 
@@ -35,21 +37,33 @@ function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 570) {
-        setScrolled(true);
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY) {
+        // scrolling DOWN
+        setShowNav(false);
       } else {
-        setScrolled(false);
+        // scrolling UP
+        setShowNav(true);
       }
+
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   return (
     <>
-      <div className=" fixed top-0 left-0 z-50   flex items-center justify-between  h-20 w-full px-2.5 navbartext backdrop-blur-xs">
+      <div
+        className={`fixed top-0 left-0 z-50 flex h-20 w-full items-center justify-between px-2.5   transition-transform duration-300 ${
+          showNav
+            ? "translate-y-0 bg-primary transition-all duration-300"
+            : "-translate-y-full"
+        }`}
+      >
         <nav className=" hidden h-full md:flex items-center    ">
           <div className="w-18  ">
             <Lottie animationData={logodata} />
@@ -58,7 +72,7 @@ function Nav() {
             <ul className="flex space-x-3.5 ">
               {commonNavLinks.map((single, index) => {
                 return (
-                  <li key={index} className=" card text-primary">
+                  <li key={index} className=" card ">
                     <Link to={single.Path}> {single.name} </Link>
                   </li>
                 );
@@ -72,7 +86,7 @@ function Nav() {
           <button
             onClick={() => navigate("/login")}
             className={`flex  justify-center items-center w-44  shadow-md  h-14 rounded-md
-               ${scrolled ? "bg-transparent " : " bg-white text-black"}`}
+               ${showNav ? "bg-transparent " : " bg-white text-black"}`}
           >
             Get Started
           </button>

@@ -6,6 +6,7 @@ import workerSlice from "./wokerslice";
 import jobSlice from "./jobsslice";
 import dateSlice from "./appointmentsdates";
 import dashboardSlice from "./dashboardstarts";
+import clientSlice from "./client";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     jobs: jobSlice,
     appointmentsDates: dateSlice,
     dashboard: dashboardSlice,
+    client: clientSlice,
   },
 });
 

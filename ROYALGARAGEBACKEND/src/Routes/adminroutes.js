@@ -20,7 +20,7 @@ import {
   jobDetails,
 } from "../controllers/jobs.js";
 
-import { Clients } from "./../controllers/client/clientinfo.js";
+import { Clients, clientInfo } from "./../controllers/client/clientinfo.js";
 
 const Router = express.Router();
 
@@ -60,4 +60,7 @@ Router.get("/job-details/:job_id", jobDetails);
 
 //client list
 Router.get("/clients", Clients);
+
+//single client info
+Router.get("/client/:client_id", clientInfo);
 export default Router;

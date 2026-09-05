@@ -49,7 +49,7 @@ export default function SecondaryNav({ hidemenu, Sethidemenu }) {
               <Link to="management/workers"> Workers </Link>
             </li>
             <li className="card">
-              <Link to=""> Clients </Link>
+              <Link to="management/clients"> Clients </Link>
             </li>
             <li className="card">
               <Link to="management/roles"> Roles </Link>

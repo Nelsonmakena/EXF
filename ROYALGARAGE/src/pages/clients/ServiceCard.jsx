@@ -23,7 +23,7 @@ import { getVehiclelist } from "@/Comp/store/vehicleslice";
 
 import { toast } from "sonner";
 import { newJob } from "@/Comp/store/jobsslice";
-import { currencyFormat } from "@/utils/currencyFormater";
+import { currencyFormat } from "@/utils/utils";
 export default function ServiceCard({ name, price, image, id, vehicles }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);

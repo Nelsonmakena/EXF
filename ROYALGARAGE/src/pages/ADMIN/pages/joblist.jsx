@@ -34,7 +34,6 @@ export default function JobList() {
   // if (jobsList.length == 0) {
   //   return <h1>loading </h1>;
   // }
-  console.log(jobsList);
 
   return (
     <section className="section-sm">

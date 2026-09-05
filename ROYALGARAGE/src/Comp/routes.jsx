@@ -37,6 +37,9 @@ import ClientIndex from "../pages/clients/clientIndex";
 import AdminIndex from "../pages/ADMIN/pages/adminIndex";
 import ClientJob from "@/pages/clients/clientJob";
 import NullComponent from "./../pages/null";
+import clientsView from "./../pages/ADMIN/pages/managment/clientsview";
+import ClientsView from "./../pages/ADMIN/pages/managment/clientsview";
+import ClientInfoView from "@/pages/ADMIN/pages/managment/clientinfoView";
 
 export default function AppRoutes() {
   return (
@@ -89,6 +92,9 @@ export default function AppRoutes() {
           <Route path="home" element={<AdminHome />} />
           <Route path="management">
             <Route path="workers" element={<WorkerView />} />
+            <Route path="clients" element={<ClientsView />} />
+            <Route path="clients/:client_id" element={<ClientInfoView />} />
+
             <Route path="roles" element={<RolesView />} />
           </Route>
           <Route path="inventory">
