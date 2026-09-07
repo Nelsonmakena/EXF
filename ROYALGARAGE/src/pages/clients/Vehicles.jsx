@@ -48,10 +48,13 @@ import {
 } from "@/Comp/store/vehicleslice";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import UpdateVehicle from "./updatevehicle";
+import DeleteVehicle from "./deleteVehicle";
 
 export default function Vehicles() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const dispatch = useDispatch();
   const { vehicles } = useSelector((state) => state.vehicle);
   const [open, setOpen] = useState(false);
@@ -144,10 +147,10 @@ export default function Vehicles() {
               </Dialog>
             </TableCaption>
             {/* list of vehicles  */}
-            <TableHeader>
+            <TableHeader className="">
               <TableRow className="font-bold">
                 <TableHead
-                  className={"font-bold text-secondary tracking-widest"}
+                  className={"px-3.5 font-bold text-secondary tracking-widest"}
                 >
                   Vehicle
                 </TableHead>
@@ -179,9 +182,7 @@ export default function Vehicles() {
                         </div>
 
                         <div>
-                          <p className="font-semibold text-gray-900">
-                            {item.details.plate}
-                          </p>
+                          <p className="font-semibold ">{item.details.plate}</p>
 
                           <p className="mt-0.5 text-xs text-gray-500">
                             {item.details.model} {item.details.brand}
@@ -199,7 +200,7 @@ export default function Vehicles() {
                           <CalendarDays size={16} className="text-gray-400" />
 
                           <div>
-                            <p className="text-sm font-medium text-gray-800">
+                            <p className="text-sm font-medium ">
                               {item.appointment_day}
                             </p>
 
@@ -230,26 +231,34 @@ export default function Vehicles() {
                       <div className="flex items-center">
                         <DropdownMenu className="">
                           <DropdownMenuTrigger>
-                            <Ellipsis />
+                            <Button>
+                              <Ellipsis />
+                            </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent
                             className={"bg-none backdrop-blur-md min-w-40 "}
                           >
-                            <DropdownMenuItem className={""}>
+                            <DropdownMenuItem
+                              className={""}
+                              onClick={() => {
+                                setOpenUpdate(true);
+                                setSelectedVehicle(item);
+                              }}
+                            >
                               <Button
                                 variant="outline"
-                                className={"w-full"}
-                                onClick={() => setOpenUpdate(true)}
+                                className="w-full text-primary"
                               >
                                 update
                               </Button>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Button
-                                variant="destructive"
-                                className=" inline-flex px-4 w-full"
-                                onClick={() => setOpenDelete(true)}
-                              >
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setOpenDelete(true);
+                                setSelectedVehicle(item);
+                              }}
+                            >
+                              <Button variant="destructive" className="w-full">
                                 Delete
                               </Button>
                             </DropdownMenuItem>
@@ -258,86 +267,22 @@ export default function Vehicles() {
                       </div>
                     </TableCell>
                   </TableRow>
-                  <Dialog open={openUpdate} onOpenChange={setOpenUpdate}>
-                    <DialogContent className={" bg-card backdrop-blur-md"}>
-                      <DialogHeader>
-                        <DialogTitle className={"flex justify-center"}>
-                          {item.license_plate}
-                        </DialogTitle>
-                        <DialogDescription></DialogDescription>
-                      </DialogHeader>
-                      <h1 className=" w-full flex justify-center">
-                        Are you sure you want to remove this vehicle
-                      </h1>
-                      <div className="p-3.5">
-                        This action cannot be undone. This will permanently
-                        delete your vehicle and remove its data from our
-                        servers.
-                      </div>
-                      <div className="w-full flex items-center justify-between h-36">
-                        <Button
-                          className={"w-40"}
-                          onClick={async () => {
-                            dispatch(removeVehicle(item.vehicle_id)).then(
-                              (data) => {
-                                data.payload.success
-                                  ? toast(data.payload.message)
-                                  : toast(data.payload.message);
-                              },
-                            );
-                          }}
-                        >
-                          Confirm
-                        </Button>
-                        <DialogClose asChild>
-                          <Button variant="destructive" className={"w-40"}>
-                            Cancel
-                          </Button>
-                        </DialogClose>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                  <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-                    <DialogContent className={" bg-card backdrop-blur-md"}>
-                      <DialogHeader>
-                        <DialogTitle className={"flex justify-center"}>
-                          {item.license_plate}
-                        </DialogTitle>
-                        <DialogDescription></DialogDescription>
-                      </DialogHeader>
-                      <h1 className=" w-full flex justify-center">
-                        Are you sure you want to remove this vehicle
-                      </h1>
-                      <div className="p-3.5">
-                        This action cannot be undone. This will permanently
-                        delete your vehicle and remove its data from our
-                        servers.
-                      </div>
-                      <div className="w-full flex items-center justify-between h-36">
-                        <Button
-                          className={"w-40"}
-                          onClick={async () => {
-                            dispatch(removeVehicle(item.vehicle_id)).then(
-                              (data) => {
-                                data.payload.success
-                                  ? toast(data.payload.message)
-                                  : toast(data.payload.message);
-                              },
-                            );
-                          }}
-                        >
-                          Confirm
-                        </Button>
-                        <DialogClose asChild>
-                          <Button variant="destructive" className={"w-40"}>
-                            Cancel
-                          </Button>
-                        </DialogClose>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
                 </>
               ))}
+              {openUpdate && (
+                <UpdateVehicle
+                  open={openUpdate}
+                  onOpenChange={setOpenUpdate}
+                  item={selectedVehicle}
+                />
+              )}
+              {openDelete && (
+                <DeleteVehicle
+                  open={openDelete}
+                  onOpenChange={setOpenDelete}
+                  item={selectedVehicle}
+                />
+              )}
             </TableBody>
           </Table>
         </div>

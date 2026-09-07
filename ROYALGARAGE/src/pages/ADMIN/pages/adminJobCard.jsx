@@ -19,6 +19,7 @@ import { getNonUnassigned, getWorkerList } from "@/Comp/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./managment/employeeCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function AdminJobCard() {
   const jobData = {
@@ -42,7 +43,9 @@ export default function AdminJobCard() {
     ],
   };
   const { workerList } = useSelector((state) => state.worker);
+  const { jobInformation } = useSelector((state) => state.jobs);
   const navigate = useNavigate();
+  const [jobServiceId, setJobServiceId] = useState(null);
 
   const dispatch = useDispatch();
   const { job_id } = useParams();
@@ -51,22 +54,26 @@ export default function AdminJobCard() {
     if (workerList.length == 0) {
       dispatch(getWorkerList());
     }
-    dispatch(jobInfo());
+    dispatch(jobInfo(job_id));
   }, []);
+  console.log(jobInformation);
+  if (!jobInformation) {
+    return <h1>loading</h1>;
+  }
 
   return (
     <section className="section-sm grid gap-6 xl:grid-cols-[0.85fr_1fr_1fr] h-screen ">
-      <div className="rounded-2xl border border-gray-200 bg-card shadow-sm card">
+      <div className="rounded-2xl border border-primary/10 bg-card shadow-sm card">
         <div className="border-b border-gray-100 p-1">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/10">
               <Wrench size={19} className="text-gray-700" />
             </div>
 
             <div>
               <p className="text-xs text-gray-500">Job #{jobData.id}</p>
 
-              <h2 className="font-semibold text-gray-900">Job Details</h2>
+              <h2 className="font-semibold ">Job Details</h2>
             </div>
           </div>
         </div>
@@ -74,9 +81,9 @@ export default function AdminJobCard() {
         <div className="space-y-5 ">
           {/* Status */}
           <div>
-            <p className="text-xs text-gray-500">Status</p>
+            <p className="text-xs text-gray-500 py-2">Status</p>
 
-            <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5 text-xs font-medium text-orange-700">
+            <span className="mt-1 inline-flex items-center gap-2 rounded-full  px-3 py-1.5 text-xs font-medium text-orange-700">
               <span className="h-2 w-2 rounded-full bg-orange-500" />
               {jobData.status}
             </span>
@@ -88,25 +95,26 @@ export default function AdminJobCard() {
               Vehicle
             </p>
 
-            <div className="rounded-xl bg-gray-50 p-4">
+            <div className="rounded-xl border border-primary/20 p-4">
               <div className="flex items-center gap-3">
                 <Car size={20} className="text-gray-600" />
 
                 <div>
-                  <p className="font-semibold text-gray-900">
-                    {jobData.vehicle.make} {jobData.vehicle.model}
+                  <p className="font-semibold ">
+                    {jobInformation.vehicle.brand}{" "}
+                    {jobInformation.vehicle.model}
                   </p>
 
                   <p className="text-xs text-gray-500">
-                    {jobData.vehicle.year} · {jobData.vehicle.plate}
+                    {jobInformation.vehicle.plate}
                   </p>
                 </div>
               </div>
 
-              <div className="mt-4 flex justify-between border-t border-gray-200 pt-3">
+              <div className="mt-4 flex justify-between border-t border-primary/10 pt-3">
                 <span className="text-xs text-gray-500">Mileage</span>
 
-                <span className="text-xs font-medium text-gray-900">
+                <span className="text-xs font-medium ">
                   {jobData.vehicle.mileage}
                 </span>
               </div>
@@ -122,8 +130,8 @@ export default function AdminJobCard() {
             <div>
               <p className="text-xs text-gray-500">Customer</p>
 
-              <p className="text-sm font-medium text-gray-900">
-                {jobData.customer}
+              <p className="text-sm font-medium tracking-wider">
+                {jobInformation.client.name}
               </p>
             </div>
           </div>
@@ -137,9 +145,7 @@ export default function AdminJobCard() {
             <div>
               <p className="text-xs text-gray-500">Appointment</p>
 
-              <p className="text-sm font-medium text-gray-900">
-                {jobData.appointment}
-              </p>
+              <p className="text-sm font-medium ">{jobData.appointment}</p>
             </div>
           </div>
 
@@ -150,26 +156,48 @@ export default function AdminJobCard() {
             </p>
 
             <div className="space-y-2">
-              {jobData.services.map((service) => (
+              {jobInformation.serviceInfo.map((service) => (
                 <div
-                  key={service}
-                  className="flex items-center gap-2 text-sm text-gray-700"
+                  key={service.job_services_id}
+                  className="grid grid-cols-3  w-full items-center gap-2 text-sm text-accent  px-3.5 py-2"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-gray-400" />
-                  {service}
+                  {service.service_name}
+                  <div className="">
+                    <Checkbox
+                      checked={jobServiceId === service.job_services_id}
+                      disabled={!!service.assignedTo}
+                      onCheckedChange={(checked) =>
+                        setJobServiceId(
+                          checked ? service.job_services_id : null,
+                        )
+                      }
+                      className={"w-7 h-7 border border-primary shadow-sm"}
+                    />
+                  </div>
+                  <div>
+                    {service.assignedTo ? (
+                      <span className="text-xs text-gray-500">
+                        Assigned to{" "}
+                        <span className="font-medium ">
+                          {service.assignedTo.first_name}{" "}
+                          {service.assignedTo.last_name}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-400">Unassigned</span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
-      <div className="rounded-2xl border border-gray-200 bg-card shadow-sm card ">
+      <div className="rounded-2xl border border-primary/10 bg-card shadow-sm card ">
         <div>
           <div className="flex items-start justify-between ">
             <div>
-              <h2 className="font-semibold text-gray-900">
-                Available Employees
-              </h2>
+              <h2 className="font-semibold ">Available Employees</h2>
 
               <p className="mt-1 text-xs text-gray-500">
                 Employees currently without a job
@@ -191,7 +219,7 @@ export default function AdminJobCard() {
               placeholder="Search employees..."
               // value={search}
               // onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+              className="w-full rounded-xl border border-primary/10  py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-blue-500 "
             />
           </div>
         </div>
@@ -200,15 +228,20 @@ export default function AdminJobCard() {
             {workerList
               .filter((worker) => worker.jobs.length == 0)
               .map((item, index) => (
-                <EmployeeCard key={index} employee={item} />
+                <EmployeeCard
+                  key={index}
+                  employee={item}
+                  jobServiceId={jobServiceId}
+                  job_id={job_id}
+                />
               ))}
           </div>
         </ScrollArea>
       </div>
-      <div className="rounded-2xl border border-gray-200 bg-card shadow-sm card ">
+      <div className="rounded-2xl border border-primary/10 bg-card shadow-sm card ">
         <div className="flex items-start justify-between ">
           <div>
-            <h2 className="font-semibold text-gray-900">All Employees</h2>
+            <h2 className="font-semibold ">All Employees</h2>
 
             <p className="mt-1 text-xs text-gray-500">Everyone in the garage</p>
           </div>
@@ -219,9 +252,13 @@ export default function AdminJobCard() {
           </span>
         </div>
         <ScrollArea className="h-screen ">
-          <div className="mt-2.5 grid gap-normal">
+          <div className="mt-2.5 grid gap-normal ">
             {workerList.map((item, index) => (
-              <EmployeeCard key={index} employee={item} />
+              <EmployeeCard
+                key={index}
+                employee={item}
+                jobServiceId={jobServiceId}
+              />
             ))}
           </div>
         </ScrollArea>

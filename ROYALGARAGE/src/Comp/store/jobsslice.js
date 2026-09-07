@@ -70,7 +70,7 @@ export const getJobList = createAsyncThunk("/admin/jobs", async () => {
 export const AssignJob = createAsyncThunk("/assign", async (data) => {
   console.log(data);
 
-  const response = await axios.patch("/api/admin/assign", data, {
+  const response = await axios.put("/api/admin/assign", data, {
     withCredentials: true,
   });
   console.log(response.data);
@@ -78,10 +78,12 @@ export const AssignJob = createAsyncThunk("/assign", async (data) => {
   return response.data;
 });
 //info for a job
-export const jobInfo = createAsyncThunk("/job-info", async (job_service_id) => {
-  const response = await axios.get(`/api/admin/job-details/${job_service_id}`, {
+export const jobInfo = createAsyncThunk("/job-info", async (job_id) => {
+  const response = await axios.get(`/api/admin/job-details/${job_id}`, {
     withCredentials: true,
   });
+  console.log(response.data);
+
   return response.data;
 });
 

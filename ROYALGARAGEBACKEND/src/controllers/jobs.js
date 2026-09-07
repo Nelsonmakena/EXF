@@ -281,10 +281,11 @@ export const updateJobStatus = async (req, res) => {
 ///admin section
 
 // fetching all jobs for admin view (get-method) non assigned jobs
+//
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,license_plate,vehicle_brand,vehicle_color,service_name ,job_services_id ,jobs.job_id, status  FROM jobs  JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id WHERE employee_id IS NULL ",
+      "SELECT  first_name,last_name,phonenumber,email,license_plate,vehicle_brand,vehicle_color,service_name,job_services.job_services_id ,jobs.job_id ,assignment_status FROM jobs  JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id LEFT JOIN service_assignment ON job_services.job_services_id = service_assignment.job_services_id WHERE employee_id IS NULL ",
     );
 
     const result = job.rows.reduce((acc, item) => {
@@ -318,7 +319,7 @@ export const AllJobs = async (req, res) => {
       job.services.push({
         job_services_id: item.job_services_id,
         service_name: item.service_name,
-        status: item.status,
+        status: item.assignment_status,
       });
 
       return acc;
@@ -346,6 +347,7 @@ export const inProgress = async (req, res) => {
 
 export const assignJob = async (req, res) => {
   const { employee_id, job_services_id } = req.body;
+  console.log(req.body);
 
   if (Object.keys(req.body).length == 0) {
     return res.json("all fields are required");
@@ -353,13 +355,17 @@ export const assignJob = async (req, res) => {
 
   try {
     const assignJob = await pool.query(
-      "UPDATE job_services SET employee_id = $1 Where job_services_id = $2 ",
-      [employee_id, job_services_id],
+      "INSERT INTO service_assignment (job_services_id, employee_id)  VALUES ($1,$2) RETURNING * ",
+      [job_services_id, employee_id],
+    );
+    console.log(assignJob.rows);
+    let findEmployee = await pool.query(
+      "SELECT employee_id, first_name,last_name FROM employee WHERE employee_id =$1",
+      [assignJob.rows[0].employee_id],
     );
     res.status(200).json({
       success: true,
-      message: "job assigned to ",
-      // data: assignJob.rows,
+      message: `job assigned to ${findEmployee.rows[0].first_name + findEmployee.rows[0].last_name}`,
     });
   } catch (error) {
     console.log(error.message);
@@ -370,10 +376,26 @@ export const assignJob = async (req, res) => {
 
 export const jobDetails = async (req, res) => {
   const { job_id } = req.params;
-
+  //
   try {
     const response = await pool.query(
-      "SELECT  first_name , second_name , last_name , job_services_id , vehicle.vehicle_id , vehicle_color , vehicle_model, vehicle_brand , job_creation_time , service_name, service_image FROM job_services JOIN jobs ON jobs.job_id=job_services.job_id JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id JOIN client ON client.client_id=vehicle.client_id JOIN services ON job_services.service_id=services.service_id WHERE job_services.job_id=$1",
+      `SELECT
+       client.first_name AS client_first_name,
+      client.second_name AS client_second_name,
+      client.last_name AS client_last_name,
+      employee.first_name AS employee_first_name,
+      employee.last_name AS employee_last_name,
+      service_assignment.employee_id AS employee_id,
+      job_services.job_services_id,
+      vehicle.vehicle_id,
+      vehicle_color,vehicle_model,vehicle_brand,job_creation_time,service_name, service_image,license_plate,assigned_at
+      FROM job_services 
+      JOIN jobs ON jobs.job_id=job_services.job_id 
+      JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id
+       JOIN client ON client.client_id=vehicle.client_id
+        JOIN services ON job_services.service_id=services.service_id 
+         LEFT JOIN service_assignment ON service_assignment.job_services_id=job_services.job_services_id
+          LEFT JOIN employee ON employee.employee_id = service_assignment.employee_id WHERE job_services.job_id=$1`,
       [job_id],
     );
     const result = response.rows.reduce((acc, item) => {
@@ -382,7 +404,7 @@ export const jobDetails = async (req, res) => {
         console.log(acc.job_services_id);
 
         acc.client = {
-          name: item.first_name + item.last_name,
+          name: item.client_first_name + item.client_last_name,
           email: item.email,
           phone: item.phonenumber,
         };
@@ -400,11 +422,19 @@ export const jobDetails = async (req, res) => {
         requestedAt: item.job_creation_time,
         service_name: item.service_name,
         service_image: item.service_image,
+        assignedTo: item.employee_id
+          ? {
+              employee_id: item.employee_id,
+              first_name: item.employee_first_name,
+              last_name: item.employee_last_name,
+            }
+          : null,
+        assignedAt: item.employee_id ? item.assigned_at : null,
       });
 
       return acc;
     }, {});
-    res.status(200).json({ success: true, data: result });
+    res.status(200).json({ success: true, data: result, raw: response.rows });
   } catch (error) {
     console.log(error.message);
   }

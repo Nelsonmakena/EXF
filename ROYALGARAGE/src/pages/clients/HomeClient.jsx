@@ -91,7 +91,7 @@ export default function HomeClient() {
             </button>
           </div>
           <div className="section-sm  ">
-            <h1 className="  text-xl text-green-700 ">
+            <h1 className="  text-xl text-green-700 py-3 ">
               Ongoing <span className="text-blue-500"> Services </span>
             </h1>
 
@@ -101,15 +101,15 @@ export default function HomeClient() {
                 <div
                   onClick={() => navigate(`/client/${item.job_id}`)}
                   key={index}
-                  className="rounded-2xl border border-primary/20 bg-white p-5 shadow-sm"
+                  className="rounded-2xl border border-primary/20 bg-card p-5 shadow-sm"
                 >
                   {/* Vehicle */}
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100">
-                      <Car size={23} className="text-gray-700" />
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-primary/30">
+                      <Car size={23} className="text-primary" />
                     </div>
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-900">
+                      <h2 className="text-lg font-semibold ">
                         {item.vehicle_model}
                       </h2>
                       <p className="mt-1 text-sm font-medium text-gray-500">
@@ -124,7 +124,7 @@ export default function HomeClient() {
                       <Palette size={18} className="text-gray-400" />
                       <div>
                         <p className="text-xs text-gray-500"> Color </p>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium ">
                           {item.vehicle_color}
                         </p>
                       </div>
@@ -134,7 +134,7 @@ export default function HomeClient() {
                       <CalendarDays size={18} className="text-gray-400" />
                       <div>
                         <p className="text-xs text-gray-500">Appointment</p>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium ">
                           {item.appointment_day}
                         </p>
                       </div>
@@ -143,8 +143,8 @@ export default function HomeClient() {
                   {/* Status */}
                   <div className="mt-6 border-t border-gray-100 pt-5">
                     <p className="text-xs text-gray-500"> Job Status </p>
-                    <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5 text-xs font-medium text-orange-700">
-                      <span className="h-2 w-2 rounded-full bg-orange-500" />
+                    <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-medium text-orange-700">
+                      <span className="h-2 w-2 rounded-full bg-secondary" />
                       {item.job_current_status}
                     </span>
                   </div>

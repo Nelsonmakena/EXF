@@ -53,7 +53,7 @@ Router.get("/jobs-list", AllJobs);
 Router.get("/in-progress", inProgress);
 
 // assigning of jobs
-Router.patch("/assign", assignJob);
+Router.put("/assign", assignJob);
 
 //job details
 Router.get("/job-details/:job_id", jobDetails);

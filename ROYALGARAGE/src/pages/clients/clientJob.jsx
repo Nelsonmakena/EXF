@@ -122,7 +122,7 @@ function ActivityItem({ item, isLast }) {
       {/* Content */}
       <div className="min-w-0 flex-1 pb-8">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-          <h4 className="font-semibold text-gray-900">{item.title}</h4>
+          <h4 className="font-semibold  ">{item.title}</h4>
 
           <span className="text-xs text-gray-500">{item.time}</span>
         </div>
@@ -153,6 +153,7 @@ export default function ClientJobDetails() {
   const { job_id } = useParams();
   const dispatch = useDispatch();
   const { jobInformation } = useSelector((state) => state.jobs);
+  console.log(jobInformation);
 
   const ProgressStep = ({ title, active, completed, last }) => {
     return (
@@ -178,7 +179,7 @@ export default function ClientJobDetails() {
 
           <p
             className={`mt-2 text-center text-xs font-medium ${
-              active || completed ? "text-gray-900" : "text-gray-400"
+              active || completed ? " " : "text-gray-400"
             }`}
           >
             {title}
@@ -196,23 +197,6 @@ export default function ClientJobDetails() {
     );
   };
 
-  const ServiceStatus = ({ status }) => {
-    console.log(status);
-
-    if (status === "completed") {
-      return <CheckCircle2 size={20} className="text-green-600" />;
-    }
-
-    if (status === "in-progress" || "accepted") {
-      return (
-        <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-blue-600">
-          <span className="h-2 w-2 rounded-full bg-blue-600" />
-        </span>
-      );
-    }
-
-    return <Circle size={20} className="text-gray-300" />;
-  };
   useEffect(() => {
     dispatch(clientJobInfo(job_id));
   }, []);
@@ -247,7 +231,7 @@ export default function ClientJobDetails() {
         <section className="mb-6 rounded-2xl border border-accent bg-card p-5 shadow-sm sm:p-6">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h2 className="font-semibold text-gray-900">Job Progress</h2>
+              <h2 className="font-semibold  ">Job Progress</h2>
               <p className="mt-1 text-xs text-gray-500">
                 Current repair status
               </p>
@@ -270,7 +254,7 @@ export default function ClientJobDetails() {
         </section>
 
         {/* Latest update */}
-        <section className="mb-6 rounded-2xl border border-blue-100 bg-blue-50/50 p-5 sm:p-6">
+        <section className="mb-6 rounded-2xl border border-border bg-card p-5 sm:p-6">
           <div className="flex gap-4">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
               <Wrench size={19} />
@@ -281,9 +265,7 @@ export default function ClientJobDetails() {
                 Latest Update
               </p>
 
-              <p className="mt-1 font-medium text-gray-900">
-                {job.latestUpdate.message}
-              </p>
+              <p className="mt-1 font-medium ">{job.latestUpdate.message}</p>
 
               <p className="mt-2 text-xs text-gray-500">
                 {job.latestUpdate.worker} · {job.latestUpdate.time}
@@ -297,14 +279,14 @@ export default function ClientJobDetails() {
           {/* LEFT */}
           <div className="space-y-6">
             {/* Vehicle */}
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+            <section className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
               <div className="mb-5 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100">
                   <Car size={20} className="text-gray-700" />
                 </div>
 
                 <div>
-                  <h2 className="font-semibold text-gray-900">Vehicle</h2>
+                  <h2 className="font-semibold ">Vehicle</h2>
                   <p className="text-xs text-gray-500">Vehicle information</p>
                 </div>
               </div>
@@ -317,7 +299,7 @@ export default function ClientJobDetails() {
 
                   <div>
                     <p className="text-xs text-gray-500">Vehicle</p>
-                    <p className="mt-0.5 text-sm font-medium text-gray-900">
+                    <p className="mt-0.5 text-sm font-medium ">
                       {jobInformation.vehicle.model}
                     </p>
                   </div>
@@ -329,7 +311,7 @@ export default function ClientJobDetails() {
 
                   <div>
                     <p className="text-xs text-gray-500">Registration</p>
-                    <p className="mt-0.5 text-sm font-medium text-gray-900">
+                    <p className="mt-0.5 text-sm font-medium">
                       {jobInformation.vehicle.license_plate}
                     </p>
                   </div>
@@ -338,14 +320,14 @@ export default function ClientJobDetails() {
             </section>
 
             {/* Job details */}
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+            <section className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
               <div className="mb-5 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100">
                   <FileText size={19} className="text-gray-700" />
                 </div>
 
                 <div>
-                  <h2 className="font-semibold text-gray-900">Job Details</h2>
+                  <h2 className="font-semibold ">Job Details</h2>
                   <p className="text-xs text-gray-500">
                     Appointment information
                   </p>
@@ -360,7 +342,7 @@ export default function ClientJobDetails() {
 
                   <div>
                     <p className="text-xs text-gray-500">Appointment</p>
-                    <p className="mt-0.5 text-sm font-medium text-gray-900">
+                    <p className="mt-0.5 text-sm font-medium ">
                       {jobInformation.appointment_day}
                     </p>
                   </div>
@@ -372,7 +354,7 @@ export default function ClientJobDetails() {
 
                   <div>
                     <p className="text-xs text-gray-500">Location</p>
-                    <p className="mt-0.5 text-sm font-medium text-gray-900">
+                    <p className="mt-0.5 text-sm font-medium  ">
                       Royal Auto Garage
                     </p>
                   </div>
@@ -381,9 +363,9 @@ export default function ClientJobDetails() {
             </section>
 
             {/* Services */}
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+            <section className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
               <div className="mb-5">
-                <h2 className="font-semibold text-gray-900">Services</h2>
+                <h2 className="font-semibold  ">Services</h2>
                 <p className="mt-1 text-xs text-gray-500">
                   Services included in this job
                 </p>
@@ -396,13 +378,12 @@ export default function ClientJobDetails() {
                     className="flex items-center justify-between gap-3 py-3"
                   >
                     <div className="flex items-center gap-3">
-                      <ServiceStatus status={service.status} />
-
+                      <CheckCircle2 size={17} />
                       <span
                         className={`text-sm ${
                           service.status === "completed"
                             ? "text-gray-500 line-through"
-                            : "font-medium text-gray-900"
+                            : "font-medium  "
                         }`}
                       >
                         {service.service_name}
@@ -421,11 +402,9 @@ export default function ClientJobDetails() {
           </div>
 
           {/* RIGHT - ACTIVITY */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
             <div className="mb-7">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Job Activity
-              </h2>
+              <h2 className="text-lg font-semibold  ">Job Activity</h2>
 
               <p className="mt-1 text-sm text-gray-500">
                 Updates from the garage team

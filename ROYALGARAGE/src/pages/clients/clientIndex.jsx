@@ -7,7 +7,7 @@ export default function ClientIndex() {
       <div className="z-30">
         <ClientNav />
       </div>
-      <div className="container-main">
+      <div className="container-main mt-2.5">
         <Outlet />
       </div>
     </>
