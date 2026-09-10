@@ -2,7 +2,8 @@ import express from "express";
 import {
   profileData,
   updateProfile,
-} from "../controllers/client/updateprofile.js";
+  newAddress,
+} from "../controllers/client/profile.js";
 import { authenticateMiddleware } from "../midlewares/authenicationmidleware.js";
 import {
   addVehicle,
@@ -23,10 +24,13 @@ Router.get("/dashboard", TotalNumbersClient);
 //appointment list
 Router.get("/appointment-list", appointmentsDatesList);
 
-// profile info getter after clients logs in
+// profile info
 Router.get("/profile-info", profileData);
 
 Router.post("/update-profile", updateProfile);
+
+//adding a new address
+Router.put("/new-address", newAddress);
 
 // adding a new vehicle
 Router.post("/add-vehicle", addVehicle);

@@ -10,6 +10,7 @@ const initialState = {
   jobsList: [],
   clientJobs: [],
   jobInformation: null,
+  inProgress: [],
 };
 //client
 //getting a new job
@@ -110,13 +111,13 @@ export const myJobList = createAsyncThunk("/worker/inprogress", async () => {
 // accepting a job
 export const acceptJob = createAsyncThunk(
   "/worker/accept",
-  async (job_services_id) => {
-    console.log(job_services_id);
+  async (assignmentId) => {
+    console.log(assignmentId);
 
     const response = await axios.post(
       "/api/worker/accept",
       {
-        job_services_id: job_services_id,
+        assignment_id: assignmentId,
       },
       {
         withCredentials: true,

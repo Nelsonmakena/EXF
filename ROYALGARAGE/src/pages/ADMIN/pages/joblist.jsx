@@ -84,31 +84,49 @@ export default function JobList() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div className="grid gap-1">
-                          <h1 className="font-bold ">{item.client.name}</h1>
-                          <span className="tracking-widest text-secondary ">
-                            {" "}
-                            {item.client.phone}
-                          </span>
-                          <p className="text-xs text-gray-500  ">
-                            {item.client.email}
-                          </p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {item?.services?.map((service) => (
-                        <div className="flex">
-                          <div className="inline-flex items-center space-x-1.5 ">
-                            <CheckCircle2
-                              className="text-primary font-bold"
-                              size={10}
-                            />
-                            <h1>{service.service_name}</h1>
+                      <TableCell className="align-top">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary/10 font-bold text-secondary">
+                            {item.client.name?.[0]}
+                          </div>
+
+                          <div className="min-w-0">
+                            <p className="font-semibold">{item.client.name}</p>
+
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              {item.client.phone}
+                            </p>
+
+                            <p
+                              className="max-w-48 break-words text-xs text-muted-foreground"
+                              title={item.client.email}
+                            >
+                              {item.client.email}
+                            </p>
                           </div>
                         </div>
-                      ))}
+                      </TableCell>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col gap-2">
+                        {item?.services?.map((service) => (
+                          <div
+                            key={service.job_services_id}
+                            className="group relative flex items-center gap-2 rounded-md border bg-card px-3 py-2 transition-colors hover:bg-muted/40"
+                          >
+                            <div className="absolute left-0 top-0 h-full w-1 rounded-l-md bg-primary" />
+
+                            <CheckCircle2
+                              size={15}
+                              className="ml-1 text-primary"
+                            />
+
+                            <span className="text-sm font-medium">
+                              {service.service_name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center">

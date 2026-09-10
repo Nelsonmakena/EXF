@@ -4,7 +4,7 @@ import { pool } from "../../../Db.js";
 export const Clients = async (req, res) => {
   try {
     const clientList = await pool.query(
-      "SELECT first_name,second_name,last_name,email,client.client_id, address,vehicle_brand,vehicle.vehicle_id,vehicle_color,vehicle_model,license_plate, jobs.job_id,job_services_id,service_name FROM client  LEFT JOIN vehicle ON vehicle.client_id=client.client_id LEFT JOIN jobs ON jobs.vehicle_id = vehicle.vehicle_id LEFT JOIN job_services ON job_services.job_id = jobs.job_id LEFT JOIN services ON job_services.service_id= services.service_id",
+      "SELECT first_name,second_name,last_name,email,client.client_id, vehicle_brand,vehicle.vehicle_id,vehicle_color,vehicle_model,license_plate, jobs.job_id,job_services_id,service_name FROM client  LEFT JOIN vehicle ON vehicle.client_id=client.client_id LEFT JOIN jobs ON jobs.vehicle_id = vehicle.vehicle_id LEFT JOIN job_services ON job_services.job_id = jobs.job_id LEFT JOIN services ON job_services.service_id= services.service_id",
     );
 
     const results = clientList.rows.reduce((acc, item) => {

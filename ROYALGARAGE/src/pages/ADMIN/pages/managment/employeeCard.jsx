@@ -33,6 +33,7 @@ export default function EmployeeCard({
         dispatch(jobInfo(job_id));
         toast(data?.payload?.message);
       } else {
+        setLoading(false);
         toast.error(data?.payload?.message);
       }
     });

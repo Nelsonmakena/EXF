@@ -1,465 +1,445 @@
-import { useMemo, useState } from "react";
+// import { Car, Check, Clock3, Eye, MoreHorizontal, Search } from "lucide-react";
+
+// function WorkerJobs() {
+//   const jobs = [
+//     {
+//       id: "JOB-1028",
+//       client: "John Kamau",
+//       vehicle: "Toyota Harrier",
+//       plate: "KCA 321Z",
+//       services: 3,
+//       appointment: "Today, 09:00 AM",
+//       status: "Pending Acceptance",
+//     },
+//     {
+//       id: "JOB-1027",
+//       client: "Mary Wanjiku",
+//       vehicle: "Mazda CX-5",
+//       plate: "KCB 452A",
+//       services: 2,
+//       appointment: "Today, 10:30 AM",
+//       status: "Pending Acceptance",
+//     },
+//     {
+//       id: "JOB-1026",
+//       client: "Peter Mwangi",
+//       vehicle: "Subaru Forester",
+//       plate: "KCD 789B",
+//       services: 4,
+//       appointment: "Sep 6, 2026",
+//       status: "In Progress",
+//     },
+//     {
+//       id: "JOB-1025",
+//       client: "Grace Njeri",
+//       vehicle: "Toyota Prado",
+//       plate: "KDE 234C",
+//       services: 1,
+//       appointment: "Sep 6, 2026",
+//       status: "Completed",
+//     },
+//     {
+//       id: "JOB-1024",
+//       client: "David Otieno",
+//       vehicle: "Nissan X-Trail",
+//       plate: "KDF 567D",
+//       services: 2,
+//       appointment: "Sep 5, 2026",
+//       status: "In Progress",
+//     },
+//   ];
+
+//   return (
+//     <div className="container-main">
+//       <main className="py-6 md:py-8">
+//         {/* HEADER */}
+//         <div className="mb-6">
+//           <p className="mb-2 text-sm font-medium text-primary">Worker Portal</p>
+
+//           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+//             <div>
+//               <h1 className="text-2xl font-bold md:text-3xl">My Jobs</h1>
+
+//               <p className="mt-2 text-sm text-muted-foreground">
+//                 View your assigned jobs and manage your current work.
+//               </p>
+//             </div>
+
+//             {/* SEARCH */}
+//             <div className="relative w-full md:w-72">
+//               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+//               <input
+//                 placeholder="Search jobs..."
+//                 className="h-10 w-full rounded-xl border bg-background pl-9 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+//               />
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* SUMMARY */}
+//         <div className="mb-6 grid gap-4 sm:grid-cols-3">
+//           <div className="rounded-xl border bg-card p-5">
+//             <div className="flex items-center justify-between">
+//               <p className="text-sm text-muted-foreground">Pending</p>
+
+//               <Clock3 className="h-5 w-5 text-yellow-500" />
+//             </div>
+
+//             <p className="mt-3 text-2xl font-bold">2</p>
+//           </div>
+
+//           <div className="rounded-xl border bg-card p-5">
+//             <div className="flex items-center justify-between">
+//               <p className="text-sm text-muted-foreground">In Progress</p>
+
+//               <Car className="h-5 w-5 text-primary" />
+//             </div>
+
+//             <p className="mt-3 text-2xl font-bold">2</p>
+//           </div>
+
+//           <div className="rounded-xl border bg-card p-5">
+//             <div className="flex items-center justify-between">
+//               <p className="text-sm text-muted-foreground">Completed</p>
+
+//               <Check className="h-5 w-5 text-green-500" />
+//             </div>
+
+//             <p className="mt-3 text-2xl font-bold">1</p>
+//           </div>
+//         </div>
+
+//         {/* JOB TABLE */}
+//         <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+//           {/* TABLE HEADER */}
+//           <div className="border-b px-5 py-4">
+//             <h2 className="font-semibold">Assigned Jobs</h2>
+
+//             <p className="mt-1 text-xs text-muted-foreground">
+//               Jobs assigned to you by the administrator
+//             </p>
+//           </div>
+
+//           <div className="overflow-x-auto">
+//             <table className="w-full min-w-[900px]">
+//               <thead>
+//                 <tr className="border-b bg-muted/30 text-left">
+//                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground">
+//                     Job
+//                   </th>
+
+//                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground">
+//                     Client
+//                   </th>
+
+//                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground">
+//                     Vehicle
+//                   </th>
+
+//                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground">
+//                     Services
+//                   </th>
+
+//                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground">
+//                     Appointment
+//                   </th>
+
+//                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground">
+//                     Status
+//                   </th>
+
+//                   <th className="px-5 py-3 text-right text-xs font-medium text-muted-foreground">
+//                     Action
+//                   </th>
+//                 </tr>
+//               </thead>
+
+//               <tbody className="divide-y">
+//                 {jobs.map((job) => (
+//                   <tr
+//                     key={job.id}
+//                     className="transition-colors hover:bg-muted/30"
+//                   >
+//                     {/* JOB */}
+//                     <td className="px-5 py-4">
+//                       <p className="text-sm font-semibold">{job.id}</p>
+
+//                       <p className="mt-1 text-xs text-muted-foreground">
+//                         Assigned job
+//                       </p>
+//                     </td>
+
+//                     {/* CLIENT */}
+//                     <td className="px-5 py-4">
+//                       <p className="text-sm font-medium">{job.client}</p>
+//                     </td>
+
+//                     {/* VEHICLE */}
+//                     <td className="px-5 py-4">
+//                       <div className="flex items-center gap-3">
+//                         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+//                           <Car className="h-4 w-4" />
+//                         </div>
+
+//                         <div>
+//                           <p className="text-sm font-medium">{job.vehicle}</p>
+
+//                           <p className="text-xs text-muted-foreground">
+//                             {job.plate}
+//                           </p>
+//                         </div>
+//                       </div>
+//                     </td>
+
+//                     {/* SERVICES */}
+//                     <td className="px-5 py-4">
+//                       <span className="text-sm">{job.services} services</span>
+//                     </td>
+
+//                     {/* APPOINTMENT */}
+//                     <td className="px-5 py-4">
+//                       <p className="text-sm">{job.appointment}</p>
+//                     </td>
+
+//                     {/* STATUS */}
+//                     <td className="px-5 py-4">
+//                       <span
+//                         className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+//                           job.status === "Completed"
+//                             ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
+//                             : job.status === "In Progress"
+//                               ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
+//                               : "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400"
+//                         }`}
+//                       >
+//                         {job.status}
+//                       </span>
+//                     </td>
+
+//                     {/* ACTION */}
+//                     <td className="px-5 py-4">
+//                       <div className="flex justify-end gap-2">
+//                         {job.status === "Pending Acceptance" && (
+//                           <button className="rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">
+//                             Accept Job
+//                           </button>
+//                         )}
+
+//                         {job.status === "In Progress" && (
+//                           <button className="flex items-center gap-1 rounded-lg border px-3 py-2 text-xs font-medium hover:bg-muted">
+//                             <Eye className="h-3.5 w-3.5" />
+//                             Open
+//                           </button>
+//                         )}
+
+//                         <button className="rounded-lg p-2 hover:bg-muted">
+//                           <MoreHorizontal className="h-4 w-4" />
+//                         </button>
+//                       </div>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// }
+
+// export default WorkerJobs;
+
 import {
   ArrowLeft,
-  CalendarDays,
   Car,
-  Check,
-  Search,
-  UserRound,
-  Users,
+  CheckCircle2,
+  Clock3,
+  Play,
   Wrench,
-  X,
 } from "lucide-react";
 
-const jobData = {
-  id: "1042",
-  status: "Awaiting Assignment",
-  appointment: "31 Aug 2026 · 10:00 AM",
-  customer: "Nelson Ndolo",
-
-  vehicle: {
-    make: "Toyota",
-    model: "Fielder",
-    year: 2018,
-    plate: "KDG 123A",
-    mileage: "128,430 km",
-  },
-
-  services: [
-    "Brake Inspection",
-    "Front Brake Pad Replacement",
-    "Wheel Alignment",
-  ],
-};
-
-const employeesData = [
-  {
-    id: 1,
-    name: "John Kamau",
-    role: "Mechanic",
-    jobs: 0,
-    status: "available",
-  },
-  {
-    id: 2,
-    name: "Mary Wanjiku",
-    role: "Technician",
-    jobs: 0,
-    status: "available",
-  },
-  {
-    id: 3,
-    name: "David Ochieng",
-    role: "Mechanic",
-    jobs: 0,
-    status: "available",
-  },
-  {
-    id: 4,
-    name: "Peter Mwangi",
-    role: "Electrician",
-    jobs: 1,
-    status: "busy",
-    currentJob: "#1039",
-  },
-  {
-    id: 5,
-    name: "Brian Otieno",
-    role: "Mechanic",
-    jobs: 2,
-    status: "busy",
-    currentJob: "#1037",
-  },
-  {
-    id: 6,
-    name: "Grace Njeri",
-    role: "Technician",
-    jobs: 0,
-    status: "available",
-  },
-];
-
-function EmployeeCard({
-  employee,
-  selected,
-  onSelect,
-  showAssignButton = false,
-}) {
-  const isAvailable = employee.status === "available";
+export default function WorkerJobServices() {
+  const services = [
+    {
+      id: 1,
+      name: "Engine Diagnostics",
+      description:
+        "Check engine system for fault codes and identify possible issues.",
+      status: "In Progress",
+      started: "09:15 AM",
+      progress: 65,
+    },
+    {
+      id: 2,
+      name: "Brake Inspection",
+      description:
+        "Inspect brake pads, discs, brake fluid and overall brake system.",
+      status: "Pending",
+      started: null,
+      progress: 0,
+    },
+    {
+      id: 3,
+      name: "Full Oil Change",
+      description:
+        "Drain old engine oil and replace oil filter and engine oil.",
+      status: "Completed",
+      started: "08:40 AM",
+      progress: 100,
+    },
+  ];
 
   return (
-    <div
-      className={`rounded-xl border p-4 transition ${
-        selected
-          ? "border-blue-500 bg-blue-50/50"
-          : "border-gray-200 bg-white hover:border-gray-300"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-3">
-          {/* Avatar */}
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
-            {employee.name
-              .split(" ")
-              .map((name) => name[0])
-              .join("")}
-          </div>
+    <div className="container-main">
+      <main className="py-6 md:py-8">
+        {/* BACK */}
+        <button className="mb-5 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" />
+          Back to Jobs
+        </button>
 
-          <div className="min-w-0">
-            <h3 className="truncate text-sm font-semibold text-gray-900">
-              {employee.name}
-            </h3>
-
-            <p className="mt-0.5 text-xs text-gray-500">{employee.role}</p>
-          </div>
-        </div>
-
-        {/* Status */}
-        <span
-          className={`flex items-center gap-1.5 text-xs font-medium ${
-            isAvailable ? "text-green-600" : "text-orange-600"
-          }`}
-        >
-          <span
-            className={`h-2 w-2 rounded-full ${
-              isAvailable ? "bg-green-500" : "bg-orange-500"
-            }`}
-          />
-
-          {isAvailable ? "Available" : "Busy"}
-        </span>
-      </div>
-
-      <div className="mt-4 flex items-center justify-between">
-        <span className="text-xs text-gray-500">
-          {employee.jobs} active {employee.jobs === 1 ? "job" : "jobs"}
-        </span>
-
-        {isAvailable && showAssignButton && (
-          <button
-            onClick={() => onSelect(employee.id)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-              selected
-                ? "bg-blue-600 text-white"
-                : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-            }`}
-          >
-            {selected ? (
-              <span className="flex items-center gap-1">
-                <Check size={13} />
-                Selected
-              </span>
-            ) : (
-              "Select"
-            )}
-          </button>
-        )}
-
-        {!isAvailable && (
-          <span className="text-xs font-medium text-gray-400">
-            {employee.currentJob}
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function JobDetails() {
-  return (
-    <section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-      <div className="border-b border-gray-100 p-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100">
-            <Wrench size={19} className="text-gray-700" />
-          </div>
-
-          <div>
-            <p className="text-xs text-gray-500">Job #{jobData.id}</p>
-
-            <h2 className="font-semibold text-gray-900">Job Details</h2>
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-5 p-5">
-        {/* Status */}
-        <div>
-          <p className="text-xs text-gray-500">Status</p>
-
-          <span className="mt-1 inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5 text-xs font-medium text-orange-700">
-            <span className="h-2 w-2 rounded-full bg-orange-500" />
-            {jobData.status}
-          </span>
-        </div>
-
-        {/* Vehicle */}
-        <div>
-          <p className="mb-3 text-xs font-medium uppercase tracking-wide text-gray-400">
-            Vehicle
-          </p>
-
-          <div className="rounded-xl bg-gray-50 p-4">
-            <div className="flex items-center gap-3">
-              <Car size={20} className="text-gray-600" />
+        {/* JOB HEADER */}
+        <div className="mb-6 rounded-2xl border bg-card p-5 shadow-sm md:p-6">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Car className="h-7 w-7" />
+              </div>
 
               <div>
-                <p className="font-semibold text-gray-900">
-                  {jobData.vehicle.make} {jobData.vehicle.model}
-                </p>
+                <p className="text-xs font-medium text-primary">JOB-1028</p>
 
-                <p className="text-xs text-gray-500">
-                  {jobData.vehicle.year} · {jobData.vehicle.plate}
+                <h1 className="mt-1 text-xl font-bold md:text-2xl">
+                  Toyota Harrier
+                </h1>
+
+                <p className="mt-1 text-sm text-muted-foreground">
+                  KCA 321Z · John Kamau
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 flex justify-between border-t border-gray-200 pt-3">
-              <span className="text-xs text-gray-500">Mileage</span>
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-400">
+                In Progress
+              </span>
 
-              <span className="text-xs font-medium text-gray-900">
-                {jobData.vehicle.mileage}
+              <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium">
+                3 Services
               </span>
             </div>
           </div>
         </div>
 
-        {/* Customer */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
-            <UserRound size={17} className="text-gray-600" />
-          </div>
+        {/* SERVICES */}
+        <div className="mb-6">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold">Job Services</h2>
 
-          <div>
-            <p className="text-xs text-gray-500">Customer</p>
-
-            <p className="text-sm font-medium text-gray-900">
-              {jobData.customer}
+            <p className="mt-1 text-sm text-muted-foreground">
+              Update the progress of each service assigned to you.
             </p>
           </div>
-        </div>
 
-        {/* Appointment */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
-            <CalendarDays size={17} className="text-gray-600" />
-          </div>
-
-          <div>
-            <p className="text-xs text-gray-500">Appointment</p>
-
-            <p className="text-sm font-medium text-gray-900">
-              {jobData.appointment}
-            </p>
-          </div>
-        </div>
-
-        {/* Services */}
-        <div>
-          <p className="mb-3 text-xs font-medium uppercase tracking-wide text-gray-400">
-            Services
-          </p>
-
-          <div className="space-y-2">
-            {jobData.services.map((service) => (
+          <div className="space-y-4">
+            {services.map((service) => (
               <div
-                key={service}
-                className="flex items-center gap-2 text-sm text-gray-700"
+                key={service.id}
+                className="rounded-xl border bg-card p-5 shadow-sm"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-gray-400" />
-                {service}
+                {/* SERVICE TOP */}
+                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                  <div className="flex gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                      <Wrench className="h-5 w-5 text-primary" />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold">{service.name}</h3>
+
+                      <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* STATUS */}
+                  <span
+                    className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
+                      service.status === "Completed"
+                        ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
+                        : service.status === "In Progress"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
+                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400"
+                    }`}
+                  >
+                    {service.status}
+                  </span>
+                </div>
+
+                {/* PROGRESS */}
+                <div className="mt-6">
+                  <div className="mb-2 flex justify-between text-xs">
+                    <span className="text-muted-foreground">Progress</span>
+
+                    <span className="font-medium">{service.progress}%</span>
+                  </div>
+
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all"
+                      style={{
+                        width: `${service.progress}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* FOOTER */}
+                <div className="mt-5 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock3 className="h-4 w-4" />
+
+                    {service.started
+                      ? `Started ${service.started}`
+                      : "Not started yet"}
+                  </div>
+
+                  {/* ACTIONS */}
+                  <div className="flex gap-2">
+                    {service.status === "Pending" && (
+                      <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">
+                        <Play className="h-3.5 w-3.5" />
+                        Start Service
+                      </button>
+                    )}
+
+                    {service.status === "In Progress" && (
+                      <>
+                        <button className="rounded-lg border px-4 py-2 text-xs font-medium hover:bg-muted">
+                          Update Progress
+                        </button>
+
+                        <button className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-xs font-medium text-white hover:opacity-90">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          Complete
+                        </button>
+                      </>
+                    )}
+
+                    {service.status === "Completed" && (
+                      <button className="flex items-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium text-green-600">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Completed
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export default function AdminAssignJob() {
-  const [employees, setEmployees] = useState(employeesData);
-  const [selectedEmployees, setSelectedEmployees] = useState([]);
-  const [search, setSearch] = useState("");
-
-  const availableEmployees = useMemo(() => {
-    return employees.filter(
-      (employee) =>
-        employee.status === "available" &&
-        employee.name.toLowerCase().includes(search.toLowerCase()),
-    );
-  }, [employees, search]);
-
-  const allEmployees = useMemo(() => {
-    return employees.filter((employee) =>
-      employee.name.toLowerCase().includes(search.toLowerCase()),
-    );
-  }, [employees, search]);
-
-  const toggleEmployee = (employeeId) => {
-    setSelectedEmployees((current) =>
-      current.includes(employeeId)
-        ? current.filter((id) => id !== employeeId)
-        : [...current, employeeId],
-    );
-  };
-
-  const assignEmployees = () => {
-    if (selectedEmployees.length === 0) return;
-
-    setEmployees((current) =>
-      current.map((employee) =>
-        selectedEmployees.includes(employee.id)
-          ? {
-              ...employee,
-              status: "busy",
-              jobs: employee.jobs + 1,
-              currentJob: `#${jobData.id}`,
-            }
-          : employee,
-      ),
-    );
-
-    setSelectedEmployees([]);
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <button className="mb-3 flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900">
-              <ArrowLeft size={16} />
-              Back to Jobs
-            </button>
-
-            <div className="flex items-center gap-3">
-              <div>
-                <p className="text-sm text-gray-500">Job #{jobData.id}</p>
-
-                <h1 className="text-2xl font-bold text-gray-950">
-                  Assign Employees
-                </h1>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 shadow-sm">
-            <Users size={18} className="text-gray-500" />
-
-            <span className="text-sm text-gray-600">
-              {selectedEmployees.length} selected
-            </span>
-          </div>
-        </div>
-
-        {/* Three columns */}
-        <div className="grid gap-6 xl:grid-cols-[0.85fr_1fr_1fr]">
-          {/* COLUMN 1 — JOB DETAILS */}
-          <JobDetails />
-
-          {/* COLUMN 2 — AVAILABLE EMPLOYEES */}
-          <section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <div className="border-b border-gray-100 p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h2 className="font-semibold text-gray-900">
-                    Available Employees
-                  </h2>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    Employees currently without a job
-                  </p>
-                </div>
-
-                <span className="rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
-                  {availableEmployees.length} available
-                </span>
-              </div>
-
-              {/* Search */}
-              <div className="relative mt-4">
-                <Search
-                  size={16}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-
-                <input
-                  type="text"
-                  placeholder="Search employees..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-3 p-5">
-              {availableEmployees.length > 0 ? (
-                availableEmployees.map((employee) => (
-                  <EmployeeCard
-                    key={employee.id}
-                    employee={employee}
-                    selected={selectedEmployees.includes(employee.id)}
-                    onSelect={toggleEmployee}
-                    showAssignButton
-                  />
-                ))
-              ) : (
-                <div className="py-10 text-center">
-                  <Users size={30} className="mx-auto text-gray-300" />
-
-                  <p className="mt-3 text-sm font-medium text-gray-700">
-                    No available employees
-                  </p>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    Try another search.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Assign button */}
-            {selectedEmployees.length > 0 && (
-              <div className="sticky bottom-0 border-t border-gray-100 bg-white p-4">
-                <button
-                  onClick={assignEmployees}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-950 px-4 py-3 text-sm font-medium text-white transition hover:bg-gray-800"
-                >
-                  <Check size={17} />
-                  Assign {selectedEmployees.length}{" "}
-                  {selectedEmployees.length === 1 ? "Employee" : "Employees"}
-                </button>
-              </div>
-            )}
-          </section>
-
-          {/* COLUMN 3 — ALL EMPLOYEES */}
-          <section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <div className="border-b border-gray-100 p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h2 className="font-semibold text-gray-900">All Employees</h2>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    Everyone in the garage
-                  </p>
-                </div>
-
-                <span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
-                  {employees.length}
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-3 p-5">
-              {allEmployees.map((employee) => (
-                <EmployeeCard key={employee.id} employee={employee} />
-              ))}
-            </div>
-          </section>
         </div>
       </main>
     </div>

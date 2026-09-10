@@ -6,7 +6,6 @@ import {
 import axios from "axios";
 
 const initialState = {
-  profileInfo: null,
   isAuthenticated: false,
   isLoading: true,
   userinfo: null,
@@ -100,20 +99,7 @@ export const logoutAnyone = createAsyncThunk(
 
 ///profile fetcher section
 //client
-export const getClientProfile = createAsyncThunk(
-  "/client/profile",
 
-  async () => {
-    const response = await axios.get(
-      "/api/client/profile-info",
-
-      { withCredentials: true },
-    );
-    console.log(response.data);
-
-    return response.data;
-  },
-);
 const authSlice = createSlice({
   name: "authentication",
   initialState,
@@ -235,9 +221,6 @@ const authSlice = createSlice({
           state.Role = null;
           state.isAuthenticated = false;
         }
-      })
-      .addCase(getClientProfile.fulfilled, (state, action) => {
-        state.profileInfo = action.payload.data;
       });
   },
 });

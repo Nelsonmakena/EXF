@@ -31,6 +31,8 @@ export default function Wknav() {
     dispatch(logoutAnyone());
     navigate("/wk");
   };
+  console.log(userinfo);
+
   return (
     <>
       <div className="  flex items-center justify-center text-sm  w-full   font-semibold h-20  overflow-hidden     ">
@@ -56,13 +58,13 @@ export default function Wknav() {
             </ul>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className=" flex items-center card cursor-pointer  rounded-full">
-                  {/* <h1 className="text-header-foreground">
+                <div className="w-10 h-10  flex items-center justify-center  cursor-pointer  rounded-full border border-primary/20">
+                  <h1 className="text-header-foreground">
                     {userinfo?.first_name[0]?.toUpperCase()}
                   </h1>
                   <h1 className="text-header">
                     {userinfo?.last_name[0]?.toUpperCase()}
-                  </h1> */}
+                  </h1>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent

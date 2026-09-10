@@ -133,6 +133,8 @@ export const worker = async (req, res) => {
       const accessToken = jwt.sign(
         {
           employee_id: existingWorker.rows[0].employee_id,
+          first_name: existingWorker.rows[0].first_name,
+          last_name: existingWorker.rows[0].last_name,
           role: "worker",
         },
         ENV.JWT_SECRET_KEY,
