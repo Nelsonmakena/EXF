@@ -15,12 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Calendar1 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { getVehiclelist } from "@/Comp/store/vehicleslice";
-
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "sonner";
 import { newJob } from "@/Comp/store/jobsslice";
 import { currencyFormat } from "@/utils/utils";
@@ -60,11 +61,12 @@ export default function ServiceCard({ name, price, image, id, vehicles }) {
   return (
     <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-48   hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
-      <div className="  w-full  flex items-center justify-center h-30 ">
-        <img
+      <div className="h-30 w-full overflow-hidden rounded-t-xl">
+        <LazyLoadImage
           src={`/assets/images/${image}.jpg`}
           alt={name}
-          className="max-h-full w-full rounded-t-xl  "
+          effect="blur"
+          className="h-full w-full object-cover"
         />
       </div>
       <div className="flex flex-col gap-normal ">

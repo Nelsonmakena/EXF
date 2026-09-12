@@ -21,54 +21,50 @@ export default function ProductCard({
     return currencyFormat(price);
   };
   return (
-    <div className=" bg-card shadow-md transition-colors rounded-xl flex flex-col md:w-46">
-      {/* Top row: badge + bookmark */}
-      <div className="flex items-center  mb-2 p-1.5  ">
-        <div
-          className={` ${product_discount === 0 || null ? "hidden" : "bg-accent text-neutral-800 text-xs px-2 py-0.5 rounded-full"}`}
-        >
-          <span className="font-bold text-white">
-            {product_discount + "%"} Off
-          </span>{" "}
-        </div>
-      </div>
+    <div className="bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow md:w-52">
+      {/* Image */}
+      <div className="relative h-40 w-full bg-card flex items-center justify-center">
+        {product_discount > 0 && (
+          <span className="absolute top-3 left-3 z-10 bg-accent text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+            {product_discount}% Off
+          </span>
+        )}
 
-      {/* Product Image */}
-      <div className="flex items-center justify-center h-30 w-full">
         <img
           src={`/assets/images/${product_image}.jpg`}
           alt={product_name}
-          className="max-h-full max-w-full object-contain "
+          className="h-full w-full object-contain p-3"
         />
       </div>
 
-      <div className="card">
-        <p className="text-sm text-header mb-2 cursor-pointer">
+      {/* Product information */}
+      <div className="p-4">
+        <p className="text-sm font-medium text-header line-clamp-2 min-h-10">
           {product_name}
         </p>
 
-        <div className="flex flex-col  items-center gap-2 md:flex-row">
-          <div className="flex items-center gap-normal">
-            <h1 className="text-xs md:hidden">Was</h1>
-            <span className="text-xs text-destructive line-through">
+        {/* Price */}
+        <div className="mt-2 flex items-center gap-2">
+          {product_discount > 0 && (
+            <span className="text-xs text-muted-foreground line-through">
               {currencyFormat(product_price)}
             </span>
-          </div>
-          <span className="text-sm font-semibold text-accent">
-            {newPrice()}
-          </span>
+          )}
+
+          <span className="text-base font-bold text-accent">{newPrice()}</span>
         </div>
-        <div className="w-full flex justify-end mt-2.5">
-          <Button
-            size="icon"
-            onClick={() => {
-              dispatch(addCart(product));
-              toast(`${product_name} added to cart`);
-            }}
-          >
-            <ShoppingCart className="text-white" />{" "}
-          </Button>
-        </div>
+
+        {/* Add to cart */}
+        <Button
+          className="w-full mt-4 gap-2"
+          onClick={() => {
+            dispatch(addCart(product));
+            toast(`${product_name} added to cart`);
+          }}
+        >
+          <ShoppingCart className="h-4 w-4" />
+          Add to cart
+        </Button>
       </div>
     </div>
   );

@@ -22,7 +22,6 @@ import {
   Sun,
   User,
 } from "lucide-react";
-import { ModeToggle } from "@/Comp/mode-toggle";
 
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/Comp/theme-provider";

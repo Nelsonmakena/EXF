@@ -8,7 +8,7 @@ import smallmenuanimation from "/src/assets/smallmenu.json";
 import { Button } from "@/components/ui/button";
 import Lottie from "lottie-react";
 import { Search, Menu, Moon, Sun } from "lucide-react";
-import { ModeToggle } from "./mode-toggle";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,11 +20,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/Comp/theme-provider";
+import { Switch } from "@/components/ui/switch";
 
 function Nav() {
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
+  const [enabled, setEnabled] = useState(false);
   const navigate = useNavigate();
   const { setTheme, theme } = useTheme();
 
@@ -90,12 +91,9 @@ function Nav() {
           >
             Get Started
           </button>
-          <div className="card">
-            <ModeToggle />
-          </div>
         </div>
 
-        {/* smallscreen menu  */}
+        {/* small-screen menu  */}
         <div className="flex  w-full  items-center justify-between  md:hidden ">
           <div className=" ">
             {" "}
