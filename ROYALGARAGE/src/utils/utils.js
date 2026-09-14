@@ -18,3 +18,11 @@ export const formatDate = (timestamp) => {
     year: "numeric",
   });
 };
+
+export const formatTime = (timestamp) => {
+  if (!timestamp) return "";
+  return date.toLocaleTimeString("en-KE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};

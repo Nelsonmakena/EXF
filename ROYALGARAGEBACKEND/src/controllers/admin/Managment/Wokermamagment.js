@@ -33,7 +33,9 @@ export const addNewRole = async (req, res) => {
 
 export const roleList = async (req, res) => {
   try {
-    const list = await pool.query("SELECT * FROM roles");
+    const list = await pool.query(
+      "SELECT role_name,role_description ,roles.role_id ,COUNT(employee_id)AS total_number FROM roles LEFT JOIN employee ON employee.role_id = roles.role_id  GROUP BY roles.role_id ,role_name ORDER BY role_name ASC",
+    );
     res.status(200).json({
       success: true,
       data: list.rows,

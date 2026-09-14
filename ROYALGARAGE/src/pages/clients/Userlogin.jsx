@@ -49,7 +49,7 @@ export default function Userlogin() {
 
     // check if password match
     if (data.password != data.confrim_password) {
-      return toast.warning("paswords dont match");
+      return toast.warning("passwords dont match");
     }
 
     dispatch(registerUser(data)).then((data) => {

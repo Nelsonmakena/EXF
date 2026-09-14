@@ -1,7 +1,7 @@
 import express from "express";
 import { pool } from "../../Db.js";
 
-export const getallservices = async (req, res) => {
+export const getServices = async (req, res) => {
   try {
     const services = await pool.query(
       "SELECT * FROM services ORDER BY service_name ASC ",
@@ -13,7 +13,7 @@ export const getallservices = async (req, res) => {
   }
 };
 
-//protectd route only admin privilages
+//protected route only admin privileges
 export const addService = async (req, res) => {
   const {
     service_name,
@@ -39,14 +39,19 @@ export const addService = async (req, res) => {
         service_image,
       ],
     );
-    res.status(200).json(newService.rows[0]);
+    if (newService.rows.length === 0) {
+      return res.json({ success: false, message: "service cant be added" });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "service added successfully " });
     console.log(newService.rows[0]);
   } catch (error) {
     res.status(400).json(error.message);
     console.log(error.message);
   }
 };
-//protected
+
 export const updateService = async (req, res) => {
   const { service_id } = req.params;
 
@@ -58,7 +63,6 @@ export const updateService = async (req, res) => {
     service_category,
     service_image,
   } = req.body;
-  console.log(req.body);
 
   try {
     const UpdatedService = await pool.query(
@@ -75,7 +79,39 @@ export const updateService = async (req, res) => {
     );
     res
       .status(200)
-      .json({ succes: true, message: "service updated succesifully" });
+      .json({ success: true, message: "service updated successfully" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const deleteService = async (req, res) => {
+  const { service_id } = req.params;
+  if (!service_id) {
+    return res.json({ message: "invalid service id " });
+  }
+  try {
+    const checkService = await pool.query(
+      "SELECT * FROM job_services WHERE service_id = $1",
+      [service_id],
+    );
+    if (checkService.rows.length !== 0) {
+      return res.json({
+        success: false,
+        message: "service cannot be removed ",
+      });
+    }
+    const removeService = await pool.query(
+      "DELETE FROM services WHERE service_id = $1 RETURNING *",
+      [service_id],
+    );
+    if (removeService.rows.length === 0) {
+      return res.json({ success: false, message: "product not found " });
+    }
+    res.status(200).json({
+      success: true,
+      message: "service deleted successfully",
+    });
   } catch (error) {
     console.log(error.message);
   }

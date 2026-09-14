@@ -32,6 +32,8 @@ export default function ClientServices() {
                 image={item.service_image}
                 id={item.service_id}
                 vehicles={vehicles}
+                service={item}
+                client={true}
               />
             ))
           )}

@@ -50,10 +50,7 @@ export default function WorkerView() {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
-    console.log(data);
     data.role_id = role_id;
-    console.log(data);
-
     dispatch(addNewWorker(data)).then((data) => {
       if (data?.payload?.success) {
         toast(data?.payload?.message, { position: "top-left" });
@@ -62,7 +59,6 @@ export default function WorkerView() {
       }
     });
   };
-  console.log(workerList);
 
   return (
     <section className="section-sm">

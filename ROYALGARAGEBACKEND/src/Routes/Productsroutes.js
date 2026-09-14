@@ -22,7 +22,7 @@ Router.put("/add-product", authenticateMiddleware, adminChecker, addProduct);
 // update a product
 
 Router.patch(
-  "/update/:productid",
+  "/update/:productId",
   authenticateMiddleware,
   adminChecker,
   updateProduct,

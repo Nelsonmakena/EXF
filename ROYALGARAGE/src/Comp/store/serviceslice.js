@@ -13,7 +13,7 @@ const initialState = {
 //adding a product
 
 export const newProduct = createAsyncThunk("/new-product", async (data) => {
-  const response = axios.put("/api/products/addproduct", data, {
+  const response = await axios.put("/api/products/add-product", data, {
     withCredentials: true,
   });
   return response.data;
@@ -21,14 +21,14 @@ export const newProduct = createAsyncThunk("/new-product", async (data) => {
 
 ///deleting a product
 
-export const removeProduct = createAsyncThunk("/remove", async () => {
-  const response = axios.delete();
+export const removeProduct = createAsyncThunk("/remove", async (product_id) => {
+  const response = await axios.delete(`/api/products/delete/${product_id}`);
   return response.data;
 });
 
 //fetching product list
 
-export const getProducts = createAsyncThunk("/products", async () => {
+export const getProducts = createAsyncThunk("/products", async (product_id) => {
   const response = await axios.get("/api/products/all-products");
   return response.data;
 });
@@ -38,8 +38,10 @@ export const getProducts = createAsyncThunk("/products", async () => {
 export const updateProducts = createAsyncThunk(
   "/update-product",
   async (data) => {
-    const response = await axios.put(
-      `/api/products/update/${data.productid}`,
+    console.log(data);
+
+    const response = await axios.patch(
+      `/api/products/update/${data.productId}`,
       data,
       { withCredentials: true },
     );
@@ -49,7 +51,7 @@ export const updateProducts = createAsyncThunk(
 
 //adding a new service
 export const newService = createAsyncThunk("/new-service", async (data) => {
-  const response = await axios.put("/api/services/addservice", data, {
+  const response = await axios.put("/api/services/add-service", data, {
     withCredentials: true,
   });
   return response.data;
@@ -58,6 +60,7 @@ export const newService = createAsyncThunk("/new-service", async (data) => {
 //fetching serviceList
 export const getServices = createAsyncThunk("/services", async () => {
   const response = await axios.get("/api/services/all-services");
+
   return response.data;
 });
 
@@ -67,10 +70,19 @@ export const updateServices = createAsyncThunk(
   "/update-Services",
   async (data) => {
     const response = await axios.put(
-      `/api/services/updateservice/${data.service_id}`,
+      `/api/services/update-service/${data.service_id}`,
       data,
       { withCredentials: true },
     );
+    return response.data;
+  },
+);
+export const deletService = createAsyncThunk(
+  "/delete-Service",
+  async (service_id) => {
+    const response = await axios.delete(`/api/services/delete/${service_id}`, {
+      withCredentials: true,
+    });
     return response.data;
   },
 );
@@ -108,29 +120,12 @@ export const ServiceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getServices.rejected, (state) => {
-        state.availableServiceList = [];
-      })
       .addCase(getServices.fulfilled, (state, action) => {
         state.availableServiceList = action.payload.data;
-        state.loading = false;
       })
-      .addCase(getServices.pending, (state) => {
-        state.loading = true;
-        state.availableServiceList = [];
-      })
-      .addCase(getProducts.fulfilled, (state, action) => {
-        state.loading = false;
 
+      .addCase(getProducts.fulfilled, (state, action) => {
         state.availableProductList = action.payload.data;
-      })
-      .addCase(getProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.availableProductList = [];
-      })
-      .addCase(getProducts.pending, (state, action) => {
-        state.loading = true;
-        state.availableProductList = [];
       });
   },
 });

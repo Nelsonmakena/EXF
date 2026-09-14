@@ -5,13 +5,7 @@ import ProductCard from "./productCard";
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { loading, availableProductList, cart } = useSelector(
-    (state) => state.services,
-  );
-
-  // if (loading) {
-  //   return <Spinner></Spinner>;
-  // }
+  const { availableProductList } = useSelector((state) => state.services);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -21,15 +15,7 @@ export default function Shop() {
     <section className="section-sm ">
       <div className="grid grid-cols-2 md:flex md:flex-wrap items-stretch justify-center gap-5 ">
         {availableProductList.map((item) => (
-          <ProductCard
-            product={item}
-            key={item.product_id}
-            product_name={item.product_name}
-            product_discount={item.product_discount}
-            product_image={item.product_image}
-            product_price={item.product_price}
-            product_id={item.product_id}
-          />
+          <ProductCard product={item} key={item.product_id} client={true} />
         ))}
       </div>
     </section>

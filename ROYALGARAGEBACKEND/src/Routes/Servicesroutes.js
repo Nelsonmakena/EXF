@@ -1,13 +1,21 @@
 import {
-  getallservices,
+  getServices,
   addService,
   updateService,
+  deleteService,
 } from "../controllers/Services.js";
 import express from "express";
 
+import {
+  authenticateMiddleware,
+  adminChecker,
+} from "../midlewares/authenicationmidleware.js";
+
 const Router = express.Router();
 
-Router.get("/all-services", getallservices);
-Router.post("/add-service", addService);
+Router.get("/all-services", getServices);
+Router.use(authenticateMiddleware, adminChecker);
+Router.put("/add-service", addService);
 Router.put("/update-service/:service_id", updateService);
+Router.delete("/delete/:service_id", deleteService);
 export default Router;

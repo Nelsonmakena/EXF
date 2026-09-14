@@ -8,23 +8,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import animatedaddbutton from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProducts,
-  newProduct,
-  updateProducts,
-} from "@/Comp/store/serviceslice";
-import { Trash } from "lucide-react";
+import { getProducts, newProduct } from "@/Comp/store/serviceslice";
+
+import ProductCard from "@/pages/clients/productCard";
+import { toast } from "sonner";
 
 export default function AdminViewProducts() {
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { availableProductList } = useSelector((state) => state.services);
 
@@ -33,17 +30,17 @@ export default function AdminViewProducts() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    dispatch(newProduct());
-  };
+    console.log(data);
 
-  // fetching data & updating a product  sending it
-
-  const update_product = (e, item) => {
-    e.preventDefault();
-    const formdata = new FormData(e.target);
-    const data = Object.fromEntries(formdata.entries());
-    data.productId = item.product_id;
-    dispatch(updateProducts(data));
+    dispatch(newProduct(data)).then((data) => {
+      if (data.payload.success) {
+        toast(data.payload.message);
+        setOpen(false);
+      } else {
+        toast(data.payload.message);
+        setOpen(true);
+      }
+    });
   };
 
   useEffect(() => {
@@ -51,23 +48,25 @@ export default function AdminViewProducts() {
   }, []);
 
   return (
-    <section className="w-full ">
-      <div className="section  grid grid-cols-2  s md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
+    <section className="section-sm ">
+      <div className="grid grid-cols-2 md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
         {/**    add item
          *
          *
          *
          */}
-        <div className="bg-card w-46  rounded-xl  shadow-md  card ">
-          <div className=" flex items-center justify-center h-full   heading-bold ">
-            <Sheet>
+        <div className="bg-card w-52  rounded-2xl  shadow-md  card ">
+          <div className="flex flex-col gap-6 ">
+            <div className="w-full ">
+              <Lottie animationData={animatedaddbutton} />
+            </div>
+
+            <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger
                 render={
-                  <button className="w-full h-full">
-                    {" "}
-                    <Lottie animationData={animatedaddbutton} />
-                    <h1 className="text-body text-header"> add product</h1>
-                  </button>
+                  <Button className="w-full h-11 tracking-widest">
+                    add product
+                  </Button>
                 }
               />
               <SheetContent>
@@ -90,10 +89,10 @@ export default function AdminViewProducts() {
                       <Input name="product_image" defaultValue="image" />
                     </div>
                     <div className="grid gap-3">
-                      <label> Product descrption </label>
+                      <label> Product description </label>
                       <Input
                         name="product_description"
-                        defaultValue="product-descrption"
+                        defaultValue="product-description"
                       />
                     </div>
                     <div className="grid gap-3">
@@ -121,11 +120,6 @@ export default function AdminViewProducts() {
                     </button>
                   </div>
                 </form>
-                <SheetFooter>
-                  <SheetClose
-                    render={<Button variant="outline">Close</Button>}
-                  />
-                </SheetFooter>
               </SheetContent>
             </Sheet>
           </div>
@@ -133,136 +127,7 @@ export default function AdminViewProducts() {
 
         {availableProductList.map((item) => {
           return (
-            <div
-              key={item.product_id}
-              className=" bg-card border-border  rounded-xl p-2 flex flex-col w-46  shadow-md hover:-translate-y-1 transition duration-400"
-            >
-              {/* Product Image */}
-              <div className="flex items-center justify-center h-30 mb-2">
-                <img
-                  src={`/assets/images/${item.product_image}.jpg`}
-                  alt=""
-                  className="max-h-full max-w-full object-contain"
-                />
-              </div>
-
-              {/* Product Name */}
-              <p className="text-sm text-neutral-500 mb-2 px-2">
-                {" "}
-                {item.product_name}{" "}
-              </p>
-
-              {/* Price */}
-              <div className="flex items-center gap-2 px-2">
-                <span className="text-sm font-semibold text-neutral-800">
-                  {item.product_price}
-                </span>
-                <span className="text-xs text-neutral-500 line-through">
-                  price
-                </span>
-              </div>
-
-              {/**edit  product side controls */}
-              <div className=" w-3/4 m-2.5 flex items-center justify-center  h-12 ">
-                <Sheet>
-                  <SheetTrigger
-                    render={
-                      <button className="w-full h-full  text-white rounded-md   bg-blue-400 shadow-md ">
-                        {" "}
-                        Edit
-                      </button>
-                    }
-                  />
-                  <SheetContent>
-                    <SheetHeader>
-                      <SheetTitle className={"text-header heading-normal"}>
-                        {item.product_name}
-                      </SheetTitle>
-                      <SheetDescription></SheetDescription>
-                    </SheetHeader>
-
-                    <form
-                      onSubmit={(e) => {
-                        update_product(e, item);
-                      }}
-                    >
-                      <div className="grid flex-1 auto-rows-min gap-6 px-4">
-                        <div className="grid gap-3">
-                          <label> Product name </label>
-                          <Input
-                            name="product_name"
-                            id="productname"
-                            defaultValue={item.product_name}
-                          />
-                        </div>
-                        <div className="grid gap-3">
-                          <label> Product image </label>
-                          <Input
-                            name="product_image"
-                            id="productdescrption"
-                            defaultValue={item.product_name}
-                          />
-                        </div>
-                        <div className="grid gap-3">
-                          <label> Product descrption </label>
-                          <Input
-                            name="product_description"
-                            id="productdescrption"
-                            defaultValue={item.product_descrption}
-                          />
-                        </div>
-                        <div className="grid gap-3">
-                          <label> Product price </label>
-                          <Input
-                            name="product_price"
-                            id="productprice"
-                            defaultValue={item.product_price}
-                          />
-                        </div>
-                        <div className="grid gap-3">
-                          <label> Category </label>
-                          <Input
-                            name="product_category"
-                            id="product_category"
-                            defaultValue={item.product_category}
-                          />
-                        </div>
-                        <div className="grid gap-3">
-                          <label> Discount </label>
-                          <Input
-                            name="product_discount"
-                            id="Discount"
-                            defaultValue={item.product_discount}
-                          />
-                        </div>
-                      </div>
-                      <div className="card flex flex-col gap-2.5 justify-center">
-                        {/** close the side sheet and also get the form data
-                         */}
-                        <SheetClose
-                          render={
-                            <button
-                              type="submit"
-                              className=" bg-primary w-full rounded-2xl h-14"
-                            >
-                              {" "}
-                              update{" "}
-                            </button>
-                          }
-                        />
-                      </div>
-                    </form>
-
-                    <SheetFooter>
-                      <Button className={"h-12"}>
-                        {" "}
-                        <Trash />
-                      </Button>
-                    </SheetFooter>
-                  </SheetContent>
-                </Sheet>
-              </div>
-            </div>
+            <ProductCard product={item} key={item.product_id} admin={true} />
           );
         })}
       </div>
