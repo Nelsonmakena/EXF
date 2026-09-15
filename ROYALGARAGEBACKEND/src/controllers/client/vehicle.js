@@ -32,7 +32,7 @@ export const addVehicle = async (req, res) => {
     );
     res.status(200).json({
       success: true,
-      message: "vehicle added succesefull",
+      message: "vehicle added successfully",
       data: newVehicle.rows[0],
     });
   } catch (error) {

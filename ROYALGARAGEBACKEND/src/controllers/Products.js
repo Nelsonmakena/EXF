@@ -110,3 +110,107 @@ export const deleteProduct = async (req, res) => {
     console.log(error.message);
   }
 };
+
+///adding new inventory
+
+export const newInventory = async (req, res) => {
+  const { product_id } = req.body;
+  if (!product_id) {
+    return res.json({ message: "invalid product id " });
+  }
+  try {
+    const checkInventory = await pool.query(
+      "SELECT * FROM inventory WHERE product_id = $1",
+      [product_id],
+    );
+    if (checkInventory.rows.length > 0) {
+      return res.json({
+        success: false,
+        message: "inventory record already exists ",
+      });
+    }
+    const newInv = await pool.query(
+      "INSERT INTO inventory (product_id) VALUES ($1) RETURNING *",
+      [product_id],
+    );
+    if (newInv.rows.length === 0) {
+      return res.json({
+        success: false,
+        message: "inventory of product cant be added ",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "inventory created ",
+      data: newInv.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//adding a stock
+
+export const addStock = async (req, res) => {
+  const { inventory_id, stock, supplier } = req.body;
+
+  if (!inventory_id) {
+    return res.json({ message: "invalid inventory " });
+  }
+
+  try {
+    const newStock = await pool.query(
+      "INSERT INTO stock (inventory_id,stock,supplier ) VALUES ($1,$2,$3) RETURNING *",
+      [inventory_id, stock, supplier],
+    );
+    if (newStock.rows.length === 0) {
+      return res.json({
+        success: false,
+        message: "stock cant be added",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "newStock added ",
+      data: newStock.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+// fetch product stock
+
+export const productInventory = async (req, res) => {
+  try {
+    const inventory = await pool.query(
+      "SELECT * FROM inventory LEFT JOIN stock ON inventory.inventory_id = stock.inventory_id JOIN products ON products.product_id=inventory.product_id",
+    );
+
+    res.status(200).json({
+      success: true,
+      data: inventory.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const SingleProductInventory = async (req, res) => {
+  const { inventory_id } = req.params;
+  if (!inventory_id) {
+    return res.json({ success: false, message: "invalid inventory id" });
+  }
+
+  try {
+    const inventory = await pool.query(
+      "SELECT * FROM stock JOIN inventory ON inventory.inventory_id = stock.inventory_id JOIN products ON products.product_id=inventory.product_id WHERE stock.inventory_id =$1",
+      [inventory_id],
+    );
+
+    res.status(200).json({
+      success: true,
+      data: inventory.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

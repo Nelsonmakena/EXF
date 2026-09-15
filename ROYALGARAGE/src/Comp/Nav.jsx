@@ -83,7 +83,7 @@ function Nav() {
           <Search />
         </nav>
 
-        <div className=" hidden md:flex      h-full items-center ">
+        <div className=" hidden md:flex h-full items-center  gap-7 ">
           <button
             onClick={() => navigate("/login")}
             className={`flex  justify-center items-center w-44  shadow-md  h-14 rounded-md
@@ -91,6 +91,17 @@ function Nav() {
           >
             Get Started
           </button>
+          <Button
+            size="icon"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="rounded-full bg-none"
+          >
+            {theme === "dark" ? (
+              <Moon className="h-4 w-4" />
+            ) : (
+              <Sun className="h-4 w-4 " />
+            )}
+          </Button>
         </div>
 
         {/* small-screen menu  */}

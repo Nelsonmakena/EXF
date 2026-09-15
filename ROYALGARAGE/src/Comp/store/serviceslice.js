@@ -8,7 +8,25 @@ const initialState = {
   availableServiceList: [],
   availableProductList: [],
   cart: [],
+  productsCatalogue: [],
 };
+
+//client
+//fetching product list
+
+export const getProducts = createAsyncThunk("/products", async (product_id) => {
+  const response = await axios.get("/api/products/all-products");
+  return response.data;
+});
+
+//fetching serviceList
+export const getServices = createAsyncThunk("/services", async () => {
+  const response = await axios.get("/api/services/all-services");
+
+  return response.data;
+});
+
+///admin
 
 //adding a product
 
@@ -23,13 +41,6 @@ export const newProduct = createAsyncThunk("/new-product", async (data) => {
 
 export const removeProduct = createAsyncThunk("/remove", async (product_id) => {
   const response = await axios.delete(`/api/products/delete/${product_id}`);
-  return response.data;
-});
-
-//fetching product list
-
-export const getProducts = createAsyncThunk("/products", async (product_id) => {
-  const response = await axios.get("/api/products/all-products");
   return response.data;
 });
 
@@ -57,13 +68,6 @@ export const newService = createAsyncThunk("/new-service", async (data) => {
   return response.data;
 });
 
-//fetching serviceList
-export const getServices = createAsyncThunk("/services", async () => {
-  const response = await axios.get("/api/services/all-services");
-
-  return response.data;
-});
-
 //updating a service info
 
 export const updateServices = createAsyncThunk(
@@ -77,10 +81,33 @@ export const updateServices = createAsyncThunk(
     return response.data;
   },
 );
+
+//deleting a service
 export const deletService = createAsyncThunk(
   "/delete-Service",
   async (service_id) => {
     const response = await axios.delete(`/api/services/delete/${service_id}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+);
+
+//catalogue
+//list of inventory
+export const getCatalogue = createAsyncThunk("/catalogue", async () => {
+  const response = await axios.get("/api/products/inventory", {
+    withCredentials: true,
+  });
+  console.log(response.data);
+
+  return response.data;
+});
+
+export const newInventoryItem = createAsyncThunk(
+  "/new-inventory",
+  async (data) => {
+    const response = await axios.put("/api/products/inventory", data, {
       withCredentials: true,
     });
     return response.data;
@@ -126,6 +153,9 @@ export const ServiceSlice = createSlice({
 
       .addCase(getProducts.fulfilled, (state, action) => {
         state.availableProductList = action.payload.data;
+      })
+      .addCase(getCatalogue.fulfilled, (state, action) => {
+        state.productsCatalogue = action.payload.data;
       });
   },
 });

@@ -1,66 +1,93 @@
-import { Route, Routes, useLocation, Navigate } from "react-router-dom";
-import Template from "../pages/Common/Common";
-import Home from "../pages/Common/Home";
-import About from "../pages/Common/About";
-import Service from "../pages/Common/Services";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
+// Normal imports — small/common pages
 import Userlogin from "../pages/clients/Userlogin";
 import Pages404 from "./Pages404";
 import Admin from "../pages/ADMIN/pages";
-import HomeClient from "../pages/clients/HomeClient";
-import Vehicles from "../pages/clients/Vehicles";
-import Appointment from "../pages/clients/appointments";
-import Feedback from "../pages/clients/Feedback";
-import ClientServices from "../pages/clients/ClientServices";
-import ProfileEdit from "../pages/clients/ProfileEdit";
-import Cart from "../pages/clients/cart";
-import AdminHome from "../pages/ADMIN/pages/adminhome";
 import WkLogin from "../pages/WK/WkLogin";
 import NotAuth from "./notauth";
-import Authenticated from "./authenication/auth";
-import AdminViewProducts from "@/pages/ADMIN/pages/Adminproducts";
-import AdminViewServices from "@/pages/ADMIN/pages/Adminservices";
-import Shop from "@/pages/clients/shop";
-import WorkerView from "@/pages/ADMIN/pages/managment/workerview";
-import JobList from "../pages/ADMIN/pages/joblist";
-import WorkerTemplate from "@/pages/WK";
-import RolesView from "@/pages/ADMIN/pages/managment/roles";
-import WkJobs from "@/pages/WK/jobs";
-import WkMessages from "@/pages/WK/messages";
-import WkJobCard from "@/pages/WK/jobcard";
-import WkSchedule from "@/pages/WK/schedule";
-import AdminJobCard from "@/pages/ADMIN/pages/adminJobCard";
-import WorkerDashboard from "@/pages/WK/dashbaord";
-import InprogressJobs from "@/pages/ADMIN/pages/inProgresJobs";
-import Messages from "@/pages/ADMIN/pages/messages";
-import SingleMessage from "@/pages/ADMIN/pages/singlemessage";
-import ClientIndex from "../pages/clients/clientIndex";
-import AdminIndex from "../pages/ADMIN/pages/adminIndex";
-import ClientJob from "@/pages/clients/clientJob";
 import NullComponent from "./../pages/null";
-import clientsView from "./../pages/ADMIN/pages/managment/clientsview";
-import ClientsView from "./../pages/ADMIN/pages/managment/clientsview";
-import ClientInfoView from "@/pages/ADMIN/pages/managment/clientinfoView";
+import Loader from "./loader";
+import InventoryView from "@/pages/ADMIN/pages/catalog/inventoryView";
+
+// Common
+const Template = lazy(() => import("../pages/Common/Common"));
+const Home = lazy(() => import("../pages/Common/Home"));
+const About = lazy(() => import("../pages/Common/About"));
+const Service = lazy(() => import("../pages/Common/Services"));
+
+// Client
+const HomeClient = lazy(() => import("../pages/clients/HomeClient"));
+const Vehicles = lazy(() => import("../pages/clients/Vehicles"));
+const Appointment = lazy(() => import("../pages/clients/appointments"));
+const Feedback = lazy(() => import("../pages/clients/Feedback"));
+const ClientServices = lazy(() => import("../pages/clients/ClientServices"));
+const ProfileEdit = lazy(() => import("../pages/clients/ProfileEdit"));
+const Cart = lazy(() => import("../pages/clients/cart"));
+const Shop = lazy(() => import("../pages/clients/shop"));
+const ClientJob = lazy(() => import("@/pages/clients/clientJob"));
+
+// Admin
+const AdminHome = lazy(() => import("../pages/ADMIN/pages/adminhome"));
+const AdminViewProducts = lazy(
+  () => import("@/pages/ADMIN/pages/Adminproducts"),
+);
+const AdminViewServices = lazy(
+  () => import("@/pages/ADMIN/pages/Adminservices"),
+);
+const WorkerView = lazy(
+  () => import("@/pages/ADMIN/pages/managment/workerview"),
+);
+const JobList = lazy(() => import("../pages/ADMIN/pages/joblist"));
+const RolesView = lazy(() => import("@/pages/ADMIN/pages/managment/roles"));
+const AdminJobCard = lazy(() => import("@/pages/ADMIN/pages/adminJobCard"));
+const InprogressJobs = lazy(() => import("../pages/ADMIN/pages/inProgresJobs"));
+const Messages = lazy(() => import("../pages/ADMIN/pages/messages"));
+const SingleMessage = lazy(() => import("../pages/ADMIN/pages/singlemessage"));
+const ClientsView = lazy(
+  () => import("../pages/ADMIN/pages/managment/clientsview"),
+);
+const ClientInfoView = lazy(
+  () => import("@/pages/ADMIN/pages/managment/clientinfoView"),
+);
+
+// Worker
+const WorkerTemplate = lazy(() => import("@/pages/WK"));
+const WkJobs = lazy(() => import("@/pages/WK/jobs"));
+const WkMessages = lazy(() => import("@/pages/WK/messages"));
+const WkJobCard = lazy(() => import("@/pages/WK/jobcard"));
+const WkSchedule = lazy(() => import("@/pages/WK/schedule"));
+const WorkerDashboard = lazy(() => import("@/pages/WK/dashbaord"));
+
+// Authentication
+const Authenticated = lazy(() => import("./authenication/auth"));
+
+const ClientIndex = lazy(() => import("../pages/clients/clientIndex"));
+
+const AdminIndex = lazy(() => import("../pages/ADMIN/pages/adminIndex"));
 
 export default function AppRoutes() {
   return (
-    <>
+    <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<Navigate to="/royal-garage/home" />} />
 
-        {/**common */}
+        {/* Common routes */}
         <Route path="/royal-garage" element={<Template />}>
           <Route path="home" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="services" element={<Service />} />
         </Route>
-        <Route path="/null" element={<NullComponent />}></Route>
-        <Route path="/login" element={<Userlogin />} />
-        <Route path="*" element={<Pages404 />}></Route>
-        <Route path="/admin-login" element={<Admin />} />
-        <Route path="/wk" element={<WkLogin />}></Route>
-        <Route path="/not-authorized" element={<NotAuth />}></Route>
 
-        {/* client  routes  */}
+        {/* Authentication / misc */}
+        <Route path="/null" element={<NullComponent />} />
+        <Route path="/login" element={<Userlogin />} />
+        <Route path="/admin-login" element={<Admin />} />
+        <Route path="/wk" element={<WkLogin />} />
+        <Route path="/not-authorized" element={<NotAuth />} />
+
+        {/* Client routes */}
         <Route
           path="/client"
           element={
@@ -80,7 +107,7 @@ export default function AppRoutes() {
           <Route path=":job_id" element={<ClientJob />} />
         </Route>
 
-        {/* admin routes  */}
+        {/* Admin routes */}
         <Route
           path="/admin"
           element={
@@ -90,20 +117,24 @@ export default function AppRoutes() {
           }
         >
           <Route path="home" element={<AdminHome />} />
+
           <Route path="management">
             <Route path="workers" element={<WorkerView />} />
             <Route path="clients" element={<ClientsView />} />
             <Route path="clients/:client_id" element={<ClientInfoView />} />
-
             <Route path="roles" element={<RolesView />} />
           </Route>
+
           <Route path="inventory">
             <Route path="products" element={<AdminViewProducts />} />
             <Route path="services" element={<AdminViewServices />} />
+            <Route path="stock" element={<InventoryView />} />
           </Route>
+
           <Route path="messages" element={<Messages />}>
             <Route path="messages/:id" element={<SingleMessage />} />
           </Route>
+
           <Route path="tasks">
             <Route path="jobs" element={<JobList />} />
             <Route path="in-progress" element={<InprogressJobs />} />
@@ -111,12 +142,11 @@ export default function AppRoutes() {
           </Route>
         </Route>
 
-        {/* worker routes  */}
+        {/* Worker routes */}
         <Route
           path="/w001"
           element={
             <Authenticated>
-              {" "}
               <WorkerTemplate />
             </Authenticated>
           }
@@ -127,7 +157,10 @@ export default function AppRoutes() {
           <Route path="jobs/:jobId" element={<WkJobCard />} />
           <Route path="messages" element={<WkMessages />} />
         </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<Pages404 />} />
       </Routes>
-    </>
+    </Suspense>
   );
 }
