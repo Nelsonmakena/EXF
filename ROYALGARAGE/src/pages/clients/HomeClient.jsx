@@ -10,13 +10,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
-import Skeletonloader from "../../Comp/loader";
+
 import { useDispatch, useSelector } from "react-redux";
 import { total_No_Of_Vehicles } from "@/Comp/store/vehicleslice";
 import Lottie from "lottie-react";
 import buttonanimation from "/src/assets/addbuttondata.json";
-import { Spinner } from "@/components/ui/spinner";
+
 import { useNavigate } from "react-router";
 import { getClientJobs } from "@/Comp/store/jobsslice";
 
@@ -96,12 +95,12 @@ export default function HomeClient() {
             </h1>
 
             {/**service card  progress for ongoing services  */}
-            <div className="flex flex-col gap-normal ">
+            <div className="grid md:grid-cols-3 gap-normal ">
               {clientJobs.map((item, index) => (
                 <div
                   onClick={() => navigate(`/client/${item.job_id}`)}
                   key={index}
-                  className="rounded-2xl border border-primary/20 bg-card p-5 shadow-sm"
+                  className="rounded-2xl border border-primary/20 bg-card p-5 shadow-sm "
                 >
                   {/* Vehicle */}
                   <div className="flex items-start gap-4">
@@ -112,16 +111,21 @@ export default function HomeClient() {
                       <h2 className="text-lg font-semibold ">
                         {item.vehicle_model}
                       </h2>
-                      <p className="mt-1 text-sm font-medium text-gray-500">
-                        {item.vehicle_brand}
-                      </p>
+                      <div className="flex items-center gap-normal text-sm">
+                        <p className="font-medium text-gray-500 ">
+                          {item.vehicle_brand}
+                        </p>
+                        <h1 className="tracking-widest">
+                          {item.license_plate}
+                        </h1>
+                      </div>
                     </div>
                   </div>
                   {/* Details */}
                   <div className="mt-6 grid gap-4 sm:grid-cols-2">
                     {/* Color */}
                     <div className="flex items-center gap-3">
-                      <Palette size={18} className="text-gray-400" />
+                      <Palette size={18} className="text-accent" />
                       <div>
                         <p className="text-xs text-gray-500"> Color </p>
                         <p className="text-sm font-medium ">

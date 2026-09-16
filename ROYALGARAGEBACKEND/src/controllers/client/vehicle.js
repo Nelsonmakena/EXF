@@ -75,7 +75,6 @@ export const getVehicles = async (req, res) => {
       if (item.service_id) {
         findVehicle.services.push({
           service_id: item.service_id,
-          service_name: item.service_name,
         });
       }
 

@@ -7,8 +7,11 @@ export const totalAssigned = async (req, res) => {
   }
   try {
     const count = await pool.query(
-      "SELECT( SELECT  COUNT (*)  FROM job_services WHERE employee_id =$1 AND status IS NULL)AS total_assigned ,(SELECT COUNT (*) FROM job_services WHERE employee_id =$1 AND status=$2)AS completed,(SELECT COUNT (*) FROM job_services WHERE employee_id =$1 AND status IS NOT NULL) AS in_progress",
-      [employee_id, "completed"],
+      `SELECT
+      ( SELECT  COUNT (*)  FROM service_assignment WHERE employee_id =$1 AND assignment_status=$2)AS total_assigned ,
+       (SELECT COUNT (*) FROM service_assignment JOIN job_services ON job_services.job_services_id = service_assignment.job_services_id   WHERE employee_id =$1 AND completed_at IS NOT NULL )AS completed,
+       (SELECT COUNT (*) FROM service_assignment  JOIN job_services ON job_services.job_services_id = service_assignment.job_services_id WHERE employee_id =$1 AND accepted_at IS NOT NULL AND completed_at IS  NULL) AS in_progress`,
+      [employee_id, "pending"],
     );
     res.status(200).json({ success: true, data: count.rows[0] });
   } catch (error) {

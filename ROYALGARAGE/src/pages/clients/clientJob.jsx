@@ -201,7 +201,7 @@ export default function ClientJobDetails() {
     dispatch(clientJobInfo(job_id));
   }, []);
   console.log(jobInformation);
-  console.log(typeof jobInformation);
+
   if (!jobInformation) {
     return <h1>loading </h1>;
   }
@@ -375,19 +375,19 @@ export default function ClientJobDetails() {
                 {jobInformation.services.map((service) => (
                   <div
                     key={service.name}
-                    className="flex items-center justify-between gap-3 py-3"
+                    className="flex items-center justify-between gap-3 py-3  cursor-pointer"
                   >
-                    <div className="flex items-center gap-3">
-                      <CheckCircle2 size={17} />
-                      <span
-                        className={`text-sm ${
-                          service.status === "completed"
-                            ? "text-gray-500 line-through"
-                            : "font-medium  "
-                        }`}
-                      >
-                        {service.service_name}
-                      </span>
+                    <div className="flex flex-col  gap-1 text-sm">
+                      <div className="flex items-center  gap-3">
+                        <span className="">{service.service_name}</span>
+                      </div>
+                      <div className="flex gap-3">
+                        <CheckCircle2 size={17} className="text-accent" />
+                        <h1 className=" text-gray-500">assigned to </h1>
+                        <span className="text-sm tracking-widest font-bold text-accent">
+                          {service.employee_name}
+                        </span>
+                      </div>
                     </div>
 
                     {service.status === "in-progress" && (

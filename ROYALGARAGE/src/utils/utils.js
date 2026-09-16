@@ -20,9 +20,16 @@ export const formatDate = (timestamp) => {
 };
 
 export const formatTime = (timestamp) => {
-  if (!timestamp) return "";
-  return date.toLocaleTimeString("en-KE", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const date = new Date();
+  const time = date - new Date(timestamp);
+  const totalMinutes = Math.floor(time / 1000 / 60);
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours > 0) {
+    return `${hours} hour${hours > 1 ? "s" : ""} ${minutes} minute${minutes !== 1 ? "s" : ""}`;
+  }
+
+  return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
 };

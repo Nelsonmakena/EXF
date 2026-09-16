@@ -42,11 +42,13 @@ export default function AdminJobCard() {
       "Wheel Alignment",
     ],
   };
-  const { workerList } = useSelector((state) => state.worker);
-  const { jobInformation } = useSelector((state) => state.jobs);
+  const {
+    worker: { workerList },
+    jobs: { jobInformation },
+  } = useSelector((state) => state);
+
   const navigate = useNavigate();
   const [jobServiceId, setJobServiceId] = useState(null);
-
   const dispatch = useDispatch();
   const { job_id } = useParams();
 

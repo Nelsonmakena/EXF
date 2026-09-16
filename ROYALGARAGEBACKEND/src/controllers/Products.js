@@ -11,9 +11,27 @@ export const getAllProducts = async (req, res) => {
     console.log(error.message);
   }
 };
-// getting a single product by id
-const getSingleProduct = (req, res) => {};
 
+///adding new inventory
+export const newInventory = async (product_id) => {
+  if (!product_id) {
+    return res.json({ message: "invalid product id " });
+  }
+  try {
+    const newInv = await pool.query(
+      "INSERT INTO inventory (product_id) VALUES ($1) RETURNING *",
+      [product_id],
+    );
+    if (newInv.rows.length === 0) {
+      return res.json({
+        success: false,
+        message: "inventory of product cant be added ",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 // adding items  post method
 
 export const addProduct = async (req, res) => {
@@ -44,6 +62,7 @@ export const addProduct = async (req, res) => {
     if (newProduct.rows.length === 0) {
       return res.json({ success: false, message: "product cant be added" });
     }
+    await newInventory(newProduct.product_id);
     res
       .status(201)
       .json({ success: true, message: "product added successfully" });
@@ -111,44 +130,6 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-///adding new inventory
-
-export const newInventory = async (req, res) => {
-  const { product_id } = req.body;
-  if (!product_id) {
-    return res.json({ message: "invalid product id " });
-  }
-  try {
-    const checkInventory = await pool.query(
-      "SELECT * FROM inventory WHERE product_id = $1",
-      [product_id],
-    );
-    if (checkInventory.rows.length > 0) {
-      return res.json({
-        success: false,
-        message: "inventory record already exists ",
-      });
-    }
-    const newInv = await pool.query(
-      "INSERT INTO inventory (product_id) VALUES ($1) RETURNING *",
-      [product_id],
-    );
-    if (newInv.rows.length === 0) {
-      return res.json({
-        success: false,
-        message: "inventory of product cant be added ",
-      });
-    }
-    res.status(200).json({
-      success: true,
-      message: "inventory created ",
-      data: newInv.rows,
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
 //adding a stock
 
 export const addStock = async (req, res) => {
@@ -183,12 +164,37 @@ export const addStock = async (req, res) => {
 export const productInventory = async (req, res) => {
   try {
     const inventory = await pool.query(
-      "SELECT * FROM inventory LEFT JOIN stock ON inventory.inventory_id = stock.inventory_id JOIN products ON products.product_id=inventory.product_id",
+      "SELECT inventory.* , stock_id ,stock,product_name,product_image,product_price FROM inventory LEFT JOIN stock ON inventory.inventory_id = stock.inventory_id JOIN products ON products.product_id=inventory.product_id",
     );
+
+    const results = inventory.rows.reduce((acc, item) => {
+      let findInventory = acc.find(
+        (inventory) => inventory.inventory_id === item.inventory_id,
+      );
+      if (!findInventory) {
+        findInventory = {
+          inventory_id: item.inventory_id,
+          product_name: item.product_name,
+          product_image: item.product_image,
+          sell_price: item.product_price,
+          stock: 0,
+          stockValue: 0,
+        };
+        acc.push(findInventory);
+      }
+      if (!item.stock) {
+        return acc;
+      }
+      findInventory.stock += item.stock;
+      findInventory.stockValue =
+        findInventory.stock * Number(item.product_price);
+
+      return acc;
+    }, []);
 
     res.status(200).json({
       success: true,
-      data: inventory.rows,
+      data: results,
     });
   } catch (error) {
     console.log(error.message);

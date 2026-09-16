@@ -251,289 +251,197 @@
 
 // export default WorkerJobs;
 
-// import {
-//   ArrowLeft,
-//   Car,
-//   CheckCircle2,
-//   Clock3,
-//   Play,
-//   Wrench,
-// } from "lucide-react";
+import {
+  ArrowLeft,
+  Car,
+  CheckCircle2,
+  Clock3,
+  Play,
+  Wrench,
+} from "lucide-react";
 
-// export default function WorkerJobServices() {
-//   const services = [
-//     {
-//       id: 1,
-//       name: "Engine Diagnostics",
-//       description:
-//         "Check engine system for fault codes and identify possible issues.",
-//       status: "In Progress",
-//       started: "09:15 AM",
-//       progress: 65,
-//     },
-//     {
-//       id: 2,
-//       name: "Brake Inspection",
-//       description:
-//         "Inspect brake pads, discs, brake fluid and overall brake system.",
-//       status: "Pending",
-//       started: null,
-//       progress: 0,
-//     },
-//     {
-//       id: 3,
-//       name: "Full Oil Change",
-//       description:
-//         "Drain old engine oil and replace oil filter and engine oil.",
-//       status: "Completed",
-//       started: "08:40 AM",
-//       progress: 100,
-//     },
-//   ];
+export default function WorkerJobServices() {
+  const services = [
+    {
+      id: 1,
+      name: "Engine Diagnostics",
+      description:
+        "Check engine system for fault codes and identify possible issues.",
+      status: "In Progress",
+      started: "09:15 AM",
+      progress: 65,
+    },
+    {
+      id: 2,
+      name: "Brake Inspection",
+      description:
+        "Inspect brake pads, discs, brake fluid and overall brake system.",
+      status: "Pending",
+      started: null,
+      progress: 0,
+    },
+    {
+      id: 3,
+      name: "Full Oil Change",
+      description:
+        "Drain old engine oil and replace oil filter and engine oil.",
+      status: "Completed",
+      started: "08:40 AM",
+      progress: 100,
+    },
+  ];
 
-//   return (
-//     <div className="container-main">
-//       <main className="py-6 md:py-8">
-//         {/* BACK */}
-//         <button className="mb-5 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-//           <ArrowLeft className="h-4 w-4" />
-//           Back to Jobs
-//         </button>
-
-//         {/* JOB HEADER */}
-//         <div className="mb-6 rounded-2xl border bg-card p-5 shadow-sm md:p-6">
-//           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-//             <div className="flex items-center gap-4">
-//               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-//                 <Car className="h-7 w-7" />
-//               </div>
-
-//               <div>
-//                 <p className="text-xs font-medium text-primary">JOB-1028</p>
-
-//                 <h1 className="mt-1 text-xl font-bold md:text-2xl">
-//                   Toyota Harrier
-//                 </h1>
-
-//                 <p className="mt-1 text-sm text-muted-foreground">
-//                   KCA 321Z · John Kamau
-//                 </p>
-//               </div>
-//             </div>
-
-//             <div className="flex flex-wrap gap-2">
-//               <span className="rounded-full bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-400">
-//                 In Progress
-//               </span>
-
-//               <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium">
-//                 3 Services
-//               </span>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* SERVICES */}
-//         <div className="mb-6">
-//           <div className="mb-4">
-//             <h2 className="text-lg font-semibold">Job Services</h2>
-
-//             <p className="mt-1 text-sm text-muted-foreground">
-//               Update the progress of each service assigned to you.
-//             </p>
-//           </div>
-
-//           <div className="space-y-4">
-//             {services.map((service) => (
-//               <div
-//                 key={service.id}
-//                 className="rounded-xl border bg-card p-5 shadow-sm"
-//               >
-//                 {/* SERVICE TOP */}
-//                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-//                   <div className="flex gap-4">
-//                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-//                       <Wrench className="h-5 w-5 text-primary" />
-//                     </div>
-
-//                     <div>
-//                       <h3 className="font-semibold">{service.name}</h3>
-
-//                       <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-//                         {service.description}
-//                       </p>
-//                     </div>
-//                   </div>
-
-//                   {/* STATUS */}
-//                   <span
-//                     className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
-//                       service.status === "Completed"
-//                         ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
-//                         : service.status === "In Progress"
-//                           ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
-//                           : "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400"
-//                     }`}
-//                   >
-//                     {service.status}
-//                   </span>
-//                 </div>
-
-//                 {/* PROGRESS */}
-//                 <div className="mt-6">
-//                   <div className="mb-2 flex justify-between text-xs">
-//                     <span className="text-muted-foreground">Progress</span>
-
-//                     <span className="font-medium">{service.progress}%</span>
-//                   </div>
-
-//                   <div className="h-2 overflow-hidden rounded-full bg-muted">
-//                     <div
-//                       className="h-full rounded-full bg-primary transition-all"
-//                       style={{
-//                         width: `${service.progress}%`,
-//                       }}
-//                     />
-//                   </div>
-//                 </div>
-
-//                 {/* FOOTER */}
-//                 <div className="mt-5 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-//                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-//                     <Clock3 className="h-4 w-4" />
-
-//                     {service.started
-//                       ? `Started ${service.started}`
-//                       : "Not started yet"}
-//                   </div>
-
-//                   {/* ACTIONS */}
-//                   <div className="flex gap-2">
-//                     {service.status === "Pending" && (
-//                       <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">
-//                         <Play className="h-3.5 w-3.5" />
-//                         Start Service
-//                       </button>
-//                     )}
-
-//                     {service.status === "In Progress" && (
-//                       <>
-//                         <button className="rounded-lg border px-4 py-2 text-xs font-medium hover:bg-muted">
-//                           Update Progress
-//                         </button>
-
-//                         <button className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-xs font-medium text-white hover:opacity-90">
-//                           <CheckCircle2 className="h-3.5 w-3.5" />
-//                           Complete
-//                         </button>
-//                       </>
-//                     )}
-
-//                     {service.status === "Completed" && (
-//                       <button className="flex items-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium text-green-600">
-//                         <CheckCircle2 className="h-3.5 w-3.5" />
-//                         Completed
-//                       </button>
-//                     )}
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-import { ArrowRight, Package, TrendingDown, Boxes } from "lucide-react";
-
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-
-const inventory = [
-  {
-    id: "1",
-    name: "Brake Pads",
-    category: "Toyota Corolla",
-    sku: "BP-102",
-    stock: 42,
-    soldToday: 5,
-    value: 12600,
-  },
-  {
-    id: "2",
-    name: "Oil Filter",
-    category: "Toyota / Nissan",
-    sku: "OF-204",
-    stock: 18,
-    soldToday: 2,
-    value: 5400,
-  },
-];
-
-export default function InventoryList() {
   return (
-    <div className="space-y-3">
-      {inventory.map((item) => (
-        <Card
-          key={item.id}
-          className="group cursor-pointer rounded-xl p-4 transition hover:bg-muted/40"
-        >
-          <div className="flex items-center gap-4">
-            {/* Product icon */}
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted">
-              <Package className="h-5 w-5 text-muted-foreground" />
-            </div>
+    <div className="container-main">
+      <main className="py-6 md:py-8">
+        {/* BACK */}
+        <button className="mb-5 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" />
+          Back to Jobs
+        </button>
 
-            {/* Product */}
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-medium">{item.name}</p>
+        {/* JOB HEADER */}
+        <div className="mb-6 rounded-2xl border bg-card p-5 shadow-sm md:p-6">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Car className="h-7 w-7" />
+              </div>
 
-              <p className="text-sm text-muted-foreground">{item.category}</p>
+              <div>
+                <p className="text-xs font-medium text-primary">JOB-1028</p>
 
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                SKU: {item.sku}
-              </p>
-            </div>
+                <h1 className="mt-1 text-xl font-bold md:text-2xl">
+                  Toyota Harrier
+                </h1>
 
-            {/* Current stock */}
-            <div className="hidden w-24 sm:block">
-              <p className="text-xs text-muted-foreground">In stock</p>
-
-              <div className="mt-1 flex items-center gap-1.5">
-                <Boxes className="h-4 w-4 text-muted-foreground" />
-
-                <span className="font-semibold">{item.stock}</span>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  KCA 321Z · John Kamau
+                </p>
               </div>
             </div>
 
-            {/* Sold today */}
-            <div className="hidden w-28 md:block">
-              <p className="text-xs text-muted-foreground">Sold today</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-400">
+                In Progress
+              </span>
 
-              <div className="mt-1 flex items-center gap-1.5">
-                <TrendingDown className="h-4 w-4 text-muted-foreground" />
-
-                <span className="font-semibold">{item.soldToday}</span>
-              </div>
+              <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium">
+                3 Services
+              </span>
             </div>
-
-            {/* Value */}
-            <div className="hidden w-28 lg:block">
-              <p className="text-xs text-muted-foreground">Stock value</p>
-
-              <p className="mt-1 font-semibold">
-                KSh {item.value.toLocaleString()}
-              </p>
-            </div>
-
-            {/* Arrow */}
-            <Button variant="ghost" size="icon" className="shrink-0">
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Button>
           </div>
-        </Card>
-      ))}
+        </div>
+
+        {/* SERVICES */}
+        <div className="mb-6">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold">Job Services</h2>
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              Update the progress of each service assigned to you.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {services.map((service) => (
+              <div
+                key={service.id}
+                className="rounded-xl border bg-card p-5 shadow-sm"
+              >
+                {/* SERVICE TOP */}
+                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                  <div className="flex gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                      <Wrench className="h-5 w-5 text-primary" />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold">{service.name}</h3>
+
+                      <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* STATUS */}
+                  <span
+                    className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
+                      service.status === "Completed"
+                        ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
+                        : service.status === "In Progress"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
+                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400"
+                    }`}
+                  >
+                    {service.status}
+                  </span>
+                </div>
+
+                {/* PROGRESS */}
+                <div className="mt-6">
+                  <div className="mb-2 flex justify-between text-xs">
+                    <span className="text-muted-foreground">Progress</span>
+
+                    <span className="font-medium">{service.progress}%</span>
+                  </div>
+
+                  <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all"
+                      style={{
+                        width: `${service.progress}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* FOOTER */}
+                <div className="mt-5 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock3 className="h-4 w-4" />
+
+                    {service.started
+                      ? `Started ${service.started}`
+                      : "Not started yet"}
+                  </div>
+
+                  {/* ACTIONS */}
+                  <div className="flex gap-2">
+                    {service.status === "Pending" && (
+                      <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">
+                        <Play className="h-3.5 w-3.5" />
+                        Start Service
+                      </button>
+                    )}
+
+                    {service.status === "In Progress" && (
+                      <>
+                        <button className="rounded-lg border px-4 py-2 text-xs font-medium hover:bg-muted">
+                          Update Progress
+                        </button>
+
+                        <button className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-xs font-medium text-white hover:opacity-90">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          Complete
+                        </button>
+                      </>
+                    )}
+
+                    {service.status === "Completed" && (
+                      <button className="flex items-center gap-2 rounded-lg border px-4 py-2 text-xs font-medium text-green-600">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Completed
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

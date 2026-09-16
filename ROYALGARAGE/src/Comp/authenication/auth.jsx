@@ -7,16 +7,18 @@ import { checkAuth } from "../store/authslice";
 import { useEffect } from "react";
 
 export default function Authenticated({ children }) {
+  const location = useLocation();
   //always checking auth status
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("check auth runned");
+
     dispatch(checkAuth());
-  }, [dispatch]);
+  }, [dispatch, location.pathname]);
   const { isLoading, Role, isAuthenticated } = useSelector(
     (state) => state.auth,
   );
 
-  const location = useLocation();
   const path = location.pathname;
   if (isLoading) {
     return <Loader />;

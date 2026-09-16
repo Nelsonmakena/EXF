@@ -63,6 +63,7 @@ export default function EmployeeCard({
             <h3 className="truncate text-sm font-semibold ">
               {employee.info.first_name} {employee.info.last_name}
             </h3>
+            <span className="text-sm text-muted/50">{employee.info.email}</span>
 
             <p className="mt-0.5 text-xs text-gray-500">{employee.info.role}</p>
           </div>

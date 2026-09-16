@@ -79,7 +79,14 @@ export const jobInfo = async (req, res) => {
 
   try {
     const jobDetails = await pool.query(
-      "SELECT * FROM job_services JOIN jobs ON job_services.job_id = jobs.job_id JOIN services ON services.service_id=job_services.service_id  LEFT JOIN employee ON employee.employee_id=job_services.employee_id  JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id WHERE job_services.job_id=$1 ",
+      `SELECT * 
+      FROM job_services 
+      JOIN jobs ON job_services.job_id = jobs.job_id 
+      JOIN services ON services.service_id=job_services.service_id 
+      LEFT JOIN service_assignment ON service_assignment.job_services_id=job_services.job_services_id
+        LEFT JOIN employee ON employee.employee_id = service_assignment.employee_id
+       JOIN vehicle ON vehicle.vehicle_id=jobs.vehicle_id 
+       WHERE job_services.job_id=$1 `,
       [job_id],
     );
     const results = jobDetails.rows.reduce((acc, item) => {
@@ -219,7 +226,6 @@ export const employeeJobList = async (req, res) => {
       success: true,
       data: results,
     });
-    console.log(response);
   } catch (error) {
     console.log(error.message);
   }
@@ -451,7 +457,6 @@ WHERE service_assignment.employee_id IS NOT NULL;`,
 
 export const assignJob = async (req, res) => {
   const { employee_id, job_services_id } = req.body;
-  console.log(req.body);
 
   if (Object.keys(req.body).length == 0) {
     return res.json("all fields are required");
@@ -471,7 +476,7 @@ export const assignJob = async (req, res) => {
       "INSERT INTO service_assignment (job_services_id, employee_id)  VALUES ($1,$2) RETURNING * ",
       [job_services_id, employee_id],
     );
-    console.log(assignJob.rows);
+
     let findEmployee = await pool.query(
       "SELECT employee_id, first_name,last_name FROM employee WHERE employee_id =$1",
       [assignJob.rows[0].employee_id],
@@ -489,7 +494,9 @@ export const assignJob = async (req, res) => {
 
 export const jobDetails = async (req, res) => {
   const { job_id } = req.params;
-  //
+  if (!job_id) {
+    return res.json({ success: false, message: "invalid job_id" });
+  }
   try {
     const response = await pool.query(
       `SELECT
