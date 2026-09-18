@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { AssignJob, jobInfo } from "@/Comp/store/jobsslice";
+import { AssignJob, jobInfo } from "@/store/jobsslice";
 import { toast } from "sonner";
-import { getWorkerList } from "@/Comp/store/wokerslice";
+import { getWorkerList } from "@/store/wokerslice";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function EmployeeCard({

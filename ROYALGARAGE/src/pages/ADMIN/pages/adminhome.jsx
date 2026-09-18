@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import AdminNav from "./adminnav";
 import { TotalService } from "./Datacharts/Totalservices";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorkerList } from "@/Comp/store/wokerslice";
-import { getJobList } from "@/Comp/store/jobsslice";
+import { getWorkerList } from "@/store/wokerslice";
+import { getJobList } from "@/store/jobsslice";
 import { useNavigate } from "react-router";
 
 export default function AdminHome() {

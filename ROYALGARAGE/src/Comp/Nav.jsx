@@ -7,7 +7,7 @@ import logodata from "/src/assets/logoanimation.json";
 import smallmenuanimation from "/src/assets/smallmenu.json";
 import { Button } from "@/components/ui/button";
 import Lottie from "lottie-react";
-import { Search, Menu, Moon, Sun } from "lucide-react";
+import { Search, Menu, Moon, Sun, ShoppingBag } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -84,6 +84,9 @@ function Nav() {
         </nav>
 
         <div className=" hidden md:flex h-full items-center  gap-7 ">
+          <Button size="icon">
+            <ShoppingBag />
+          </Button>
           <button
             onClick={() => navigate("/login")}
             className={`flex  justify-center items-center w-44  shadow-md  h-14 rounded-md

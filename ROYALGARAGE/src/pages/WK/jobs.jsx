@@ -1,4 +1,4 @@
-import { myJobList } from "@/Comp/store/jobsslice";
+import { myJobList } from "@/store/jobsslice";
 import { Button } from "@/components/ui/button";
 import {
   Table,

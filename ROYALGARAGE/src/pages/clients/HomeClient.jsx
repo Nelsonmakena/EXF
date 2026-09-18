@@ -12,12 +12,12 @@ import {
 import { useState, useContext, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { total_No_Of_Vehicles } from "@/Comp/store/vehicleslice";
+import { total_No_Of_Vehicles } from "@/store/vehicleslice";
 import Lottie from "lottie-react";
 import buttonanimation from "/src/assets/addbuttondata.json";
 
 import { useNavigate } from "react-router";
-import { getClientJobs } from "@/Comp/store/jobsslice";
+import { getClientJobs } from "@/store/jobsslice";
 
 export default function HomeClient() {
   const { totalVehicle } = useSelector((state) => state.vehicle);

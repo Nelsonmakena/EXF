@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getServices } from "@/Comp/store/serviceslice";
-import { getVehiclelist } from "@/Comp/store/vehicleslice";
+import { getServices } from "@/store/serviceslice";
+import { getVehiclelist } from "@/store/vehicleslice";
 import { Spinner } from "@/components/ui/spinner";
 
-import ServiceCard from "./ServiceCard";
+import ServiceCard from "../../Comp/ServiceCard";
 
 export default function ClientServices() {
   const { vehicles } = useSelector((state) => state.vehicle);

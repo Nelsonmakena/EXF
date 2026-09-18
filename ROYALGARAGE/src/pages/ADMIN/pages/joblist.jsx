@@ -9,13 +9,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { getJobList } from "@/Comp/store/jobsslice";
+import { getJobList } from "@/store/jobsslice";
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { getWorkerList } from "@/Comp/store/wokerslice";
+import { getWorkerList } from "@/store/wokerslice";
 import { useNavigate } from "react-router";
 import { CheckCircle2 } from "lucide-react";
 

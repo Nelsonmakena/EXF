@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router";
 
 import Loader from "../loader";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth } from "../store/authslice";
+import { checkAuth } from "../../store/authslice";
 import { useEffect } from "react";
 
 export default function Authenticated({ children }) {

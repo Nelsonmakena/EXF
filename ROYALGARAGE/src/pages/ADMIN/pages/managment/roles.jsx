@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "sonner";
-import { deleteRole, newRole, roleList } from "@/Comp/store/wokerslice";
+import { deleteRole, newRole, roleList } from "@/store/wokerslice";
 import { Trash, Trash2 } from "lucide-react";
 
 export default function RolesView() {

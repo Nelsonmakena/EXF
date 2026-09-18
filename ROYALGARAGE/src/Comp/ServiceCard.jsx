@@ -31,13 +31,13 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "sonner";
-import { newJob } from "@/Comp/store/jobsslice";
+import { newJob } from "@/store/jobsslice";
 import { currencyFormat } from "@/utils/utils";
 import {
   deletService,
   getServices,
   updateServices,
-} from "@/Comp/store/serviceslice";
+} from "@/store/serviceslice";
 export default function ServiceCard({ vehicles, service, client, admin }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -88,7 +88,7 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
   };
 
   return (
-    <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-48   hover:-translate-y-1 transition duration-400">
+    <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-52   hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
       <div className="h-30 w-full overflow-hidden rounded-t-xl">
         <LazyLoadImage
@@ -294,6 +294,12 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
               </SheetFooter>
             </SheetContent>
           </Sheet>
+        )}
+        {!client && !admin && (
+          <Button className=" rounded-b-xl  rounded-t-none  h-12   ">
+            {" "}
+            Book Now
+          </Button>
         )}
       </div>
     </div>

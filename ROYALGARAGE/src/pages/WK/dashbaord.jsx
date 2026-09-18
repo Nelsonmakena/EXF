@@ -12,10 +12,11 @@ import {
 import { CarFront, ChevronRight, Clock3, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { acceptJob, assignedJobsList } from "@/Comp/store/jobsslice";
-import { getWorkerDashboard } from "@/Comp/store/dashboardstarts";
+import { acceptJob, assignedJobsList } from "@/store/jobsslice";
+import { getWorkerDashboard } from "@/store/dashboardstarts";
 import { formatDate } from "@/utils/utils";
 import EmployeeJobCard from "./employeeJobCard";
+import StatCard from "@/Comp/statCard";
 
 export default function WorkerDashboard() {
   const { assignedJobs } = useSelector((state) => state.jobs);
@@ -25,46 +26,14 @@ export default function WorkerDashboard() {
     dispatch(assignedJobsList());
     dispatch(getWorkerDashboard());
   }, []);
-  console.log(assignedJobs);
+  console.log(stats);
 
   return (
     <section className=" section-sm ">
       <div className="grid grid-cols-1 card md:grid-cols-3 gap-6 ">
-        <div
-          data-aos="fadeup"
-          className=" bg-primary  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl flex  flex-col items-center"
-        >
-          <div className="flex items-start justify-between mb-4">
-            <p className="">Assigned</p>
-          </div>
-          <p className="text-3xl font-bold mb-2 transition-colors duration-200">
-            {stats?.total_assigned}
-          </p>
-        </div>
-        <div
-          data-aos="fadeup"
-          className="bg-secondary  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 flex  flex-col items-center  hover:shadow-2xl"
-        >
-          <div className="flex items-start justify-between mb-4">
-            <p className="">In Progress</p>
-          </div>
-          <p className="text-3xl font-bold mb-2 transition-colors duration-200">
-            {stats?.in_progress}
-          </p>
-        </div>
-        <div
-          data-aos="fadeup"
-          className="bg-accent rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl  flex flex-col items-center"
-        >
-          <div className="flex items-start justify-between mb-4">
-            <p className="">Completed</p>
-          </div>
-          <p className="text-3xl font-bold mb-2 transition-colors duration-200">
-            {stats?.completed}
-          </p>
-        </div>
+        <StatCard />
       </div>
-      <div className="card">
+      <div className="section-sm">
         {assignedJobs.length == 0 ? (
           <div className="flex min-h-32 items-center justify-center rounded-xl border bg-card">
             <div className="text-center">

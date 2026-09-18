@@ -8,13 +8,10 @@ import Lottie from "lottie-react";
 import { useContext, useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { loginUser, registerUser } from "@/Comp/store/authslice";
+import { loginUser, registerUser } from "@/store/authslice";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
-import {
-  getVehiclelist,
-  total_No_Of_Vehicles,
-} from "@/Comp/store/vehicleslice";
+import { getVehiclelist, total_No_Of_Vehicles } from "@/store/vehicleslice";
 
 export default function Userlogin() {
   const [state, setState] = useState("login");

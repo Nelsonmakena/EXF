@@ -26,7 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/Comp/theme-provider";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAnyone } from "@/Comp/store/authslice";
+import { logoutAnyone } from "@/store/authslice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function ClientNav() {

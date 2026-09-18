@@ -45,7 +45,7 @@ import {
   getVehiclelist,
   newVehicle,
   removeVehicle,
-} from "@/Comp/store/vehicleslice";
+} from "@/store/vehicleslice";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import UpdateVehicle from "./updatevehicle";

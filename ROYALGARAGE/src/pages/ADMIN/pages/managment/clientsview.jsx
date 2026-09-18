@@ -1,4 +1,4 @@
-import { getClients } from "@/Comp/store/client";
+import { getClients } from "@/store/client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ClientCard from "./clientCard";

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "@/Comp/store/serviceslice";
-import ProductCard from "./productCard";
+import { getProducts } from "@/store/serviceslice";
+import ProductCard from "../../Comp/productCard";
 
 export default function Shop() {
   const dispatch = useDispatch();

@@ -24,7 +24,7 @@ const Appointment = lazy(() => import("../pages/clients/appointments"));
 const Feedback = lazy(() => import("../pages/clients/Feedback"));
 const ClientServices = lazy(() => import("../pages/clients/ClientServices"));
 const ProfileEdit = lazy(() => import("../pages/clients/ProfileEdit"));
-const Cart = lazy(() => import("../pages/clients/cart"));
+const Cart = lazy(() => import("./cart"));
 const Shop = lazy(() => import("../pages/clients/shop"));
 const ClientJob = lazy(() => import("@/pages/clients/clientJob"));
 

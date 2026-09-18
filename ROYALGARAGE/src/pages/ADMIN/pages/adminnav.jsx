@@ -21,7 +21,7 @@ import { useTheme } from "@/Comp/theme-provider";
 import { useDispatch } from "react-redux";
 
 import { ClipboardList, PackageSearch } from "lucide-react";
-import { logoutAnyone } from "@/Comp/store/authslice";
+import { logoutAnyone } from "@/store/authslice";
 
 export default function AdminNav() {
   const { setTheme, theme } = useTheme();

@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { clientJobInfo } from "@/Comp/store/jobsslice";
+import { clientJobInfo } from "@/store/jobsslice";
 
 const job = {
   id: "1042",

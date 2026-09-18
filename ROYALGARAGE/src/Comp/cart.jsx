@@ -1,4 +1,4 @@
-import { addCart } from "@/Comp/store/serviceslice";
+import { addCart } from "@/store/serviceslice";
 import { currencyFormat } from "@/utils/utils";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";

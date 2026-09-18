@@ -5,7 +5,7 @@ import Footer from "../../Comp/footer";
 export default function Template() {
   return (
     <>
-      <div className="   w-full">
+      <div className=" container-main w-full">
         <Nav />
       </div>
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ClientNav from "./ClientNav";
 import { Calendar } from "@/components/ui/calendar";
 import { useDispatch, useSelector } from "react-redux";
-import { getAppointmentDatesClient } from "../../Comp/store/appointmentsdates";
+import { getAppointmentDatesClient } from "../../store/appointmentsdates";
 import { Card, CardTitle } from "@/components/ui/card";
 import Service from "./../Common/Services";
 

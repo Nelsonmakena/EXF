@@ -17,8 +17,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getServices, newService } from "@/Comp/store/serviceslice";
-import ServiceCard from "@/pages/clients/ServiceCard";
+import { getServices, newService } from "@/store/serviceslice";
+import ServiceCard from "@/Comp/ServiceCard";
 import { toast } from "sonner";
 
 export default function AdminViewServices() {

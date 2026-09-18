@@ -14,7 +14,7 @@ import {
   getProducts,
   removeProduct,
   updateProducts,
-} from "@/Comp/store/serviceslice";
+} from "@/store/serviceslice";
 import { ShoppingCart, Trash } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
@@ -124,7 +124,6 @@ export default function ProductCard({ product, admin, client }) {
                     <label> Product name </label>
                     <Input
                       name="product_name"
-                      id="productname"
                       defaultValue={product.product_name}
                     />
                   </div>
@@ -132,7 +131,6 @@ export default function ProductCard({ product, admin, client }) {
                     <label> Product image </label>
                     <Input
                       name="product_image"
-                      id="productdescrption"
                       defaultValue={product.product_name}
                     />
                   </div>
@@ -140,7 +138,6 @@ export default function ProductCard({ product, admin, client }) {
                     <label> Product descrption </label>
                     <Input
                       name="product_description"
-                      id="productdescription"
                       defaultValue={product.product_description}
                     />
                   </div>
@@ -148,7 +145,6 @@ export default function ProductCard({ product, admin, client }) {
                     <label> Product price </label>
                     <Input
                       name="product_price"
-                      id="productprice"
                       defaultValue={product.product_price}
                     />
                   </div>
@@ -156,7 +152,6 @@ export default function ProductCard({ product, admin, client }) {
                     <label> Category </label>
                     <Input
                       name="product_category"
-                      id="product_category"
                       defaultValue={product.product_category}
                     />
                   </div>
@@ -164,7 +159,6 @@ export default function ProductCard({ product, admin, client }) {
                     <label> Discount </label>
                     <Input
                       name="product_discount"
-                      id="Discount"
                       defaultValue={product.product_discount}
                     />
                   </div>
@@ -201,6 +195,19 @@ export default function ProductCard({ product, admin, client }) {
               </SheetFooter>
             </SheetContent>
           </Sheet>
+        )}
+
+        {!admin && !client && (
+          <Button
+            className="w-full mt-4 gap-2"
+            onClick={() => {
+              dispatch(addCart(product));
+              toast(`${product.product_name} added to cart`);
+            }}
+          >
+            <ShoppingCart className="h-4 w-4" />
+            Add to cart
+          </Button>
         )}
       </div>
     </div>

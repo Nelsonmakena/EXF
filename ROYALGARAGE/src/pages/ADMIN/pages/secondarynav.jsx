@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 
 import { useTheme } from "@/Comp/theme-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { logoutAnyone } from "@/Comp/store/authslice";
+import { logoutAnyone } from "@/store/authslice";
 
 export default function SecondaryNav({ hidemenu, Sethidemenu }) {
   const { setTheme, theme } = useTheme();

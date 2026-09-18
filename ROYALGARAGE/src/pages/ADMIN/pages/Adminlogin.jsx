@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { adminlogin } from "@/Comp/store/authslice";
+import { adminlogin } from "@/store/authslice";
 import { toast } from "sonner";
 export default function Adminlogin() {
   const navigate = useNavigate();
@@ -15,7 +15,6 @@ export default function Adminlogin() {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
-   
 
     dispatch(adminlogin(data)).then((data) => {
       if (data?.payload?.success) {

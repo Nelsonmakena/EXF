@@ -1,4 +1,4 @@
-import { getCatalogue } from "@/Comp/store/serviceslice";
+import { getCatalogue } from "@/store/serviceslice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InventoryCard from "./invetroryCard";

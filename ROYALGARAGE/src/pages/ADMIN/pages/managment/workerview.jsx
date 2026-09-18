@@ -32,7 +32,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewWorker, getWorkerList, roleList } from "@/Comp/store/wokerslice";
+import { addNewWorker, getWorkerList, roleList } from "@/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
 

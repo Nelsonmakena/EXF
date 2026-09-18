@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getClientInfo } from "@/Comp/store/client";
+import { getClientInfo } from "@/store/client";
 import { formatDate } from "@/utils/utils";
 export default function ClientInfoView() {
   const { client_id } = useParams();

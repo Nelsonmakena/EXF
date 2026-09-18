@@ -15,9 +15,9 @@ import animatedaddbutton from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, newProduct } from "@/Comp/store/serviceslice";
+import { getProducts, newProduct } from "@/store/serviceslice";
 
-import ProductCard from "@/pages/clients/productCard";
+import ProductCard from "@/Comp/productCard";
 import { toast } from "sonner";
 
 export default function AdminViewProducts() {

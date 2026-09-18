@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { workerlogin } from "@/Comp/store/authslice";
+import { workerlogin } from "@/store/authslice";
 import { toast } from "sonner";
 
 export default function WkLogin() {

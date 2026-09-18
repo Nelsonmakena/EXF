@@ -13,7 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Moon, Sun, LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAnyone } from "@/Comp/store/authslice";
+import { logoutAnyone } from "@/store/authslice";
 import { useTheme } from "@/Comp/theme-provider";
 export default function Wknav() {
   const { setTheme, theme } = useTheme();
@@ -31,7 +31,6 @@ export default function Wknav() {
     dispatch(logoutAnyone());
     navigate("/wk");
   };
-  console.log(userinfo);
 
   return (
     <>
@@ -68,19 +67,17 @@ export default function Wknav() {
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className={
-                  "w-2xs p-4.5 flex flex-col  gap-normal border-none   "
-                }
+                className={"w-2xs flex flex-col  gap-normal border-none p-0   "}
               >
                 <DropdownMenuItem
-                  className={"flex"}
+                  className={"flex bg-primary h-12 rounded-b-none"}
                   onClick={() => {
                     navigate("profile");
                   }}
                 >
                   <User /> profile
                 </DropdownMenuItem>
-                <DropdownMenuSeparator></DropdownMenuSeparator>
+
                 <DropdownMenuGroup className="flex justify-between ">
                   <DropdownMenuItem
                     onClick={() => {
@@ -101,9 +98,9 @@ export default function Wknav() {
                     />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator></DropdownMenuSeparator>
+
                 <DropdownMenuItem
-                  className={"flex "}
+                  className={"flex bg-destructive/20 h-12 rounded-t-none "}
                   variant="destructive"
                   onClick={() => {
                     logout();

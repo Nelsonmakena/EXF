@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { CheckCircle2 } from "lucide-react";
 import { useEffect } from "react";
-import { getInprogressJobs } from "@/Comp/store/jobsslice";
+import { getInprogressJobs } from "@/store/jobsslice";
 export default function InprogressJobs() {
   const { inProgress } = useSelector((state) => state.jobs);
   const dispatch = useDispatch();
