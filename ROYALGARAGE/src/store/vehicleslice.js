@@ -3,7 +3,6 @@ import axios from "axios";
 
 const initialState = {
   vehicles: [],
-  loading: false,
   totalVehicle: null,
 };
 
@@ -19,14 +18,10 @@ export const getVehiclelist = createAsyncThunk("/vehicles", async () => {
 //adding vehicles
 
 export const newVehicle = createAsyncThunk("/addVehicle", async (data) => {
-  console.log(data);
-
-  const add = await axios.post("/api/client/add-vehicle", data, {
+  const response = await axios.post("/api/client/add-vehicle", data, {
     withCredentials: true,
   });
-  console.log(add.data);
-
-  return add.data;
+  return response.data;
 });
 
 ///deleting a vehicle
@@ -63,17 +58,11 @@ export const vehicleSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getVehiclelist.pending, (state) => {
-        state.loading = true;
-      })
+
       .addCase(getVehiclelist.fulfilled, (state, action) => {
-        state.loading = false;
         state.vehicles = action.payload.data;
       })
-      .addCase(getVehiclelist.rejected, (state, action) => {
-        state.loading = false;
-        state.vehicles = [];
-      })
+
       .addCase(newVehicle.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.vehicles.push(action.payload.data);

@@ -1,0 +1,12 @@
+//validations functions
+
+export const isEmptyBody = (body) => {
+  return !body || Object.keys(body).length === 0;
+};
+
+export const missingFields = (body, requiredFields) => {
+  return requiredFields.filter(
+    (field) =>
+      body[field] === undefined || body[field] === null || body[field] === "",
+  );
+};

@@ -4,12 +4,9 @@ import {
   adminChecker,
 } from "../midlewares/authenicationmidleware.js";
 import {
-  addNewRole,
   roleList,
-  removeRole,
-  addWorker,
   workers,
-} from "../controllers/admin/Managment/Wokermamagment.js";
+} from "../controllers/admin/Management/Wokermamagment.js";
 
 import { totalNumbers } from "../controllers/dashboarb.js";
 
@@ -22,6 +19,8 @@ import {
 
 import { Clients, clientInfo } from "./../controllers/client/clientinfo.js";
 
+import { addWorker } from "../controllers/auth.js";
+
 const Router = express.Router();
 
 Router.use(authenticateMiddleware, adminChecker);
@@ -32,13 +31,13 @@ Router.use(authenticateMiddleware, adminChecker);
 Router.get("/dashboard", totalNumbers);
 
 /// adding worker roles
-Router.post("/new-role", addNewRole);
+// Router.post("/new-role", addNewRole);
 
 /// displaying the role list
 Router.get("/role-list", roleList);
 
 //removing a role from the system
-Router.delete("/remove-role", removeRole);
+// Router.delete("/remove-role", removeRole);
 
 // adding workers to the system
 Router.post("/add-worker", addWorker);

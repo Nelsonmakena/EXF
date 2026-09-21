@@ -49,7 +49,6 @@ export default function ClientNav() {
     dispatch(logoutAnyone());
     navigate("/login");
   };
-  console.log(userinfo);
 
   return (
     <>
@@ -81,7 +80,7 @@ export default function ClientNav() {
                 <div className="relative cursor-pointer">
                   <ShoppingBag />
                   <button
-                    className={`absolute -top-2 -right-3 text-xs text-white w-4.5 h-4.5 rounded-full${cart.length === 0 ? "hidden" : " bg-accent"}`}
+                    className={`absolute -top-2 -right-3 text-xs  w-4.5 h-4.5 rounded-full ${cart.length == 0 ? "hidden" : " bg-accent"}`}
                   >
                     {cart.length}
                   </button>
@@ -101,19 +100,21 @@ export default function ClientNav() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 className={
-                  "w-2xs p-4.5 flex flex-col  gap-normal border-none   "
+                  "w-2xs flex flex-col  gap-normal border-none p-0  gap-6 "
                 }
               >
                 <DropdownMenuItem
-                  className={"flex"}
+                  className={
+                    "flex w-full h-13 bg-primary rounded-b-none px-4 gap-5"
+                  }
                   onClick={() => {
                     navigate("profile");
                   }}
                 >
                   <User /> profile
                 </DropdownMenuItem>
-                <DropdownMenuSeparator></DropdownMenuSeparator>
-                <DropdownMenuGroup className="flex justify-between ">
+
+                <DropdownMenuGroup className="flex justify-between px-4">
                   <DropdownMenuItem
                     onClick={() => {
                       setTheme("dark");
@@ -133,9 +134,11 @@ export default function ClientNav() {
                     />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator></DropdownMenuSeparator>
+
                 <DropdownMenuItem
-                  className={"flex "}
+                  className={
+                    "flex w-full h-11 bg-destructive/20 rounded-t-none  justify-center "
+                  }
                   variant="destructive"
                   onClick={() => {
                     logout();

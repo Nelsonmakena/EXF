@@ -38,7 +38,9 @@ import {
   getServices,
   updateServices,
 } from "@/store/serviceslice";
+import { useNavigate } from "react-router";
 export default function ServiceCard({ vehicles, service, client, admin }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [jobData, setJobData] = useState({
@@ -117,12 +119,15 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
             <DialogTrigger
               render={
                 <Button
-                  onClick={() =>
-                    setJobData((prev) => ({
-                      ...prev,
-                      service_id: service.service_id,
-                    }))
-                  }
+                  onClick={() => {
+                    vehicles.length > 0
+                      ? setJobData((prev) => ({
+                          ...prev,
+                          service_id: service.service_id,
+                        }))
+                      : (toast("please add a vehicle to continue"),
+                        navigate("/client/vehicles"));
+                  }}
                   className=" text-white rounded-b-xl  rounded-t-none  h-12   "
                 >
                   {" "}

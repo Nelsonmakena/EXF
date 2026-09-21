@@ -67,6 +67,7 @@ export default function Vehicles() {
 
     dispatch(newVehicle(data)).then((data) => {
       if (data.payload.success) {
+        dispatch(getVehiclelist());
         setOpen(false);
         toast(data.payload.message);
       } else {

@@ -29,7 +29,7 @@ export default function ProfileEdit() {
   if (!profileInfo) {
     return <Loader />;
   }
-  console.log(profileInfo);
+  console.log(typeof profileInfo);
 
   return (
     <>

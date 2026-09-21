@@ -1,11 +1,5 @@
 import express from "express";
-import {
-  addUser,
-  getUserinfo,
-  worker,
-  admin,
-  logOut,
-} from "../controllers/auth.js";
+import { addUser, login, admin, logOut } from "../controllers/auth.js";
 import { authenticateMiddleware } from "../midlewares/authenicationmidleware.js";
 
 const Router = express.Router();
@@ -14,16 +8,12 @@ const Router = express.Router();
 
 Router.post("/register", addUser);
 
-// user login
+// login
 
-Router.post("/login", getUserinfo);
+Router.post("/login", login);
 
 // admin login
 Router.post("/admin", admin);
-
-// worker login
-
-Router.post("/worker-login", worker);
 
 /// checking if user is authenticated and logged in
 

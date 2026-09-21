@@ -52,10 +52,10 @@ export default function EmployeeCard({
           {/* Avatar */}
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted/50 text-sm font-semibold">
             <span className="text-primary">
-              {employee.info.first_name[0].toUpperCase()}{" "}
+              {employee.info.first_name[0]?.toUpperCase()}{" "}
             </span>
             <span className="text-secondary">
-              {employee.info.last_name[0].toLowerCase()}
+              {employee?.info?.last_name[0]?.toLowerCase()}
             </span>
           </div>
 

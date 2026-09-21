@@ -77,7 +77,7 @@ export const checkAuth = createAsyncThunk(
         "cache-control": "no-store, no-cache, must-revalidate,proxy-revalidate",
       },
     });
-    console.log(response.data);
+
     return response.data;
   },
 );
@@ -130,7 +130,6 @@ const authSlice = createSlice({
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = action.payload.user;
-          console.log(state.userinfo);
 
           state.Role = action.payload.user.role;
           state.isAuthenticated = true;
@@ -198,7 +197,6 @@ const authSlice = createSlice({
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = action.payload.user;
-          console.log(state.userinfo);
           state.Role = action.payload.user.role;
           state.isAuthenticated = true;
         } else {

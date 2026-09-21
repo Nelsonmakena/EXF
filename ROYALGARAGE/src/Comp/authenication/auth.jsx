@@ -11,8 +11,6 @@ export default function Authenticated({ children }) {
   //always checking auth status
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("check auth runned");
-
     dispatch(checkAuth());
   }, [dispatch, location.pathname]);
   const { isLoading, Role, isAuthenticated } = useSelector(

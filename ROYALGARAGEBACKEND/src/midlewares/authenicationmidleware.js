@@ -9,6 +9,8 @@ export const authenticateMiddleware = (req, res, next) => {
   // decoding the token info
   try {
     const decodedToken = jwt.verify(token, ENV.JWT_SECRET_KEY);
+    console.log(decodedToken);
+
     req.userinfo = decodedToken;
 
     next();
@@ -20,13 +22,33 @@ export const authenticateMiddleware = (req, res, next) => {
       .json({ success: false, message: "unknown token info" });
   }
 };
+//normal admin
 
-/// admin authentication role based
-export const adminChecker = (req, res, next) => {
-  const { role } = req.userinfo;
+export const adminChecker = (req, res) => {
+  const {
+    employee: { role },
+  } = req.userinfo;
 
   try {
     if (role === "admin") {
+      return next();
+    }
+    return res.json({
+      success: false,
+      message: "access denied you don't have the privileges",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+/// admin authentication role based
+export const superAdminChecker = (req, res, next) => {
+  const { role } = req.userinfo;
+  console.log(role);
+
+  try {
+    if (role === "super_admin") {
       return next();
     }
     return res.json({

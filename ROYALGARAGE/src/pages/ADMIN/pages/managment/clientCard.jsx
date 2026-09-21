@@ -27,6 +27,7 @@ export default function ClientCard({ client }) {
               {client.first_name} {client.second_name[0].toUpperCase()}.
               {client.last_name}
             </h3>
+            <p className="text-[12px]  text-gray-500">{client.email}</p>
           </div>
         </div>
       </div>
@@ -37,9 +38,9 @@ export default function ClientCard({ client }) {
           {client.vehicles.length === 1 ? "car" : "cars"}
         </span>
         <span
-          className={`text-xs  rounded-md px-2 py-1 ${!client.totalJobs && !client.totalServices ? "hidden" : "bg-secondary"}`}
+          className={`text-[11px] text-primary rounded-md px-2 py-1 ${!client.totalJobs && !client.totalServices ? "hidden" : "border border-primary/20"}`}
         >
-          <span className="px-1 tracking-wide ">jobs{client.totalJobs}</span>
+          <span className="px-1 tracking-wide ">jobs {client.totalJobs}</span>
           <span className="px-1 tracking-wide">
             services {client.totalServices}
           </span>

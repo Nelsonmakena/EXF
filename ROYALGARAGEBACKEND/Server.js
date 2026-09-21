@@ -1,14 +1,16 @@
 import express from "express";
 import cors from "cors";
 import cookieparser from "cookie-parser";
-import Productsroutes from "./src/Routes/Productsroutes.js";
-import Serviceroutes from "./src/Routes/Servicesroutes.js";
-import authroutes from "./src/Routes/authroutes.js";
-import clientroutes from "./src/Routes/clientroutes.js";
-import adminroutes from "./src/Routes/adminroutes.js";
-import workerroutes from "./src/Routes/workerroutes.js";
+import ProductsRoutes from "./src/Routes/Productsroutes.js";
+import ServiceRoutes from "./src/Routes/Servicesroutes.js";
+import authRoutes from "./src/Routes/authroutes.js";
+import clientRoutes from "./src/Routes/clientroutes.js";
+import adminRoutes from "./src/Routes/adminroutes.js";
+import workerRoutes from "./src/Routes/workerroutes.js";
+import systemRoutes from "./src/Routes/systemroutes.js";
 import { ENV } from "./env.js";
 import { DbConnection } from "./Db.js";
+import initializeSystem from "./src/scripts/initilaztion.js";
 
 const app = express();
 
@@ -33,14 +35,19 @@ app.use(
 
 DbConnection();
 
-// product routes
-app.use("/api/products", Productsroutes);
-app.use("/api/services", Serviceroutes);
-app.use("/api/authenication", authroutes);
-app.use("/api/client", clientroutes);
-app.use("/api/admin", adminroutes);
-app.use("/api/worker", workerroutes);
+app.use("/api/system", systemRoutes);
+app.use("/api/products", ProductsRoutes);
+app.use("/api/services", ServiceRoutes);
+app.use("/api/authentication", authRoutes);
+app.use("/api/client", clientRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/worker", workerRoutes);
 
-app.listen(Port, () => {
-  console.log(`Sever is running  at port ${Port}`);
-});
+const startServer = async () => {
+  await initializeSystem();
+  app.listen(Port, () => {
+    console.log(`Sever is running  at port ${Port}`);
+  });
+};
+
+startServer();

@@ -186,6 +186,28 @@ export const billing = async (req, res) => {
 
 ///employees
 
+//confirm vehicle has arrived for services
+
+export const ConfirmVehicle = async (req, res) => {
+  const { job_id } = req.body;
+  try {
+    const response = await pool.query(
+      "UPDATE jobs SET in_garage =$1 WHERE job_id =$2  RETURNING * ",
+      ["true", job_id],
+    );
+    if (response.rows == 0) {
+      return res.json({ success: false, message: "vehicle not confirmed" });
+    }
+    res.status(200).json({
+      success: true,
+      message: "vehicle confirmed",
+      data: response.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 ///fetch job list for an employee assigned to him
 export const employeeJobList = async (req, res) => {
   const { employee_id } = req.userinfo;

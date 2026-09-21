@@ -35,15 +35,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewWorker, getWorkerList, roleList } from "@/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
+import { User } from "lucide-react";
 
 export default function WorkerView() {
   const [role_id, setRole_id] = useState();
-  const { workerList } = useSelector((state) => state.worker);
+  const { workerList, roles } = useSelector((state) => state.worker);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     if (workerList.length == 0) {
       dispatch(getWorkerList());
     }
+    dispatch(roleList());
   }, []);
 
   const addWorker = async (e) => {
@@ -53,6 +56,7 @@ export default function WorkerView() {
     data.role_id = role_id;
     dispatch(addNewWorker(data)).then((data) => {
       if (data?.payload?.success) {
+        setRole_id("");
         toast(data?.payload?.message, { position: "top-left" });
       } else {
         toast.error(data?.payload?.message, { position: "top-left" });
@@ -66,6 +70,71 @@ export default function WorkerView() {
         {workerList.map((item, index) => (
           <EmployeeCard key={index} employee={item} />
         ))}
+
+        <div className="rounded-xl border border-primary p-4 transition cursor-pointer flex items-center justify-center ">
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+              render={
+                <Button className={"h-11 w-30"}>
+                  {" "}
+                  <User /> + employee
+                </Button>
+              }
+            />
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle className={"text-header heading-normal"}>
+                  employee
+                </SheetTitle>
+                <SheetDescription></SheetDescription>
+              </SheetHeader>
+
+              <form onSubmit={addWorker}>
+                <div className="flex  flex-col  gap-normal px-3.5">
+                  <Input
+                    className={"h-12"}
+                    type={"email"}
+                    placeholder="employee-email "
+                    name="email"
+                    required
+                  ></Input>
+                  <Select
+                    onValueChange={(role) => {
+                      const selectedRole = roles.find(
+                        (item) => item.role_name === role,
+                      );
+                      setRole_id(selectedRole.role_id);
+                    }}
+                  >
+                    <SelectTrigger className={"w-full "}>
+                      <SelectValue placeholder="Role" />
+                    </SelectTrigger>
+                    <SelectContent className={"w-2xs bg-card "}>
+                      {roles.map((item) => (
+                        <SelectItem
+                          key={item.role_id}
+                          value={item.role_name}
+                          className={"w-full"}
+                        >
+                          {item.role_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="mt-3.5 flex items-center justify-center">
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className={"w-2xs h-12"}
+                  >
+                    add Employee
+                  </Button>
+                </div>
+              </form>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </section>
   );

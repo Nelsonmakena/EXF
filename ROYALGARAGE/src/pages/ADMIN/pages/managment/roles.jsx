@@ -35,7 +35,6 @@ export default function RolesView() {
   useEffect(() => {
     dispatch(roleList());
   }, []);
-  console.log(roles);
 
   const newRoleData = async (e) => {
     e.preventDefault();
@@ -45,8 +44,10 @@ export default function RolesView() {
     console.log(data);
     dispatch(newRole(data)).then((data) => {
       if (data.payload.success) {
+        toast(data.payload.message);
         SetOPen(false);
       } else {
+        toast(data.payload.message);
         SetOPen(true);
       }
     });
@@ -134,7 +135,7 @@ export default function RolesView() {
                   <Input
                     className={"h-12"}
                     placeholder=" role description "
-                    name="role_descprtion"
+                    name="role_description"
                   ></Input>
                 </div>
                 <div className="mt-3.5 flex items-center justify-center">

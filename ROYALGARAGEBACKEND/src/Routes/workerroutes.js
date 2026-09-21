@@ -16,6 +16,7 @@ import {
   updateJobStatus,
   InProgressEmployee,
 } from "../controllers/jobs.js";
+import { IncomingVehicleList } from "../controllers/client/vehicle.js";
 
 import { totalAssigned } from "../controllers/Worker/dahsboard.js";
 const Router = express.Router();
@@ -46,4 +47,8 @@ Router.post("/accept", acceptJob);
 
 //update job status
 Router.post("/update-job", updateJobStatus);
+
+/// fetch list of vehicles
+
+Router.get("/vehicle", IncomingVehicleList);
 export default Router;

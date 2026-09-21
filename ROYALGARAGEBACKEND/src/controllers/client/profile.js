@@ -10,7 +10,7 @@ export const profileData = async (req, res) => {
   try {
     const clientdata = await pool.query(
       `SELECT email,first_name,second_name,last_name,phonenumber,county ,city,street , id, client.client_id 
-      FROM client JOIN address ON address.client_id = client.client_id  WHERE client.client_id = $1 `,
+      FROM client LEFT JOIN address ON address.client_id = client.client_id  WHERE client.client_id = $1 `,
       [client_id],
     );
 
