@@ -1,29 +1,29 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { workerlogin } from "@/store/authslice";
+
 import { toast } from "sonner";
 
 export default function WkLogin() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const login = async (e) => {
-    e.preventDefault();
-    const formdata = new FormData(e.target);
-    const data = Object.fromEntries(formdata.entries());
-    console.log(data);
-    dispatch(workerlogin(data)).then((data) => {
-      console.log(data.payload);
+  // const login = async (e) => {
+  //   e.preventDefault();
+  //   const formdata = new FormData(e.target);
+  //   const data = Object.fromEntries(formdata.entries());
+  //   console.log(data);
+  //   dispatch(workerlogin(data)).then((data) => {
+  //     console.log(data.payload);
 
-      if (data?.payload?.success) {
-        toast(data?.payload?.message);
-        navigate("/w001/dashboard");
-      } else {
-        toast.error(data?.payload?.message);
-      }
-    });
-  };
+  //     if (data?.payload?.success) {
+  //       toast(data?.payload?.message);
+  //       navigate("/w001/dashboard");
+  //     } else {
+  //       toast.error(data?.payload?.message);
+  //     }
+  //   });
+  // };
 
   return (
     <>

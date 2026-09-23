@@ -4,7 +4,7 @@ import {
   updateProfile,
   newAddress,
 } from "../controllers/client/profile.js";
-import { authenticateMiddleware } from "../midlewares/authenicationmidleware.js";
+import { authenticateMiddleware } from "../middlewares/authenicationmidleware.js";
 import {
   addVehicle,
   getVehicles,

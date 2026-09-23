@@ -27,7 +27,9 @@ export const newAccountRole = async (req, res) => {
 //list of account roles
 export const accountRoles = async (req, res) => {
   try {
-    const response = await pool.query("SELECT * FROM account_roles ");
+    const response = await pool.query(
+      "SELECT r.role_name ,r.account_role_id ,COUNT (a.account_role_id) As total_number  FROM account_roles r LEFT JOIN accounts a  ON a.account_role_id = r.account_role_id GROUP BY r.account_role_id , r.role_name ",
+    );
 
     res.status(200).json({
       success: true,

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import AdminNav from "./adminnav";
+import AdminNav from "../../../Comp/adminnav";
 import { TotalService } from "./Datacharts/Totalservices";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkerList } from "@/store/wokerslice";

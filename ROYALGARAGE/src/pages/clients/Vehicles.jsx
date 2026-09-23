@@ -67,7 +67,6 @@ export default function Vehicles() {
 
     dispatch(newVehicle(data)).then((data) => {
       if (data.payload.success) {
-        dispatch(getVehiclelist());
         setOpen(false);
         toast(data.payload.message);
       } else {
@@ -81,8 +80,6 @@ export default function Vehicles() {
   useEffect(() => {
     dispatch(getVehiclelist());
   }, []);
-  console.log(vehicles);
-
   return (
     <>
       <section className="container-main">
@@ -169,7 +166,7 @@ export default function Vehicles() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {vehicles.map((item) => (
+              {vehicles?.map((item) => (
                 <>
                   <TableRow
                     key={item.vehicle_id}

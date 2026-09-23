@@ -3,7 +3,7 @@ import express from "express";
 import {
   authenticateMiddleware,
   workerChecker,
-} from "../midlewares/authenicationmidleware.js";
+} from "../middlewares/authenicationmidleware.js";
 
 import {
   profile,

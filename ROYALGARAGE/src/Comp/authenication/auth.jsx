@@ -7,20 +7,23 @@ import { checkAuth } from "../../store/authslice";
 import { useEffect } from "react";
 
 export default function Authenticated({ children }) {
+  const { isLoading, isAuthenticated, userinfo } = useSelector(
+    (state) => state.auth,
+  );
   const location = useLocation();
   //always checking auth status
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch, location.pathname]);
-  const { isLoading, Role, isAuthenticated } = useSelector(
-    (state) => state.auth,
-  );
 
   const path = location.pathname;
   if (isLoading) {
     return <Loader />;
   }
+  const role = userinfo?.role;
+  const firstTime = userinfo?.first_time_login;
+  console.log(userinfo);
   if (!isAuthenticated) {
     if (location.pathname.includes("/admin")) {
       return <Navigate to="/admin-login" />;
@@ -37,22 +40,22 @@ export default function Authenticated({ children }) {
     isAuthenticated &&
     (path === "/login" || path === "/adminlogin" || path === "/wk")
   ) {
-    if (Role === "admin") return <Navigate to="/admin/home" replace />;
-    if (Role === "client") return <Navigate to="/client/dashboard" replace />;
-    if (Role === "worker") return <Navigate to="/wk-hm" replace />;
+    if (role === "admin") return <Navigate to="/admin/home" replace />;
+    if (role === "client") return <Navigate to="/client/dashboard" replace />;
+    if (role === "worker") return <Navigate to="/wk-hm" replace />;
   }
 
   //role based auth
 
-  if (Role === "admin" && !path.startsWith("/admin")) {
+  if (role === "admin" && !path.startsWith("/admin")) {
     return <Navigate to="/admin/home" />;
   }
 
-  if (Role === "client" && !path.startsWith("/client")) {
+  if (role === "client" && !path.startsWith("/client")) {
     return <Navigate to="/client/dashboard" />;
   }
 
-  if (Role === "worker" && !path.startsWith("/w001")) {
+  if (role === "employee" && !path.startsWith("/w001")) {
     return <Navigate to="notauthorized" />;
   }
   return <>{children}</>;

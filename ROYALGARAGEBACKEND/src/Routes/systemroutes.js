@@ -6,7 +6,7 @@ import {
 import {
   authenticateMiddleware,
   superAdminChecker,
-} from "../midlewares/authenicationmidleware.js";
+} from "../middlewares/authenicationmidleware.js";
 
 const Router = express.Router();
 Router.use(authenticateMiddleware, superAdminChecker);

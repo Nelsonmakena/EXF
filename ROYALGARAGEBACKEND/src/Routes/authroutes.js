@@ -1,6 +1,12 @@
 import express from "express";
-import { addUser, login, admin, logOut } from "../controllers/auth.js";
-import { authenticateMiddleware } from "../midlewares/authenicationmidleware.js";
+import {
+  addUser,
+  login,
+  admin,
+  workerLogin,
+  logOut,
+} from "../controllers/auth.js";
+import { authenticateMiddleware } from "../middlewares/authenicationmidleware.js";
 
 const Router = express.Router();
 
@@ -8,20 +14,22 @@ const Router = express.Router();
 
 Router.post("/register", addUser);
 
-// login
+// client  login
 
 Router.post("/login", login);
+
+Router.post("/wk-login", workerLogin);
 
 // admin login
 Router.post("/admin", admin);
 
 /// checking if user is authenticated and logged in
 
-Router.get("/checkauth", authenticateMiddleware, (req, res) => {
-  const user = req.userinfo;
+Router.get("/check-auth", authenticateMiddleware, (req, res) => {
+  const data = req.userinfo;
   res
     .status(200)
-    .json({ success: true, message: "authenticated", user: req.userinfo });
+    .json({ success: true, message: "authenticated", data: req.userinfo });
 });
 
 //login out

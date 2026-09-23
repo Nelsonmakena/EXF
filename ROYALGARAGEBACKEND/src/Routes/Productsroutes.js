@@ -12,7 +12,7 @@ import {
 import {
   authenticateMiddleware,
   adminChecker,
-} from "./../midlewares/authenicationmidleware.js";
+} from "./../middlewares/authenicationmidleware.js";
 
 // express router
 const Router = express.Router();

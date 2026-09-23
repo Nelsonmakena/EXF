@@ -10,7 +10,6 @@ export const authenticateMiddleware = (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, ENV.JWT_SECRET_KEY);
     console.log(decodedToken);
-
     req.userinfo = decodedToken;
 
     next();
@@ -25,9 +24,7 @@ export const authenticateMiddleware = (req, res, next) => {
 //normal admin
 
 export const adminChecker = (req, res) => {
-  const {
-    employee: { role },
-  } = req.userinfo;
+  const { role } = req.userinfo;
 
   try {
     if (role === "admin") {

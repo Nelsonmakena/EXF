@@ -46,7 +46,7 @@ export default function Userlogin() {
 
     // check if password match
     if (data.password != data.confrim_password) {
-      return toast.warning("passwords dont match");
+      return toast.warning("passwords don't match");
     }
 
     dispatch(registerUser(data)).then((data) => {

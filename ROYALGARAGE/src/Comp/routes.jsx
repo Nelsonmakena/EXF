@@ -7,9 +7,14 @@ import Pages404 from "./Pages404";
 import Admin from "../pages/ADMIN/pages";
 import WkLogin from "../pages/WK/WkLogin";
 import NotAuth from "./notauth";
-import NullComponent from "./../pages/null";
+// import NullComponent from "./../pages/null";
 import Loader from "./loader";
 import InventoryView from "@/pages/ADMIN/pages/catalog/inventoryView";
+import SystemLogin from "./../pages/system/system-login";
+
+///system
+
+const SystemIndex = lazy(() => import("@/pages/system"));
 
 // Common
 const Template = lazy(() => import("../pages/Common/Common"));
@@ -81,11 +86,12 @@ export default function AppRoutes() {
         </Route>
 
         {/* Authentication / misc */}
-        <Route path="/null" element={<NullComponent />} />
+        {/* <Route path="/null" element={<NullComponent />} /> */}
         <Route path="/login" element={<Userlogin />} />
         <Route path="/admin-login" element={<Admin />} />
         <Route path="/wk" element={<WkLogin />} />
         <Route path="/not-authorized" element={<NotAuth />} />
+        <Route path="/sys" element={<SystemLogin />} />
 
         {/* Client routes */}
         <Route
@@ -141,6 +147,9 @@ export default function AppRoutes() {
             <Route path="jobs/:job_id" element={<AdminJobCard />} />
           </Route>
         </Route>
+
+        {/* system routes  */}
+        <Route path="/misc" element={<SystemIndex />}></Route>
 
         {/* Worker routes */}
         <Route

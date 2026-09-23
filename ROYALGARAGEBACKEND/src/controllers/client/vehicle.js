@@ -14,30 +14,30 @@ export const addVehicle = async (req, res) => {
       .json({ success: false, message: "all fields must be filled" });
   }
 
-  // first we check if the vehicle the client is trying to add already exist  we check by license plate
-
-  const existingVehicle = await pool.query(
-    "SELECT license_plate FROM vehicle WHERE license_plate = $1",
-    [license_plate],
-  );
-
-  if (existingVehicle.rows != 0) {
-    return res.json({ success: false, message: "vehicle already registered" });
-  }
-
   try {
     const newVehicle = await pool.query(
       "INSERT INTO vehicle (vehicle_model, vehicle_brand, vehicle_color, license_plate,client_id ) VALUES($1,$2,$3,$4,$5) RETURNING * ",
       [vehicle_model, vehicle_brand, vehicle_color, license_plate, client_id],
     );
+    const vehicle = newVehicle.rows[0];
     res.status(200).json({
       success: true,
       message: "vehicle added successfully",
-      data: newVehicle.rows[0],
+      data: {
+        vehicle_id: vehicle.vehicle_id,
+        appointment_day: null,
+        details: {
+          model: vehicle.vehicle_model,
+          color: vehicle.vehicle_color,
+          brand: vehicle.vehicle_brand,
+          plate: vehicle.license_plate,
+        },
+        services: [],
+      },
     });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message });
+    res.json({ success: false, message: "vehicle cant be registered" });
   }
 };
 

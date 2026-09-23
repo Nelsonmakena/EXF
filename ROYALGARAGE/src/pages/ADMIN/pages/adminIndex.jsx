@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import logo from "/src/assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import AdminNav from "./adminnav";
+import AdminNav from "../../../Comp/adminnav";
 import { Menu } from "lucide-react";
 
 import { useState } from "react";
@@ -10,13 +10,20 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import SecondaryNav from "./secondarynav";
 export default function AdminIndex() {
   const [hidemenu, Sethidemenu] = useState(false);
+  const menuItems = [
+    {
+      name: "Dashboard",
+      path: "/admin/home",
+      icon: LayoutDashboard,
+    },
+  ];
   return (
     <>
       <main className="flex  bg-secondary">
         <div
           className={` ${hidemenu == true ? "hidden  " : " min-h-svh md:w-64 "} `}
         >
-          <AdminNav />
+          <AdminNav menuItems={menuItems} />
         </div>
 
         <div

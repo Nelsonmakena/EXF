@@ -9,7 +9,6 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   userinfo: null,
-  Role: null,
 };
 
 //register a user
@@ -17,7 +16,7 @@ export const registerUser = createAsyncThunk(
   "/auth/register",
 
   async (data) => {
-    const response = await axios.post("/api/authenication/register", data, {
+    const response = await axios.post("/api/authentication/register", data, {
       withCredentials: true,
     });
 
@@ -25,12 +24,12 @@ export const registerUser = createAsyncThunk(
   },
 );
 
-//login user
+//login
 export const loginUser = createAsyncThunk(
   "/auth/login",
 
   async (data) => {
-    const response = await axios.post("/api/authenication/login", data, {
+    const response = await axios.post("/api/authentication/login", data, {
       withCredentials: true,
     });
 
@@ -39,11 +38,11 @@ export const loginUser = createAsyncThunk(
 );
 
 //login admin
-export const adminlogin = createAsyncThunk(
+export const adminLogin = createAsyncThunk(
   "/auth/admin",
 
   async (data) => {
-    const response = await axios.post("/api/authenication/admin", data, {
+    const response = await axios.post("/api/authentication/admin", data, {
       withCredentials: true,
     });
 
@@ -51,27 +50,22 @@ export const adminlogin = createAsyncThunk(
   },
 );
 
-//login worker
+//wk login
 
-export const workerlogin = createAsyncThunk(
-  "/auth/worker",
+export const wkLogin = createAsyncThunk("/auth/wk", async (data) => {
+  const response = await axios.post("/api/authentication//wk-login", data, {
+    withCredentials: true,
+  });
 
-  async (data) => {
-    const response = await axios.post("/api/authenication/worker-login", data, {
-      withCredentials: true,
-    });
-
-    return response.data;
-  },
-);
-
+  return response.data;
+});
 //checking auth status of logged in users
 
 export const checkAuth = createAsyncThunk(
   "/auth/checkAuth",
 
   async () => {
-    const response = await axios.get("/api/authenication/checkauth", {
+    const response = await axios.get("/api/authentication/check-auth", {
       withCredentials: true,
       headers: {
         "cache-control": "no-store, no-cache, must-revalidate,proxy-revalidate",
@@ -86,7 +80,7 @@ export const logoutAnyone = createAsyncThunk(
   "/auth/logout",
 
   async () => {
-    const response = await axios.get("/api/authenication/logout", {
+    const response = await axios.get("/api/authentication/logout", {
       withCredentials: true,
       headers: {
         "cache-control": "no-store, no-cache, must-revalidate,proxy-revalidate",
@@ -96,9 +90,6 @@ export const logoutAnyone = createAsyncThunk(
     return response.data;
   },
 );
-
-///profile fetcher section
-//client
 
 const authSlice = createSlice({
   name: "authentication",
@@ -114,13 +105,11 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-        state.Role = null;
         state.isAuthenticated = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-        state.Role = null;
         state.isAuthenticated = false;
       })
       .addCase(loginUser.pending, (state) => {
@@ -129,65 +118,58 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
-          state.userinfo = action.payload.user;
-
-          state.Role = action.payload.user.role;
+          state.userinfo = action.payload.data;
           state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
-          state.Role = null;
           state.isAuthenticated = false;
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-        state.Role = null;
         state.isAuthenticated = false;
       })
-      .addCase(adminlogin.pending, (state) => {
+      .addCase(wkLogin.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(adminlogin.fulfilled, (state, action) => {
+      .addCase(wkLogin.fulfilled, (state) => {
         if (action.payload.success) {
           state.isLoading = false;
-          state.userinfo = action.payload.name;
-          state.Role = action.payload.role;
+          state.userinfo = action.payload.data;
           state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
-          state.Role = null;
           state.isAuthenticated = false;
         }
       })
-      .addCase(adminlogin.rejected, (state, action) => {
+      .addCase(wkLogin.rejected, (state) => {
         state.isLoading = false;
         state.userinfo = null;
-        state.Role = null;
         state.isAuthenticated = false;
       })
-      .addCase(workerlogin.pending, (state) => {
+      .addCase(adminLogin.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(workerlogin.fulfilled, (state, action) => {
+      .addCase(adminLogin.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = action.payload.name;
-          state.Role = action.payload.role;
+
           state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
-          state.Role = null;
-          state.isAuthenicated = false;
+
+          state.isAuthenticated = false;
         }
       })
-      .addCase(workerlogin.rejected, (state, action) => {
+      .addCase(adminLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-        state.Role = null;
+
         state.isAuthenticated = false;
       })
       .addCase(checkAuth.pending, (state) => {
@@ -196,27 +178,25 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
-          state.userinfo = action.payload.user;
-          state.Role = action.payload.user.role;
+          state.userinfo = action.payload.data;
           state.isAuthenticated = true;
         } else {
           state.isLoading = false;
           state.userinfo = null;
-          state.Role = null;
+
           state.isAuthenticated = false;
         }
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-        state.Role = null;
+
         state.isAuthenticated = false;
       })
       .addCase(logoutAnyone.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = null;
-          state.Role = null;
           state.isAuthenticated = false;
         }
       });

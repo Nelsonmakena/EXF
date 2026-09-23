@@ -2,7 +2,7 @@ import express from "express";
 import {
   authenticateMiddleware,
   adminChecker,
-} from "../midlewares/authenicationmidleware.js";
+} from "../middlewares/authenicationmidleware.js";
 import {
   roleList,
   workers,
