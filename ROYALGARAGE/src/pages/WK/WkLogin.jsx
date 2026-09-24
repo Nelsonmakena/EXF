@@ -3,27 +3,28 @@ import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 
 import { toast } from "sonner";
+import { wkLogin } from "@/store/authslice";
 
 export default function WkLogin() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  // const login = async (e) => {
-  //   e.preventDefault();
-  //   const formdata = new FormData(e.target);
-  //   const data = Object.fromEntries(formdata.entries());
-  //   console.log(data);
-  //   dispatch(workerlogin(data)).then((data) => {
-  //     console.log(data.payload);
+  const login = async (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+    const data = Object.fromEntries(formdata.entries());
+    console.log(data);
+    dispatch(wkLogin(data)).then((data) => {
+      console.log(data.payload);
 
-  //     if (data?.payload?.success) {
-  //       toast(data?.payload?.message);
-  //       navigate("/w001/dashboard");
-  //     } else {
-  //       toast.error(data?.payload?.message);
-  //     }
-  //   });
-  // };
+      if (data?.payload?.success) {
+        toast(data?.payload?.message);
+        navigate("/w001/dashboard");
+      } else {
+        toast.error(data?.payload?.message);
+      }
+    });
+  };
 
   return (
     <>
@@ -42,8 +43,8 @@ export default function WkLogin() {
 
               <div className="flex items-center w-full bg-transparent border border-green-600 h-12 rounded-full overflow-hidden pl-6 gap-2">
                 <input
-                  type="text"
-                  placeholder="Username"
+                  type="email"
+                  placeholder="email"
                   name="email"
                   className="bg-transparent text-gray-500/80 placeholder-green-400 outline-none text-sm w-full h-full"
                   required
