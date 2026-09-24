@@ -93,7 +93,7 @@ export const newAdmin = async (req, res) => {
     await client.query("BEGIN");
 
     const newAccount = await client.query(
-      "INSERT INTO accounts (password_hash ,email, accounts_role_id) VALUES ($1,$2) RETURNING account_id ",
+      "INSERT INTO accounts (password_hash ,email, account_role_id) VALUES ($1,$2,$3) RETURNING account_id ",
       [password_hash, email, account_role],
     );
     const accountId = newAccount.rows[0].account_id;
@@ -199,6 +199,7 @@ export const workerLogin = async (req, res) => {
       });
 
       res.cookie("token", accessToken, { httpOnly: true, secure: false });
+
       res.status(200).json({
         success: true,
         message: "logged in successfully",

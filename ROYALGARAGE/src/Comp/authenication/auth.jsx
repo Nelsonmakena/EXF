@@ -38,11 +38,15 @@ export default function Authenticated({ children }) {
 
   if (
     isAuthenticated &&
-    (path === "/login" || path === "/adminlogin" || path === "/wk")
+    (path === "/login" ||
+      path === "/admin-login" ||
+      path === "/wk" ||
+      path === "/sys")
   ) {
     if (role === "admin") return <Navigate to="/admin/home" replace />;
     if (role === "client") return <Navigate to="/client/dashboard" replace />;
-    if (role === "worker") return <Navigate to="/wk-hm" replace />;
+    if (role === "worker") return <Navigate to="/w001/dashboard" replace />;
+    if (role === "super-admin") return <Navigate to="/misc" replace />;
   }
 
   //role based auth

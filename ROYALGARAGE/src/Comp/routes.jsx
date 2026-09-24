@@ -4,13 +4,14 @@ import { lazy, Suspense } from "react";
 // Normal imports — small/common pages
 import Userlogin from "../pages/clients/Userlogin";
 import Pages404 from "./Pages404";
-import Admin from "../pages/ADMIN/pages";
+
 import WkLogin from "../pages/WK/WkLogin";
 import NotAuth from "./notauth";
 // import NullComponent from "./../pages/null";
 import Loader from "./loader";
 import InventoryView from "@/pages/ADMIN/pages/catalog/inventoryView";
 import SystemLogin from "./../pages/system/system-login";
+import AdminLogin from "@/pages/ADMIN/pages/Adminlogin";
 
 ///system
 
@@ -88,7 +89,7 @@ export default function AppRoutes() {
         {/* Authentication / misc */}
         {/* <Route path="/null" element={<NullComponent />} /> */}
         <Route path="/login" element={<Userlogin />} />
-        <Route path="/admin-login" element={<Admin />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/wk" element={<WkLogin />} />
         <Route path="/not-authorized" element={<NotAuth />} />
         <Route path="/sys" element={<SystemLogin />} />

@@ -20,7 +20,7 @@ import { useTheme } from "@/Comp/theme-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logoutAnyone } from "@/store/authslice";
 
-export default function SecondaryNav({ hidemenu, Sethidemenu }) {
+export default function SecondaryNav({ hideMenu, setHideMenu }) {
   const { setTheme, theme } = useTheme();
   const location = useLocation();
   const path = location.pathname;
@@ -35,58 +35,9 @@ export default function SecondaryNav({ hidemenu, Sethidemenu }) {
       <div className=" shadow-md flex items-center justify-between w-full rounded-2xl p-2 ">
         <div className="px-6">
           <Menu
-            onClick={() => Sethidemenu(!hidemenu)}
+            onClick={() => setHideMenus(!hideMenu)}
             className="w-full text-primary"
           />
-        </div>
-
-        {/*management items  */}
-        <div
-          className={`${path.includes("/admin/management") ? "flex " : "hidden "} `}
-        >
-          <ul className="flex  items-center space-x-8 md:pl-28  navbartext ">
-            <li className="card">
-              <Link to="management/workers"> Workers </Link>
-            </li>
-            <li className="card">
-              <Link to="management/clients"> Clients </Link>
-            </li>
-            <li className="card">
-              <Link to="management/roles"> Roles </Link>
-            </li>
-          </ul>
-        </div>
-        {/*inventory  items  */}
-        <div
-          className={`${path.includes("/admin/inventory") ? "flex " : "hidden "} `}
-        >
-          <ul className="flex  items-center space-x-8 md:pl-28  navbartext ">
-            <li className="card">
-              <Link to="inventory/products"> Products </Link>
-            </li>
-            <li className="card">
-              <Link to="inventory/services"> Services </Link>
-            </li>
-            <li className="card">
-              <Link to="inventory/stock"> Stock </Link>
-            </li>
-          </ul>
-        </div>
-        {/* tasks items */}
-        <div
-          className={`${path.includes("/admin/tasks") ? "flex " : "hidden "} `}
-        >
-          <ul className="flex  items-center space-x-8 md:pl-28  navbartext ">
-            <li className="card">
-              <Link to="tasks/jobs"> Jobs </Link>
-            </li>
-            <li className="card">
-              <Link to="tasks/in-progress"> InProgress </Link>
-            </li>
-            <li className="card">
-              <Link to=""> Completed </Link>
-            </li>
-          </ul>
         </div>
 
         <DropdownMenu>

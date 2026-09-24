@@ -7,6 +7,7 @@ import {
   authenticateMiddleware,
   superAdminChecker,
 } from "../middlewares/authenicationmidleware.js";
+import { newAdmin } from "../controllers/auth.js";
 
 const Router = express.Router();
 Router.use(authenticateMiddleware, superAdminChecker);
@@ -14,4 +15,8 @@ Router.use(authenticateMiddleware, superAdminChecker);
 Router.post("/new-account-role", newAccountRole);
 
 Router.get("/accounts-role", accountRoles);
+
+//new admin
+
+Router.post("/new-admin", newAdmin);
 export default Router;

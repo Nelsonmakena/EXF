@@ -53,7 +53,7 @@ export const adminLogin = createAsyncThunk(
 //wk login
 
 export const wkLogin = createAsyncThunk("/auth/wk", async (data) => {
-  const response = await axios.post("/api/authentication//wk-login", data, {
+  const response = await axios.post("/api/authentication/employee", data, {
     withCredentials: true,
   });
 
@@ -102,12 +102,12 @@ const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.isLoading = false;
         state.userinfo = null;
         state.isAuthenticated = false;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state) => {
         state.isLoading = false;
         state.userinfo = null;
         state.isAuthenticated = false;
@@ -126,7 +126,7 @@ const authSlice = createSlice({
           state.isAuthenticated = false;
         }
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state) => {
         state.isLoading = false;
         state.userinfo = null;
         state.isAuthenticated = false;
@@ -134,7 +134,7 @@ const authSlice = createSlice({
       .addCase(wkLogin.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(wkLogin.fulfilled, (state) => {
+      .addCase(wkLogin.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.isLoading = false;
           state.userinfo = action.payload.data;

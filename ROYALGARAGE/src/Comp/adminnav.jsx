@@ -44,8 +44,9 @@ export default function AdminNav({ menuItems }) {
             <DropdownMenu key={item.name}>
               <DropdownMenuTrigger asChild>
                 <button
+                  // onClick={() => navigate(`${item.path}`)}
                   className={`w-full h-15  flex items-center gap-7 px-4 ${
-                    path === item.path
+                    path.includes(item.path)
                       ? "bg-card rounded-l-2xl tracking-widest"
                       : "font-bold bg-none text-header"
                   }`}
@@ -55,12 +56,17 @@ export default function AdminNav({ menuItems }) {
                 </button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent side="right" align="start" className="w-52">
-                {item.subMenu.map((subItem) => {
+              <DropdownMenuContent
+                side="right"
+                align="start"
+                className="w-2xs p-0"
+              >
+                {item?.subMenu?.map((subItem) => {
                   const SubIcon = subItem.icon;
 
                   return (
                     <DropdownMenuItem
+                      className={"h-15  shadow-xs flex gap-7 px-6"}
                       key={subItem.path}
                       onClick={() => navigate(subItem.path)}
                     >

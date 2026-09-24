@@ -23,7 +23,12 @@ export const roleList = async (req, res) => {
 export const workers = async (req, res) => {
   try {
     const allWorkers = await pool.query(
-      "SELECT first_name,second_name,last_name, email,role_name ,employee.employee_id ,job_services.job_services_id,service_name  FROM employee JOIN roles on roles.role_id = employee.role_id LEFT JOIN service_assignment ON service_assignment.employee_id = employee.employee_id LEFT JOIN job_services ON job_services.job_services_id=service_assignment.job_services_id LEFT JOIN services ON job_services.service_id = services.service_id",
+      `SELECT first_name,second_name,last_name, email,role_name ,e.employee_id ,j.job_services_id,service_name 
+       FROM employee e JOIN accounts a ON a.account_id =e.account_id  
+       JOIN roles r on r.role_id = e.role_id
+        LEFT JOIN service_assignment s ON s.employee_id = e.employee_id
+         LEFT JOIN job_services j ON j.job_services_id=s.job_services_id
+          LEFT JOIN services ON j.service_id = services.service_id`,
     );
 
     const results = allWorkers.rows.reduce((acc, item) => {
@@ -57,9 +62,7 @@ export const workers = async (req, res) => {
       return acc;
     }, []);
     results.sort((a, b) => b.jobs.length - a.jobs.length);
-    res
-      .status(200)
-      .json({ success: true, data: results, raw: allWorkers.rows });
+    res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.log(error.message);
   }

@@ -277,7 +277,7 @@ export default function Vehicles() {
               {openDelete && (
                 <DeleteVehicle
                   open={openDelete}
-                  onOpenChange={setOpenDelete}
+                  setOpenDelete={setOpenDelete}
                   item={selectedVehicle}
                 />
               )}

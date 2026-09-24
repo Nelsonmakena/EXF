@@ -18,9 +18,10 @@ Router.post("/register", addUser);
 
 Router.post("/login", login);
 
-Router.post("/wk-login", workerLogin);
+// employee login
+Router.post("/employee", workerLogin);
 
-// admin login
+// system admin login
 Router.post("/admin", admin);
 
 /// checking if user is authenticated and logged in
