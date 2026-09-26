@@ -8,10 +8,11 @@ import Pages404 from "./Pages404";
 import WkLogin from "../pages/WK/WkLogin";
 import NotAuth from "./notauth";
 // import NullComponent from "./../pages/null";
-import Loader from "./loader";
+
 import InventoryView from "@/pages/ADMIN/pages/catalog/inventoryView";
 import SystemLogin from "./../pages/system/system-login";
 import AdminLogin from "@/pages/ADMIN/pages/Adminlogin";
+import { Spinner } from "@/components/ui/spinner";
 
 ///system
 
@@ -75,7 +76,13 @@ const AdminIndex = lazy(() => import("../pages/ADMIN/pages/adminIndex"));
 
 export default function AppRoutes() {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense
+      fallback={
+        <div className="w-full h-screen flex items-center justify-center">
+          <Spinner></Spinner>
+        </div>
+      }
+    >
       <Routes>
         <Route path="/" element={<Navigate to="/royal-garage/home" />} />
 

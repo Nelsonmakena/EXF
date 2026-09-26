@@ -41,13 +41,11 @@ export default function EmployeeCard({
 
   return (
     <div
-      className={`rounded-xl border p-4 transition cursor-pointer ${
-        isAvailable
-          ? "border-accent/20 bg-card hover:border-accent"
-          : "border-primary/20 bg-card hover:border-primary"
+      className={`rounded-xl border p-4 transition cursor-pointer min-h-30  ${
+        isAvailable ? "hover:border-accent" : "hover:border-primary"
       }`}
     >
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-3 ">
         <div className="flex min-w-0 items-center gap-3">
           {/* Avatar */}
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted/50 text-sm font-semibold">

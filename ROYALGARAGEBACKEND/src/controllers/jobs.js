@@ -348,7 +348,14 @@ export const updateJobStatus = async (req, res) => {
 export const AllJobs = async (req, res) => {
   try {
     const job = await pool.query(
-      "SELECT first_name,last_name,phonenumber,email,license_plate,vehicle_brand,vehicle_color,service_name,job_services.job_services_id ,jobs.job_id ,assignment_status FROM jobs  JOIN job_services ON job_services.job_id =jobs.job_id JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id JOIN client ON client.client_id= vehicle.client_id JOIN services ON services.service_id = job_services.service_id LEFT JOIN service_assignment ON job_services.job_services_id = service_assignment.job_services_id WHERE employee_id IS NULL ",
+      `SELECT first_name,last_name,phone_number,license_plate,vehicle_brand,vehicle_color,service_name,job_services.job_services_id ,jobs.job_id ,assignment_status
+       FROM jobs  
+       JOIN job_services ON job_services.job_id =jobs.job_id
+        JOIN vehicle ON jobs.vehicle_id = vehicle.vehicle_id
+         JOIN client ON client.client_id= vehicle.client_id 
+         JOIN services ON services.service_id = job_services.service_id 
+         LEFT JOIN service_assignment ON job_services.job_services_id = service_assignment.job_services_id 
+         WHERE employee_id IS NULL `,
     );
 
     const result = job.rows.reduce((acc, item) => {
@@ -368,7 +375,7 @@ export const AllJobs = async (req, res) => {
           client: {
             name: item.first_name + " " + item.last_name,
             email: item.email,
-            phone: item.phonenumber,
+            phone: item.phone_number,
           },
 
           services: [],
@@ -387,9 +394,10 @@ export const AllJobs = async (req, res) => {
 
       return acc;
     }, []);
-    res.status(200).json({ success: true, data: result, row: job.rows });
+    res.status(200).json({ success: true, data: result });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "internal server error" });
   }
 };
 

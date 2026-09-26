@@ -121,6 +121,30 @@ export default function WorkerView() {
                       ))}
                     </SelectContent>
                   </Select>
+                  {/* account type */}
+                  <Select
+                    onValueChange={(role) => {
+                      const selectedRole = roles.find(
+                        (item) => item.role_name === role,
+                      );
+                      setRole_id(selectedRole.role_id);
+                    }}
+                  >
+                    <SelectTrigger className={"w-full "}>
+                      <SelectValue placeholder="account type" />
+                    </SelectTrigger>
+                    <SelectContent className={"w-2xs bg-card  "}>
+                      {roles.map((item) => (
+                        <SelectItem
+                          key={item.role_id}
+                          value={item.role_name}
+                          className={"w-full"}
+                        >
+                          {item.role_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="mt-3.5 flex items-center justify-center">
                   <Button

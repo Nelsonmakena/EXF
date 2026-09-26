@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
 
-import Loader from "../loader";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../../store/authslice";
 import { useEffect } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Authenticated({ children }) {
   const { isLoading, isAuthenticated, userinfo } = useSelector(
@@ -19,11 +19,11 @@ export default function Authenticated({ children }) {
 
   const path = location.pathname;
   if (isLoading) {
-    return <Loader />;
+    return <Spinner></Spinner>;
   }
   const role = userinfo?.role;
   const firstTime = userinfo?.first_time_login;
-  console.log(userinfo);
+
   if (!isAuthenticated) {
     if (location.pathname.includes("/admin")) {
       return <Navigate to="/admin-login" />;

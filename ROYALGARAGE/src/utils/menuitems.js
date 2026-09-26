@@ -12,34 +12,73 @@ export const AdminMenuItems = [
     path: "/admin/home",
     icon: LayoutDashboard,
   },
+
   {
     name: "Management",
-    path: "management/workers",
+    path: "/admin/management/workers",
     icon: LayoutDashboard,
     subMenu: [
-      { name: "workers", path: "management/workers", icon: Users },
-      { name: "clients", path: "management/clients", icon: CircleUserRound },
-      { name: "roles", path: "management/roles", icon: UserRoundKey },
+      {
+        name: "Workers",
+        path: "/admin/management/workers",
+        icon: Users,
+      },
+      {
+        name: "Clients",
+        path: "/admin/management/clients",
+        icon: CircleUserRound,
+      },
+      {
+        name: "Roles",
+        path: "/admin/management/roles",
+        icon: UserRoundKey,
+      },
     ],
   },
+
   {
     name: "Inventory",
-    path: "/admin/inventory",
+    path: "/admin/inventory/products",
     icon: ClipboardList,
     subMenu: [
-      { name: "Products", path: "inventory/products", icon: Users },
-      { name: "Services", path: "inventory/services", icon: CircleUserRound },
-      { name: "Stock", path: "inventory/stock", icon: UserRoundKey },
+      {
+        name: "Products",
+        path: "/admin/inventory/products",
+        icon: Users,
+      },
+      {
+        name: "Services",
+        path: "/admin/inventory/services",
+        icon: CircleUserRound,
+      },
+      {
+        name: "Stock",
+        path: "/admin/inventory/stock",
+        icon: UserRoundKey,
+      },
     ],
   },
+
   {
     name: "Tasks",
-    path: "tasks/jobs",
+    path: "/admin/tasks/jobs",
     icon: ClipboardList,
     subMenu: [
-      { name: "Jobs", path: "tasks/jobs", icon: Users },
-      { name: "InProgress", path: "tasks/in-progress", icon: CircleUserRound },
-      { name: "Completed", path: "tasks/jobs", icon: UserRoundKey },
+      {
+        name: "Jobs",
+        path: "/admin/tasks/jobs",
+        icon: Users,
+      },
+      {
+        name: "In Progress",
+        path: "/admin/tasks/in-progress",
+        icon: CircleUserRound,
+      },
+      {
+        name: "Completed",
+        path: "/admin/tasks/completed",
+        icon: UserRoundKey,
+      },
     ],
   },
 ];

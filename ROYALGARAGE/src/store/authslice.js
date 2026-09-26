@@ -9,6 +9,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   userinfo: null,
+  isCheckingAuth: true,
 };
 
 //register a user
@@ -173,17 +174,16 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
       .addCase(checkAuth.pending, (state) => {
-        state.isLoading = true;
+        state.isCheckingAuth = true;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         if (action.payload.success) {
-          state.isLoading = false;
+          state.isCheckingAuth = false;
           state.userinfo = action.payload.data;
           state.isAuthenticated = true;
         } else {
-          state.isLoading = false;
+          state.isCheckingAuth = false;
           state.userinfo = null;
-
           state.isAuthenticated = false;
         }
       })

@@ -30,6 +30,7 @@ export default function JobList() {
     dispatch(getJobList());
     dispatch(getWorkerList());
   }, []);
+  console.log(jobsList);
 
   // if (jobsList.length == 0) {
   //   return <h1>loading </h1>;
@@ -54,8 +55,10 @@ export default function JobList() {
           </TableHeader>
 
           <TableBody>
-            {jobsList.length == 0 ? (
-              <Spinner></Spinner>
+            {!jobsList ? (
+              <div className=" text-gray-500 py-3">
+                <h1>no jobs at the moment</h1>
+              </div>
             ) : (
               jobsList.map((item, index) => {
                 return (
