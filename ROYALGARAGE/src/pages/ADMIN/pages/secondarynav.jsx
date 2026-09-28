@@ -17,21 +17,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useTheme } from "@/Comp/theme-provider";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { logoutAnyone } from "@/store/authslice";
-import { AdminMenuItems } from "@/utils/menuitems";
 
+import AccountDropDown from "@/Comp/accountdropdown";
 export default function SecondaryNav({ hideMenu, setHideMenu, subMenuItems }) {
   const { setTheme, theme } = useTheme();
   const { userinfo } = useSelector((state) => state.auth);
   const location = useLocation();
   const path = location.pathname;
   const dispatch = useDispatch();
-
-  const logout = () => {
-    dispatch(logoutAnyone());
-    navigate("/admin-login");
-  };
 
   return (
     <section className=" w-full flex items-center  ">
@@ -53,72 +46,7 @@ export default function SecondaryNav({ hideMenu, setHideMenu, subMenuItems }) {
             })}
           </ul>
         </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className=" flex items-center justify-center card cursor-pointer  rounded-full bg-muted/20 w-11 h-11">
-              {userinfo.first_name && userinfo.last_name ? (
-                <>
-                  {" "}
-                  <h1 className="text-header-foreground">
-                    {userinfo?.first_name[0]?.toUpperCase()}
-                  </h1>
-                  <h1 className="text-header">
-                    {userinfo?.last_name[0]?.toUpperCase()}
-                  </h1>{" "}
-                </>
-              ) : (
-                "user"
-              )}
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className={"w-2xs shadow-none p-0  flex flex-col  gap-normal  "}
-          >
-            <DropdownMenuItem
-              className={
-                "flex justify-between px-3 bg-primary/50 h-12 rounded-b-none"
-              }
-            >
-              {" "}
-              <User2Icon /> profile
-            </DropdownMenuItem>
-
-            <DropdownMenuGroup className="flex justify-between ">
-              <DropdownMenuItem
-                onClick={() => {
-                  setTheme("dark");
-                }}
-              >
-                <Moon
-                  className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setTheme("light");
-                }}
-              >
-                <Sun
-                  className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
-                />
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-
-            <DropdownMenuItem
-              className={
-                "flex justify-between font-bold bg-destructive/20 px-3 h-12 rounded-t-none"
-              }
-              variant="destructive"
-              onClick={() => {
-                logout();
-              }}
-            >
-              logout
-              <LogOut />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <AccountDropDown />
       </div>
     </section>
   );

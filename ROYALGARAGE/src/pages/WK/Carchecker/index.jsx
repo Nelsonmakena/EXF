@@ -1,3 +1,12 @@
+import { Outlet } from "react-router";
+
 export default function CarChecker() {
-  return <h1>hello</h1>;
+  return (
+    <main>
+      <div></div>
+      <div>
+        <Outlet />
+      </div>
+    </main>
+  );
 }

@@ -129,3 +129,9 @@ export const SystemMenuItems = [
     ],
   },
 ];
+
+export const employeeNavItems = [
+  { name: "Jobs", path: "/w001/jobs" },
+  { name: "Schedule", path: "/w001/schedule" },
+  { name: "Messages", path: "/w001/messages" },
+];

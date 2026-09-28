@@ -34,7 +34,7 @@ export default function WorkerDashboard() {
         <StatCard />
       </div>
       <div className="section-sm">
-        {assignedJobs.length == 0 ? (
+        {assignedJobs?.length == 0 ? (
           <div className="flex min-h-32 items-center justify-center rounded-xl border bg-card">
             <div className="text-center">
               <Wrench className="mx-auto mb-2 h-6 w-6 text-muted-foreground" />
@@ -48,7 +48,7 @@ export default function WorkerDashboard() {
           </div>
         ) : (
           <div className="space-y-2">
-            {assignedJobs.map((item, index) => (
+            {assignedJobs?.map((item, index) => (
               <EmployeeJobCard item={item} key={index} />
             ))}
           </div>

@@ -191,7 +191,7 @@ export const workerLogin = async (req, res) => {
         first_time_login: user.first_time_login,
         role: user.role_name,
         employee_role: user.employee_role,
-        employee_id: user.client_id,
+        employee_id: user.employee_id,
         first_name: user.first_name,
         last_name: user.last_name,
       };

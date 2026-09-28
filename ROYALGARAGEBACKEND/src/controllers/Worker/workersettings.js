@@ -1,4 +1,5 @@
 import { pool } from "../../../Db.js";
+import bcrypt from "bcryptjs";
 
 // common end point for updating worker profile settings
 
@@ -35,6 +36,37 @@ export const updateProfile = async (req, res) => {
       .status(200)
       .json({ success: true, message: "profile updated successfully" });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
+
+//update password
+
+export const updatePassword = async (req, res) => {
+  const { account_id, employee_id } = req.userinfo;
+  const { password, newPassword } = req.body;
+  if (!account_id) {
+    return res.json({ success: false, message: "server error " });
+  }
+
+  try {
+    const findAccount = await pool.query(
+      "SELECT password_hash FROM accounts WHERE account_id = $1",
+      [account_id],
+    );
+
+    if (bcrypt.compareSync(password, findAccount.rows[0].password_hash)) {
+      const newPasswordHash = bcrypt.hashSync(newPassword, 10);
+      await pool.query("INSERT INTO accounts (password_hash ) VALUE ($1)", [
+        newPasswordHash,
+      ]);
+      res.status(200).json({ success: true, message: "password changed" });
+    } else {
+      res.json({ success: false, message: "passwords don't match" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };

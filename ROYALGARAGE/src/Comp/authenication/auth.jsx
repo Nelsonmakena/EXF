@@ -51,9 +51,9 @@ export default function Authenticated({ children }) {
     if (role === "employee") return <Navigate to="/w001/dashboard" replace />;
     if (role === "super-admin") return <Navigate to="/misc" replace />;
   }
-  if (isAuthenticated && firstTime) {
-    if (role === "employee") return <ProfileEdit />;
-  }
+  // if (isAuthenticated && firstTime) {
+  //   if (role === "employee") return <ProfileEdit />;
+  // }
   //role based auth
 
   if (role === "admin" && !path.startsWith("/admin")) {

@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { ENV } from "../../env.js";
 export const authenticateMiddleware = (req, res, next) => {
   const token = req.cookies.token;
+
   if (!token) {
     return res.status(401).json({ success: false, message: "access denied" });
   }
@@ -14,10 +15,7 @@ export const authenticateMiddleware = (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
-
-    return res
-      .status(401)
-      .json({ success: false, message: "unknown token info" });
+    return res.json({ success: false, message: "unknown token info" });
   }
 };
 //normal admin
@@ -41,7 +39,6 @@ export const adminChecker = (req, res, next) => {
 /// admin authentication role based
 export const superAdminChecker = (req, res, next) => {
   const { role } = req.userinfo;
-  console.log(role);
 
   try {
     if (role === "super_admin") {
@@ -61,11 +58,15 @@ export const superAdminChecker = (req, res, next) => {
 export const workerChecker = (req, res, next) => {
   const { role } = req.userinfo;
 
-  if (role == "worker") {
-    return next();
+  try {
+    if (role === "employee") {
+      return next();
+    }
+    return res.json({
+      success: false,
+      message: "access denied you don't have the privileges",
+    });
+  } catch (error) {
+    console.log(error.message);
   }
-  return res.json({
-    success: false,
-    message: "access denied you don't have the privileges",
-  });
 };
