@@ -1,4 +1,5 @@
 import { pool } from "../../../../Db.js";
+import { getAccountRoles } from "../../../services/commonservices.js";
 
 //new account role
 
@@ -27,14 +28,11 @@ export const newAccountRole = async (req, res) => {
 //list of account roles
 export const accountRoles = async (req, res) => {
   try {
-    const response = await pool.query(
-      "SELECT r.role_name ,r.account_role_id ,COUNT (a.account_role_id) As total_number  FROM account_roles r LEFT JOIN accounts a  ON a.account_role_id = r.account_role_id GROUP BY r.account_role_id , r.role_name ",
-    );
-
+    const data = await getAccountRoles();
     res.status(200).json({
       success: true,
       message: "role added successfully",
-      data: response.rows,
+      data: data,
     });
   } catch (error) {
     console.log(error.message);

@@ -15,22 +15,23 @@ export const AdminMenuItems = [
 
   {
     name: "Management",
+    parent: "admin/management",
     path: "/admin/management/workers",
     icon: LayoutDashboard,
     subMenu: [
       {
         name: "Workers",
-        path: "/admin/management/workers",
+        path: "management/workers",
         icon: Users,
       },
       {
         name: "Clients",
-        path: "/admin/management/clients",
+        path: "management/clients",
         icon: CircleUserRound,
       },
       {
         name: "Roles",
-        path: "/admin/management/roles",
+        path: "management/roles",
         icon: UserRoundKey,
       },
     ],
@@ -38,6 +39,8 @@ export const AdminMenuItems = [
 
   {
     name: "Inventory",
+
+    parent: "admin/inventory",
     path: "/admin/inventory/products",
     icon: ClipboardList,
     subMenu: [
@@ -61,6 +64,7 @@ export const AdminMenuItems = [
 
   {
     name: "Tasks",
+    parent: "admin/tasks",
     path: "/admin/tasks/jobs",
     icon: ClipboardList,
     subMenu: [
@@ -79,6 +83,49 @@ export const AdminMenuItems = [
         path: "/admin/tasks/completed",
         icon: UserRoundKey,
       },
+    ],
+  },
+];
+
+export const SystemMenuItems = [
+  {
+    name: "Dashboard",
+    path: "/admin/home",
+    icon: LayoutDashboard,
+    subMenu: [
+      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
+    ],
+  },
+  {
+    name: "Accounts",
+    path: "/admin/home",
+    icon: LayoutDashboard,
+    subMenu: [
+      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
+    ],
+  },
+  {
+    name: "Roles",
+    path: "/admin/home",
+    icon: LayoutDashboard,
+    subMenu: [
+      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
+    ],
+  },
+  {
+    name: "Audit Logs",
+    path: "/admin/home",
+    icon: LayoutDashboard,
+    subMenu: [
+      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
+    ],
+  },
+  {
+    name: "System Settings",
+    path: "/admin/home",
+    icon: LayoutDashboard,
+    subMenu: [
+      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
     ],
   },
 ];

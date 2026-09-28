@@ -1,10 +1,54 @@
 import { pool } from "../../../Db.js";
 
+///adding a new client record
+
+export const newClientRecord = async (req, res) => {
+  const {
+    first_name,
+    second_name,
+    last_name,
+    phone_number,
+    vehicle_model,
+    vehicle_brand,
+    vehicle_color,
+    license_plate,
+  } = req.body;
+  const client = await new pool.connect();
+  try {
+    await client.query("BEGIN");
+    const newClient = await client.query(
+      "INSERT INTO client (first_name , second_name , last_name , phone_number) VALUES ($1,$2,$3,$4) RETURNING client_id",
+      [first_name, second_name, last_name, phone_number],
+    );
+    const clientId = newClient.rows[0].client_id;
+    const newVehicle = await client.query(
+      "INSERT INTO vehicle (vehicle_model , vehicle_brand , vehicle_color, license_plate,client_id) VALUES ($1,$2,$3,$4,$5)",
+      [vehicle_model, vehicle_brand, vehicle_color, license_plate, clientId],
+    );
+    await client.query("COMMIT");
+    res
+      .status(200)
+      .json({ success: true, message: "client details added successfully" });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.log(error.message);
+    res.json({ success: false, message: "internal server error" });
+  } finally {
+    client.release;
+  }
+};
+
 //list of client
 export const Clients = async (req, res) => {
   try {
     const clientList = await pool.query(
-      "SELECT first_name,second_name,last_name,email,client.client_id, vehicle_brand,vehicle.vehicle_id,vehicle_color,vehicle_model,license_plate, jobs.job_id,job_services_id,service_name FROM client  LEFT JOIN vehicle ON vehicle.client_id=client.client_id LEFT JOIN jobs ON jobs.vehicle_id = vehicle.vehicle_id LEFT JOIN job_services ON job_services.job_id = jobs.job_id LEFT JOIN services ON job_services.service_id= services.service_id",
+      `SELECT first_name,second_name,last_name,email,c.client_id, vehicle_brand,v.vehicle_id,vehicle_color,vehicle_model,license_plate, j.job_id,job_services_id,service_name
+       FROM client c 
+        LEFT JOIN accounts a ON a.account_id = c.account_id 
+       LEFT JOIN vehicle v ON c.client_id = v.client_id 
+       LEFT JOIN jobs j ON j.vehicle_id = v.vehicle_id 
+       LEFT JOIN job_services js ON js.job_id = j.job_id 
+       LEFT JOIN services s ON js.service_id= s.service_id`,
     );
 
     const results = clientList.rows.reduce((acc, item) => {
@@ -81,21 +125,25 @@ export const Clients = async (req, res) => {
 
       return acc;
     }, []);
-    res
-      .status(200)
-      .json({ success: true, data: results, raw: clientList.rows });
+    res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "internal server error" });
   }
 };
 
 export const clientInfo = async (req, res) => {
   const { client_id } = req.params;
-  console.log(client_id);
-
   try {
     const client = await pool.query(
-      "SELECT first_name,second_name,last_name,email,client.client_id, address,vehicle_brand,vehicle.vehicle_id,vehicle_color,vehicle_model,license_plate, jobs.job_id,job_services_id,service_name ,appointment_day,client.created_at,added_at ,phonenumber FROM client  LEFT JOIN vehicle ON vehicle.client_id=client.client_id LEFT JOIN jobs ON jobs.vehicle_id = vehicle.vehicle_id LEFT JOIN job_services ON job_services.job_id = jobs.job_id LEFT JOIN services ON job_services.service_id= services.service_id WHERE client.client_id=$1",
+      `SELECT first_name,second_name,last_name,email,c.client_id, address,vehicle_brand,vehicle.vehicle_id,vehicle_color,vehicle_model,license_plate, j.job_id,job_services_id,service_name ,appointment_day,c.created_at,added_at ,phone_number 
+      FROM client c 
+      JOIN accounts a ON a.account_id = c.account_id 
+      LEFT JOIN vehicle v ON v.client_id=c.client_id 
+      LEFT JOIN jobs j ON j.vehicle_id = v.vehicle_id 
+      LEFT JOIN job_services s  ON s.job_id = j.job_id 
+      LEFT JOIN services ON job_services.service_id= s.service_id 
+      WHERE client.client_id=$1`,
       [client_id],
     );
 
@@ -153,5 +201,6 @@ export const clientInfo = async (req, res) => {
     res.status(200).json({ success: true, data: results, raw: client.rows });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "internal server error" });
   }
 };

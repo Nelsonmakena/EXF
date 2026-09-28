@@ -11,16 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import {
   Select,
   SelectContent,
@@ -39,7 +30,10 @@ import { User } from "lucide-react";
 
 export default function WorkerView() {
   const [role_id, setRole_id] = useState();
-  const { workerList, roles } = useSelector((state) => state.worker);
+  const [accountRole, setAccountRole] = useState();
+  const { workerList, roles, accountRoles } = useSelector(
+    (state) => state.worker,
+  );
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -48,12 +42,14 @@ export default function WorkerView() {
     }
     dispatch(roleList());
   }, []);
+  console.log(accountRole);
 
   const addWorker = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
     data.role_id = role_id;
+    data.account_role = accountRole;
     dispatch(addNewWorker(data)).then((data) => {
       if (data?.payload?.success) {
         setRole_id("");
@@ -67,11 +63,7 @@ export default function WorkerView() {
   return (
     <section className="section-sm">
       <div className=" grid grid-cols-3 gap-normal card ">
-        {workerList.map((item, index) => (
-          <EmployeeCard key={index} employee={item} />
-        ))}
-
-        <div className="rounded-xl border border-primary p-4 transition cursor-pointer flex items-center justify-center ">
+        <div className="rounded-xl  p-4 transition cursor-pointer flex items-center justify-center ">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               render={
@@ -124,19 +116,19 @@ export default function WorkerView() {
                   {/* account type */}
                   <Select
                     onValueChange={(role) => {
-                      const selectedRole = roles.find(
+                      const selectedRole = accountRoles.find(
                         (item) => item.role_name === role,
                       );
-                      setRole_id(selectedRole.role_id);
+                      setAccountRole(selectedRole.account_role_id);
                     }}
                   >
                     <SelectTrigger className={"w-full "}>
                       <SelectValue placeholder="account type" />
                     </SelectTrigger>
                     <SelectContent className={"w-2xs bg-card  "}>
-                      {roles.map((item) => (
+                      {accountRoles.map((item) => (
                         <SelectItem
-                          key={item.role_id}
+                          key={item.account_role_id}
                           value={item.role_name}
                           className={"w-full"}
                         >
@@ -159,6 +151,9 @@ export default function WorkerView() {
             </SheetContent>
           </Sheet>
         </div>
+        {workerList.map((item, index) => (
+          <EmployeeCard key={index} employee={item} />
+        ))}
       </div>
     </section>
   );

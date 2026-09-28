@@ -8,6 +8,7 @@ import axios from "axios";
 const initialState = {
   workerList: [],
   roles: [],
+  accountRoles: [],
   noWork: [],
 };
 
@@ -80,8 +81,6 @@ export const getNonUnassigned = createAsyncThunk(
 export const addNewWorker = createAsyncThunk(
   "admin/new-worker",
   async (data) => {
-    console.log(data);
-
     const response = await axios.post("/api/admin/add-worker", data, {
       withCredentials: true,
     });
@@ -89,6 +88,11 @@ export const addNewWorker = createAsyncThunk(
   },
 );
 
+///updating employee info
+
+export const updateProfile = createAsyncThunk("employee-profile", async () => {
+  const response = await axios.post("/api/");
+});
 const workerSlice = createSlice({
   name: "worker",
   initialState,
@@ -99,7 +103,8 @@ const workerSlice = createSlice({
         state.workerList = action.payload.data;
       })
       .addCase(roleList.fulfilled, (state, action) => {
-        state.roles = action.payload.data;
+        state.roles = action.payload.roleList;
+        state.accountRoles = action.payload.accountRoles;
       })
       .addCase(addNewWorker.fulfilled, (state, action) => {
         if (action.payload.success) {

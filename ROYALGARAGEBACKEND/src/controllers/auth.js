@@ -63,7 +63,7 @@ export const addWorker = async (req, res) => {
     await client.query("BEGIN");
 
     const newAccount = await client.query(
-      "INSERT INTO accounts (password_hash ,email, accounts_role_id) VALUES ($1,$2) RETURNING account_id ",
+      "INSERT INTO accounts (password_hash ,email, account_role_id) VALUES ($1,$2,$3) RETURNING account_id ",
       [password_hash, email, account_role],
     );
     const accountId = newAccount.rows[0].account_id;
@@ -169,10 +169,11 @@ export const workerLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const response = await pool.query(
-      `SELECT a.email ,a.password_hash,a.account_id,e.first_name,e.last_name, e.employee_id ,a.first_time_login ,r.role_name
+      `SELECT a.email ,a.password_hash,a.account_id,e.first_name,e.last_name, e.employee_id ,a.first_time_login ,r.role_name AS employee_role,ar.role_name
       FROM accounts a
        JOIN employee e ON e.account_id =a.account_id 
-        JOIN account_roles r ON r.account_role_id = a.account_role_id
+        JOIN account_roles ar ON ar.account_role_id = a.account_role_id
+        JOIN roles r ON r.role_id = e.role_id 
       WHERE a.email= $1 `,
       [email],
     );
@@ -189,6 +190,7 @@ export const workerLogin = async (req, res) => {
         account_id: user.account_id,
         first_time_login: user.first_time_login,
         role: user.role_name,
+        employee_role: user.employee_role,
         employee_id: user.client_id,
         first_name: user.first_name,
         last_name: user.last_name,

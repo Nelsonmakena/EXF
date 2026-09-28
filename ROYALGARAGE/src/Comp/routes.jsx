@@ -16,7 +16,10 @@ import { Spinner } from "@/components/ui/spinner";
 
 ///system
 
-const SystemIndex = lazy(() => import("@/pages/system"));
+const SystemIndex = lazy(() => import("@/pages/system/index"));
+const EmployeeRoles = lazy(
+  () => import("@/pages/system/accountsMangament/employee-role"),
+);
 
 // Common
 const Template = lazy(() => import("../pages/Common/Common"));
@@ -157,7 +160,18 @@ export default function AppRoutes() {
         </Route>
 
         {/* system routes  */}
-        <Route path="/misc" element={<SystemIndex />}></Route>
+        <Route
+          path="/misc"
+          element={
+            <Authenticated>
+              <SystemIndex />
+            </Authenticated>
+          }
+        >
+          <Route path="management">
+            <Route path="employee-roles" element={<EmployeeRoles />} />
+          </Route>
+        </Route>
 
         {/* Worker routes */}
         <Route

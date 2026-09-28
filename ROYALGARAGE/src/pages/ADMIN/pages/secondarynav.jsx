@@ -73,14 +73,18 @@ export default function SecondaryNav({ hideMenu, setHideMenu, subMenuItems }) {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className={"w-2xs shadow-none p-3.5 flex flex-col  gap-normal  "}
+            className={"w-2xs shadow-none p-0  flex flex-col  gap-normal  "}
           >
-            <DropdownMenuItem className={"flex justify-between"}>
+            <DropdownMenuItem
+              className={
+                "flex justify-between px-3 bg-primary/50 h-12 rounded-b-none"
+              }
+            >
               {" "}
               <User2Icon /> profile
             </DropdownMenuItem>
-            <DropdownMenuSeparator></DropdownMenuSeparator>
-            <DropdownMenuGroup className="flex justify-between">
+
+            <DropdownMenuGroup className="flex justify-between ">
               <DropdownMenuItem
                 onClick={() => {
                   setTheme("dark");
@@ -100,9 +104,11 @@ export default function SecondaryNav({ hideMenu, setHideMenu, subMenuItems }) {
                 />
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator></DropdownMenuSeparator>
+
             <DropdownMenuItem
-              className={"flex justify-between font-bold"}
+              className={
+                "flex justify-between font-bold bg-destructive/20 px-3 h-12 rounded-t-none"
+              }
               variant="destructive"
               onClick={() => {
                 logout();

@@ -15,6 +15,7 @@ export default function AdminNav({ menuItems }) {
     <div className="section flex flex-col gap-normal">
       {menuItems.map((item) => {
         const Icon = item.icon;
+        console.log(item.path);
 
         // No submenu → normal navigation
         if (!item.subMenu?.length) {
@@ -23,7 +24,7 @@ export default function AdminNav({ menuItems }) {
               key={item.name}
               onClick={() => navigate(item.path)}
               className={`w-full h-15 flex items-center gap-7 px-4 ${
-                path === item.path
+                path.includes(item.path)
                   ? "bg-card rounded-l-2xl tracking-widest"
                   : "font-bold bg-none text-header"
               }`}
@@ -40,7 +41,7 @@ export default function AdminNav({ menuItems }) {
             <DropdownMenuTrigger asChild>
               <button
                 className={`w-full h-15 flex items-center gap-7 px-4 ${
-                  path === item.path
+                  path.includes(item.parent)
                     ? "bg-card rounded-l-2xl tracking-widest"
                     : "font-bold bg-none text-header"
                 }`}

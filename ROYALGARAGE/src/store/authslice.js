@@ -170,7 +170,6 @@ const authSlice = createSlice({
       .addCase(adminLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-
         state.isAuthenticated = false;
       })
       .addCase(checkAuth.pending, (state) => {
@@ -181,6 +180,7 @@ const authSlice = createSlice({
           state.isCheckingAuth = false;
           state.userinfo = action.payload.data;
           state.isAuthenticated = true;
+          state.isLoading = false;
         } else {
           state.isCheckingAuth = false;
           state.userinfo = null;
@@ -190,8 +190,8 @@ const authSlice = createSlice({
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.userinfo = null;
-
         state.isAuthenticated = false;
+        state.isCheckingAuth = false;
       })
       .addCase(logoutAnyone.fulfilled, (state, action) => {
         if (action.payload.success) {

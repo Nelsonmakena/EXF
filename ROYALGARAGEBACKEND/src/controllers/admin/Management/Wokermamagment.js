@@ -2,6 +2,7 @@ import { pool } from "../../../../Db.js";
 import express from "express";
 import { ENV } from "../../../../env.js";
 import bcrypt from "bcryptjs";
+import { getAccountRoles } from "../../../services/commonservices.js";
 
 //displaying roles
 
@@ -10,9 +11,11 @@ export const roleList = async (req, res) => {
     const list = await pool.query(
       "SELECT role_name,role_description ,roles.role_id ,COUNT(employee_id)AS total_number FROM roles LEFT JOIN employee ON employee.role_id = roles.role_id  GROUP BY roles.role_id ,role_name ORDER BY role_name ASC",
     );
+    const accountRoles = await getAccountRoles("employee");
     res.status(200).json({
       success: true,
-      data: list.rows,
+      roleList: list.rows,
+      accountRoles: accountRoles,
     });
   } catch (error) {
     console.log(error.message);

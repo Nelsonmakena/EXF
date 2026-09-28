@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../../store/authslice";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import ProfileEdit from "../profileEdit";
 
 export default function Authenticated({ children }) {
   const { isLoading, isAuthenticated, userinfo } = useSelector(
@@ -18,8 +19,10 @@ export default function Authenticated({ children }) {
   }, [dispatch, location.pathname]);
 
   const path = location.pathname;
+  console.log(isLoading);
+
   if (isLoading) {
-    return <Spinner></Spinner>;
+    return <h1>loading</h1>;
   }
   const role = userinfo?.role;
   const firstTime = userinfo?.first_time_login;
@@ -45,10 +48,12 @@ export default function Authenticated({ children }) {
   ) {
     if (role === "admin") return <Navigate to="/admin/home" replace />;
     if (role === "client") return <Navigate to="/client/dashboard" replace />;
-    if (role === "worker") return <Navigate to="/w001/dashboard" replace />;
+    if (role === "employee") return <Navigate to="/w001/dashboard" replace />;
     if (role === "super-admin") return <Navigate to="/misc" replace />;
   }
-
+  if (isAuthenticated && firstTime) {
+    if (role === "employee") return <ProfileEdit />;
+  }
   //role based auth
 
   if (role === "admin" && !path.startsWith("/admin")) {

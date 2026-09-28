@@ -30,14 +30,8 @@ Router.use(authenticateMiddleware, adminChecker);
 //dashboard numbers
 Router.get("/dashboard", totalNumbers);
 
-/// adding worker roles
-// Router.post("/new-role", addNewRole);
-
 /// displaying the role list
 Router.get("/role-list", roleList);
-
-//removing a role from the system
-// Router.delete("/remove-role", removeRole);
 
 // adding workers to the system
 Router.post("/add-worker", addWorker);

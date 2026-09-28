@@ -17,7 +17,7 @@ export default function AdminIndex() {
     <>
       <main className="flex border ">
         <div
-          className={` ${hideMenu == true ? "hidden" : "min-h-svh md:w-64 bg-secondary rounded-tr-[40px]   "} `}
+          className={` ${hideMenu == true ? "hidden" : "min-h-svh md:w-64 bg-secondary rounded-tr-[40px]    "} `}
         >
           <AdminNav menuItems={AdminMenuItems} />
         </div>
