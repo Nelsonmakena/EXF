@@ -37,6 +37,9 @@ export default function Authenticated({ children }) {
     if (location.pathname.includes("/w001")) {
       return <Navigate to="/wk" />;
     }
+    if (location.pathname.includes("/misc")) {
+      return <Navigate to="/sys" />;
+    }
   }
 
   if (
@@ -49,7 +52,8 @@ export default function Authenticated({ children }) {
     if (role === "admin") return <Navigate to="/admin/home" replace />;
     if (role === "client") return <Navigate to="/client/dashboard" replace />;
     if (role === "employee") return <Navigate to="/w001/dashboard" replace />;
-    if (role === "super-admin") return <Navigate to="/misc" replace />;
+    if (role === "super-admin")
+      return <Navigate to="/misc/dashboard" replace />;
   }
   // if (isAuthenticated && firstTime) {
   //   if (role === "employee") return <ProfileEdit />;

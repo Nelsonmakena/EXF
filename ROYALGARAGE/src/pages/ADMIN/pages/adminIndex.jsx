@@ -15,7 +15,7 @@ export default function AdminIndex() {
 
   return (
     <>
-      <main className="flex border ">
+      <main className="flex  ">
         <div
           className={` ${hideMenu == true ? "hidden" : "min-h-svh md:w-64 bg-secondary rounded-tr-[40px]    "} `}
         >

@@ -26,7 +26,7 @@ export default function AdminNav({ menuItems }) {
               className={`w-full h-15 flex items-center gap-7 px-4 ${
                 path.includes(item.path)
                   ? "bg-card rounded-l-2xl tracking-widest"
-                  : "font-bold bg-none text-header"
+                  : "font-bold bg-none"
               }`}
             >
               <Icon />
@@ -43,7 +43,7 @@ export default function AdminNav({ menuItems }) {
                 className={`w-full h-15 flex items-center gap-7 px-4 ${
                   path.includes(item.parent)
                     ? "bg-card rounded-l-2xl tracking-widest"
-                    : "font-bold bg-none text-header"
+                    : "font-bold bg-none "
                 }`}
               >
                 <Icon />

@@ -4,6 +4,9 @@ import {
   CircleUserRound,
   UserRoundKey,
   ClipboardList,
+  UsersRound,
+  IdCardLanyard,
+  IdCard,
 } from "lucide-react";
 
 export const AdminMenuItems = [
@@ -90,18 +93,30 @@ export const AdminMenuItems = [
 export const SystemMenuItems = [
   {
     name: "Dashboard",
-    path: "/admin/home",
+    path: "/misc/dashboard",
     icon: LayoutDashboard,
-    subMenu: [
-      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
-    ],
   },
   {
     name: "Accounts",
-    path: "/admin/home",
+    parent: "/misc/management",
+    path: "/misc/management/employee-roles",
     icon: LayoutDashboard,
     subMenu: [
-      { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },
+      {
+        name: "Employee-positions",
+        path: "/misc/management/employee-roles",
+        icon: IdCardLanyard,
+      },
+      {
+        name: "Accounts_roles",
+        path: "/misc/management/account-roles",
+        icon: IdCard,
+      },
+      {
+        name: "Accounts",
+        path: "/misc/management/accounts",
+        icon: UsersRound,
+      },
     ],
   },
   {
@@ -134,4 +149,11 @@ export const employeeNavItems = [
   { name: "Jobs", path: "/w001/jobs" },
   { name: "Schedule", path: "/w001/schedule" },
   { name: "Messages", path: "/w001/messages" },
+];
+
+export const clientMenuItems = [
+  { name: "Vehicles", path: "/client/vehicles" },
+  { name: "Services", path: "/client/services" },
+  { name: "Shop", path: "/client/shop" },
+  { name: "Appointments", path: "/client/appointment" },
 ];

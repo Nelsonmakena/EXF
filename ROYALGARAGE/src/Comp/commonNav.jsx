@@ -1,26 +1,19 @@
 import AccountDropDown from "./accountdropdown";
 import logo from "/src/assets/images/logo.png";
 import { Link, useNavigate } from "react-router";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Menu, Moon, Sun } from "lucide-react";
-import { useTheme } from "@/Comp/theme-provider";
+import { ShoppingBag } from "lucide-react";
 
-export default function CommonNav({ menuItems, homePath }) {
+import { useTheme } from "@/Comp/theme-provider";
+import { useSelector } from "react-redux";
+
+export default function CommonNav({ menuItems, homePath, initiator }) {
   const navigate = useNavigate();
+  const { cart } = useSelector((state) => state.services);
   const { setTheme, theme } = useTheme();
   return (
     <>
       <div className="hidden   md:flex items-center justify-center text-sm  w-full   font-semibold h-20  overflow-hidden ">
-        <nav className="  w-3/4    relative h-17.5 md:flex items-center    text-black transition-all  shadow-md rounded-2xl  px-1.5">
+        <nav className="  w-3/4    relative h-17.5 md:flex items-center  transition-all  shadow-md rounded-2xl  px-1.5">
           {/* big-screen menu  */}{" "}
           <div className="hidden md:flex w-full justify-between">
             <div
@@ -35,10 +28,24 @@ export default function CommonNav({ menuItems, homePath }) {
               {menuItems.map((menu) => {
                 return (
                   <li className="card">
-                    <Link to={menu.Path}> {menu.name} </Link>
+                    <Link to={menu.path}> {menu.name} </Link>
                   </li>
                 );
               })}
+              {initiator === "client" && (
+                <div className="  flex items-center  ">
+                  <Link to="cart">
+                    <div className="relative cursor-pointer">
+                      <ShoppingBag />
+                      <button
+                        className={`absolute -top-2 -right-3 text-xs  w-4.5 h-4.5 rounded-full ${cart.length == 0 ? "hidden" : " bg-accent"}`}
+                      >
+                        {cart.length}
+                      </button>
+                    </div>
+                  </Link>
+                </div>
+              )}
             </ul>
             <AccountDropDown />
           </div>

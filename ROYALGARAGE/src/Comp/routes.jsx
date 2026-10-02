@@ -20,6 +20,7 @@ const SystemIndex = lazy(() => import("@/pages/system/index"));
 const EmployeeRoles = lazy(
   () => import("@/pages/system/accountsMangament/employee-role"),
 );
+const SystemDashboard = lazy(() => import("@/pages/system/dashboard"));
 
 // Common
 const Template = lazy(() => import("../pages/Common/Common"));
@@ -168,8 +169,11 @@ export default function AppRoutes() {
             </Authenticated>
           }
         >
+          <Route path="dashboard" element={<SystemDashboard />} />
           <Route path="management">
             <Route path="employee-roles" element={<EmployeeRoles />} />
+            <Route path="accounts" element={<EmployeeRoles />} />
+            <Route path="accounts-roles" element={<EmployeeRoles />} />
           </Route>
         </Route>
 
