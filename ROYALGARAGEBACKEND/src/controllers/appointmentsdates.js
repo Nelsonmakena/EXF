@@ -14,6 +14,7 @@ export const appointmentsDatesList = async (req, res) => {
     res.status(200).json({ success: true, data: appointmentsList.rows });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -26,5 +27,6 @@ export const adminAppointmentsDatesList = async (req, res) => {
     res.status(200).json({ success: true, data: appointmentsList.rows });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };

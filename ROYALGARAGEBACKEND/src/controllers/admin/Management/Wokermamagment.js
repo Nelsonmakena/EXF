@@ -18,9 +18,19 @@ export const roleList = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
+//single role info
+
+export const singleRole = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
 // fetching all worker list
 export const workers = async (req, res) => {
   try {
@@ -67,5 +77,6 @@ export const workers = async (req, res) => {
     res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };

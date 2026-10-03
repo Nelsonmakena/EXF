@@ -41,7 +41,7 @@ export const profileData = async (req, res) => {
     res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.log(error.message);
-    res.json(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -71,7 +71,8 @@ export const updateProfile = async (req, res) => {
       .status(200)
       .json({ success: true, message: "profile updated successfully" });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -101,5 +102,6 @@ export const newAddress = async (req, res) => {
       .json({ success: true, message: "address added  successfully" });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };

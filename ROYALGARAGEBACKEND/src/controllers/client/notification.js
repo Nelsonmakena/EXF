@@ -13,5 +13,6 @@ export const checkUnpaidServices = async (req, res) => {
     res.status(200).json({ success: true, data: check.rows });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };

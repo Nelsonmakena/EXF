@@ -51,7 +51,7 @@ export const job = async (req, res) => {
       .json({ success: true, message: "job created successfully" });
   } catch (error) {
     res.json({ success: false, message: error.message });
-    console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -122,6 +122,7 @@ export const jobInfo = async (req, res) => {
     res.status(200).json({ success: true, data: results });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -181,6 +182,7 @@ export const billing = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -205,6 +207,7 @@ export const ConfirmVehicle = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -249,6 +252,7 @@ export const employeeJobList = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -275,6 +279,7 @@ export const InProgressEmployee = async (req, res) => {
     console.log(response);
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -316,6 +321,7 @@ export const acceptJob = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -337,6 +343,7 @@ export const updateJobStatus = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -479,6 +486,7 @@ WHERE service_assignment.employee_id IS NOT NULL;`,
     res.status(200).json({ success: true, data: result, raw: response.rows });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -516,6 +524,7 @@ export const assignJob = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -586,5 +595,6 @@ export const jobDetails = async (req, res) => {
     res.status(200).json({ success: true, data: result, raw: response.rows });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };

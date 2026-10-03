@@ -162,6 +162,7 @@ export const login = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -212,6 +213,7 @@ export const workerLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 // super admin login
@@ -255,6 +257,7 @@ export const admin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 

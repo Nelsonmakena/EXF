@@ -48,7 +48,7 @@ export const addService = async (req, res) => {
     console.log(newService.rows[0]);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -82,6 +82,7 @@ export const updateService = async (req, res) => {
       .json({ success: true, message: "service updated successfully" });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
 
@@ -114,5 +115,6 @@ export const deleteService = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "server error" });
   }
 };
