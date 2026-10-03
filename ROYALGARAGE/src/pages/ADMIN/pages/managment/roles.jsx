@@ -1,31 +1,11 @@
-import axios from "axios";
-
 import { useState, useEffect } from "react";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "sonner";
-import { deleteRole, newRole, roleList } from "@/store/wokerslice";
+import { deleteRole, getRoleList, newRole } from "@/store/wokerslice";
 import { Trash, Trash2 } from "lucide-react";
 import RolesCard from "@/Comp/roleCard";
 
@@ -34,7 +14,7 @@ export default function RolesView() {
   const { roles } = useSelector((state) => state.worker);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(roleList());
+    dispatch(getRoleList());
   }, []);
 
   return (

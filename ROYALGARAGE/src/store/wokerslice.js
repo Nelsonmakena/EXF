@@ -8,16 +8,15 @@ import axios from "axios";
 const initialState = {
   workerList: [],
   roles: [],
-  accountRoles: [],
   noWork: [],
 };
 
 ///all worker related logic fro the admin is here
 
 //role list in system
-export const roleList = createAsyncThunk("admin/role-list", async () => {
+export const getRoleList = createAsyncThunk("admin/role-list", async () => {
   const response = await axios.get(
-    "/api/admin/role-list",
+    "/api/shared/role-list",
 
     { withCredentials: true },
   );
@@ -102,9 +101,8 @@ const workerSlice = createSlice({
       .addCase(getWorkerList.fulfilled, (state, action) => {
         state.workerList = action.payload.data;
       })
-      .addCase(roleList.fulfilled, (state, action) => {
-        state.roles = action.payload.roleList;
-        state.accountRoles = action.payload.accountRoles;
+      .addCase(getRoleList.fulfilled, (state, action) => {
+        state.roles = action.payload.data;
       })
       .addCase(addNewWorker.fulfilled, (state, action) => {
         if (action.payload.success) {

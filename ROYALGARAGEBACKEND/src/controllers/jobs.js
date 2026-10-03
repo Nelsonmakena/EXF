@@ -229,7 +229,6 @@ export const employeeJobList = async (req, res) => {
       let findService = acc.find(
         (service) => service.assignmentId === item.assignment_id,
       );
-      console.log(findService);
 
       if (!findService) {
         findService = {

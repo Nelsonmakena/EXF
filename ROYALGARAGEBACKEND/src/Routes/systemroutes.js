@@ -12,9 +12,9 @@ import { newAdmin } from "../controllers/auth.js";
 const Router = express.Router();
 Router.use(authenticateMiddleware, superAdminChecker);
 //adding new account role
-Router.post("/new-account-role", newAccountRole);
-
-Router.get("/accounts-role", accountRoles);
+Router.post("/account", newAccountRole);
+//list of system accounts
+Router.get("/account", accountRoles);
 
 //new admin
 

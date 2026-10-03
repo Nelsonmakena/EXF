@@ -7,6 +7,7 @@ import jobSlice from "./jobsslice";
 import dateSlice from "./appointmentsdates";
 import dashboardSlice from "./dashboardstarts";
 import clientSlice from "./client";
+import AccountSlice from "./accountsslice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     appointmentsDates: dateSlice,
     dashboard: dashboardSlice,
     client: clientSlice,
+    Accounts: AccountSlice,
   },
 });
 

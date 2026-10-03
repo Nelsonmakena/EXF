@@ -8,6 +8,7 @@ import clientRoutes from "./src/Routes/clientroutes.js";
 import adminRoutes from "./src/Routes/adminroutes.js";
 import workerRoutes from "./src/Routes/workerroutes.js";
 import systemRoutes from "./src/Routes/systemroutes.js";
+import SharedRoutes from "./src/Routes/sharedRoutes.js";
 import { ENV } from "./env.js";
 import { DbConnection } from "./Db.js";
 import initializeSystem from "./src/scripts/initilaztion.js";
@@ -34,7 +35,7 @@ app.use(
 );
 
 DbConnection();
-
+app.use("/api/shared", SharedRoutes);
 app.use("/api/system", systemRoutes);
 app.use("/api/products", ProductsRoutes);
 app.use("/api/services", ServiceRoutes);

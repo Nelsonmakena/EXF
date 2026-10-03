@@ -70,3 +70,20 @@ export const workerChecker = (req, res, next) => {
     console.log(error.message);
   }
 };
+// shared admin asn system Routes
+
+export const CommonChecker = (req, res, next) => {
+  const { role } = req.userinfo;
+
+  try {
+    if (role === "super_admin" || role === "admin") {
+      return next();
+    }
+    return res.json({
+      success: false,
+      message: "access denied you don't have the privileges",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
