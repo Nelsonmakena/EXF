@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewWorker, getWorkerList, roleList } from "@/store/wokerslice";
+import { addNewWorker, getRoleList, getWorkerList } from "@/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
 import { User } from "lucide-react";
@@ -40,9 +40,8 @@ export default function WorkerView() {
     if (workerList.length == 0) {
       dispatch(getWorkerList());
     }
-    dispatch(roleList());
+    dispatch(getRoleList());
   }, []);
-  console.log(accountRole);
 
   const addWorker = async (e) => {
     e.preventDefault();
@@ -126,7 +125,7 @@ export default function WorkerView() {
                       <SelectValue placeholder="account type" />
                     </SelectTrigger>
                     <SelectContent className={"w-2xs bg-card  "}>
-                      {accountRoles.map((item) => (
+                      {accountRoles?.map((item) => (
                         <SelectItem
                           key={item.account_role_id}
                           value={item.role_name}
@@ -151,7 +150,7 @@ export default function WorkerView() {
             </SheetContent>
           </Sheet>
         </div>
-        {workerList.map((item, index) => (
+        {workerList?.map((item, index) => (
           <EmployeeCard key={index} employee={item} />
         ))}
       </div>

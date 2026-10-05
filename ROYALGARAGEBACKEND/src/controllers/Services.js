@@ -1,6 +1,34 @@
 import express from "express";
 import { pool } from "../../Db.js";
 
+export const newServiceCategories = async (req, res) => {
+  const { role_id, category_name } = req.body;
+  try {
+    const serviceCategory = await pool.query(
+      "INSERT INTO service_categories (role_id, category_name) VALUES ($1,$2) RETURNING * ",
+      [role_id, category_name],
+    );
+    res.status(200).json({
+      success: "true",
+      message: "new service category added ",
+      data: serviceCategory.rows[0],
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
+
+export const getServicesCategories = async (req, res) => {
+  try {
+    const response = await pool.query("SELECT * FROM service_categories ");
+    res.status(200).json({ success: "true", data: response.rows });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
+
 export const getServices = async (req, res) => {
   try {
     const services = await pool.query(
@@ -8,8 +36,8 @@ export const getServices = async (req, res) => {
     );
     res.status(201).json({ success: true, data: services.rows });
   } catch (error) {
-    res.status(400).json(error.message);
     console.log(error.message);
+    res.status(400).json(error.message);
   }
 };
 

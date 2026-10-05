@@ -47,6 +47,9 @@ const AdminViewProducts = lazy(
 const AdminViewServices = lazy(
   () => import("@/pages/ADMIN/pages/Adminservices"),
 );
+const ServiceCategories = lazy(
+  () => import("@/pages/ADMIN/pages/catalog/servicecategory"),
+);
 const WorkerView = lazy(
   () => import("@/pages/ADMIN/pages/managment/workerview"),
 );
@@ -145,6 +148,7 @@ export default function AppRoutes() {
 
           <Route path="inventory">
             <Route path="products" element={<AdminViewProducts />} />
+            <Route path="service-categories" element={<ServiceCategories />} />
             <Route path="services" element={<AdminViewServices />} />
             <Route path="stock" element={<InventoryView />} />
           </Route>

@@ -9,6 +9,7 @@ const initialState = {
   availableProductList: [],
   cart: [],
   productsCatalogue: [],
+  serviceCategories: [],
 };
 
 //client
@@ -81,7 +82,26 @@ export const updateServices = createAsyncThunk(
     return response.data;
   },
 );
-
+// list of service categories
+export const getServiceCategories = createAsyncThunk(
+  "service-categories",
+  async () => {
+    const response = await axios.get("/api/services/service-category", {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+);
+//adding a new service categories
+export const newServiceCategory = createAsyncThunk(
+  "new-service-category",
+  async (data) => {
+    const response = await axios.put("/api/services/service-category", data, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+);
 //deleting a service
 export const deletService = createAsyncThunk(
   "/delete-Service",
@@ -156,6 +176,9 @@ export const ServiceSlice = createSlice({
       })
       .addCase(getCatalogue.fulfilled, (state, action) => {
         state.productsCatalogue = action.payload.data;
+      })
+      .addCase(getServiceCategories.fulfilled, (state, action) => {
+        state.serviceCategories.push(action.payload.data);
       });
   },
 });

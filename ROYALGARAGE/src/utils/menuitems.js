@@ -53,6 +53,11 @@ export const AdminMenuItems = [
         icon: Users,
       },
       {
+        name: "categories",
+        path: "/admin/inventory/service-categories",
+        icon: Users,
+      },
+      {
         name: "Services",
         path: "/admin/inventory/services",
         icon: CircleUserRound,
