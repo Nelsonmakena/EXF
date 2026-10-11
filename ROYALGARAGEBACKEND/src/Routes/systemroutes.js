@@ -2,6 +2,10 @@ import express from "express";
 import {
   newAccountRole,
   accountRoles,
+  deleteAccountRole,
+  updateRoleInfo,
+  addNewRole,
+  removeRole,
 } from "../controllers/admin/Management/accountmanagement.js";
 import {
   authenticateMiddleware,
@@ -16,7 +20,13 @@ Router.post("/account", newAccountRole);
 //list of system accounts
 Router.get("/account", accountRoles);
 
-//new admin
+Router.delete("/account/:account_role_id", deleteAccountRole);
 
+Router.patch("/account/:account_role_id", updateRoleInfo);
+
+Router.post("/employee-role", addNewRole);
+
+Router.delete("/employee-role/:role_id", removeRole);
+//new admin
 Router.post("/new-admin", newAdmin);
 export default Router;

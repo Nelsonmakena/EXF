@@ -31,8 +31,40 @@ export const accountRoles = async (req, res) => {
     const data = await getAccountRoles();
     res.status(200).json({
       success: true,
-      message: "role added successfully",
       data: data,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
+
+export const deleteAccountRole = async (req, res) => {
+  const { account_role_id } = req.params;
+  try {
+    await pool.query("DELETE FROM account_roles WHERE account_role_id = $1", [
+      account_role_id,
+    ]);
+    res.status(200).json({
+      success: true,
+      message: "account role removed successfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
+export const updateRoleInfo = async (req, res) => {
+  const { account_role_id } = req.params;
+  const { role_name, role_description } = req.body;
+  try {
+    await pool.query(
+      "UPDATE account_roles SET role_name =$1 , role_description = $2 ",
+      [role_name, role_description],
+    );
+    res.status(200).json({
+      success: true,
+      message: "role updated",
     });
   } catch (error) {
     console.log(error.message);
@@ -69,9 +101,7 @@ export const addNewRole = async (req, res) => {
 //deleting employing role
 
 export const removeRole = async (req, res) => {
-  const { role_id } = req.body;
-  console.log(role_id);
-
+  const { role_id } = req.params;
   try {
     const remove = await pool.query(
       "DELETE FROM roles where role_id = $1 RETURNING * ",
@@ -84,5 +114,6 @@ export const removeRole = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.json({ success: false, message: "role cant be deleted" });
   }
 };
