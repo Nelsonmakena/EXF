@@ -52,7 +52,7 @@ export default function Authenticated({ children }) {
     if (role === "admin") return <Navigate to="/admin/home" replace />;
     if (role === "client") return <Navigate to="/client/dashboard" replace />;
     if (role === "employee") return <Navigate to="/w001/dashboard" replace />;
-    if (role === "super-admin")
+    if (role === "super_admin")
       return <Navigate to="/misc/dashboard" replace />;
   }
   // if (isAuthenticated && firstTime) {
@@ -70,6 +70,9 @@ export default function Authenticated({ children }) {
 
   if (role === "employee" && !path.startsWith("/w001")) {
     return <Navigate to="notauthorized" />;
+  }
+  if (role === "super_admin" && !path.startsWith("/misc")) {
+    return <Navigate to="/misc/dashboard" />;
   }
   return <>{children}</>;
 }

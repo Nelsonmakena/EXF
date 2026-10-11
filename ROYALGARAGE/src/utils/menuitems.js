@@ -113,8 +113,8 @@ export const SystemMenuItems = [
         icon: IdCardLanyard,
       },
       {
-        name: "Accounts_roles",
-        path: "/misc/management/account-roles",
+        name: "Accounts-roles",
+        path: "/misc/management/accounts-roles",
         icon: IdCard,
       },
       {

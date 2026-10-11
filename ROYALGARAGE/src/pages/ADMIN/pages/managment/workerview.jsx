@@ -23,10 +23,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewWorker, getRoleList, getWorkerList } from "@/store/wokerslice";
+import { addNewWorker, getWorkerList } from "@/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
 import { User } from "lucide-react";
+import { getRoleList } from "@/store/accountsslice";
 
 export default function WorkerView() {
   const [role_id, setRole_id] = useState();

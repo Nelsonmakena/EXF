@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-export default function AdminNav({ menuItems }) {
+export default function AdminNav({ menuItems, initiator }) {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
@@ -57,7 +57,7 @@ export default function AdminNav({ menuItems }) {
 
                 return (
                   <DropdownMenuItem
-                    className={"h-12 flex gap-5 px-4 hover:bg-secondary"}
+                    className={`h-12 flex gap-5 px-4 ${initiator === "system" ? " hover:bg-primary hover:text-card " : "hover:bg-secondary"} `}
                     key={subItem.path}
                     onClick={() => navigate(subItem.path)}
                   >

@@ -13,7 +13,7 @@ export default function SystemIndex() {
       <div
         className={` ${hideMenu == true ? "hidden" : "min-h-svh md:w-64 bg-primary rounded-tr-[40px]    "} `}
       >
-        <AdminNav menuItems={SystemMenuItems} />
+        <AdminNav menuItems={SystemMenuItems} initiator={"system"} />
       </div>
 
       <div className={`flex flex-col w-full  overflow-hidden `}>

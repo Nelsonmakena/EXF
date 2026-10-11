@@ -13,44 +13,6 @@ const initialState = {
 
 ///all worker related logic fro the admin is here
 
-//role list in system
-export const getRoleList = createAsyncThunk("admin/role-list", async () => {
-  const response = await axios.get(
-    "/api/shared/role-list",
-
-    { withCredentials: true },
-  );
-
-  return response.data;
-});
-
-//adding roles
-
-export const newRole = createAsyncThunk("admin/new-role", async (data) => {
-  const response = await axios.post("/api/admin/new-role", data, {
-    withCredentials: true,
-  });
-
-  return response.data;
-});
-
-//removing roles
-export const deleteRole = createAsyncThunk(
-  "/deleteVehicle",
-  async (role_id) => {
-    console.log(role_id);
-
-    const response = await axios.delete("/api/admin/remove-role", {
-      data: {
-        role_id: role_id,
-      },
-      withCredentials: true,
-    });
-
-    return response.data;
-  },
-);
-
 // getting worker list
 export const getWorkerList = createAsyncThunk("admin/worker-list", async () => {
   const response = await axios.get(
@@ -101,25 +63,13 @@ const workerSlice = createSlice({
       .addCase(getWorkerList.fulfilled, (state, action) => {
         state.workerList = action.payload.data;
       })
-      .addCase(getRoleList.fulfilled, (state, action) => {
-        state.roles = action.payload.data;
-      })
+
       .addCase(addNewWorker.fulfilled, (state, action) => {
         if (action.payload.success) {
           state.workerList.push(action.payload.data);
         }
       })
-      .addCase(newRole.fulfilled, (state, action) => {
-        state.roles.push(action.payload.data);
-      })
-      .addCase(deleteRole.fulfilled, (state, action) => {
-        const deletedRoleID = action.payload.data.role_id;
-        if (action.payload.success) {
-          state.roles = state.roles.filter(
-            (role) => role.role_id !== deletedRoleID,
-          );
-        }
-      })
+
       .addCase(getNonUnassigned.fulfilled, (state, action) => {
         state.noWork = action.payload.data;
       });
