@@ -23,6 +23,8 @@ import { addWorker } from "../controllers/auth.js";
 
 const Router = express.Router();
 
+//common routes
+
 Router.use(authenticateMiddleware, adminChecker);
 
 // these are protected admin routes

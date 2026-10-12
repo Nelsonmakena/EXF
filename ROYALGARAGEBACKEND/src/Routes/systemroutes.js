@@ -10,15 +10,18 @@ import {
 import {
   authenticateMiddleware,
   superAdminChecker,
+  CommonChecker,
 } from "../middlewares/authenicationmidleware.js";
 import { newAdmin } from "../controllers/auth.js";
 
 const Router = express.Router();
+//common routes
+//list of system accounts
+Router.get("/account", authenticateMiddleware, CommonChecker, accountRoles);
+
 Router.use(authenticateMiddleware, superAdminChecker);
 //adding new account role
 Router.post("/account", newAccountRole);
-//list of system accounts
-Router.get("/account", accountRoles);
 
 Router.delete("/account/:account_role_id", deleteAccountRole);
 
