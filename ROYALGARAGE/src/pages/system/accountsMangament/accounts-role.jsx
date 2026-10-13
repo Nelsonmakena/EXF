@@ -20,7 +20,7 @@ import RolesCard from "@/Comp/roleCard";
 import { toast } from "sonner";
 export default function AccountsRoles() {
   const [open, SetOpen] = useState(false);
-  const { AccountRoles } = useSelector((state) => state.Accounts);
+  const { accountRoles } = useSelector((state) => state.Accounts);
   const dispatch = useDispatch();
 
   const actions = {
@@ -93,7 +93,7 @@ export default function AccountsRoles() {
             </SheetContent>
           </Sheet>
         </div>
-        {AccountRoles?.map((item) => (
+        {accountRoles?.map((item) => (
           <RolesCard isSystem={true} item={item} actions={actions} />
         ))}
       </div>

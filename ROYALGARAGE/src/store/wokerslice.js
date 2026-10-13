@@ -63,13 +63,6 @@ const workerSlice = createSlice({
       .addCase(getWorkerList.fulfilled, (state, action) => {
         state.workerList = action.payload.data;
       })
-
-      .addCase(addNewWorker.fulfilled, (state, action) => {
-        if (action.payload.success) {
-          state.workerList.push(action.payload.data);
-        }
-      })
-
       .addCase(getNonUnassigned.fulfilled, (state, action) => {
         state.noWork = action.payload.data;
       });

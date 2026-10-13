@@ -11,7 +11,7 @@ import RolesCard from "@/Comp/roleCard";
 
 export default function RolesView() {
   const [open, SetOPen] = useState(false);
-  const { employeeRoles } = useSelector((state) => state.Account);
+  const { employeeRoles } = useSelector((state) => state.Accounts);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getRoleList());

@@ -1,7 +1,7 @@
 import { getClients } from "@/store/client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ClientCard from "./clientCard";
+import AccountCard from "../../../../Comp/accountCard";
 
 export default function ClientsView() {
   const { clientsList } = useSelector((state) => state.client);
@@ -13,7 +13,7 @@ export default function ClientsView() {
     <section>
       <div className=" grid grid-cols-3 gap-normal card">
         {clientsList.map((item) => (
-          <ClientCard client={item} />
+          <AccountCard item={item} />
         ))}
       </div>
     </section>

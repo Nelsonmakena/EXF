@@ -6,6 +6,8 @@ import {
   updateRoleInfo,
   addNewRole,
   removeRole,
+  roleList,
+  accountsList,
 } from "../controllers/admin/Management/accountmanagement.js";
 import {
   authenticateMiddleware,
@@ -18,10 +20,14 @@ const Router = express.Router();
 //common routes
 //list of system accounts
 Router.get("/account", authenticateMiddleware, CommonChecker, accountRoles);
+Router.get("/employee-roles", authenticateMiddleware, CommonChecker, roleList);
 
+//
 Router.use(authenticateMiddleware, superAdminChecker);
 //adding new account role
 Router.post("/account", newAccountRole);
+
+Router.get("/accounts", accountsList);
 
 Router.delete("/account/:account_role_id", deleteAccountRole);
 

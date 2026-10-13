@@ -27,14 +27,15 @@ import { addNewWorker, getWorkerList } from "@/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
 import { User } from "lucide-react";
-import { getRoleList } from "@/store/accountsslice";
+import { getAccountRoles, getRoleList } from "@/store/accountsslice";
 
 export default function WorkerView() {
   const [role_id, setRole_id] = useState();
   const [accountRole, setAccountRole] = useState();
-  const { workerList, roles, accountRoles } = useSelector(
-    (state) => state.worker,
-  );
+  const {
+    worker: { workerList },
+    Accounts: { employeeRoles, accountRoles },
+  } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,8 +43,8 @@ export default function WorkerView() {
       dispatch(getWorkerList());
     }
     dispatch(getRoleList());
+    dispatch(getAccountRoles());
   }, []);
-
   const addWorker = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
@@ -54,8 +55,11 @@ export default function WorkerView() {
       if (data?.payload?.success) {
         setRole_id("");
         toast(data?.payload?.message, { position: "top-left" });
+        dispatch(getWorkerList());
+        setOpen(false);
       } else {
         toast.error(data?.payload?.message, { position: "top-left" });
+        setOpen(true);
       }
     });
   };
@@ -75,14 +79,13 @@ export default function WorkerView() {
             />
             <SheetContent>
               <SheetHeader>
-                <SheetTitle className={"text-header heading-normal"}>
-                  employee
+                <SheetTitle className={"text-header heading-normal "}>
+                  new employee data
                 </SheetTitle>
-                <SheetDescription></SheetDescription>
               </SheetHeader>
 
               <form onSubmit={addWorker}>
-                <div className="flex  flex-col  gap-normal px-3.5">
+                <div className="flex  flex-col  gap-7 px-3.5">
                   <Input
                     className={"h-12"}
                     type={"email"}
@@ -92,7 +95,7 @@ export default function WorkerView() {
                   ></Input>
                   <Select
                     onValueChange={(role) => {
-                      const selectedRole = roles.find(
+                      const selectedRole = employeeRoles.find(
                         (item) => item.role_name === role,
                       );
                       setRole_id(selectedRole.role_id);
@@ -102,7 +105,7 @@ export default function WorkerView() {
                       <SelectValue placeholder="Role" />
                     </SelectTrigger>
                     <SelectContent className={"w-2xs bg-card "}>
-                      {roles.map((item) => (
+                      {employeeRoles?.map((item) => (
                         <SelectItem
                           key={item.role_id}
                           value={item.role_name}
@@ -137,15 +140,15 @@ export default function WorkerView() {
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
-                <div className="mt-3.5 flex items-center justify-center">
-                  <Button
-                    type="submit"
-                    variant="secondary"
-                    className={"w-2xs h-12"}
-                  >
-                    add Employee
-                  </Button>
+                  <div className="mt-3.5 flex items-center justify-center">
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      className={"w-2xs h-12"}
+                    >
+                      add Employee
+                    </Button>
+                  </div>
                 </div>
               </form>
             </SheetContent>

@@ -23,6 +23,9 @@ const EmployeeRoles = lazy(
 const AccountsRoles = lazy(
   () => import("@/pages/system/accountsMangament/accounts-role"),
 );
+const Accounts = lazy(
+  () => import("@/pages/system/accountsMangament/accounts"),
+);
 const SystemDashboard = lazy(() => import("@/pages/system/dashboard"));
 
 // Common
@@ -179,7 +182,7 @@ export default function AppRoutes() {
           <Route path="dashboard" element={<SystemDashboard />} />
           <Route path="management">
             <Route path="employee-roles" element={<EmployeeRoles />} />
-            <Route path="accounts" element={<EmployeeRoles />} />
+            <Route path="accounts" element={<Accounts />} />
             <Route path="accounts-roles" element={<AccountsRoles />} />
           </Route>
         </Route>

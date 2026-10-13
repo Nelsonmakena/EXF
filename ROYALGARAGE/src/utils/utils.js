@@ -33,3 +33,15 @@ export const formatTime = (timestamp) => {
 
   return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
 };
+
+//avatar formatter 
+
+export const AvatarFormatter =(name)=>{
+if(name){
+  return name[0].toUpperCase()
+}
+else {
+return "R"
+}
+   
+}

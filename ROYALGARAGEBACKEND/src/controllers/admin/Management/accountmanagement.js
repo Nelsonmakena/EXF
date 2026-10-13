@@ -54,13 +54,34 @@ export const deleteAccountRole = async (req, res) => {
     res.json({ success: false, message: "server error" });
   }
 };
+
+//employee roles
+
+//displaying roles
+
+export const roleList = async (req, res) => {
+  try {
+    const list = await pool.query(
+      "SELECT role_name,role_description ,roles.role_id ,COUNT(employee_id)AS total_number FROM roles LEFT JOIN employee ON employee.role_id = roles.role_id  GROUP BY roles.role_id ,role_name ORDER BY role_name ASC",
+    );
+
+    res.status(200).json({
+      success: true,
+      data: list.rows,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "server error" });
+  }
+};
+
 export const updateRoleInfo = async (req, res) => {
   const { account_role_id } = req.params;
   const { role_name, role_description } = req.body;
   try {
     await pool.query(
-      "UPDATE account_roles SET role_name =$1 , role_description = $2 ",
-      [role_name, role_description],
+      "UPDATE account_roles SET role_name =$1 , role_description = $2  WHERE account_role_id = $3",
+      [role_name, role_description, account_role_id],
     );
     res.status(200).json({
       success: true,
@@ -115,5 +136,49 @@ export const removeRole = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: "role cant be deleted" });
+  }
+};
+
+//view of all account both employee and client
+
+export const accountsList = async (req, res) => {
+  try {
+    const accounts = await pool.query(
+      `SELECT a.account_id ,a.is_active ,a.email ,a.created_at ,e.first_name,e.second_name , e.last_name ,e.employee_id ,c.first_name , c.second_name ,c.last_name, c.client_id    
+      FROM accounts a  
+      LEFT JOIN employee e ON e.account_id = a.account_id
+      LEFT JOIN client c ON c.account_id = a.account_id`,
+    );
+    const clientsNoAccounts = await pool.query(
+      "SELECT * FROM client c WHERE c.account_id IS NULL",
+    );
+    const response = [...accounts.rows, ...clientsNoAccounts.rows];
+    const result = response.reduce((acc, item) => {
+      let findAccount = acc.find(
+        (account) => account.account_id === item.account_id,
+      );
+
+      if (!findAccount) {
+        findAccount = {
+          account_id: item.account_id,
+          email: item.email,
+          first_name: item.first_name,
+          last_name: item.last_name,
+          is_active: item.is_active,
+          owner: item.employee_id ? "employee" : "client",
+          type: item.account_id ? "account-present" : "no-account-present",
+        };
+
+        acc.push(findAccount);
+      }
+      return acc;
+    }, []);
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "list cant be displayed " });
   }
 };

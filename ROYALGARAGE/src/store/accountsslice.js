@@ -2,10 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  AccountRoles: [],
+  accountRoles: [],
   Accounts: [],
   employeeRoles: [],
 };
+//list of all accounts
+export const getAccounts = createAsyncThunk("/accounts", async () => {
+  const response = await axios.get("/api/system/accounts", {
+    withCredentials: true,
+  });
+  console.log(response.data);
+
+  return response.data;
+});
 
 export const getAccountRoles = createAsyncThunk("/accounts-roles", async () => {
   const response = await axios.get("/api/system/account", {
@@ -66,13 +75,11 @@ export const deleteRole = createAsyncThunk(
     return response.data;
   },
 );
-//role list in system
-export const getRoleList = createAsyncThunk("admin/role-list", async () => {
-  const response = await axios.get(
-    "/api/shared/role-list",
-
-    { withCredentials: true },
-  );
+//employee role list in system
+export const getRoleList = createAsyncThunk("/employee-role-list", async () => {
+  const response = await axios.get("/api/system/employee-roles", {
+    withCredentials: true,
+  });
 
   return response.data;
 });
@@ -83,10 +90,10 @@ export const AccountSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAccountRoles.fulfilled, (state, action) => {
-        state.AccountRoles = action.payload.data;
+        state.accountRoles = action.payload.data;
       })
       .addCase(newAccountRole.fulfilled, (state, action) => {
-        state.AccountRoles.push(action.payload.data);
+        state.accountRoles.push(action.payload.data);
       })
       .addCase(getRoleList.fulfilled, (state, action) => {
         state.employeeRoles = action.payload.data;
@@ -98,6 +105,9 @@ export const AccountSlice = createSlice({
             (role) => role.role_id !== deletedRoleID,
           );
         }
+      })
+      .addCase(getAccounts.fulfilled, (state, action) => {
+        state.Accounts = action.payload.data;
       });
   },
 });
