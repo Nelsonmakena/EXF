@@ -122,7 +122,7 @@ export const login = async (req, res) => {
 
   try {
     const response = await pool.query(
-      `SELECT a.email ,a.password_hash,a.account_id,c.first_name,c.last_name, c.client_id ,a.first_time_login ,r.role_name
+      `SELECT a.email ,a.password_hash,a.account_id,c.first_name,c.last_name, c.client_id ,a.first_time_login a.is_active ,r.role_name
       FROM accounts a
        JOIN client c ON c.account_id =a.account_id 
         JOIN account_roles r ON r.account_role_id = a.account_role_id
@@ -137,7 +137,7 @@ export const login = async (req, res) => {
     }
     const user = response.rows[0];
 
-    if (bcrypt.compareSync(password, user.password_hash)) {
+    if (bcrypt.compareSync(password, user.password_hash) && user.is_active) {
       const info = {
         account_id: user.account_id,
         first_time_login: user.first_time_login,
@@ -170,7 +170,7 @@ export const workerLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const response = await pool.query(
-      `SELECT a.email ,a.password_hash,a.account_id,e.first_name,e.last_name, e.employee_id ,a.first_time_login ,r.role_name AS employee_role,ar.role_name
+      `SELECT a.email ,a.password_hash,a.account_id,e.first_name,e.last_name, e.employee_id ,a.first_time_login , a.is_active,r.role_name AS employee_role,ar.role_name
       FROM accounts a
        JOIN employee e ON e.account_id =a.account_id 
         JOIN account_roles ar ON ar.account_role_id = a.account_role_id
@@ -186,7 +186,7 @@ export const workerLogin = async (req, res) => {
     }
     const user = response.rows[0];
 
-    if (bcrypt.compareSync(password, user.password_hash)) {
+    if (bcrypt.compareSync(password, user.password_hash) && user.is_active) {
       const info = {
         account_id: user.account_id,
         first_time_login: user.first_time_login,

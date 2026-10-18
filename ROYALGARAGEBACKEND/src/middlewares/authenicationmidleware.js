@@ -11,7 +11,6 @@ export const authenticateMiddleware = (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, ENV.JWT_SECRET_KEY);
     req.userinfo = decodedToken;
-
     next();
   } catch (error) {
     console.log(error.message);
@@ -33,6 +32,7 @@ export const adminChecker = (req, res, next) => {
     });
   } catch (error) {
     console.log(error.message);
+    return res.json({ success: false, message: "error" });
   }
 };
 

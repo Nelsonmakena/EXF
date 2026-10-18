@@ -49,6 +49,7 @@ export default function AccountCard({ item, isSystem, isAdmin, actions }) {
           </span>
         </div>
       )}
+      {isSystem && <div></div>}
     </div>
   );
 }
