@@ -11,6 +11,7 @@ git pull
 
 echo "Building frontend..."
 cd ROYALGARAGE
+npm ci
 npm run build
 
 echo "Updating production frontend..."
