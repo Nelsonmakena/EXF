@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 
 import { Mail, Map, Pen, Phone } from "lucide-react";
 
-import Loader from "@/Comp/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getClientProfile } from "@/store/client";
 import { Button } from "@/components/ui/button";
@@ -25,10 +24,6 @@ export default function ProfileEdit() {
   useEffect(() => {
     dispatch(getClientProfile());
   }, []);
-
-  if (!profileInfo) {
-    return <Loader />;
-  }
 
   return (
     <>
