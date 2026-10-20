@@ -8,6 +8,7 @@ import {
   removeRole,
   roleList,
   accountsList,
+  accountDeactivation,
 } from "../controllers/admin/Management/accountmanagement.js";
 import {
   authenticateMiddleware,
@@ -24,8 +25,12 @@ Router.get("/employee-roles", authenticateMiddleware, CommonChecker, roleList);
 
 //
 Router.use(authenticateMiddleware, superAdminChecker);
+
 //adding new account role
 Router.post("/account", newAccountRole);
+
+//deactivate an account
+Router.delete("/account", accountDeactivation);
 
 Router.get("/accounts", accountsList);
 

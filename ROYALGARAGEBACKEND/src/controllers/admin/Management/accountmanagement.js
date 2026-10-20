@@ -182,3 +182,19 @@ export const accountsList = async (req, res) => {
     res.json({ success: false, message: "list cant be displayed " });
   }
 };
+
+//deactivate account
+
+export const accountDeactivation = async (req, res) => {
+  const { account_id } = req.body;
+  try {
+    const response = await pool.query(
+      "UPDATE account SET is_active = $1 WHERE account_id = $2 RETURNING account_id,email ",
+      ["true", account_id],
+    );
+    res.status(200).json({ success: true, message: "account deactivated" });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "account cannot be deactivated " });
+  }
+};
