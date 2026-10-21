@@ -11,26 +11,51 @@ import {
   Plus,
   Wrench,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deactivateAccount, getAccount } from "@/store/accountsslice";
+import { toast } from "sonner";
 export default function SingleAccount() {
+  const { account } = useSelector((state) => state.Accounts);
   const { account_id } = useParams();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAccount(account_id));
+  }, []);
+
+  const accountConfigure = async () => {
+    const data = {
+      account_id: account.account_id,
+      state: account.is_active ? "false" : "true",
+    };
+    console.log(data);
+    dispatch(deactivateAccount(data)).then((results) => {
+      if (results.payload.success) {
+        toast(results.payload.message);
+        dispatch(getAccount(account_id));
+      } else {
+        toast(results.payload.message);
+      }
+    });
+  };
+
   return (
     <section>
-      <div className="rounded-2xl border bg-card p-5 shadow-sm md:p-6">
+      <div className="rounded-2xl  bg-card p-5  md:p-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-semibold text-primary">
-              {/* {clientInfo.info.first_name[0].toUpperCase()}
-              {clientInfo.info.last_name[0].toUpperCase()} */}
-            </div>
-
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-bold md:text-2xl">
-                  {/* {clientInfo.info.first_name} */}
+                  {account.first_name}
+                  {account.last_name}
                 </h1>
 
-                <span className="rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
-                  Active
+                <span
+                  className={`rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium ${account.is_active ? "text-accent" : "text-destructive"} `}
+                >
+                  {account.is_active ? "Active" : "banned"}
                 </span>
               </div>
 
@@ -54,10 +79,12 @@ export default function SingleAccount() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <Button variant="outline">Edit Client</Button>
-
-            <Button variant="outline" size="icon" className="rounded-lg">
-              <MoreHorizontal size={18} />
+            <Button
+              size="lg"
+              variant={`${account.is_active ? "destructive" : "secondary"}`}
+              onClick={() => accountConfigure()}
+            >
+              {account.is_active ? "de-activate" : "activate"}
             </Button>
           </div>
         </div>

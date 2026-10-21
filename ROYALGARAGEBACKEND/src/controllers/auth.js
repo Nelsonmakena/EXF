@@ -137,7 +137,13 @@ export const login = async (req, res) => {
     }
     const user = response.rows[0];
 
-    if (bcrypt.compareSync(password, user.password_hash) && user.is_active) {
+    if (bcrypt.compareSync(password, user.password_hash)) {
+      if (!user.is_active) {
+        return res.json({
+          success: false,
+          message: "you account has been deactivated contact admin",
+        });
+      }
       const info = {
         account_id: user.account_id,
         first_time_login: user.first_time_login,

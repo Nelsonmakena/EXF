@@ -5,7 +5,9 @@ const initialState = {
   accountRoles: [],
   Accounts: [],
   employeeRoles: [],
+  account: {},
 };
+//accounts
 //list of all accounts
 export const getAccounts = createAsyncThunk("/accounts", async () => {
   const response = await axios.get("/api/system/accounts", {
@@ -16,6 +18,21 @@ export const getAccounts = createAsyncThunk("/accounts", async () => {
   return response.data;
 });
 
+export const getAccount = createAsyncThunk("/account", async (account_id) => {
+  const response = await axios.get(`/api/system/account/${account_id}`, {
+    withCredentials: true,
+  });
+  return response.data;
+});
+export const deactivateAccount = createAsyncThunk(
+  "/deactivate",
+  async (data) => {
+    const response = await axios.patch(`/api/system/account`, data, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+);
 export const getAccountRoles = createAsyncThunk("/accounts-roles", async () => {
   const response = await axios.get("/api/system/account-roles", {
     withCredentials: true,
@@ -52,6 +69,8 @@ export const updateAccountRole = createAsyncThunk(
     return response.data;
   },
 );
+
+//employee
 //adding  employee roles
 
 export const newRole = createAsyncThunk("system/new-role", async (data) => {
@@ -108,6 +127,9 @@ export const AccountSlice = createSlice({
       })
       .addCase(getAccounts.fulfilled, (state, action) => {
         state.Accounts = action.payload.data;
+      })
+      .addCase(getAccount.fulfilled, (state, action) => {
+        state.account = action.payload.data;
       });
   },
 });

@@ -47,7 +47,6 @@ export const AvatarFormatter = (name, fallback) => {
 //stirring length checker and formatter
 
 export const stringChecker = (string, length) => {
-  let color;
   if (string.length === length) {
     const formatted = string[0].toUpperCase() + string.slice(1);
     return formatted;

@@ -188,25 +188,34 @@ export const singleAccountView = async (req, res) => {
   const { account_id } = req.params;
   try {
     const response = await pool.query(
-      `SELECT * FROM accounts a LEFT JOIN employee e ON a.account_id = e.account_id LEFT JOIN client c ON c.account_id = a.account_id WHERE a.account_id = $1  `,
+      `SELECT r.role_name , a.account_id , e.first_name , e.last_name , c.first_name ,c.last_name , a.email , a.is_active , a.created_at  FROM accounts a LEFT JOIN employee e ON a.account_id = e.account_id LEFT JOIN client c ON c.account_id = a.account_id  
+      LEFT JOIN account_roles ar ON ar.account_role_id = a.account_role_id
+      LEFT JOIN roles r ON r.role_id = e.role_id 
+      WHERE a.account_id = $1  `,
       [account_id],
     );
-    res.status(200).json({ success: true, data: response.rows });
+    res.status(200).json({ success: true, data: response.rows[0] });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: "info cant be fetched " });
   }
 };
-//deactivate account
 
-export const accountDeactivation = async (req, res) => {
-  const { account_id } = req.body;
+//deactivate & activate  account
+
+export const accountAltering = async (req, res) => {
+  const { account_id, state } = req.body;
+  console.log(state);
+
   try {
     const response = await pool.query(
-      "UPDATE account SET is_active = $1 WHERE account_id = $2 RETURNING account_id,email ",
-      ["true", account_id],
+      "UPDATE accounts SET is_active = $1 WHERE account_id = $2 RETURNING account_id,email ,is_active ",
+      [state, account_id],
     );
-    res.status(200).json({ success: true, message: "account deactivated" });
+    res.status(200).json({
+      success: true,
+      message: `account of email ${response.rows[0].email} ${response.rows[0].is_active ? " activated" : "deactivated"} `,
+    });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: "account cannot be deactivated " });

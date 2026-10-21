@@ -8,7 +8,7 @@ import {
   removeRole,
   roleList,
   accountsList,
-  accountDeactivation,
+  accountAltering,
   singleAccountView,
 } from "../controllers/admin/Management/accountmanagement.js";
 import {
@@ -43,11 +43,11 @@ Router.delete("/employee-role/:role_id", removeRole);
 
 //accounts
 //deactivate an account
-Router.patch("/account", accountDeactivation);
+Router.patch("/account", accountAltering);
 //list of accounts
 Router.get("/accounts", accountsList);
 //single account info
-Router.get("/accounts/:account_id", singleAccountView);
+Router.get("/account/:account_id", singleAccountView);
 
 //new admin
 Router.post("/new-admin", newAdmin);
