@@ -182,7 +182,21 @@ export const accountsList = async (req, res) => {
     res.json({ success: false, message: "list cant be displayed " });
   }
 };
+// single account view
 
+export const singleAccountView = async (req, res) => {
+  const { account_id } = req.params;
+  try {
+    const response = await pool.query(
+      `SELECT * FROM accounts a LEFT JOIN employee e ON a.account_id = e.account_id LEFT JOIN client c ON c.account_id = a.account_id WHERE a.account_id = $1  `,
+      [account_id],
+    );
+    res.status(200).json({ success: true, data: response.rows });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "info cant be fetched " });
+  }
+};
 //deactivate account
 
 export const accountDeactivation = async (req, res) => {

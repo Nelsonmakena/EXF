@@ -134,16 +134,20 @@ export const Clients = async (req, res) => {
 
 export const clientInfo = async (req, res) => {
   const { client_id } = req.params;
+  console.log(client_id);
+
   try {
     const client = await pool.query(
-      `SELECT first_name,second_name,last_name,email,c.client_id, address,vehicle_brand,vehicle.vehicle_id,vehicle_color,vehicle_model,license_plate, j.job_id,job_services_id,service_name ,appointment_day,c.created_at,added_at ,phone_number 
+      `SELECT first_name,second_name,last_name,email,c.client_id,
+vehicle_brand,v.vehicle_id,vehicle_color,vehicle_model,license_plate, 
+j.job_id,job_services_id,service_name ,appointment_day,c.created_at,added_at ,phone_number 
       FROM client c 
       JOIN accounts a ON a.account_id = c.account_id 
       LEFT JOIN vehicle v ON v.client_id=c.client_id 
       LEFT JOIN jobs j ON j.vehicle_id = v.vehicle_id 
       LEFT JOIN job_services s  ON s.job_id = j.job_id 
-      LEFT JOIN services ON job_services.service_id= s.service_id 
-      WHERE client.client_id=$1`,
+      LEFT JOIN services ON s.service_id= s.service_id 
+      WHERE c.client_id=$1`,
       [client_id],
     );
 

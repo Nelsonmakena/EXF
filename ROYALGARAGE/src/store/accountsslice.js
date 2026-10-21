@@ -17,7 +17,7 @@ export const getAccounts = createAsyncThunk("/accounts", async () => {
 });
 
 export const getAccountRoles = createAsyncThunk("/accounts-roles", async () => {
-  const response = await axios.get("/api/system/account", {
+  const response = await axios.get("/api/system/account-roles", {
     withCredentials: true,
   });
   return response.data;
@@ -25,7 +25,7 @@ export const getAccountRoles = createAsyncThunk("/accounts-roles", async () => {
 export const newAccountRole = createAsyncThunk(
   "new-account-role",
   async (data) => {
-    const response = await axios.post("/api/system/account", data, {
+    const response = await axios.post("/api/system/account-role", data, {
       withCredentials: true,
     });
     return response.data;
@@ -35,7 +35,7 @@ export const removeAccountRole = createAsyncThunk(
   "delete-accountRole",
   async (account_role_id) => {
     const response = await axios.delete(
-      `/api/system/account/${account_role_id}`,
+      `/api/system/account-role/${account_role_id}`,
       { withCredentials: true },
     );
     return response.data;
@@ -45,7 +45,7 @@ export const updateAccountRole = createAsyncThunk(
   "update-accountRole",
   async (data) => {
     const response = await axios.delete(
-      `/api/system/account/${data.account_role_id}`,
+      `/api/system/account-role/${data.account_role_id}`,
       data,
       { withCredentials: true },
     );
