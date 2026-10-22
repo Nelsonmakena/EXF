@@ -11,15 +11,15 @@ import SecondaryNav from "./secondarynav";
 
 import { AdminMenuItems } from "@/utils/menuitems";
 export default function AdminIndex() {
-  const [hideMenu, setHideMenu] = useState(false);
+  const [hideMenu, setHideMenu] = useState(true);
 
   return (
     <>
       <main className="flex  ">
         <div
-          className={` ${hideMenu == true ? "hidden" : "min-h-svh md:w-64 bg-secondary rounded-tr-[40px]    "} `}
+          className={` bg-secondary rounded-tr-[40px] ${hideMenu == true ? "w-20" : "min-h-svh md:w-64     "} `}
         >
-          <AdminNav menuItems={AdminMenuItems} />
+          <AdminNav menuItems={AdminMenuItems} hideMenu={hideMenu} />
         </div>
 
         <div

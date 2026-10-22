@@ -7,13 +7,17 @@ import SecondaryNav from "../ADMIN/pages/secondarynav";
 import { useState } from "react";
 
 export default function SystemIndex() {
-  const [hideMenu, setHideMenu] = useState(false);
+  const [hideMenu, setHideMenu] = useState(true);
   return (
     <main className="flex  ">
       <div
-        className={` ${hideMenu == true ? "hidden" : "min-h-svh md:w-64 bg-primary rounded-tr-[40px]    "} `}
+        className={` bg-primary  ${hideMenu == true ? "w-20" : "min-h-svh md:w-64 rounded-tr-[40px]    "} `}
       >
-        <AdminNav menuItems={SystemMenuItems} initiator={"system"} />
+        <AdminNav
+          menuItems={SystemMenuItems}
+          initiator={"system"}
+          hideMenu={hideMenu}
+        />
       </div>
 
       <div className={`flex flex-col w-full  overflow-hidden `}>

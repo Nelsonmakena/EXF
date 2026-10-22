@@ -6,32 +6,38 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-export default function AdminNav({ menuItems, initiator }) {
+export default function AdminNav({ menuItems, initiator, hideMenu }) {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
+  console.log(hideMenu);
 
   return (
-    <div className="section flex flex-col gap-normal">
+    <div className="section flex flex-col gap-9 ">
       {menuItems.map((item) => {
         const Icon = item.icon;
-        console.log(item.path);
 
         // No submenu → normal navigation
         if (!item.subMenu?.length) {
           return (
-            <button
+            <div
               key={item.name}
               onClick={() => navigate(item.path)}
-              className={`w-full h-15 flex items-center gap-7 px-4 ${
+              className={`flex items-center gap-7 px-4 ${
                 path.includes(item.path)
-                  ? "bg-card rounded-l-2xl tracking-widest"
+                  ? !hideMenu
+                    ? " h-15  bg-card rounded-l-2xl tracking-widest "
+                    : "bg-card h-20"
                   : "font-bold bg-none"
               }`}
             >
-              <Icon />
-              {item.name}
-            </button>
+              <div
+                className={` h-full  w-full items-center gap-normal  ${hideMenu ? " flex flex-col text-xs items-center" : "flex"}`}
+              >
+                <Icon />
+                {item.name}
+              </div>
+            </div>
           );
         }
 
@@ -39,16 +45,22 @@ export default function AdminNav({ menuItems, initiator }) {
         return (
           <DropdownMenu key={item.name}>
             <DropdownMenuTrigger asChild>
-              <button
-                className={`w-full h-15 flex items-center gap-7 px-4 ${
+              <div
+                className={`flex items-center justify-center px-4  ${
                   path.includes(item.parent)
-                    ? "bg-card rounded-l-2xl tracking-widest"
+                    ? hideMenu
+                      ? " h-20 bg-card "
+                      : "bg-card h-15 rounded-l-2xl tracking-widest "
                     : "font-bold bg-none "
                 }`}
               >
-                <Icon />
-                {item.name}
-              </button>
+                <div
+                  className={` h-full  w-full items-center gap-normal  ${hideMenu ? " flex flex-col text-xs items-center justify-center" : "flex"}`}
+                >
+                  <Icon />
+                  {item.name}
+                </div>
+              </div>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent side="right" align="start" className="w-52">
