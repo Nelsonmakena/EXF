@@ -55,7 +55,7 @@ export const addUser = async (req, res) => {
 ///new worker
 
 export const addWorker = async (req, res) => {
-  const { email, role_id, account_role } = req.body;
+  const { email, role_id, account_role, position } = req.body;
   const password = ENV.DEFAULT_PASSWORD;
   const password_hash = bcrypt.hashSync(password, salt);
   const client = await pool.connect();
@@ -68,8 +68,8 @@ export const addWorker = async (req, res) => {
     );
     const accountId = newAccount.rows[0].account_id;
     const newEmployee = await client.query(
-      "INSERT INTO employee (account_id , role_id) VALUES ($1,$2)",
-      [accountId, role_id],
+      "INSERT INTO employee (account_id , role_id,position ) VALUES ($1,$2,$3)",
+      [accountId, role_id, position],
     );
     await client.query("COMMIT");
     res.status(200).json({ success: true, message: " account created " });

@@ -13,8 +13,6 @@ export const getAccounts = createAsyncThunk("/accounts", async () => {
   const response = await axios.get("/api/system/accounts", {
     withCredentials: true,
   });
-  console.log(response.data);
-
   return response.data;
 });
 

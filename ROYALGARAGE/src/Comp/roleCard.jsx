@@ -84,32 +84,33 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
   };
 
   return (
-    <div
-      className={`rounded-xl border p-4 transition cursor-pointer ${item?.total_number > 0 ? "border-primary/20" : "border-destructive/20"}`}
-    >
+    <div className="rounded-md p-4 transition cursor-pointer shadow-sm border">
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <div className="min-w-0">
             <h3 className="truncate text-sm font-semibold text-primary ">
-              {item.role_name}
+              {item.role_name || item.position_name}
             </h3>
 
             <p className="mt-0.5 text-xs text-gray-500">
-              {item.role_description}
+              {item.role_description || item.position_description}
             </p>
           </div>
         </div>
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <h1 className="text-[12px] tracking-widest text-muted">
-          total employees
-          <span
-            className={`font-bold px-2 ${item.total_number > 0 ? "text-accent" : "text-destructive"}`}
-          >
-            {item?.total_number}
-          </span>
-        </h1>
+        {item?.total_number && (
+          <h1 className="text-[12px] tracking-widest text-muted">
+            total employees
+            <span
+              className={`font-bold px-2 ${item.total_number > 0 ? "text-accent" : "text-destructive"}`}
+            >
+              {item?.total_number}
+            </span>
+          </h1>
+        )}
+
         {isSystem && (
           <Dialog open={openDeleteDialog} onOpenChange={SetOpenDeleteDialog}>
             <DialogTrigger

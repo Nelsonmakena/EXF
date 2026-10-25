@@ -19,8 +19,6 @@ export default function Authenticated({ children }) {
   }, [dispatch, location.pathname]);
 
   const path = location.pathname;
-  console.log(isLoading);
-
   if (isLoading) {
     return <h1>loading</h1>;
   }

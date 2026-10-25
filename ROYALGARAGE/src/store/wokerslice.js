@@ -6,6 +6,7 @@ import {
 import axios from "axios";
 
 const initialState = {
+  positions: [],
   workerList: [],
   roles: [],
   noWork: [],
@@ -54,6 +55,24 @@ export const addNewWorker = createAsyncThunk(
 export const updateProfile = createAsyncThunk("employee-profile", async () => {
   const response = await axios.post("/api/");
 });
+
+//list of positions
+
+export const positionList = createAsyncThunk("positions", async () => {
+  const response = await axios.get("/api/system/positions", {
+    withCredentials: true,
+  });
+  return response.data;
+});
+
+// adding a new position
+export const newPosition = createAsyncThunk("new-position", async (data) => {
+  const response = await axios.put("/api/system/positions", data, {
+    withCredentials: true,
+  });
+  return response.data;
+});
+
 const workerSlice = createSlice({
   name: "worker",
   initialState,
@@ -65,6 +84,9 @@ const workerSlice = createSlice({
       })
       .addCase(getNonUnassigned.fulfilled, (state, action) => {
         state.noWork = action.payload.data;
+      })
+      .addCase(positionList.fulfilled, (state, action) => {
+        state.positions = action.payload.data;
       });
   },
 });

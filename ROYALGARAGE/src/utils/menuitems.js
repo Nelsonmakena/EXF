@@ -108,8 +108,13 @@ export const SystemMenuItems = [
     icon: LayoutDashboard,
     subMenu: [
       {
-        name: "Employee-positions",
+        name: "Employee-roles",
         path: "/misc/management/employee-roles",
+        icon: IdCardLanyard,
+      },
+      {
+        name: "Employee-positions",
+        path: "/misc/management/employee-positions",
         icon: IdCardLanyard,
       },
       {
