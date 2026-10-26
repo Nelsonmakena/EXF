@@ -54,3 +54,12 @@ export const stringChecker = (string, length) => {
     return;
   }
 };
+
+//custom dropdown menu converter
+
+export const convertArray = (array, idKey, nameKey) => {
+  return array?.map((u) => ({
+    id: u[idKey],
+    name: u[nameKey],
+  }));
+};

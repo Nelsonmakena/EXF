@@ -23,17 +23,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewWorker, getWorkerList } from "@/store/wokerslice";
+import { addNewWorker, getWorkerList, positionList } from "@/store/wokerslice";
 import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
 import { User } from "lucide-react";
 import { getAccountRoles, getRoleList } from "@/store/accountsslice";
+import CustomDropDown from "@/Comp/customdropdown";
+import { convertArray } from "@/utils/utils";
 
 export default function WorkerView() {
-  const [role_id, setRole_id] = useState();
-  const [accountRole, setAccountRole] = useState();
+  const [id, setId] = useState({
+    account_role_id: "",
+    role_id: "",
+    position_id: "",
+  });
   const {
-    worker: { workerList },
+    worker: { workerList, positions },
     Accounts: { employeeRoles, accountRoles },
   } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
@@ -44,7 +49,15 @@ export default function WorkerView() {
     }
     dispatch(getRoleList());
     dispatch(getAccountRoles());
+    dispatch(positionList());
   }, []);
+
+  //handling the selected id's
+  const handleSelected = (field, id) => {
+    setId((prev) => ({ ...prev, [field]: id }));
+  };
+
+  //add a new employee
   const addWorker = async (e) => {
     e.preventDefault();
     const formdata = new FormData(e.target);
@@ -93,53 +106,34 @@ export default function WorkerView() {
                     name="email"
                     required
                   ></Input>
-                  <Select
-                    onValueChange={(role) => {
-                      const selectedRole = employeeRoles.find(
-                        (item) => item.role_name === role,
-                      );
-                      setRole_id(selectedRole.role_id);
-                    }}
-                  >
-                    <SelectTrigger className={"w-full "}>
-                      <SelectValue placeholder="Role" />
-                    </SelectTrigger>
-                    <SelectContent className={"w-2xs bg-card "}>
-                      {employeeRoles?.map((item) => (
-                        <SelectItem
-                          key={item.role_id}
-                          value={item.role_name}
-                          className={"w-full"}
-                        >
-                          {item.role_name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+
+                  {/* role */}
+                  <CustomDropDown
+                    placeholder={"role"}
+                    item={convertArray(employeeRoles, "role_id", "role_name")}
+                    select={(id) => handleSelected("role_id", id)}
+                  />
                   {/* account type */}
-                  <Select
-                    onValueChange={(role) => {
-                      const selectedRole = accountRoles.find(
-                        (item) => item.role_name === role,
-                      );
-                      setAccountRole(selectedRole.account_role_id);
-                    }}
-                  >
-                    <SelectTrigger className={"w-full "}>
-                      <SelectValue placeholder="account type" />
-                    </SelectTrigger>
-                    <SelectContent className={"w-2xs bg-card  "}>
-                      {accountRoles?.map((item) => (
-                        <SelectItem
-                          key={item.account_role_id}
-                          value={item.role_name}
-                          className={"w-full"}
-                        >
-                          {item.role_name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <CustomDropDown
+                    placeholder={"account_type"}
+                    item={convertArray(
+                      accountRoles,
+                      "account_role_id",
+                      "role_name",
+                    )}
+                    select={(id) => handleSelected("account_role_id", id)}
+                  />
+
+                  {/* position */}
+                  <CustomDropDown
+                    placeholder={"position"}
+                    item={convertArray(
+                      positions,
+                      "position_id",
+                      "position_name",
+                    )}
+                    select={(id) => handleSelected("position_id", id)}
+                  />
                   <div className="mt-3.5 flex items-center justify-center">
                     <Button
                       type="submit"
