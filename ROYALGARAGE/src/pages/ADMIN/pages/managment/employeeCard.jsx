@@ -1,20 +1,27 @@
-import { useState } from "react";
-import { Check } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { Check, Square, SquarePen } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { AssignJob, jobInfo } from "@/store/jobsslice";
 import { toast } from "sonner";
 import { getWorkerList } from "@/store/wokerslice";
 import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import CustomSheet from "@/Comp/custom-sheet";
+import { editWorkerSelects } from "@/utils/inputs";
 
 export default function EmployeeCard({
   employee,
   jobServiceId,
   job_id,
   canAssign,
+  positions,
+  roles,
 }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const isAvailable = !employee.jobs.length;
+  editWorkerSelects.position.data = positions;
+  editWorkerSelects.role.data = roles;
 
   const assignJob = async () => {
     if (!jobServiceId) {
@@ -96,6 +103,20 @@ export default function EmployeeCard({
             {loading ? <Spinner /> : "assign"}
           </button>
         )}
+        {/* actions
+
+        <Button size="icon">
+          <SquarePen />
+
+        </Button> */}
+        <div>
+          {/* <CustomSheet
+            trigger={{ name: "edit", icon: SquarePen }}
+            initiator={"small"}
+            label={"update"}
+            selects={editWorkerSelects}
+          /> */}
+        </div>
       </div>
     </div>
   );

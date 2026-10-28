@@ -39,8 +39,6 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
   const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
   const dispatch = useDispatch();
   const changeItem = (actions) => {
-    console.log(actions);
-
     switch (actions) {
       case "removeAccountRole":
         dispatch(removeAccountRole(item.account_role_id)).then((results) => {
@@ -140,48 +138,49 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
             </DialogContent>
           </Dialog>
         )}
-        {isSystem | isAdmin && (
-          <Sheet
-          // open={open} onOpenChange={setOpen}
-          >
-            <SheetTrigger
-              render={
-                <Button size="icon">
-                  <SquarePen />
-                </Button>
-              }
-            />
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle className={"text-header heading-normal"}>
-                  {item.role_name}
-                </SheetTitle>
-                <SheetDescription></SheetDescription>
-              </SheetHeader>
+        {isSystem ||
+          (isAdmin && (
+            <Sheet
+            // open={open} onOpenChange={setOpen}
+            >
+              <SheetTrigger
+                render={
+                  <Button size="icon">
+                    <SquarePen />
+                  </Button>
+                }
+              />
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle className={"text-header heading-normal"}>
+                    {item.role_name}
+                  </SheetTitle>
+                  <SheetDescription></SheetDescription>
+                </SheetHeader>
 
-              <form className="flex  flex-col px-3.5 gap-10 ">
-                <Input
-                  className={"h-12"}
-                  placeholder={item.role_name}
-                  name="role_name"
-                ></Input>
-                <Input
-                  className={"h-12"}
-                  placeholder="role_description"
-                  name="role_description"
-                ></Input>
+                <form className="flex  flex-col px-3.5 gap-10 ">
+                  <Input
+                    className={"h-12"}
+                    placeholder={item.role_name}
+                    name="role_name"
+                  ></Input>
+                  <Input
+                    className={"h-12"}
+                    placeholder="role_description"
+                    name="role_description"
+                  ></Input>
 
-                <Button
-                  type="submit"
-                  variant={`${isSystem ? "default" : "secondary"}`}
-                  className="w-2xs h-12"
-                >
-                  update
-                </Button>
-              </form>
-            </SheetContent>
-          </Sheet>
-        )}
+                  <Button
+                    type="submit"
+                    variant={`${isSystem ? "default" : "secondary"}`}
+                    className="w-2xs h-12"
+                  >
+                    update
+                  </Button>
+                </form>
+              </SheetContent>
+            </Sheet>
+          ))}
       </div>
     </div>
   );

@@ -521,3 +521,62 @@
     Reports
   </button>
 </div>;
+
+//
+//
+//
+//
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetTrigger
+    render={
+      <Button className={"h-11 w-30"}>
+        {" "}
+        <User /> + employee
+      </Button>
+    }
+  />
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle className={"text-header heading-normal "}>
+        new employee data
+      </SheetTitle>
+    </SheetHeader>
+
+    <form onSubmit={addWorker}>
+      <div className="flex  flex-col  gap-7 px-3.5">
+        <Input
+          className={"h-12"}
+          type={"email"}
+          placeholder="employee-email "
+          name="email"
+          required
+        ></Input>
+
+        {/* role */}
+        <CustomDropDown
+          placeholder={"role"}
+          item={convertArray(employeeRoles, "role_id", "role_name")}
+          select={(id) => handleSelected("role_id", id)}
+        />
+        {/* account type */}
+        <CustomDropDown
+          placeholder={"account_type"}
+          item={convertArray(accountRoles, "account_role_id", "role_name")}
+          select={(id) => handleSelected("account_role_id", id)}
+        />
+
+        {/* position */}
+        <CustomDropDown
+          placeholder={"position"}
+          item={convertArray(positions, "position_id", "position_name")}
+          select={(id) => handleSelected("position_id", id)}
+        />
+        <div className="mt-3.5 flex items-center justify-center">
+          <Button type="submit" variant="secondary" className={"w-2xs h-12"}>
+            add Employee
+          </Button>
+        </div>
+      </div>
+    </form>
+  </SheetContent>
+</Sheet>;

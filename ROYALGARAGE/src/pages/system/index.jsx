@@ -4,10 +4,19 @@ import { LayoutDashboard } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SystemMenuItems } from "@/utils/menuitems";
 import SecondaryNav from "../ADMIN/pages/secondarynav";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SystemIndex() {
-  const [hideMenu, setHideMenu] = useState(true);
+  const [hideMenu, setHideMenu] = useState(() => {
+    const savedMenu = localStorage.getItem("menu");
+    return savedMenu === null ? true : savedMenu === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("menu", hideMenu);
+  }, [hideMenu]);
+  console.log("Saved menu:", localStorage.getItem("menu"));
+  console.log("Current state:", hideMenu);
   return (
     <main className="flex  ">
       <div
