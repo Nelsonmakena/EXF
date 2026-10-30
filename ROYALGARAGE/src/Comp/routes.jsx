@@ -4,8 +4,7 @@ import { lazy, Suspense } from "react";
 // Normal imports — small/common pages
 import Userlogin from "../pages/clients/Userlogin";
 import Pages404 from "./Pages404";
-
-import WkLogin from "../pages/WK/WkLogin";
+import WkLogin from "../pages/employee-module/WkLogin";
 import NotAuth from "./notauth";
 // import NullComponent from "./../pages/null";
 
@@ -14,8 +13,20 @@ import SystemLogin from "./../pages/system/system-login";
 import AdminLogin from "@/pages/ADMIN/pages/Adminlogin";
 import { Spinner } from "@/components/ui/spinner";
 
-///system
+//team-leader-routes
+const TeamLeaderIndex = lazy(
+  () => import("@/pages/employee-module/teamleader/index"),
+);
+const TeamHome = lazy(
+  () => import("@/pages/employee-module/teamleader/pages/home"),
+);
 
+//assessments module routes
+const AssessmentIndex = lazy(
+  () => import("@/pages/employee-module/Assessments/index"),
+);
+
+///system
 const SystemIndex = lazy(() => import("@/pages/system/index"));
 const EmployeeRoles = lazy(
   () => import("@/pages/system/accountsMangament/employee-role"),
@@ -79,12 +90,24 @@ const ClientInfoView = lazy(
 );
 
 // Worker
-const WorkerTemplate = lazy(() => import("@/pages/WK"));
-const WkJobs = lazy(() => import("@/pages/WK/jobs"));
-const WkMessages = lazy(() => import("@/pages/WK/messages"));
-const WkJobCard = lazy(() => import("@/pages/WK/jobcard"));
-const WkSchedule = lazy(() => import("@/pages/WK/schedule"));
-const WorkerDashboard = lazy(() => import("@/pages/WK/dashbaord"));
+const WorkerTemplate = lazy(
+  () => import("@/pages/employee-module/normal-employee/index"),
+);
+const WkJobs = lazy(
+  () => import("@/pages/employee-module/normal-employee/pages/jobs"),
+);
+const WkMessages = lazy(
+  () => import("@/pages/employee-module/normal-employee/pages/messages"),
+);
+const WkJobCard = lazy(
+  () => import("@/pages/employee-module/normal-employee/pages/jobcard"),
+);
+const WkSchedule = lazy(
+  () => import("@/pages/employee-module/normal-employee/pages/schedule"),
+);
+const WorkerDashboard = lazy(
+  () => import("@/pages/employee-module/normal-employee/pages/dashbaord"),
+);
 
 // Authentication
 const Authenticated = lazy(() => import("./authenication/auth"));
@@ -211,6 +234,16 @@ export default function AppRoutes() {
           <Route path="messages" element={<WkMessages />} />
         </Route>
 
+        {/* teamleaderroutes */}
+        <Route path="/unit" element={<TeamLeaderIndex />}>
+          <Route path="home" element={<TeamHome />} />
+        </Route>
+
+        {/* assesments routes */}
+
+        <Route path="/assessment" element={<AssessmentIndex />}>
+          <Route path="home" />
+        </Route>
         {/* 404 */}
         <Route path="*" element={<Pages404 />} />
       </Routes>

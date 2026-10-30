@@ -168,3 +168,14 @@ export const clientMenuItems = [
   { name: "Shop", path: "/client/shop" },
   { name: "Appointments", path: "/client/appointment" },
 ];
+
+export const teamLeaderMenuItems = [
+  { name: "jobs", path: "/client/vehicles" },
+  { name: "in progress", path: "/client/vehicles" },
+  { name: "completed", path: "/client/vehicles" },
+];
+export const assessmentMenuItems = [
+  { name: "jobs", path: "/client/vehicles" },
+  { name: "in progress", path: "/client/vehicles" },
+  { name: "completed", path: "/client/vehicles" },
+];
