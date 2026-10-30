@@ -7,9 +7,38 @@ import { Spinner } from "@/components/ui/spinner";
 import ServiceCard from "../../Comp/ServiceCard";
 
 export default function ClientServices() {
+  const [jobData, setJobData] = useState({
+    vehicle_id: "",
+    appointment_day: "",
+    service_id: "",
+  });
   const { vehicles } = useSelector((state) => state.vehicle);
   const { availableServiceList } = useSelector((state) => state.services);
   const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setJobData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  //getting a new service
+  const newJobSubmission = async (e) => {
+    e.preventDefault();
+
+    dispatch(newJob(jobData)).then((data) => {
+      if (data.payload.success) {
+        toast(data.payload.message);
+        setOpen(false);
+        jobData.appointment_day = "";
+        jobData.vehicle_id = "";
+      } else {
+        toast(data.payload.message);
+        setOpen(true);
+      }
+    });
+  };
   useEffect(() => {
     dispatch(getServices());
     dispatch(getVehiclelist());
@@ -27,10 +56,6 @@ export default function ClientServices() {
             availableServiceList.map((item) => (
               <ServiceCard
                 key={item.service_id}
-                name={item.service_name}
-                price={item.service_price}
-                image={item.service_image}
-                id={item.service_id}
                 vehicles={vehicles}
                 service={item}
                 client={true}

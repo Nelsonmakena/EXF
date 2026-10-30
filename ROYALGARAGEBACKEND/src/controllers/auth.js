@@ -55,7 +55,7 @@ export const addUser = async (req, res) => {
 ///new worker
 
 export const addWorker = async (req, res) => {
-  const { email, role_id, account_role, position } = req.body;
+  const { email, role_id, account_role_id, position } = req.body;
   const password = ENV.DEFAULT_PASSWORD;
   const password_hash = bcrypt.hashSync(password, salt);
   const client = await pool.connect();
@@ -64,7 +64,7 @@ export const addWorker = async (req, res) => {
 
     const newAccount = await client.query(
       "INSERT INTO accounts (password_hash ,email, account_role_id) VALUES ($1,$2,$3) RETURNING account_id ",
-      [password_hash, email, account_role],
+      [password_hash, email, account_role_id],
     );
     const accountId = newAccount.rows[0].account_id;
     const newEmployee = await client.query(

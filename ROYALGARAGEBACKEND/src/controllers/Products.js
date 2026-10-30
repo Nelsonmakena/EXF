@@ -15,7 +15,7 @@ export const getAllProducts = async (req, res) => {
 ///adding new inventory
 export const newInventory = async (product_id) => {
   if (!product_id) {
-    return res.json({ message: "invalid product id " });
+    return console.log("invalid product id ");
   }
   try {
     const newInv = await pool.query(
@@ -62,7 +62,7 @@ export const addProduct = async (req, res) => {
     if (newProduct.rows.length === 0) {
       return res.json({ success: false, message: "product cant be added" });
     }
-    await newInventory(newProduct.product_id);
+    await newInventory(newProduct.rows[0].product_id);
     res
       .status(201)
       .json({ success: true, message: "product added successfully" });
@@ -163,6 +163,7 @@ export const addStock = async (req, res) => {
     res.json({ success: false, message: "server error" });
   }
 };
+
 // fetch product stock
 
 export const productInventory = async (req, res) => {

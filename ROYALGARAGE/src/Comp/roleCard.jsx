@@ -1,7 +1,4 @@
-import axios from "axios";
-
 import { useState, useEffect } from "react";
-
 import {
   Dialog,
   DialogContent,
@@ -10,30 +7,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-
 import { toast } from "sonner";
-import { getRoleList } from "@/store/accountsslice";
 import { Trash, Trash2, SquarePen } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import {
   deleteRole,
   getAccountRoles,
   removeAccountRole,
   updateAccountRole,
 } from "@/store/accountsslice";
+import CustomSheet from "./custom-sheet";
+import { addValue } from "@/utils/utils";
+import { updateRoleINputs } from "@/utils/inputs";
 
 export default function RolesCard({ item, isAdmin, isSystem, actions }) {
   const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
@@ -138,49 +124,15 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
             </DialogContent>
           </Dialog>
         )}
-        {isSystem ||
-          (isAdmin && (
-            <Sheet
-            // open={open} onOpenChange={setOpen}
-            >
-              <SheetTrigger
-                render={
-                  <Button size="icon">
-                    <SquarePen />
-                  </Button>
-                }
-              />
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle className={"text-header heading-normal"}>
-                    {item.role_name}
-                  </SheetTitle>
-                  <SheetDescription></SheetDescription>
-                </SheetHeader>
-
-                <form className="flex  flex-col px-3.5 gap-10 ">
-                  <Input
-                    className={"h-12"}
-                    placeholder={item.role_name}
-                    name="role_name"
-                  ></Input>
-                  <Input
-                    className={"h-12"}
-                    placeholder="role_description"
-                    name="role_description"
-                  ></Input>
-
-                  <Button
-                    type="submit"
-                    variant={`${isSystem ? "default" : "secondary"}`}
-                    className="w-2xs h-12"
-                  >
-                    update
-                  </Button>
-                </form>
-              </SheetContent>
-            </Sheet>
-          ))}
+        {(isSystem || isAdmin) && (
+          <CustomSheet
+            title={item.role_name}
+            trigger={{ icon: SquarePen, name: "update" }}
+            initiator={"small"}
+            fields={addValue(updateRoleINputs, item)}
+            actions={{ onsubmit: changeItem }}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,8 +1,15 @@
-import { data } from "react-router";
-
 // new worker
 export const newWorkerInputs = [
-  { placeholder: "email", name: "email", type: "email" },
+  { Placeholder: "email", name: "email", type: "email" },
+];
+export const updateRoleINputs = [
+  { label: "role name", name: "role_name", type: "text" },
+  { label: "role description", name: "role_description", type: "text" },
+];
+
+export const EmployeePositionsInputs = [
+  { label: "position name", name: "role_name", type: "text" },
+  { label: "position description", name: "role_description", type: "text" },
 ];
 export const editWorkerSelects = {
   position: {
@@ -40,3 +47,36 @@ export const newWorkerSelects = {
     data: [],
   },
 };
+
+export const updateProductInputs = [
+  { label: "product name", name: "product_name", type: "text" },
+  { label: "product image", name: "product_image", type: "text" },
+  { label: "product description", name: "product_description", type: "text" },
+  { label: "product price", name: "product_price", type: "text" },
+  { label: "product category", name: "product_category", type: "text" },
+  { label: "product discount", name: "product_discount", type: "text" },
+];
+
+export const newServiceInputs = [
+  { label: "service name", name: "service_name", type: "text" },
+  { label: "service image", name: "service_image", type: "text" },
+  { label: "service description", name: "service_description", type: "text" },
+  { label: "service price", name: "service_price", type: "text" },
+  { label: "service category", name: "service_category", type: "text" },
+  { label: "service discount", name: "service_discount", type: "text" },
+];
+
+export const newStockInputs = [
+  { label: "quantity", name: "stock", type: "text" },
+  { label: "supplier", name: "supplier", type: "text" },
+];
+
+export const newEmployeeRoleInputs = [
+  { label: "role name", name: "role_name", type: "text" },
+  { label: "role description", name: "role_description", type: "text" },
+];
+
+export const newAccountRoleInputs = [
+  { label: "account category", name: "role_name", type: "text" },
+  { label: "account description", name: "role_description", type: "text" },
+];

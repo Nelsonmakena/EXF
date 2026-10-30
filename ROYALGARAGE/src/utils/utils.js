@@ -63,3 +63,14 @@ export const convertArray = (array, idKey, nameKey) => {
     name: u[nameKey],
   }));
 };
+
+//adding fetched values to inputs
+
+export const addValue = (originalArray, fetched) => {
+  const changed = originalArray.map((u) => ({
+    ...u,
+    value: fetched[u.name],
+  }));
+
+  return changed;
+};

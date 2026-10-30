@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import EmployeeCard from "./employeeCard";
 import { Search, User } from "lucide-react";
 import { getAccountRoles, getRoleList } from "@/store/accountsslice";
-import CustomDropDown from "@/Comp/customdropdown";
 import { convertArray } from "@/utils/utils";
 import CustomSheet from "@/Comp/custom-sheet";
 import { newWorkerInputs, newWorkerSelects } from "@/utils/inputs";
@@ -52,7 +51,15 @@ export default function WorkerView() {
     };
     dispatch(addNewWorker(data)).then((results) => {
       if (results?.payload?.success) {
-        setRole_id("");
+        setId({
+          account_role_id: "",
+          role_id: "",
+          position_id: "",
+        });
+
+        setInput({
+          email: "",
+        });
         toast(results?.payload?.message, { position: "top-left" });
         dispatch(getWorkerList());
         setOpen(false);
@@ -78,6 +85,7 @@ export default function WorkerView() {
               onSelectChange: setId,
               onFieldChange: setInput,
             }}
+            states={{ open: open, setOpen: setOpen }}
           />
         </div>
         {workerList?.map((item, index) => (

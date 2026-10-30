@@ -1,13 +1,3 @@
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -18,9 +8,16 @@ import {
 } from "./../../../store/accountsslice";
 import RolesCard from "@/Comp/roleCard";
 import { toast } from "sonner";
+import CustomSheet from "@/Comp/custom-sheet";
+import { Plus } from "lucide-react";
+import { newAccountRoleInputs } from "@/utils/inputs";
 export default function AccountsRoles() {
   const [open, SetOpen] = useState(false);
   const { accountRoles } = useSelector((state) => state.Accounts);
+  const [inputs, setInputs] = useState({
+    role_name: "",
+    role_description: "",
+  });
   const dispatch = useDispatch();
 
   const actions = {
@@ -31,12 +28,13 @@ export default function AccountsRoles() {
   useEffect(() => {
     dispatch(getAccountRoles());
   }, []);
-  const newRoleData = async (e) => {
-    e.preventDefault();
-    const formdata = new FormData(e.target);
-    const data = Object.fromEntries(formdata.entries());
-    dispatch(newAccountRole(data)).then((result) => {
+  const newAccountRoleData = async () => {
+    dispatch(newAccountRole(inputs)).then((result) => {
       if (result.payload.success) {
+        setInputs({
+          role_name: "",
+          role_description: "",
+        });
         toast(result.payload.message);
         SetOpen(false);
       } else {
@@ -49,49 +47,12 @@ export default function AccountsRoles() {
     <section className="section-sm">
       <div className="grid grid-cols-3 gap-normal card ">
         <div className="rounded-xl  p-4 transition cursor-pointer flex items-center justify-center ">
-          <Sheet open={open} onOpenChange={SetOpen}>
-            <SheetTrigger
-              render={
-                <Button className={"h-11 w-30"}> New account Role</Button>
-              }
-            />
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle className={"text-header heading-normal"}>
-                  {" "}
-                  Roles{" "}
-                </SheetTitle>
-                <SheetDescription></SheetDescription>
-              </SheetHeader>
-
-              <form
-                onSubmit={newRoleData}
-                className="flex  flex-col px-3.5 gap-10 "
-              >
-                <Input
-                  className={"h-12"}
-                  placeholder=" role name "
-                  name="role_name"
-                ></Input>
-                <Input
-                  className={"h-12"}
-                  placeholder=" role description "
-                  name="role_description"
-                ></Input>
-
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  className={"w-2xs h-12"}
-                >
-                  add Role
-                </Button>
-              </form>
-              <SheetFooter>
-                <SheetClose render={<Button variant="outline">Close</Button>} />
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
+          <CustomSheet
+            trigger={{ icon: Plus, name: "New account Role" }}
+            fields={newAccountRoleInputs}
+            states={{ open: open, setOpen: SetOpen }}
+            actions={{ onFieldChange: setInputs, onsubmit: newAccountRoleData }}
+          />
         </div>
         {accountRoles?.map((item) => (
           <RolesCard isSystem={true} item={item} actions={actions} />

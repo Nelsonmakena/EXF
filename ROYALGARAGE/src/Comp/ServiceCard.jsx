@@ -8,16 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -25,70 +15,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Calendar1, Trash } from "lucide-react";
+import { Calendar1, SquarePen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "sonner";
 import { newJob } from "@/store/jobsslice";
-import { currencyFormat } from "@/utils/utils";
-import {
-  deletService,
-  getServices,
-  updateServices,
-} from "@/store/serviceslice";
+import { addValue, currencyFormat } from "@/utils/utils";
+
 import { useNavigate } from "react-router";
-export default function ServiceCard({ vehicles, service, client, admin }) {
+import CustomSheet from "./custom-sheet";
+import { newServiceInputs } from "@/utils/inputs";
+export default function ServiceCard({
+  vehicles,
+  service,
+  client,
+  admin,
+  actions,
+}) {
+  const { updateService, deleteService, setSelectedItem } = actions ?? {};
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [jobData, setJobData] = useState({
-    vehicle_id: "",
-    appointment_day: "",
-    service_id: "",
-  });
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const newJobSubmission = async (e) => {
-    e.preventDefault();
-
-    dispatch(newJob(jobData)).then((data) => {
-      if (data.payload.success) {
-        toast(data.payload.message);
-        setOpen(false);
-        jobData.appointment_day = "";
-        jobData.vehicle_id = "";
-      } else {
-        toast(data.payload.message);
-        setOpen(true);
-      }
-    });
-  };
-  //update service info
-  const update_service = async (e, item) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    data.service_id = item.service_id;
-    dispatch(updateServices(data)).then((data) => {
-      if (data.payload.success) {
-        dispatch(getServices());
-        toast(data.payload.message);
-        setOpen(false);
-      } else {
-        toast(data.payload.success);
-        setOpen(true);
-      }
-    });
-  };
-
   return (
     <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-52   hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
@@ -140,7 +90,7 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
                 <DialogTitle>{service.service_name}</DialogTitle>
                 <DialogDescription></DialogDescription>
               </DialogHeader>
-              <form onSubmit={newJobSubmission}>
+              <form>
                 <div className="flex flex-col w-full justify-center items-center   gap-normal">
                   <label htmlFor="select vehicle ">
                     {" "}
@@ -185,8 +135,8 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
                     type="date"
                     min={new Date().toISOString().split("T")[0]}
                     name="appointment_day"
-                    onChange={handleChange}
-                    value={jobData.appointment_day}
+                    // onChange={handleChange}
+                    // value={jobData.appointment_day}
                     required
                   />
                   <button
@@ -201,110 +151,24 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
           </Dialog>
         )}
         {admin && (
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger
-              render={
-                <Button
-                  className={" text-white rounded-b-xl  rounded-t-none  h-12"}
-                >
-                  Edit
-                </Button>
-              }
-            />
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle className={"text-header heading-normal"}>
-                  {service.service_name}
-                </SheetTitle>
-                <SheetDescription></SheetDescription>
-              </SheetHeader>
-
-              <form
-                onSubmit={(e) => {
-                  update_service(e, service);
-                }}
-              >
-                <div className="grid flex-1 auto-rows-min gap-6 px-4">
-                  <div className="grid gap-3">
-                    <label> Service name </label>
-                    <Input
-                      name="service_name"
-                      defaultValue={service.service_name}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label> Service image </label>
-                    <Input
-                      name="service_image"
-                      defaultValue={service.service_image}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label> Service descrption </label>
-                    <Input
-                      name="service_description"
-                      defaultValue={service.service_description}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label> service price </label>
-                    <Input
-                      name="service_price"
-                      defaultValue={service.service_price}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label> Category </label>
-                    <Input
-                      name="service_category"
-                      defaultValue={service.service_category}
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label> Discount </label>
-                    <Input
-                      name="service_discount"
-                      defaultValue={service.service_discount}
-                    />
-                  </div>
-                </div>
-                <div className="card flex flex-col gap-2.5 justify-center">
-                  <Button type="submit" className="  w-full h-11">
-                    {" "}
-                    update{" "}
-                  </Button>
-                </div>
-              </form>
-              <SheetFooter>
-                <Button
-                  variant="destructive"
-                  className={"h-12"}
-                  onClick={() => {
-                    dispatch(deletService(service.service_id)).then((data) => {
-                      if (data?.payload?.success) {
-                        toast(data.payload.message);
-                        dispatch(getServices());
-                        setOpen(false);
-                      } else {
-                        toast(data.payload.message);
-                        setOpen(true);
-                      }
-                    });
-                  }}
-                >
-                  {" "}
-                  <Trash />
-                  remove
-                </Button>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
-        )}
-        {!client && !admin && (
-          <Button className=" rounded-b-xl  rounded-t-none  h-12   ">
+          <div className="">
             {" "}
-            Book Now
-          </Button>
+            <CustomSheet
+              title={service.service_name}
+              trigger={{ icon: SquarePen, name: "edit" }}
+              fields={addValue(newServiceInputs, service)}
+              actions={{ onSubmit: updateService }}
+              states={{
+                open: open,
+                setOpen: (v) => {
+                  setOpen(v);
+                  if (v) {
+                    setSelectedItem(service);
+                  }
+                },
+              }}
+            />
+          </div>
         )}
       </div>
     </div>

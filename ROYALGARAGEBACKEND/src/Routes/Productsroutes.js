@@ -37,7 +37,7 @@ Router.delete(
 //new inventory record
 Router.put("/inventory", newInventory);
 
-// all product invntory
+// all product inventory
 Router.get("/inventory", productInventory);
 
 //single product inventory

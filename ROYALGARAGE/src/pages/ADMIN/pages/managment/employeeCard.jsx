@@ -20,6 +20,11 @@ export default function EmployeeCard({
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const isAvailable = !employee.jobs.length;
+  const [id, setId] = useState({
+    position_id: "",
+    role_id: "",
+  });
+  //setters
   editWorkerSelects.position.data = positions;
   editWorkerSelects.role.data = roles;
 
@@ -103,18 +108,14 @@ export default function EmployeeCard({
             {loading ? <Spinner /> : "assign"}
           </button>
         )}
-        {/* actions
 
-        <Button size="icon">
-          <SquarePen />
-
-        </Button> */}
         <div>
           {/* <CustomSheet
             trigger={{ name: "edit", icon: SquarePen }}
             initiator={"small"}
-            label={"update"}
-            selects={editWorkerSelects}
+            title={employee?.info.email}
+            selectFields={editWorkerSelects}
+            actions={{ onSubmit: onSelectChange: setId  }}
           /> */}
         </div>
       </div>

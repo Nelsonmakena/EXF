@@ -1,19 +1,18 @@
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { ArrowRight, Package, TrendingDown, Boxes } from "lucide-react";
+  ArrowRight,
+  Package,
+  TrendingDown,
+  Boxes,
+  PlusCircleIcon,
+} from "lucide-react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { currencyFormat } from "@/utils/utils";
+import CustomSheet from "@/Comp/custom-sheet";
+import { newStockInputs } from "@/utils/inputs";
 export default function InventoryCard({ product }) {
   const [open, setOpen] = useState(false);
 
@@ -76,28 +75,13 @@ export default function InventoryCard({ product }) {
               {currencyFormat(product.stockValue)}
             </p>
           </div>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger render={<Button>add stock</Button>} />
-            <SheetContent className={"bg-none backdrop-blur-2xl"}>
-              <SheetHeader>
-                <SheetTitle className={"text-header heading-normal"}>
-                  {product.product_name}
-                </SheetTitle>
-                <SheetDescription></SheetDescription>
-              </SheetHeader>
-
-              <form>
-                <div className="grid flex-1 auto-rows-min gap-6 px-4">
-                  <div className="grid gap-3"></div>
-                </div>
-                <div className="card flex flex-col gap-2.5 justify-center">
-                  <Button type="submit" className="  w-full h-11">
-                    add
-                  </Button>
-                </div>
-              </form>
-            </SheetContent>
-          </Sheet>
+          <div className="w-30">
+            <CustomSheet
+              title={product.product_name}
+              trigger={{ icon: PlusCircleIcon, name: "add stock" }}
+              fields={newStockInputs}
+            />
+          </div>
 
           {/* Arrow */}
           <Button variant="ghost" size="icon" className="shrink-0">
