@@ -1,30 +1,17 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Menu, LogOut, Moon, Sun, User, User2Icon } from "lucide-react";
-import { useLocation } from "react-router";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { useTheme } from "@/Comp/theme-provider";
+import { Menu } from "lucide-react";
 
 import AccountDropDown from "@/Comp/accountdropdown";
-export default function SecondaryNav({ hideMenu, setHideMenu, subMenuItems }) {
-  const { setTheme, theme } = useTheme();
-  const { userinfo } = useSelector((state) => state.auth);
-  const location = useLocation();
-  const path = location.pathname;
-  const dispatch = useDispatch();
+import { useLocation } from "react-router";
+export default function SecondaryNav({ hideMenu, setHideMenu, item }) {
+  const { pathname } = useLocation();
+
+  const getCurrentMenu = (items, pathname) => {
+    const allItems = items.flatMap((item) => [item, ...(item.subMenu || [])]);
+    console.log(allItems);
+
+    return allItems.find((item) => item.path === pathname);
+  };
+  const currentMenu = getCurrentMenu(item, pathname);
 
   return (
     <section className=" w-full flex items-center  ">
@@ -36,15 +23,10 @@ export default function SecondaryNav({ hideMenu, setHideMenu, subMenuItems }) {
           />
         </div>
         <div className="flex ">
-          <ul className="flex space-x-3.5 ">
-            {subMenuItems?.map((single, index) => {
-              return (
-                <li key={index} className=" card ">
-                  <Link to={single.path}> {single.name} </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <h1 className="font-bold text-header tracking-widest">
+            {" "}
+            {currentMenu?.name}{" "}
+          </h1>
         </div>
         <AccountDropDown />
       </div>

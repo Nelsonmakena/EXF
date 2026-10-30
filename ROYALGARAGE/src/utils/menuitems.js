@@ -7,13 +7,14 @@ import {
   UsersRound,
   IdCardLanyard,
   IdCard,
+  House,
 } from "lucide-react";
 
 export const AdminMenuItems = [
   {
     name: "Dashboard",
     path: "/admin/home",
-    icon: LayoutDashboard,
+    icon: House,
   },
 
   {
@@ -99,7 +100,7 @@ export const SystemMenuItems = [
   {
     name: "Dashboard",
     path: "/misc/dashboard",
-    icon: LayoutDashboard,
+    icon: House,
   },
   {
     name: "Accounts",

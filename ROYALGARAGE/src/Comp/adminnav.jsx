@@ -28,7 +28,7 @@ export default function AdminNav({ menuItems, initiator, hideMenu }) {
                   ? !hideMenu
                     ? " h-15  bg-card rounded-l-2xl tracking-widest "
                     : "bg-card h-20"
-                  : "font-bold bg-none"
+                  : " bg-none"
               }`}
             >
               <div
@@ -51,7 +51,7 @@ export default function AdminNav({ menuItems, initiator, hideMenu }) {
                     ? hideMenu
                       ? " h-20 bg-card "
                       : "bg-card h-15 rounded-l-2xl tracking-widest "
-                    : "font-bold bg-none "
+                    : "bg-none "
                 }`}
               >
                 <div
