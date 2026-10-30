@@ -86,12 +86,18 @@ export default function CustomSheet({
             ))}
             {Object.entries(selectFields ?? {}).map(([key, select]) => {
               return (
-                <CustomDropDown
-                  key={key}
-                  placeholder={select.header}
-                  item={convertArray(select.data, select.idKey, select.nameKey)}
-                  select={(id) => handleSelected(select.idKey, id)}
-                />
+                <div key={key}>
+                  <label> {select.header}</label>
+                  <CustomDropDown
+                    placeholder={select.header}
+                    item={convertArray(
+                      select.data,
+                      select.idKey,
+                      select.nameKey,
+                    )}
+                    select={(id) => handleSelected(select.idKey, id)}
+                  />
+                </div>
               );
             })}
           </div>

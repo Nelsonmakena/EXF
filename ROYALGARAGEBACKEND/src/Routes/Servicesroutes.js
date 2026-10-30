@@ -4,7 +4,6 @@ import {
   updateService,
   deleteService,
   getServicesCategories,
-  newServiceCategories,
 } from "../controllers/Services.js";
 import express from "express";
 
@@ -17,7 +16,6 @@ const Router = express.Router();
 
 Router.get("/all-services", getServices);
 Router.use(authenticateMiddleware, adminChecker);
-Router.put("/service-category", newServiceCategories);
 Router.get("/service-category", getServicesCategories);
 Router.put("/add-service", addService);
 Router.put("/update-service/:service_id", updateService);

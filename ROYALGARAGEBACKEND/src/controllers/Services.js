@@ -1,24 +1,6 @@
 import express from "express";
 import { pool } from "../../Db.js";
 
-export const newServiceCategories = async (req, res) => {
-  const { role_id, category_name } = req.body;
-  try {
-    const serviceCategory = await pool.query(
-      "INSERT INTO service_categories (role_id, category_name) VALUES ($1,$2) RETURNING * ",
-      [role_id, category_name],
-    );
-    res.status(200).json({
-      success: "true",
-      message: "new service category added ",
-      data: serviceCategory.rows[0],
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: "server error" });
-  }
-};
-
 export const getServicesCategories = async (req, res) => {
   try {
     const response = await pool.query("SELECT * FROM service_categories ");
@@ -48,7 +30,7 @@ export const addService = async (req, res) => {
     service_price,
     service_description,
     service_discount,
-    service_category,
+    service_category_id,
     service_image,
   } = req.body;
 
@@ -57,13 +39,13 @@ export const addService = async (req, res) => {
   }
   try {
     const newService = await pool.query(
-      "INSERT INTO services (service_name , service_price , service_description , service_discount , service_category ,service_image  )  VALUES ($1,$2,$3,$4,$5,$6) RETURNING *   ",
+      "INSERT INTO services (service_name , service_price , service_description , service_discount , service_category_id ,service_image  )  VALUES ($1,$2,$3,$4,$5,$6) RETURNING *   ",
       [
         service_name,
         service_price,
         service_description,
         service_discount,
-        service_category,
+        service_category_id,
         service_image,
       ],
     );
@@ -73,10 +55,10 @@ export const addService = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "service added successfully " });
-    console.log(newService.rows[0]);
   } catch (error) {
-    res.status(400).json(error.message);
-    res.json({ success: false, message: "server error" });
+    console.log(error.message);
+
+    res.json({ success: false, message: "service cannot be added " });
   }
 };
 

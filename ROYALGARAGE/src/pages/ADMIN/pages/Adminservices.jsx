@@ -2,39 +2,57 @@ import animatedaddbutton from "/src/assets/addbuttondata.json";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getServices, newService } from "@/store/serviceslice";
+import {
+  getServiceCategories,
+  getServices,
+  newService,
+} from "@/store/serviceslice";
 import ServiceCard from "@/Comp/ServiceCard";
 import { toast } from "sonner";
 import CustomSheet from "@/Comp/custom-sheet";
 import { Plus } from "lucide-react";
-import { newServiceInputs } from "@/utils/inputs";
+import { newServiceInputs, newServicesSelects } from "@/utils/inputs";
+import { convertArray } from "@/utils/utils";
 
 export default function AdminViewServices() {
+  const { serviceCategories } = useSelector((state) => state.services);
   const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState({
     service_name: "",
     service_image: "",
     service_description: "",
     service_price: "",
-    service_category: "",
     service_discount: "",
+  });
+  const [id, setId] = useState({
+    service_category_id: "",
   });
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
   const { availableServiceList } = useSelector((state) => state.services);
 
+  //setter
+  newServicesSelects.categories.data = serviceCategories;
+
   useEffect(() => {
     dispatch(getServices());
+    dispatch(getServiceCategories());
   }, []);
   // adding a service
   const addService = () => {
-    dispatch(newService(inputs)).then((data) => {
-      if (data.payload.success) {
-        toast(data.payload.message);
+    const data = {
+      ...inputs,
+      service_category_id: id.service_category_id,
+    };
+    console.log(data);
+
+    dispatch(newService(data)).then((result) => {
+      if (result.payload.success) {
+        toast(result.payload.message);
         dispatch(getServices());
         setOpen(false);
       } else {
-        toast(data.payload.message);
+        toast(result.payload.message);
         setOpen(true);
       }
     });
@@ -56,7 +74,6 @@ export default function AdminViewServices() {
       }
     });
   };
-
   return (
     <section className="w-full section-sm">
       <div className=" grid grid-cols-2   md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
@@ -69,7 +86,13 @@ export default function AdminViewServices() {
             <CustomSheet
               trigger={{ icon: Plus, name: "Add service" }}
               fields={newServiceInputs}
-              actions={{ onSubmit: addService, onFieldChange: setInputs }}
+              selectFields={newServicesSelects}
+              actions={{
+                onSubmit: addService,
+                onFieldChange: setInputs,
+                onSelectChange: setId,
+              }}
+              states={{ open: open, setOpen: setOpen }}
             />
           </div>
         </div>

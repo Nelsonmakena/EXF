@@ -100,22 +100,33 @@ export const addNewRole = async (req, res) => {
     return res.json({ success: false, message: "all fields must be filled" });
   }
 
+  const client = await pool.connect();
+
   try {
-    const add = await pool.query(
+    await client.query("BEGIN");
+    const role = await client.query(
       "INSERT INTO roles(role_name,role_description) VALUES ($1,$2) RETURNING *",
       [role_name, role_description],
     );
-    if (add.rows.length == 0) {
+    if (role.rows.length == 0) {
       return res.json({ success: false, message: "role was not added" });
     }
+    await client.query(
+      "INSERT INTO service_categories (role_id, category_name) VALUES ($1,$2) ",
+      [role.rows[0].role_id, role_name],
+    );
+    await client.query("COMMIT");
     res.status(200).json({
       success: true,
       message: "role added successfully",
-      data: add.rows[0],
+      data: role.rows[0],
     });
   } catch (error) {
+    await client.query("ROLLBACK");
     console.log(error.message);
     res.json({ success: false, message: "role cant be added" });
+  } finally {
+    client.release();
   }
 };
 

@@ -6,7 +6,9 @@ export const updateRoleINputs = [
   { label: "role name", name: "role_name", type: "text" },
   { label: "role description", name: "role_description", type: "text" },
 ];
-
+export const editCategoryInputs = [
+  { label: "category name", name: "category_name", type: "text" },
+];
 export const EmployeePositionsInputs = [
   { label: "position name", name: "role_name", type: "text" },
   { label: "position description", name: "role_description", type: "text" },
@@ -62,9 +64,16 @@ export const newServiceInputs = [
   { label: "service image", name: "service_image", type: "text" },
   { label: "service description", name: "service_description", type: "text" },
   { label: "service price", name: "service_price", type: "text" },
-  { label: "service category", name: "service_category", type: "text" },
   { label: "service discount", name: "service_discount", type: "text" },
 ];
+export const newServicesSelects = {
+  categories: {
+    header: "service category",
+    idKey: "service_category_id",
+    nameKey: "category_name",
+    data: [],
+  },
+};
 
 export const newStockInputs = [
   { label: "quantity", name: "stock", type: "text" },

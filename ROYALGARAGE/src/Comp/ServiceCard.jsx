@@ -26,7 +26,7 @@ import { addValue, currencyFormat } from "@/utils/utils";
 
 import { useNavigate } from "react-router";
 import CustomSheet from "./custom-sheet";
-import { newServiceInputs } from "@/utils/inputs";
+import { newServiceInputs, newServicesSelects } from "@/utils/inputs";
 export default function ServiceCard({
   vehicles,
   service,
@@ -157,6 +157,7 @@ export default function ServiceCard({
               title={service.service_name}
               trigger={{ icon: SquarePen, name: "edit" }}
               fields={addValue(newServiceInputs, service)}
+              selectFields={newServicesSelects}
               actions={{ onSubmit: updateService }}
               states={{
                 open: open,
