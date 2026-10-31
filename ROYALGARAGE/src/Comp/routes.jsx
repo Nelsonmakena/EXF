@@ -25,6 +25,18 @@ const TeamHome = lazy(
 const AssessmentIndex = lazy(
   () => import("@/pages/employee-module/Assessments/index"),
 );
+const AssessmentHome = lazy(
+  () => import("@/pages/employee-module/Assessments/pages/home"),
+);
+const AssessmentVehicles = lazy(
+  () => import("@/pages/employee-module/Assessments/pages/vehicles"),
+);
+const AssessmentClient = lazy(
+  () => import("@/pages/employee-module/Assessments/pages/client"),
+);
+const AssessmentSingleVehicle = lazy(
+  () => import("@/pages/employee-module/Assessments/pages/single_vehicle"),
+);
 
 ///system
 const SystemIndex = lazy(() => import("@/pages/system/index"));
@@ -239,10 +251,16 @@ export default function AppRoutes() {
           <Route path="home" element={<TeamHome />} />
         </Route>
 
-        {/* assesments routes */}
+        {/* assessments routes */}
 
         <Route path="/assessment" element={<AssessmentIndex />}>
           <Route path="home" />
+          <Route path="vehicle" element={<AssessmentVehicles />} />
+          <Route path="client" element={<AssessmentClient />} />
+          <Route
+            path="vehicle/:vehicle_id"
+            element={<AssessmentSingleVehicle />}
+          />
         </Route>
         {/* 404 */}
         <Route path="*" element={<Pages404 />} />

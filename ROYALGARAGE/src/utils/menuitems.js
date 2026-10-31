@@ -175,7 +175,6 @@ export const teamLeaderMenuItems = [
   { name: "completed", path: "/client/vehicles" },
 ];
 export const assessmentMenuItems = [
-  { name: "jobs", path: "/client/vehicles" },
-  { name: "in progress", path: "/client/vehicles" },
-  { name: "completed", path: "/client/vehicles" },
+  { name: "vehicles", path: "/assessment/vehicle" },
+  { name: "clients", path: "/assessment/client" },
 ];
