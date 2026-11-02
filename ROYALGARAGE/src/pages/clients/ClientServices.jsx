@@ -12,6 +12,7 @@ export default function ClientServices() {
     appointment_day: "",
     service_id: "",
   });
+  const [selectedItem, setSelectedItem] = useState(null);
   const { vehicles } = useSelector((state) => state.vehicle);
   const { availableServiceList } = useSelector((state) => state.services);
   const dispatch = useDispatch();
@@ -26,7 +27,6 @@ export default function ClientServices() {
   //getting a new service
   const newJobSubmission = async (e) => {
     e.preventDefault();
-
     dispatch(newJob(jobData)).then((data) => {
       if (data.payload.success) {
         toast(data.payload.message);
@@ -59,6 +59,7 @@ export default function ClientServices() {
                 vehicles={vehicles}
                 service={item}
                 client={true}
+                actions={{ setSelectedItem: selectedItem }}
               />
             ))
           )}

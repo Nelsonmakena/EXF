@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 export default function SingleVehicle() {
   const { vehicle_id } = useParams();
   return (
-    <section>
+    <section className="section-sm   ">
       <div className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
         <div className="mb-5">
           <h2 className="font-semibold  ">Services</h2>

@@ -10,7 +10,6 @@ import {
 
 import "aos/dist/aos.css";
 
-import bg1 from "../../assets/images/bg1.jpg";
 import bg2 from "../../assets/images/bg2.jpg";
 import bg3 from "../../assets/images/bg3.jpg";
 import bg4 from "../../assets/images/tirereplacement.jpg";
@@ -20,7 +19,7 @@ import Banner from "../../Comp/banner";
 function Home() {
   const slides = [
     {
-      image: bg1,
+      image: bg2,
       text: "At Royal Auto Garage, we provide expert vehicle repair,diagnostics, and maintenance services to keep your car safe, efficient, and road-ready at all times.",
     },
     {
@@ -234,7 +233,7 @@ function Home() {
         <section className=" section ">
           <div
             data-aos="fade-up"
-            style={{ backgroundImage: `url(${bg1})` }}
+            style={{ backgroundImage: `url(${bg2})` }}
             className=" bg-center bg-cover w-full h-32 ]"
           >
             <div className="  flex justify-center items-center relative w-full h-32  inset-0  bg-black/50">
@@ -410,7 +409,7 @@ function Home() {
                 <div className="flex flex-row gap-normal">
                   <div className=" section-sm">
                     {" "}
-                    <img className="shadow-md rounded-2xl" src={bg1} alt="" />
+                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
                   </div>
                   <div className="section-sm">
                     <img className="shadow-md rounded-2xl" src={bg2} alt="" />
@@ -421,7 +420,7 @@ function Home() {
                 <div className="flex flex-row gap-normal">
                   <div className=" section-sm">
                     {" "}
-                    <img className="shadow-md rounded-2xl" src={bg1} alt="" />
+                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
                   </div>
                   <div className="section-sm">
                     <img className="shadow-md rounded-2xl" src={bg2} alt="" />
@@ -440,7 +439,7 @@ function Home() {
                 <div className="flex flex-row gap-normal">
                   <div className=" section-sm">
                     {" "}
-                    <img className="shadow-md rounded-2xl" src={bg1} alt="" />
+                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
                   </div>
                   <div className="section-sm">
                     <img className="shadow-md rounded-2xl" src={bg2} alt="" />

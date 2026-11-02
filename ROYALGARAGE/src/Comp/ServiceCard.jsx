@@ -22,11 +22,12 @@ import { useDispatch, useSelector } from "react-redux";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "sonner";
 import { newJob } from "@/store/jobsslice";
-import { addValue, currencyFormat } from "@/utils/utils";
+import { addValue, convertArray, currencyFormat } from "@/utils/utils";
 
 import { useNavigate } from "react-router";
 import CustomSheet from "./custom-sheet";
 import { newServiceInputs, newServicesSelects } from "@/utils/inputs";
+import CustomDropDown from "./customdropdown";
 export default function ServiceCard({
   vehicles,
   service,
@@ -96,34 +97,10 @@ export default function ServiceCard({
                     {" "}
                     choose vehicle to be serviced
                   </label>
-                  <Select
-                    onValueChange={(plate) => {
-                      const vehicle = vehicles.find(
-                        (item) => item.details.plate === plate,
-                      );
-                      setJobData((prev) => ({
-                        ...prev,
-                        vehicle_id: vehicle.vehicle_id,
-                      }));
-                    }}
-                    className=" border  shadow-2xl"
-                  >
-                    <SelectTrigger className="w-2xs shadow-2xl ">
-                      <SelectValue placeholder="Select vehicle" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-none backdrop-blur-md">
-                      {vehicles.map((item) => (
-                        <SelectItem
-                          className={"tracking-wide font-bold"}
-                          name="vehicle_id"
-                          key={item.details.plate}
-                          value={item.details.plate}
-                        >
-                          {item.details.plate} {item.details.brand}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+
+                  <CustomDropDown
+                    item={convertArray(vehicles, "vehicle-id", "details")}
+                  />
 
                   <div className="flex w-full justify-between p-3.5">
                     {" "}
