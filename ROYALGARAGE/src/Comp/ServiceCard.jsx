@@ -1,41 +1,30 @@
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Calendar1, SquarePen } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { SquarePen, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "sonner";
-import { newJob } from "@/store/jobsslice";
 import { addValue, convertArray, currencyFormat } from "@/utils/utils";
 
 import { useNavigate } from "react-router";
 import CustomSheet from "./custom-sheet";
-import { newServiceInputs, newServicesSelects } from "@/utils/inputs";
-import CustomDropDown from "./customdropdown";
+import {
+  newJobInputs,
+  newJobSelect,
+  newServiceInputs,
+  newServicesSelects,
+} from "@/utils/inputs";
+import CustomDialog from "./customdialog";
 export default function ServiceCard({
   vehicles,
   service,
   client,
   admin,
   actions,
+  states,
 }) {
-  const { updateService, deleteService, setSelectedItem } = actions ?? {};
+  const { updateService, deleteService, newJob } = actions ?? {};
+  const { setInputs, setSelects, setSelectedItem } = states ?? {};
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -66,66 +55,19 @@ export default function ServiceCard({
 
         {/* getting the service logic*/}
         {client && (
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger
-              render={
-                <Button
-                  onClick={() => {
-                    vehicles.length > 0
-                      ? setJobData((prev) => ({
-                          ...prev,
-                          service_id: service.service_id,
-                        }))
-                      : (toast("please add a vehicle to continue"),
-                        navigate("/client/vehicles"));
-                  }}
-                  className=" text-white rounded-b-xl  rounded-t-none  h-12   "
-                >
-                  {" "}
-                  Book Now
-                </Button>
-              }
-            ></DialogTrigger>
-            <DialogContent className={"bg-card"}>
-              <DialogHeader>
-                <DialogTitle>{service.service_name}</DialogTitle>
-                <DialogDescription></DialogDescription>
-              </DialogHeader>
-              <form>
-                <div className="flex flex-col w-full justify-center items-center   gap-normal">
-                  <label htmlFor="select vehicle ">
-                    {" "}
-                    choose vehicle to be serviced
-                  </label>
-
-                  <CustomDropDown
-                    item={convertArray(vehicles, "vehicle-id", "details")}
-                  />
-
-                  <div className="flex w-full justify-between p-3.5">
-                    {" "}
-                    <h1> pick day of service </h1> <Calendar1 />{" "}
-                  </div>
-
-                  <Input
-                    className={"p-3.5 w-2xs"}
-                    type="date"
-                    min={new Date().toISOString().split("T")[0]}
-                    name="appointment_day"
-                    // onChange={handleChange}
-                    // value={jobData.appointment_day}
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="w-2xs h-12 text-white rounded-md   bg-primary"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <div>
+            <CustomDialog
+              title={service.service_name}
+              trigger={{ icon: User, name: "book now" }}
+              fields={newJobInputs}
+              selectFields={newJobSelect}
+              actions={{
+                onSubmit: newJob,
+                onFieldChange: setInputs,
+                onSelectChange: setSelects,
+              }}
+            />
+          </div>
         )}
         {admin && (
           <div className="">

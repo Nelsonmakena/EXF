@@ -21,7 +21,7 @@ export default function CustomDropDown({ item, select, placeholder }) {
           <SelectItem
             key={item.id}
             value={item.name}
-            className="w-full h-fit py-2"
+            className="w-full h-fit py-2 tracking-wider"
           >
             {item.name}
           </SelectItem>

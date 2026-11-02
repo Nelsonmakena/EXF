@@ -89,3 +89,17 @@ export const newAccountRoleInputs = [
   { label: "account category", name: "role_name", type: "text" },
   { label: "account description", name: "role_description", type: "text" },
 ];
+
+///client input fields
+
+export const newJobInputs = [
+  { label: "day of service", name: "appointment_day", type: "date" },
+];
+export const newJobSelect = {
+  vehicle: {
+    header: "vehicle",
+    idKey: "vehicle_id",
+    nameKey: "vehicle_name",
+    data: [],
+  },
+};

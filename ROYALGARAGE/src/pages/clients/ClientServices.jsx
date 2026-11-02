@@ -5,28 +5,29 @@ import { getVehiclelist } from "@/store/vehicleslice";
 import { Spinner } from "@/components/ui/spinner";
 
 import ServiceCard from "../../Comp/ServiceCard";
+import { newJobSelect } from "@/utils/inputs";
 
 export default function ClientServices() {
-  const [jobData, setJobData] = useState({
-    vehicle_id: "",
+  const [inputs, setInputs] = useState({
     appointment_day: "",
-    service_id: "",
+  });
+  const [selects, setSelects] = useState({
+    vehicle_id: "",
   });
   const [selectedItem, setSelectedItem] = useState(null);
   const { vehicles } = useSelector((state) => state.vehicle);
   const { availableServiceList } = useSelector((state) => state.services);
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  //setting vehicle select object
+  newJobSelect.vehicle.data = vehicles.map((u) => ({
+    vehicle_id: u.vehicle_id,
+    vehicle_name:
+      u.details.model + " " + u.details.brand + " " + u.details.plate,
+  }));
+
   //getting a new service
   const newJobSubmission = async (e) => {
-    e.preventDefault();
     dispatch(newJob(jobData)).then((data) => {
       if (data.payload.success) {
         toast(data.payload.message);
@@ -59,7 +60,14 @@ export default function ClientServices() {
                 vehicles={vehicles}
                 service={item}
                 client={true}
-                actions={{ setSelectedItem: selectedItem }}
+                states={{
+                  setInputs: setInputs,
+                  setSelects: setSelects,
+                  setSelectedItem: selectedItem,
+                }}
+                actions={{
+                  newJob: newJobSubmission,
+                }}
               />
             ))
           )}
