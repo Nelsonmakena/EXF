@@ -4,35 +4,29 @@ import { pool } from "../../Db.js";
 // posting jobs(client getting a job )
 export const job = async (req, res) => {
   const { client_id } = req.userinfo;
-  if (!client_id) {
-    console.log("access denied");
-  }
+
   const { vehicle_id, appointment_day, service_id } = req.body;
   let job_id;
-
+  const client = await pool.client();
   try {
-    //check if the job exist job is tied to vehicle_id ie one vehicle can have multiple services
-    const checkJob = await pool.query(
+    await client.query("BEGIN");
+    const checkJob = await client.query(
       "SELECT job_id FROM jobs WHERE vehicle_id = $1 AND job_current_status <> $2",
       [vehicle_id, "completed"],
     );
-    console.log("CHECK JOB:", checkJob.rows);
 
     if (checkJob.rows.length > 0) {
-      console.log(checkJob.rows);
-
       job_id = checkJob.rows[0].job_id;
     } else {
-      const newJob = await pool.query(
+      const newJob = await client.query(
         "INSERT INTO jobs(vehicle_id,appointment_day) VALUES ($1,$2) RETURNING job_id ",
         [vehicle_id, appointment_day],
       );
-      console.log(newJob.rows);
 
       job_id = newJob.rows[0].job_id;
     }
     //check if service is already been done to a vehicle
-    const checkServiceStatus = await pool.query(
+    const checkServiceStatus = await client.query(
       "SELECT  * FROM job_services WHERE job_id = $1 AND service_id = $2 ",
       [job_id, service_id],
     );
@@ -42,9 +36,12 @@ export const job = async (req, res) => {
         message: "service already in progress",
       });
     }
-    const servicesJobs = await pool.query(
+    const servicesJobs = await client.query(
       "INSERT INTO job_services ( service_id ,job_id ) VALUES ($1,$2)",
       [service_id, job_id],
+    );
+    const garageSlot = await client.query(
+      "INSERT INTO vehicle_in_garage (job_id ) VALUES ($1)  returning ",
     );
     res
       .status(200)
