@@ -14,16 +14,26 @@ export default function WkLogin() {
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
     console.log(data);
-    dispatch(wkLogin(data)).then((data) => {
-      console.log(data.payload);
+    dispatch(wkLogin(data)).then((result) => {
+      if (result?.payload?.success) {
+        toast(result?.payload?.message);
 
-      if (data?.payload?.success) {
-        toast(data?.payload?.message);
-        navigate("/w001/dashboard");
+        handleNavigation(result.payload.data.employee_role);
       } else {
-        toast.error(data?.payload?.message);
+        toast.error(result?.payload?.message);
       }
     });
+  };
+  const handleNavigation = (employeeRole) => {
+    switch (employeeRole) {
+      case "assessments":
+        navigate("/assessment/home");
+        break;
+      case "teamleader":
+        navigate("/unit/home");
+      default:
+        navigate("/w001/dashboard");
+    }
   };
 
   return (

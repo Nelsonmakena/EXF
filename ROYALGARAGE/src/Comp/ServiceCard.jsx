@@ -15,20 +15,43 @@ import {
   newServicesSelects,
 } from "@/utils/inputs";
 import CustomDialog from "./customdialog";
-export default function ServiceCard({
-  vehicles,
-  service,
-  client,
-  admin,
-  actions,
-  states,
-}) {
-  const { updateService, deleteService, newJob } = actions ?? {};
-  const { setInputs, setSelects, setSelectedItem } = states ?? {};
+import { newJob } from "@/store/jobsslice";
+export default function ServiceCard({ vehicles, service, client, admin }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [inputs, setInputs] = useState({
+    appointment_day: "",
+  });
 
+  const [selects, setSelects] = useState({
+    vehicle_id: "",
+  });
+  //setting vehicle select object
+  newJobSelect.vehicle.data = vehicles.map((u) => ({
+    vehicle_id: u.vehicle_id,
+    vehicle_name:
+      u.details.model + " " + u.details.brand + " " + u.details.plate,
+  }));
+
+  const newJobSubmission = async () => {
+    const data = {
+      appointment_day: inputs.appointment_day,
+      service_id: selectedItem,
+      vehicle_id: selects.vehicle_id,
+    };
+
+    dispatch(newJob(data)).then((results) => {
+      if (results.payload.success) {
+        toast(results.payload.message);
+        setOpen(false);
+      } else {
+        toast(results.payload.message);
+        setOpen(true);
+      }
+    });
+  };
   return (
     <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-52   hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
@@ -62,7 +85,7 @@ export default function ServiceCard({
               fields={newJobInputs}
               selectFields={newJobSelect}
               actions={{
-                onSubmit: newJob,
+                onSubmit: newJobSubmission,
                 onFieldChange: setInputs,
                 onSelectChange: setSelects,
               }}

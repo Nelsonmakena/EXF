@@ -6,49 +6,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 import ServiceCard from "../../Comp/ServiceCard";
-import { newJobSelect } from "@/utils/inputs";
-import { newJob } from "@/store/jobsslice";
-
 export default function ClientServices() {
   const { vehicles } = useSelector((state) => state.vehicle);
   const { availableServiceList } = useSelector((state) => state.services);
-  const [inputs, setInputs] = useState({
-    appointment_day: "",
-  });
-  const [selects, setSelects] = useState({
-    vehicle_id: "",
-  });
-  const [selectedItem, setSelectedItem] = useState(null);
-  const newJobSuccess = false;
-
   const dispatch = useDispatch();
-
-  //setting vehicle select object
-  newJobSelect.vehicle.data = vehicles.map((u) => ({
-    vehicle_id: u.vehicle_id,
-    vehicle_name:
-      u.details.model + " " + u.details.brand + " " + u.details.plate,
-  }));
-
   //getting a new service
-  const newJobSubmission = async () => {
-    const data = {
-      appointment_day: inputs.appointment_day,
-      service_id: selectedItem,
-      vehicle_id: selects.vehicle_id,
-    };
-    console.log(data);
 
-    dispatch(newJob(data)).then((results) => {
-      if (results.payload.success) {
-        toast(results.payload.message);
-        return (newJobSuccess = true);
-      } else {
-        toast(results.payload.message);
-        return (newJobSuccess = false);
-      }
-    });
-  };
   useEffect(() => {
     dispatch(getServices());
     dispatch(getVehiclelist());
@@ -69,14 +32,6 @@ export default function ClientServices() {
                 vehicles={vehicles}
                 service={item}
                 client={true}
-                states={{
-                  setInputs: setInputs,
-                  setSelects: setSelects,
-                  setSelectedItem: setSelectedItem,
-                }}
-                actions={{
-                  newJob: newJobSubmission,
-                }}
               />
             ))
           )}

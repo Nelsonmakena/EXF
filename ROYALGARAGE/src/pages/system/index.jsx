@@ -32,7 +32,11 @@ export default function SystemIndex() {
       <div className={`flex flex-col w-full  overflow-hidden `}>
         <ScrollArea className="h-screen  ">
           <div className=" flex py-4 justify-between  h-20  w-full card ">
-            <SecondaryNav hideMenu={hideMenu} setHideMenu={setHideMenu} />
+            <SecondaryNav
+              hideMenu={hideMenu}
+              setHideMenu={setHideMenu}
+              item={SystemMenuItems}
+            />
           </div>
           <div className="container-main transition-opacity ">
             <Outlet />

@@ -253,7 +253,14 @@ export default function AppRoutes() {
 
         {/* assessments routes */}
 
-        <Route path="/assessment" element={<AssessmentIndex />}>
+        <Route
+          path="/assessment"
+          element={
+            <Authenticated>
+              <AssessmentIndex />
+            </Authenticated>
+          }
+        >
           <Route path="home" />
           <Route path="vehicle" element={<AssessmentVehicles />} />
           <Route path="client" element={<AssessmentClient />} />

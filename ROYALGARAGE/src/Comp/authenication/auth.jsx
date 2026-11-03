@@ -23,6 +23,7 @@ export default function Authenticated({ children }) {
     return <h1>loading</h1>;
   }
   const role = userinfo?.role;
+  const employee_role = userinfo?.employee_role;
   const firstTime = userinfo?.first_time_login;
 
   if (!isAuthenticated) {
@@ -38,6 +39,12 @@ export default function Authenticated({ children }) {
     if (location.pathname.includes("/misc")) {
       return <Navigate to="/sys" />;
     }
+    if (location.pathname.includes("/assessment")) {
+      return <Navigate to="/wk" />;
+    }
+    if (location.pathname.includes("/unit")) {
+      return <Navigate to="/wk" />;
+    }
   }
 
   if (
@@ -50,6 +57,8 @@ export default function Authenticated({ children }) {
     if (role === "admin") return <Navigate to="/admin/home" replace />;
     if (role === "client") return <Navigate to="/client/dashboard" replace />;
     if (role === "employee") return <Navigate to="/w001/dashboard" replace />;
+    if (role === "employee" && employee_role === "assessments")
+      return <Navigate to="/assessment/home" replace />;
     if (role === "super_admin")
       return <Navigate to="/misc/dashboard" replace />;
   }
@@ -66,11 +75,22 @@ export default function Authenticated({ children }) {
     return <Navigate to="/client/dashboard" />;
   }
 
-  if (role === "employee" && !path.startsWith("/w001")) {
+  if (
+    role === "employee" &&
+    employee_role === "employee" &&
+    !path.startsWith("/w001")
+  ) {
     return <Navigate to="notauthorized" />;
   }
   if (role === "super_admin" && !path.startsWith("/misc")) {
     return <Navigate to="/misc/dashboard" />;
+  }
+  if (
+    role === "employee" &&
+    employee_role === "assessments" &&
+    !path.startsWith("/assessment")
+  ) {
+    return <Navigate to="/assessment/home" />;
   }
   return <>{children}</>;
 }
