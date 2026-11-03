@@ -7,7 +7,7 @@ export const job = async (req, res) => {
 
   const { vehicle_id, appointment_day, service_id } = req.body;
   let job_id;
-  const client = await pool.client();
+  const client = await pool.connect();
   try {
     await client.query("BEGIN");
     const checkJob = await client.query(
@@ -22,7 +22,6 @@ export const job = async (req, res) => {
         "INSERT INTO jobs(vehicle_id,appointment_day) VALUES ($1,$2) RETURNING job_id ",
         [vehicle_id, appointment_day],
       );
-
       job_id = newJob.rows[0].job_id;
     }
     //check if service is already been done to a vehicle
@@ -41,14 +40,19 @@ export const job = async (req, res) => {
       [service_id, job_id],
     );
     const garageSlot = await client.query(
-      "INSERT INTO vehicle_in_garage (job_id ) VALUES ($1)  returning ",
+      "INSERT INTO vehicle_in_garage (job_id ) VALUES ($1) ",
+      [job_id],
     );
+    await client.query("COMMIT");
     res
       .status(200)
       .json({ success: true, message: "job created successfully" });
   } catch (error) {
-    res.json({ success: false, message: error.message });
-    res.json({ success: false, message: "server error" });
+    await client.query("ROLLBACK");
+    console.log(error.message);
+    res.json({ success: false, message: "service cannot be created" });
+  } finally {
+    client.release();
   }
 };
 

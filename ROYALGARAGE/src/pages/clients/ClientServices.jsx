@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getServices } from "@/store/serviceslice";
 import { getVehiclelist } from "@/store/vehicleslice";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 import ServiceCard from "../../Comp/ServiceCard";
 import { newJobSelect } from "@/utils/inputs";
+import { newJob } from "@/store/jobsslice";
 
 export default function ClientServices() {
+  const { vehicles } = useSelector((state) => state.vehicle);
+  const { availableServiceList } = useSelector((state) => state.services);
   const [inputs, setInputs] = useState({
     appointment_day: "",
   });
@@ -15,8 +19,8 @@ export default function ClientServices() {
     vehicle_id: "",
   });
   const [selectedItem, setSelectedItem] = useState(null);
-  const { vehicles } = useSelector((state) => state.vehicle);
-  const { availableServiceList } = useSelector((state) => state.services);
+  const newJobSuccess = false;
+
   const dispatch = useDispatch();
 
   //setting vehicle select object
@@ -27,16 +31,21 @@ export default function ClientServices() {
   }));
 
   //getting a new service
-  const newJobSubmission = async (e) => {
-    dispatch(newJob(jobData)).then((data) => {
-      if (data.payload.success) {
-        toast(data.payload.message);
-        setOpen(false);
-        jobData.appointment_day = "";
-        jobData.vehicle_id = "";
+  const newJobSubmission = async () => {
+    const data = {
+      appointment_day: inputs.appointment_day,
+      service_id: selectedItem,
+      vehicle_id: selects.vehicle_id,
+    };
+    console.log(data);
+
+    dispatch(newJob(data)).then((results) => {
+      if (results.payload.success) {
+        toast(results.payload.message);
+        return (newJobSuccess = true);
       } else {
-        toast(data.payload.message);
-        setOpen(true);
+        toast(results.payload.message);
+        return (newJobSuccess = false);
       }
     });
   };
@@ -63,7 +72,7 @@ export default function ClientServices() {
                 states={{
                   setInputs: setInputs,
                   setSelects: setSelects,
-                  setSelectedItem: selectedItem,
+                  setSelectedItem: setSelectedItem,
                 }}
                 actions={{
                   newJob: newJobSubmission,

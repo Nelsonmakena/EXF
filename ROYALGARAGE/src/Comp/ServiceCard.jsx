@@ -25,10 +25,10 @@ export default function ServiceCard({
 }) {
   const { updateService, deleteService, newJob } = actions ?? {};
   const { setInputs, setSelects, setSelectedItem } = states ?? {};
-
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+
   return (
     <div className="bg-card  rounded-xl shadow-xs  flex flex-col  cursor-pointer md:w-52   hover:-translate-y-1 transition duration-400">
       {/* Product Image */}
@@ -65,6 +65,13 @@ export default function ServiceCard({
                 onSubmit: newJob,
                 onFieldChange: setInputs,
                 onSelectChange: setSelects,
+              }}
+              states={{
+                open: open,
+                setOpen: (v) => {
+                  setOpen(v);
+                  setSelectedItem(service.service_id);
+                },
               }}
             />
           </div>
