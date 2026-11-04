@@ -70,6 +70,22 @@ export const workerChecker = (req, res, next) => {
     console.log(error.message);
   }
 };
+export const assessmentRole = (req, res, next) => {
+  const { employee_role } = req.userinfo;
+
+  try {
+    if (employee_role === "assessments") {
+      return next();
+    }
+    return res.json({
+      success: false,
+      message: "access denied you don't have the privileges",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 // shared admin asn system Routes
 
 export const CommonChecker = (req, res, next) => {

@@ -130,21 +130,3 @@ export const deleteVehicle = async (req, res) => {
     res.json({ success: false, message: "server error" });
   }
 };
-
-/// car checker
-
-export const IncomingVehicleList = async (req, res) => {
-  try {
-    const VehicleList = await pool.query(
-      "SELECT * FROM vehicle JOIN jobs ON vehicle.vehicle_id = jobs.vehicle_id  WHERE in_garage = $1 ",
-      [false],
-    );
-    res.status(200).json({
-      success: true,
-      data: VehicleList.rows,
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: "server error" });
-  }
-};

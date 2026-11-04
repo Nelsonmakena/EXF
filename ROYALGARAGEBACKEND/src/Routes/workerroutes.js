@@ -3,6 +3,7 @@ import express from "express";
 import {
   authenticateMiddleware,
   workerChecker,
+  assessmentRole,
 } from "../middlewares/authenicationmidleware.js";
 
 import {
@@ -16,7 +17,7 @@ import {
   updateJobStatus,
   InProgressEmployee,
 } from "../controllers/jobs.js";
-import { IncomingVehicleList } from "../controllers/client/vehicle.js";
+import { VehicleAssessmentList } from "../controllers/Worker/assesment.js";
 
 import { totalAssigned } from "../controllers/Worker/dahsboard.js";
 const Router = express.Router();
@@ -48,7 +49,9 @@ Router.post("/accept", acceptJob);
 //update job status
 Router.post("/update-job", updateJobStatus);
 
-/// fetch list of vehicles
+///car checker specific routes
 
-Router.get("/vehicle", IncomingVehicleList);
+Router.use(assessmentRole);
+Router.get("/incoming-vehicles", VehicleAssessmentList);
+
 export default Router;

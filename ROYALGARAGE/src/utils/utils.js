@@ -43,6 +43,14 @@ export const AvatarFormatter = (name, fallback) => {
     return fallback;
   }
 };
+// single name avatar
+export const SingleAvatarFormatter = (name, fallback) => {
+  if (name) {
+    return name[0].toUpperCase() + name[name.length - 1].toUpperCase();
+  } else {
+    return fallback;
+  }
+};
 
 //stirring length checker and formatter
 

@@ -40,9 +40,16 @@ export const job = async (req, res) => {
       [service_id, job_id],
     );
     const garageSlot = await client.query(
-      "INSERT INTO vehicle_in_garage (job_id ) VALUES ($1) ",
+      "SELECT * FROM vehicle_in_garage WHERE job_id = $1",
       [job_id],
     );
+    if (garageSlot.rows.length == 0) {
+      await client.query(
+        "INSERT INTO vehicle_in_garage (job_id ) VALUES ($1) ",
+        [job_id],
+      );
+    }
+
     await client.query("COMMIT");
     res
       .status(200)

@@ -265,7 +265,7 @@ export default function AppRoutes() {
           <Route path="vehicle" element={<AssessmentVehicles />} />
           <Route path="client" element={<AssessmentClient />} />
           <Route
-            path="vehicle/:vehicle_id"
+            path="vehicle/:garage_id"
             element={<AssessmentSingleVehicle />}
           />
         </Route>
