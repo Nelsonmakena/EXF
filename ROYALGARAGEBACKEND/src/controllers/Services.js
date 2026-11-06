@@ -128,3 +128,24 @@ export const deleteService = async (req, res) => {
     res.json({ success: false, message: "server error" });
   }
 };
+
+//new service category
+
+export const newServiceCategory = async (req, res) => {
+  const { name, description } = req.body;
+  console.log(req.body);
+
+  try {
+    const response = await pool.query(
+      "INSERT INTO service_categories (category_name , category_description) VALUES ($1,$2)",
+      [name, description],
+    );
+    res.status(200).json({
+      success: true,
+      message: "new service category added ",
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "service category cant be created " });
+  }
+};

@@ -60,8 +60,6 @@ export const getJobList = createAsyncThunk("/admin/jobs", async () => {
   const response = await axios.get("/api/admin/jobs-list", {
     withCredentials: true,
   });
-  console.log(response.data);
-
   return response.data;
 });
 

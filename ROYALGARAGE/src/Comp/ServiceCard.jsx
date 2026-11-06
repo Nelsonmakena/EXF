@@ -29,7 +29,7 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
     vehicle_id: "",
   });
   //setting vehicle select object
-  newJobSelect.vehicle.data = vehicles.map((u) => ({
+  newJobSelect.vehicle.data = vehicles?.map((u) => ({
     vehicle_id: u.vehicle_id,
     vehicle_name:
       u.details.model + " " + u.details.brand + " " + u.details.plate,
@@ -107,7 +107,6 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
               trigger={{ icon: SquarePen, name: "edit" }}
               fields={addValue(newServiceInputs, service)}
               selectFields={newServicesSelects}
-              actions={{ onSubmit: updateService }}
               states={{
                 open: open,
                 setOpen: (v) => {

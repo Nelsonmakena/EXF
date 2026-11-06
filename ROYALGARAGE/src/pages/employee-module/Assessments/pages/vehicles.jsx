@@ -14,7 +14,7 @@ export default function Vehicle() {
   useEffect(() => {
     dispatch(getIncomingVehicles());
   }, []);
-  console.log(vehicleList);
+
   if (vehicleList.length === 0) {
     return (
       <div className="w-full h-screen flex items-center justify-center">

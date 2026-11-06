@@ -92,6 +92,17 @@ export const getServiceCategories = createAsyncThunk(
     return response.data;
   },
 );
+//adding a new service category
+
+export const newServiceCategory = createAsyncThunk(
+  "new-category",
+  async (data) => {
+    const response = await axios.put("/api/services/service-category", data, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+);
 
 //deleting a service
 export const deletService = createAsyncThunk(

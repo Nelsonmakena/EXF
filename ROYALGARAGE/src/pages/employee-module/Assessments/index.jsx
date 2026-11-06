@@ -6,7 +6,10 @@ export default function CarChecker() {
   return (
     <main>
       <div>
-        <CommonNav menuItems={assessmentMenuItems} />
+        <CommonNav
+          menuItems={assessmentMenuItems}
+          homePath={"/assessment/home"}
+        />
       </div>
       <div className="container-main">
         <Outlet />

@@ -90,6 +90,11 @@ export const newAccountRoleInputs = [
   { label: "account description", name: "role_description", type: "text" },
 ];
 
+export const newServiceCategoryInputs = [
+  { label: "service category name", name: "name", type: "text" },
+  { label: "description ", name: "description", type: "text" },
+];
+
 ///client input fields
 
 export const newJobInputs = [

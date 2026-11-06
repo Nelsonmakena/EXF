@@ -56,6 +56,9 @@ const Account = lazy(
   () => import("@/pages/system/accountsMangament/singleaccountpage"),
 );
 const SystemDashboard = lazy(() => import("@/pages/system/dashboard"));
+const SystemServiceCategories = lazy(
+  () => import("@/pages/system/serviceManagment/serviceCategories"),
+);
 
 // Common
 const Template = lazy(() => import("../pages/Common/Common"));
@@ -227,6 +230,10 @@ export default function AppRoutes() {
             <Route path="accounts" element={<Accounts />} />
             <Route path="accounts/:account_id" element={<Account />} />
             <Route path="accounts-roles" element={<AccountsRoles />} />
+            <Route
+              path="service-categories"
+              element={<SystemServiceCategories />}
+            />
           </Route>
         </Route>
 

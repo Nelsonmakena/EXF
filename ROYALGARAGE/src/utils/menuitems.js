@@ -128,11 +128,16 @@ export const SystemMenuItems = [
         path: "/misc/management/accounts",
         icon: UsersRound,
       },
+      {
+        name: "Service Categories",
+        path: "/misc/management/service-categories",
+        icon: UsersRound,
+      },
     ],
   },
   {
-    name: "Roles",
-    path: "/admin/home",
+    name: "Management",
+    path: "//home",
     icon: LayoutDashboard,
     subMenu: [
       { name: "Dashboard", path: "/admin/home", icon: LayoutDashboard },

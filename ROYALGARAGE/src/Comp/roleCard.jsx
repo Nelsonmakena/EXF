@@ -73,11 +73,13 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
         <div className="flex min-w-0 items-center gap-3">
           <div className="min-w-0">
             <h3 className="truncate text-sm font-semibold text-primary ">
-              {item.role_name || item.position_name}
+              {item.role_name || item.position_name || item.category_name}
             </h3>
 
             <p className="mt-0.5 text-xs text-gray-500">
-              {item.role_description || item.position_description}
+              {item.role_description ||
+                item.position_description ||
+                item.category_description}
             </p>
           </div>
         </div>

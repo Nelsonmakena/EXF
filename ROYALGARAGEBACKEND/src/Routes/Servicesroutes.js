@@ -4,20 +4,35 @@ import {
   updateService,
   deleteService,
   getServicesCategories,
+  newServiceCategory,
 } from "../controllers/Services.js";
 import express from "express";
 
 import {
   authenticateMiddleware,
   adminChecker,
+  CommonChecker,
 } from "../middlewares/authenicationmidleware.js";
 
 const Router = express.Router();
 
+//fetch list of all services
 Router.get("/all-services", getServices);
-Router.use(authenticateMiddleware, adminChecker);
-Router.get("/service-category", getServicesCategories);
+
+Router.use(authenticateMiddleware, CommonChecker);
+
+//adding a new service
 Router.put("/add-service", addService);
+
+//updating
 Router.put("/update-service/:service_id", updateService);
+
+//deleting
 Router.delete("/delete/:service_id", deleteService);
+
+//new service category
+Router.put("/service-category", newServiceCategory);
+
+//fetching the list of service categories
+Router.get("/service-category", getServicesCategories);
 export default Router;
