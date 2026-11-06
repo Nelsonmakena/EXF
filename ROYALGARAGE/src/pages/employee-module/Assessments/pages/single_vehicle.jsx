@@ -1,15 +1,31 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getSingleAssessmentItem } from "@/store/assessmentSlice";
+import {
+  confirmVehicle,
+  getSingleAssessmentItem,
+} from "@/store/assessmentSlice";
 import { AvatarFormatter, SingleAvatarFormatter } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
-import { clsx } from "clsx";
+import { toast } from "sonner";
 
 export default function SingleVehicle() {
   const { garageSlot } = useSelector((state) => state.assessments);
+
   const { garage_id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const confirm = () => {
+    dispatch(confirmVehicle(garageSlot)).then((results) => {
+      if (results?.payload?.success) {
+        toast(results.payload.message);
+        navigate("/assessment/vehicle");
+      } else {
+        toast(results?.payload?.message);
+      }
+    });
+  };
 
   useEffect(() => {
     dispatch(getSingleAssessmentItem(garage_id));
@@ -18,7 +34,7 @@ export default function SingleVehicle() {
   if (!garageSlot) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <h1>item information not available at the moment </h1>
+        <h1>item information not ~available at the moment </h1>
       </div>
     );
   }
@@ -138,7 +154,7 @@ export default function SingleVehicle() {
         </div>
       </div>
       <div className="w-full flex items-center justify-center h-30 ">
-        <Button size="lg" className={"w-2xs h-12"}>
+        <Button size="lg" className={"w-2xs h-12"} onClick={confirm}>
           Confirm
         </Button>
       </div>

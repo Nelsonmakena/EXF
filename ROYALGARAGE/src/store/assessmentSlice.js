@@ -29,6 +29,15 @@ export const getSingleAssessmentItem = createAsyncThunk(
     return response.data;
   },
 );
+
+//confirmation of a vehicle
+export const confirmVehicle = createAsyncThunk("confirm", async (data) => {
+  const response = await axios.post("/api/worker/incoming-vehicles", data, {
+    withCredentials: true,
+  });
+  return response.data;
+});
+
 const assessmentSlice = createSlice({
   name: "assessment",
   initialState,

@@ -62,3 +62,18 @@ export const singleAssessmentItem = async (req, res) => {
     res.json({ success: false, message: "error details not available" });
   }
 };
+
+//confirmation of vehicle in garage
+export const vehicleConfirmation = async (req, res) => {
+  const { garage_id } = req.body;
+  try {
+    const response = await pool.query(
+      "UPDATE vehicle_in_garage SET in_garage = $1 , time_entered=CURRENT_TIMESTAMP  WHERE garage_id = $2",
+      ["true", garage_id],
+    );
+    res.json({ success: true, message: "confirmed " });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "vehicle cant be confirmed" });
+  }
+};

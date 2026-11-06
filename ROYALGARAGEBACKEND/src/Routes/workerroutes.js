@@ -20,6 +20,7 @@ import {
 import {
   VehicleAssessmentList,
   singleAssessmentItem,
+  vehicleConfirmation,
 } from "../controllers/Worker/assesment.js";
 
 import { totalAssigned } from "../controllers/Worker/dahsboard.js";
@@ -57,4 +58,6 @@ Router.post("/update-job", updateJobStatus);
 Router.use(assessmentRole);
 Router.get("/incoming-vehicles", VehicleAssessmentList);
 Router.get("/incoming-vehicles/:garage_id", singleAssessmentItem);
+Router.post("/incoming-vehicles", vehicleConfirmation);
+
 export default Router;
