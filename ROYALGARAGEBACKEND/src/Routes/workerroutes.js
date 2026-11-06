@@ -17,7 +17,10 @@ import {
   updateJobStatus,
   InProgressEmployee,
 } from "../controllers/jobs.js";
-import { VehicleAssessmentList } from "../controllers/Worker/assesment.js";
+import {
+  VehicleAssessmentList,
+  singleAssessmentItem,
+} from "../controllers/Worker/assesment.js";
 
 import { totalAssigned } from "../controllers/Worker/dahsboard.js";
 const Router = express.Router();
@@ -53,5 +56,5 @@ Router.post("/update-job", updateJobStatus);
 
 Router.use(assessmentRole);
 Router.get("/incoming-vehicles", VehicleAssessmentList);
-
+Router.get("/incoming-vehicles/:garage_id", singleAssessmentItem);
 export default Router;
