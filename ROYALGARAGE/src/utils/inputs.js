@@ -95,6 +95,15 @@ export const newServiceCategoryInputs = [
   { label: "description ", name: "description", type: "text" },
 ];
 
+export const serviceCategoryRoleSelects = {
+  role: {
+    header: "Role",
+    idKey: "role_id",
+    nameKey: "role_name",
+    data: [],
+  },
+};
+
 ///client input fields
 
 export const newJobInputs = [

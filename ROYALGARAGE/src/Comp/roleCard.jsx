@@ -10,19 +10,61 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { Trash, Trash2, SquarePen } from "lucide-react";
+import { Trash, Trash2, SquarePen, Plus } from "lucide-react";
 import {
   deleteRole,
   getAccountRoles,
+  getRoleList,
   removeAccountRole,
   updateAccountRole,
 } from "@/store/accountsslice";
 import CustomSheet from "./custom-sheet";
 import { addValue } from "@/utils/utils";
-import { updateRoleINputs } from "@/utils/inputs";
+import { serviceCategoryRoleSelects, updateRoleINputs } from "@/utils/inputs";
+import CustomDialog from "@/Comp/customdialog";
+import { newServiceRoleCategory } from "@/store/serviceslice";
 
-export default function RolesCard({ item, isAdmin, isSystem, actions }) {
+export default function RolesCard({
+  item,
+  isAdmin,
+  isSystem,
+  actions,
+  caller,
+}) {
+  const { employeeRoles } = useSelector((state) => state.Accounts);
   const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
+  const [select, setSelect] = useState({
+    role_id: "",
+  });
+  const [open, setOpen] = useState({
+    customDialog: false,
+  });
+
+  const { serviceCategories } = caller ?? {};
+
+  //setting employee roles to be displayed by custom dialog
+  serviceCategoryRoleSelects.role.data = employeeRoles.map((singleRole) => ({
+    role_id: singleRole.role_id,
+    role_name: singleRole.role_name,
+  }));
+
+  //adding role to a service category both admin and system
+  const addRole = () => {
+    const data = {
+      role_id: select,
+      service_category_id: item.service_category_id,
+    };
+    dispatch(newServiceRoleCategory(data)).then((results) => {
+      if (results?.payload?.message) {
+        toast(results.payload.message);
+        setOpen({ customDialog: false });
+      } else {
+        toast(results.payload.message);
+        setOpen((prev) => ({ ...prev, customDialog: true }));
+      }
+    });
+  };
+
   const dispatch = useDispatch();
   const changeItem = (actions) => {
     switch (actions) {
@@ -66,6 +108,9 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
         console.log("Unknown action");
     }
   };
+  useEffect(() => {
+    dispatch(getRoleList());
+  }, []);
 
   return (
     <div className="rounded-md p-4 transition cursor-pointer shadow-sm border">
@@ -133,6 +178,22 @@ export default function RolesCard({ item, isAdmin, isSystem, actions }) {
             initiator={"small"}
             fields={addValue(updateRoleINputs, item)}
             actions={{ onsubmit: changeItem }}
+          />
+        )}
+        {(isSystem || isAdmin) && serviceCategories && (
+          <CustomDialog
+            initiator={"small"}
+            trigger={{ icon: Plus }}
+            selectFields={serviceCategoryRoleSelects}
+            actions={{ onSelectChange: setSelect, onsubmit: addRole }}
+            states={{
+              open: open.customDialog,
+              setOpen: (value) =>
+                setOpen((prev) => ({
+                  ...prev,
+                  customDialog: value,
+                })),
+            }}
           />
         )}
       </div>

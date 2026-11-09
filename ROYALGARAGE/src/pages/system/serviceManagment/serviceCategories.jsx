@@ -24,8 +24,10 @@ export default function ServiceCategories() {
       if (results?.payload?.success) {
         toast(results.payload.message);
         dispatch(getServiceCategories());
+        setOpen(false);
       } else {
         toast(results.payload.message);
+        setOpen(true);
       }
     });
   };
@@ -37,7 +39,7 @@ export default function ServiceCategories() {
   return (
     <section className="section-sm flex flex-col gap-normal">
       <div className="grid grid-cols-3 gap-normal card ">
-        <div className="w-2xs flex items-center justify-center ">
+        <div className=" px-2 flex items-center justify-center ">
           <CustomSheet
             trigger={{ name: "new service category", icon: Plus }}
             actions={{ onFieldChange: setInputs, onSubmit: newService }}
@@ -46,7 +48,11 @@ export default function ServiceCategories() {
           />
         </div>
         {serviceCategories?.map((item) => (
-          <RolesCard isSystem={true} item={item} />
+          <RolesCard
+            isSystem={true}
+            item={item}
+            caller={{ serviceCategories: true }}
+          />
         ))}
       </div>
     </section>

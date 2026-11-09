@@ -103,7 +103,17 @@ export const newServiceCategory = createAsyncThunk(
     return response.data;
   },
 );
+//adding a role to service category 
 
+export const newServiceRoleCategory = createAsyncThunk(
+  "new-role-service-category",
+  async (data) => {
+    const response = await axios.post("/api/services/service-category", data, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+);
 //deleting a service
 export const deletService = createAsyncThunk(
   "/delete-Service",

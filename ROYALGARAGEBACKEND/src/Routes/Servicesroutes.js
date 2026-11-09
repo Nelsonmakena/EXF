@@ -14,6 +14,7 @@ import {
   CommonChecker,
 } from "../middlewares/authenicationmidleware.js";
 
+import { newServiceCategoryRole } from "../controllers/Worker/servicesRoles.js";
 const Router = express.Router();
 
 //fetch list of all services
@@ -35,4 +36,7 @@ Router.put("/service-category", newServiceCategory);
 
 //fetching the list of service categories
 Router.get("/service-category", getServicesCategories);
+
+//adding roles to service categories
+Router.post("/service-category", newServiceCategoryRole);
 export default Router;
