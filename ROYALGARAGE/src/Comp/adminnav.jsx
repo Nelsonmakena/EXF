@@ -23,16 +23,16 @@ export default function AdminNav({ menuItems, initiator, hideMenu }) {
             <div
               key={item.name}
               onClick={() => navigate(item.path)}
-              className={`flex items-center  justify-center gap-7 px-4 ${
+              className={`px-4 ${
                 path.includes(item.path)
-                  ? !hideMenu
-                    ? " h-15  bg-card rounded-l-2xl tracking-widest "
-                    : "bg-card h-20"
+                  ? hideMenu
+                    ? " bg-card h-20  "
+                    : " h-15 bg-card rounded-l-2xl tracking-widest"
                   : " bg-none"
               }`}
             >
               <div
-                className={` h-full  w-full  gap-normal  ${hideMenu ? " flex flex-col text-xs items-center justify-center" : "flex"}`}
+                className={` h-full  w-full  gap-normal  ${hideMenu ? " flex flex-col text-xs items-center justify-center" : "flex items-center justify-center"}`}
               >
                 <Icon />
                 {item.name}

@@ -42,6 +42,8 @@ export default function RolesCard({
 
   const { serviceCategories } = caller ?? {};
 
+  console.log(item);
+
   //setting employee roles to be displayed by custom dialog
   serviceCategoryRoleSelects.role.data = employeeRoles.map((singleRole) => ({
     role_id: singleRole.role_id,
@@ -183,7 +185,8 @@ export default function RolesCard({
         {(isSystem || isAdmin) && serviceCategories && (
           <CustomDialog
             initiator={"small"}
-            trigger={{ icon: Plus }}
+            title={`${item.category_name}   ${" New Role"}`}
+            trigger={{ icon: Plus, name: "Add Role" }}
             selectFields={serviceCategoryRoleSelects}
             actions={{ onSelectChange: setSelect, onsubmit: addRole }}
             states={{
