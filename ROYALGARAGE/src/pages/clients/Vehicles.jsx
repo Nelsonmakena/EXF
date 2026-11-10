@@ -50,30 +50,35 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import UpdateVehicle from "./updatevehicle";
 import DeleteVehicle from "./deleteVehicle";
+import CustomDialog from "@/Comp/customdialog";
+import { newVehicleInputs } from "@/utils/inputs";
 
 export default function Vehicles() {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [inputs, setInputs] = useState({
+    license_plate: "",
+    vehicle_model: "",
+    vehicle_brand: "",
+    vehicle_color: "",
+  });
   const dispatch = useDispatch();
   const { vehicles } = useSelector((state) => state.vehicle);
   const [open, setOpen] = useState(false);
 
-  const addVehicle = async (e) => {
-    e.preventDefault();
-    const formdata = new FormData(e.target);
-    const data = Object.fromEntries(formdata.entries());
-    console.log(data);
+  const addVehicle = async () => {
+    console.log(inputs);
 
-    dispatch(newVehicle(data)).then((data) => {
-      if (data.payload.success) {
-        setOpen(false);
-        toast(data.payload.message);
-      } else {
-        setOpen(true);
-        toast.warning(data.payload.message);
-      }
-    });
+    // dispatch(newVehicle(data)).then((data) => {
+    //   if (data.payload.success) {
+    //     setOpen(false);
+    //     toast(data.payload.message);
+    //   } else {
+    //     setOpen(true);
+    //     toast.warning(data.payload.message);
+    //   }
+    // });
   };
 
   // const deleteVehicle
@@ -87,62 +92,15 @@ export default function Vehicles() {
           <Table className="">
             <TableCaption>
               {/* adding a new vehicle  */}
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger
-                  render={
-                    <button className=" flex justify-center items-center border gap-normal py-2 px-3.5 rounded-md">
-                      <CarFront className="text-accent" />
-                      <h1 className="text-body text-header"> New Vehicle</h1>
-                    </button>
-                  }
-                ></DialogTrigger>
-                <DialogContent className={" bg-card"}>
-                  <DialogHeader>
-                    <DialogTitle> Add Vehicle</DialogTitle>
-                    <DialogDescription></DialogDescription>
-                  </DialogHeader>
-                  <form
-                    onSubmit={addVehicle}
-                    className=" flex flex-col card  justify-center items-center  w-full"
-                  >
-                    <div className="flex flex-col  gap-normal">
-                      <div className="grid gap-3 w-2xs h-20">
-                        <Input
-                          name="license_plate"
-                          placeholder="license_plate"
-                          required
-                          maxlength={7}
-                        />
-                        <Input
-                          name="vehicle_model"
-                          placeholder="vehicle_model"
-                          required
-                        />
-                      </div>
-                      <div className="grid gap-3 w-2xs">
-                        <Input
-                          name="vehicle_brand"
-                          placeholder="vehicle_brand"
-                          required
-                        />
-                        <Input
-                          name="vehicle_color"
-                          placeholder="vehicle_color"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className=" card w-full flex justify-center ">
-                      <button
-                        type="submit"
-                        className="w-2xs h-12 text-white rounded-md   bg-primary"
-                      >
-                        Add Vehicle
-                      </button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              <div className="w-2xs">
+                <CustomDialog
+                  title={"New vehicle"}
+                  trigger={{ icon: CarFront, name: "New Vehicle" }}
+                  fields={newVehicleInputs}
+                  actions={{ onFieldChange: setInputs, onSubmit: addVehicle }}
+                  states={{ inputs: inputs }}
+                />
+              </div>
             </TableCaption>
             {/* list of vehicles  */}
             <TableHeader className="">

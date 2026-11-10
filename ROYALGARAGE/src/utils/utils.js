@@ -54,13 +54,14 @@ export const SingleAvatarFormatter = (name, fallback) => {
 
 //stirring length checker and formatter
 
-export const stringChecker = (string, length) => {
-  if (string.length === length) {
-    const formatted = string[0].toUpperCase() + string.slice(1);
-    return formatted;
-  } else {
-    return;
-  }
+export const stringWordCase = (string) => {
+  if (!string) return "";
+  return string[0].toUpperCase() + string.slice(1);
+};
+
+export const StringUpperCase = (string) => {
+  if (!string) return "";
+  return string.toUpperCase();
 };
 
 //custom dropdown menu converter

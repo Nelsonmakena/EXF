@@ -1,3 +1,6 @@
+import { StringUpperCase } from "@/utils/utils";
+import { stringWordCase } from "./utils";
+
 // new worker
 export const newWorkerInputs = [
   { Placeholder: "email", name: "email", type: "email" },
@@ -117,3 +120,33 @@ export const newJobSelect = {
     data: [],
   },
 };
+export const newVehicleInputs = [
+  {
+    label: "plate number",
+    name: "license_plate",
+    type: "text",
+    maxLength: "7",
+    format: StringUpperCase,
+  },
+  {
+    label: "vehicle model",
+    name: "vehicle_model",
+    type: "text",
+    maxLength: "20",
+    format: stringWordCase,
+  },
+  {
+    label: "vehicle brand",
+    name: "vehicle_brand",
+    type: "text",
+    maxLength: "20",
+    format: stringWordCase,
+  },
+  {
+    label: "color",
+    name: "vehicle_color",
+    type: "text",
+    maxLength: "20",
+    format: stringWordCase,
+  },
+];

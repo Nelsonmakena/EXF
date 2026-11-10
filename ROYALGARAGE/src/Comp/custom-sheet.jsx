@@ -22,16 +22,19 @@ export default function CustomSheet({
   states,
 }) {
   const { onSubmit, onFieldChange, onSelectChange } = actions ?? {};
-  const { open, setOpen } = states ?? {};
+  const { open, setOpen, inputs } = states ?? {};
   const Icon = trigger?.icon;
   //handling selects data
   const handleSelected = (field, id) => {
     onSelectChange((prev) => ({ ...prev, [field]: id }));
   };
   //handling input data
-  const handleInput = (e) => {
+  const handleInput = (e, item) => {
     const { name, value } = e.target;
-    onFieldChange((prev) => ({ ...prev, [name]: value }));
+    onFieldChange((prev) => ({
+      ...prev,
+      [name]: item.format ? item.format(value) : value,
+    }));
   };
 
   const submit = (e) => {
@@ -72,15 +75,16 @@ export default function CustomSheet({
           <div className="flex flex-col gap-normal px-3.5">
             {fields?.map((item, index) => (
               <div key={index} className="grid gap-1 ">
-                <label> {item.label}</label>
+                <label className="capitalize"> {item.label}</label>
                 <Input
                   className={"h-11"}
                   type={item.type}
                   placeholder={item.label}
                   name={item.name}
-                  value={item.value}
+                  value={inputs?.[item.name] ?? ""}
+                  maxlength={item?.maxLength}
                   required
-                  onChange={handleInput}
+                  onChange={(e) => handleInput(e, item)}
                 ></Input>
               </div>
             ))}
