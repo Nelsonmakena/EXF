@@ -9,12 +9,14 @@ import dashboardSlice from "./dashboardstarts";
 import clientSlice from "./client";
 import AccountSlice from "./accountsslice";
 import AssessmentSlice from "./assessmentSlice";
+import ProductSlice from "./productSlice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     vehicle: vehicleReducer,
     services: servicesReducer,
+    products: ProductSlice,
     worker: workerSlice,
     jobs: jobSlice,
     appointmentsDates: dateSlice,

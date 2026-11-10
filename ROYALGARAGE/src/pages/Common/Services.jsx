@@ -1,14 +1,16 @@
-import { getProducts, getServices } from "@/store/serviceslice";
+import { getServices } from "@/store/serviceslice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Map } from "lucide-react";
 import ProductCard from "@/Comp/productCard";
 import ServiceCard from "@/Comp/ServiceCard";
+import { getProducts } from "@/store/productSlice";
 
 export default function Service() {
-  const { availableServiceList, availableProductList } = useSelector(
-    (state) => state.services,
-  );
+  const {
+    services: { availableServiceList },
+    products: { products },
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getServices());
@@ -19,7 +21,7 @@ export default function Service() {
     <>
       <section className="section">
         <div className="grid grid-cols-2 md:flex md:flex-wrap items-stretch justify-center gap-5">
-          {availableProductList.map((product) => (
+          {products.map((product) => (
             <ProductCard product={product} />
           ))}
           {availableServiceList.map((service) => (

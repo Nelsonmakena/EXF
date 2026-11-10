@@ -28,11 +28,7 @@ Router.put("/add-product", addProduct);
 
 Router.patch("/update/:productId", updateProduct);
 //delete a product
-Router.delete(
-  "/delete/:product_id",
-
-  deleteProduct,
-);
+Router.delete("/delete/:product_id", deleteProduct);
 
 //new inventory record
 Router.put("/inventory", newInventory);

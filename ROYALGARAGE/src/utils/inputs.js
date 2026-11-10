@@ -1,20 +1,50 @@
-import { StringUpperCase } from "@/utils/utils";
+import { StringLowerCase, StringUpperCase } from "@/utils/utils";
 import { stringWordCase } from "./utils";
 
 // new worker
 export const newWorkerInputs = [
-  { Placeholder: "email", name: "email", type: "email" },
+  {
+    Placeholder: "email",
+    name: "email",
+    type: "email",
+    format: StringLowerCase,
+  },
 ];
 export const updateRoleINputs = [
-  { label: "role name", name: "role_name", type: "text" },
-  { label: "role description", name: "role_description", type: "text" },
+  {
+    label: "role name",
+    name: "role_name",
+    type: "text",
+    format: stringWordCase,
+  },
+  {
+    label: "role description",
+    name: "role_description",
+    type: "text",
+    format: stringWordCase,
+  },
 ];
 export const editCategoryInputs = [
-  { label: "category name", name: "category_name", type: "text" },
+  {
+    label: "category name",
+    name: "category_name",
+    type: "text",
+    format: stringWordCase,
+  },
 ];
 export const EmployeePositionsInputs = [
-  { label: "position name", name: "role_name", type: "text" },
-  { label: "position description", name: "role_description", type: "text" },
+  {
+    label: "position name",
+    name: "role_name",
+    type: "text",
+    format: stringWordCase,
+  },
+  {
+    label: "position description",
+    name: "role_description",
+    type: "text",
+    format: stringWordCase,
+  },
 ];
 export const editWorkerSelects = {
   position: {
@@ -54,18 +84,38 @@ export const newWorkerSelects = {
 };
 
 export const updateProductInputs = [
-  { label: "product name", name: "product_name", type: "text" },
+  {
+    label: "product name",
+    name: "product_name",
+    type: "text",
+    format: stringWordCase,
+  },
   { label: "product image", name: "product_image", type: "text" },
-  { label: "product description", name: "product_description", type: "text" },
+  {
+    label: "product description",
+    name: "product_description",
+    type: "text",
+    format: stringWordCase,
+  },
   { label: "product price", name: "product_price", type: "text" },
   { label: "product category", name: "product_category", type: "text" },
   { label: "product discount", name: "product_discount", type: "text" },
 ];
 
 export const newServiceInputs = [
-  { label: "service name", name: "service_name", type: "text" },
+  {
+    label: "service name",
+    name: "service_name",
+    type: "text",
+    format: stringWordCase,
+  },
   { label: "service image", name: "service_image", type: "text" },
-  { label: "service description", name: "service_description", type: "text" },
+  {
+    label: "service description",
+    name: "service_description",
+    type: "text",
+    format: stringWordCase,
+  },
   { label: "service price", name: "service_price", type: "text" },
   { label: "service discount", name: "service_discount", type: "text" },
 ];
@@ -80,22 +130,47 @@ export const newServicesSelects = {
 
 export const newStockInputs = [
   { label: "quantity", name: "stock", type: "text" },
-  { label: "supplier", name: "supplier", type: "text" },
+  { label: "supplier", name: "supplier", type: "text", format: stringWordCase },
 ];
 
 export const newEmployeeRoleInputs = [
-  { label: "role name", name: "role_name", type: "text" },
+  {
+    label: "role name",
+    name: "role_name",
+    type: "text",
+    format: stringWordCase,
+  },
   { label: "role description", name: "role_description", type: "text" },
 ];
 
 export const newAccountRoleInputs = [
-  { label: "account category", name: "role_name", type: "text" },
-  { label: "account description", name: "role_description", type: "text" },
+  {
+    label: "account category",
+    name: "role_name",
+    type: "text",
+    format: StringUpperCase,
+  },
+  {
+    label: "account description",
+    name: "role_description",
+    type: "text",
+    format: stringWordCase,
+  },
 ];
 
 export const newServiceCategoryInputs = [
-  { label: "service category name", name: "name", type: "text" },
-  { label: "description ", name: "description", type: "text" },
+  {
+    label: "service category name",
+    name: "name",
+    type: "text",
+    format: stringWordCase,
+  },
+  {
+    label: "description ",
+    name: "description",
+    type: "text",
+    format: stringWordCase,
+  },
 ];
 
 export const serviceCategoryRoleSelects = {

@@ -5,13 +5,14 @@ import animatedaddbutton from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, newProduct } from "@/store/serviceslice";
+import { newProduct } from "@/store/serviceslice";
 
 import ProductCard from "@/Comp/productCard";
 import { toast } from "sonner";
 import CustomSheet from "@/Comp/custom-sheet";
 import { updateProductInputs } from "@/utils/inputs";
 import { Plus } from "lucide-react";
+import { getProducts } from "@/store/productSlice";
 
 export default function AdminViewProducts() {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ export default function AdminViewProducts() {
     product_discount: "",
   });
   const dispatch = useDispatch();
-  const { availableProductList } = useSelector((state) => state.services);
+  const { products } = useSelector((state) => state.products);
 
   /// fetching data for adding a product
   const addProduct = () => {
@@ -50,7 +51,6 @@ export default function AdminViewProducts() {
   //updating a product
   const updateProduct = (product) => {
     const data = {};
-
     data.productId = product.product_id;
     dispatch(updateProducts(data)).then((results) => {
       if (results.payload.success) {
@@ -86,7 +86,7 @@ export default function AdminViewProducts() {
           </div>
         </div>
 
-        {availableProductList.map((item) => {
+        {products.map((item) => {
           return (
             <ProductCard
               product={item}

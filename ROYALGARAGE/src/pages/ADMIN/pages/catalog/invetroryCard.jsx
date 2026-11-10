@@ -1,20 +1,39 @@
-import {
-  ArrowRight,
-  Package,
-  TrendingDown,
-  Boxes,
-  PlusCircleIcon,
-} from "lucide-react";
+import { ArrowRight, TrendingDown, Boxes, PlusCircleIcon } from "lucide-react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { currencyFormat } from "@/utils/utils";
 import CustomSheet from "@/Comp/custom-sheet";
 import { newStockInputs } from "@/utils/inputs";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+import { addStock, getCatalogue } from "@/store/productSlice";
 export default function InventoryCard({ product }) {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [inputs, setInputs] = useState({
+    stock: "",
+    supplier: "",
+  });
+
+  const newStock = () => {
+    const data = {
+      stock: inputs.stock,
+      supplier: inputs.supplier,
+      inventory_id: product.inventory_id,
+    };
+    dispatch(addStock(data)).then((results) => {
+      if (results?.payload?.success) {
+        toast(results.payload.message);
+        dispatch(getCatalogue());
+        setOpen(false);
+      } else {
+        toast(results.payload.message);
+        setOpen(true);
+      }
+    });
+  };
 
   return (
     <div className="space-y-3">
@@ -80,6 +99,8 @@ export default function InventoryCard({ product }) {
               title={product.product_name}
               trigger={{ icon: PlusCircleIcon, name: "add stock" }}
               fields={newStockInputs}
+              states={{ open: open, setOpen: setOpen, inputs: inputs }}
+              actions={{ onFieldChange: setInputs, onSubmit: newStock }}
             />
           </div>
 

@@ -1,16 +1,10 @@
-import {
-  addCart,
-  getProducts,
-  removeProduct,
-  updateProducts,
-} from "@/store/serviceslice";
+import { addCart, removeProduct, updateProducts } from "@/store/serviceslice";
 import { ShoppingCart, Square, Trash } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { currencyFormat } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import CustomDropDown from "./customdropdown";
 import CustomSheet from "./custom-sheet";
 import { updateProductInputs } from "@/utils/inputs";
 import { addValue } from "./../utils/utils";

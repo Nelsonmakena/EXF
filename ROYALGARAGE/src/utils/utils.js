@@ -63,6 +63,10 @@ export const StringUpperCase = (string) => {
   if (!string) return "";
   return string.toUpperCase();
 };
+export const StringLowerCase = (string) => {
+  if (!string) return "";
+  return string.toLowerCase();
+};
 
 //custom dropdown menu converter
 

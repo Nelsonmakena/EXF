@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "@/store/serviceslice";
+
 import ProductCard from "../../Comp/productCard";
+import { getProducts } from "@/store/productSlice";
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { availableProductList } = useSelector((state) => state.services);
+  const { products } = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -14,7 +15,7 @@ export default function Shop() {
   return (
     <section className="section-sm ">
       <div className="grid grid-cols-2 md:flex md:flex-wrap items-stretch justify-center gap-5 ">
-        {availableProductList.map((item) => (
+        {products.map((item) => (
           <ProductCard product={item} key={item.product_id} client={true} />
         ))}
       </div>
