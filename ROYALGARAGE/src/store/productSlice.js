@@ -7,8 +7,9 @@ const initialState = {
 };
 
 //fetching product list
-export const getProducts = createAsyncThunk("/products", async (product_id) => {
+export const getProducts = createAsyncThunk("/products", async () => {
   const response = await axios.get("/api/products/all-products");
+
   return response.data;
 });
 
@@ -49,8 +50,6 @@ export const getCatalogue = createAsyncThunk("/catalogue", async () => {
   const response = await axios.get("/api/products/inventory", {
     withCredentials: true,
   });
-  console.log(response.data);
-
   return response.data;
 });
 

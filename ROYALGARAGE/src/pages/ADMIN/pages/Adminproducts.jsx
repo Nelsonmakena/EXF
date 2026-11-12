@@ -1,11 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
 import animatedaddbutton from "/src/assets/addbuttondata.json";
 import Lottie from "lottie-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { newProduct } from "@/store/serviceslice";
+import { newProduct } from "@/store/productSlice";
 
 import ProductCard from "@/Comp/productCard";
 import { toast } from "sonner";
@@ -16,7 +13,6 @@ import { getProducts } from "@/store/productSlice";
 
 export default function AdminViewProducts() {
   const [open, setOpen] = useState(false);
-  const [seletedItem, setSelectedItem] = useState(null);
   const [inputs, setInputs] = useState({
     product_name: "",
     product_image: "",
@@ -26,7 +22,7 @@ export default function AdminViewProducts() {
     product_discount: "",
   });
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
+  const { productList } = useSelector((state) => state.products);
 
   /// fetching data for adding a product
   const addProduct = () => {
@@ -44,21 +40,6 @@ export default function AdminViewProducts() {
         setOpen(false);
       } else {
         toast(results.payload.message);
-        setOpen(true);
-      }
-    });
-  };
-  //updating a product
-  const updateProduct = (product) => {
-    const data = {};
-    data.productId = product.product_id;
-    dispatch(updateProducts(data)).then((results) => {
-      if (results.payload.success) {
-        toast(results?.payload?.message);
-        dispatch(getProducts());
-        setOpen(false);
-      } else {
-        toast(results?.payload?.message);
         setOpen(true);
       }
     });
@@ -86,17 +67,9 @@ export default function AdminViewProducts() {
           </div>
         </div>
 
-        {products.map((item) => {
+        {productList.map((item) => {
           return (
-            <ProductCard
-              product={item}
-              key={item.product_id}
-              admin={true}
-              actions={{
-                setSelectedItem: setSelectedItem,
-                updateProduct: updateProduct,
-              }}
-            />
+            <ProductCard product={item} key={item.product_id} admin={true} />
           );
         })}
       </div>

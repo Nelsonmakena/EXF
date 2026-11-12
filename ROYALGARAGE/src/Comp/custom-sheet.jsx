@@ -24,10 +24,12 @@ export default function CustomSheet({
   const { onSubmit, onFieldChange, onSelectChange } = actions ?? {};
   const { open, setOpen, inputs } = states ?? {};
   const Icon = trigger?.icon;
+
   //handling selects data
   const handleSelected = (field, id) => {
     onSelectChange((prev) => ({ ...prev, [field]: id }));
   };
+
   //handling input data
   const handleInput = (e, item) => {
     const { name, value } = e.target;
@@ -81,7 +83,7 @@ export default function CustomSheet({
                   type={item.type}
                   placeholder={item.label}
                   name={item.name}
-                  value={inputs?.[item.name] ?? ""}
+                  value={inputs?.[item.name] || item.value}
                   maxlength={item?.maxLength}
                   required
                   onChange={(e) => handleInput(e, item)}
@@ -91,8 +93,12 @@ export default function CustomSheet({
             {Object.entries(selectFields ?? {}).map(([key, select]) => {
               return (
                 <div key={key}>
-                  <label> {select.header}</label>
+                  <label className="tracking-wide capitalize">
+                    {" "}
+                    {select.header}
+                  </label>
                   <CustomDropDown
+                    value={select.defaultValue}
                     placeholder={select.header}
                     item={convertArray(
                       select.data,

@@ -6,7 +6,7 @@ import { getProducts } from "@/store/productSlice";
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
+  const { productList } = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -15,7 +15,7 @@ export default function Shop() {
   return (
     <section className="section-sm ">
       <div className="grid grid-cols-2 md:flex md:flex-wrap items-stretch justify-center gap-5 ">
-        {products.map((item) => (
+        {productList.map((item) => (
           <ProductCard product={item} key={item.product_id} client={true} />
         ))}
       </div>

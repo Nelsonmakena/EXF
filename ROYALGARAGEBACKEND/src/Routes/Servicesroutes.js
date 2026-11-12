@@ -25,8 +25,8 @@ Router.use(authenticateMiddleware, CommonChecker);
 //adding a new service
 Router.put("/add-service", addService);
 
-//updating
-Router.put("/update-service/:service_id", updateService);
+//updating service
+Router.patch("/update-service/:service_id", updateService);
 
 //deleting
 Router.delete("/delete/:service_id", deleteService);

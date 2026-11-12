@@ -125,6 +125,7 @@ export const newServicesSelects = {
     idKey: "service_category_id",
     nameKey: "category_name",
     data: [],
+    defaultValue: "",
   },
 };
 

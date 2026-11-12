@@ -5,9 +5,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-export default function CustomDropDown({ item, select, placeholder }) {
+export default function CustomDropDown({ item, select, placeholder, value }) {
+  const defaultValue = item.find((d) => d.id === value);
   return (
     <Select
+      defaultValue={defaultValue?.name}
       onValueChange={(value) => {
         const selected = item.find((u) => u.name === value);
         select(selected.id);

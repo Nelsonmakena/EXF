@@ -42,8 +42,6 @@ export default function RolesCard({
 
   const { serviceCategories } = caller ?? {};
 
-  console.log(item);
-
   //setting employee roles to be displayed by custom dialog
   serviceCategoryRoleSelects.role.data = employeeRoles.map((singleRole) => ({
     role_id: singleRole.role_id,

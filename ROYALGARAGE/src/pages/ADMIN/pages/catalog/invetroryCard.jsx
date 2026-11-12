@@ -40,11 +40,10 @@ export default function InventoryCard({ product }) {
       <Card className="group cursor-pointer rounded-xl p-4 transition hover:bg-muted/40">
         <div className="flex items-center gap-4">
           {/* Product icon */}
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg ">
             <LazyLoadImage
-              src={`/assets/images/${product.product_image}.jpg`}
+              src={`/src/assets/images/${product.product_image}.jpg`}
               alt={product.product_name}
-              effect="blur"
               className="h-full w-full object-cover"
             />
           </div>

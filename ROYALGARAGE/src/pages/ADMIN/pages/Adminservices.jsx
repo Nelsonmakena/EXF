@@ -38,13 +38,13 @@ export default function AdminViewServices() {
     dispatch(getServices());
     dispatch(getServiceCategories());
   }, []);
+
   // adding a service
   const addService = () => {
     const data = {
       ...inputs,
       service_category_id: id.service_category_id,
     };
-    console.log(data);
 
     dispatch(newService(data)).then((result) => {
       if (result.payload.success) {
@@ -57,23 +57,7 @@ export default function AdminViewServices() {
       }
     });
   };
-  //update service info
-  const updateService = async (e, item) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    data.service_id = item.service_id;
-    dispatch(updateServices(data)).then((data) => {
-      if (data.payload.success) {
-        dispatch(getServices());
-        toast(data.payload.message);
-        setOpen(false);
-      } else {
-        toast(data.payload.success);
-        setOpen(true);
-      }
-    });
-  };
+
   return (
     <section className="w-full section-sm">
       <div className=" grid grid-cols-2   md:flex md:flex-wrap  md:items-stretch  justify-center  gap-5   ">
@@ -101,15 +85,7 @@ export default function AdminViewServices() {
 
         {availableServiceList.map((item) => {
           return (
-            <ServiceCard
-              key={item.service_id}
-              service={item}
-              admin={true}
-              actions={{
-                updateService: updateService,
-                setSelectedItem: setSelectedItem,
-              }}
-            />
+            <ServiceCard key={item.service_id} service={item} admin={true} />
           );
         })}
       </div>

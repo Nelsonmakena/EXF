@@ -36,7 +36,7 @@ export const newService = createAsyncThunk("/new-service", async (data) => {
 export const updateServices = createAsyncThunk(
   "/update-Services",
   async (data) => {
-    const response = await axios.put(
+    const response = await axios.patch(
       `/api/services/update-service/${data.service_id}`,
       data,
       { withCredentials: true },

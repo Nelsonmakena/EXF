@@ -64,25 +64,26 @@ export const addService = async (req, res) => {
 
 export const updateService = async (req, res) => {
   const { service_id } = req.params;
+  console.log(req.body);
 
   const {
     service_name,
     service_price,
     service_description,
     service_discount,
-    service_category,
+    service_category_id,
     service_image,
   } = req.body;
 
   try {
     const UpdatedService = await pool.query(
-      "UPDATE services SET  service_name = $1, service_price = $2, service_description = $3, service_discount = $4, service_category = $5, service_image = $6 WHERE service_id = $7 RETURNING *",
+      "UPDATE services SET  service_name = $1, service_price = $2, service_description = $3, service_discount = $4, service_category_id = $5, service_image = $6 WHERE service_id = $7 RETURNING *",
       [
         service_name,
         service_price,
         service_description,
         service_discount,
-        service_category,
+        service_category_id,
         service_image,
         service_id,
       ],

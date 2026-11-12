@@ -1,6 +1,16 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
 import { useState, useEffect } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { SquarePen, User } from "lucide-react";
+import { SquarePen, Trash, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { toast } from "sonner";
@@ -16,18 +26,45 @@ import {
 } from "@/utils/inputs";
 import CustomDialog from "./customdialog";
 import { newJob } from "@/store/jobsslice";
+import { getServices, updateServices } from "@/store/serviceslice";
 export default function ServiceCard({ vehicles, service, client, admin }) {
-  const [open, setOpen] = useState(false);
+  //state for  sheet and dialog
+  const [open, setOpen] = useState({
+    openEdit: false,
+    openDelete: false,
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [selectedItem, setSelectedItem] = useState(null);
+
+  //client geting a service
   const [inputs, setInputs] = useState({
     appointment_day: "",
   });
 
+  //updating service inputs
+  const [updateInputs, setUpdateInputs] = useState({
+    service_name: "",
+    service_image: "",
+    service_description: "",
+    service_price: "",
+    service_discount: "",
+  });
+
+  //service updating selects
+
+  const [updateSelects, setUpdateSelects] = useState({
+    service_category_id: "",
+  });
+
+  //setting the default value for the selects
+
+  newServicesSelects.categories.defaultValue = service.service_category_id;
+
+  //client dropdown for vehicle select when getting a service
   const [selects, setSelects] = useState({
     vehicle_id: "",
   });
+
   //setting vehicle select object
   newJobSelect.vehicle.data = vehicles?.map((u) => ({
     vehicle_id: u.vehicle_id,
@@ -35,6 +72,30 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
       u.details.model + " " + u.details.brand + " " + u.details.plate,
   }));
 
+  //update service info
+  const updateService = async () => {
+    const data = {
+      service_name: updateInputs.service_name,
+      service_image: updateInputs.service_image,
+      service_description: updateInputs.service_description,
+      service_price: updateInputs.service_price,
+      service_discount: updateInputs.service_discount,
+      service_category_id: updateSelects.service_category_id,
+      service_id: service.service_id,
+    };
+    dispatch(updateServices(data)).then((data) => {
+      if (data.payload.success) {
+        dispatch(getServices());
+        toast(data.payload.message);
+        setOpen((prev) => ({ ...prev, openEdit: false }));
+      } else {
+        toast(data.payload.success);
+        setOpen((prev) => ({ ...prev, openEdit: true }));
+      }
+    });
+  };
+
+  //client
   const newJobSubmission = async () => {
     const data = {
       appointment_day: inputs.appointment_day,
@@ -99,26 +160,61 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
             />
           </div>
         )}
-        {admin && (
-          <div className="">
-            {" "}
-            <CustomSheet
-              title={service.service_name}
-              trigger={{ icon: SquarePen, name: "edit" }}
-              fields={addValue(newServiceInputs, service)}
-              selectFields={newServicesSelects}
-              states={{
-                open: open,
-                setOpen: (v) => {
-                  setOpen(v);
-                  if (v) {
-                    setSelectedItem(service);
-                  }
-                },
-              }}
-            />
-          </div>
-        )}
+
+        <div className=" flex justify-between p-2">
+          {/* update a service */}
+          {admin && (
+            <div className="">
+              <CustomSheet
+                title={service.service_name}
+                trigger={{ icon: SquarePen, name: "edit" }}
+                initiator={"small"}
+                fields={addValue(newServiceInputs, service)}
+                selectFields={newServicesSelects}
+                states={{
+                  open: open.openEdit,
+                  setOpen: (value) => {
+                    setOpen((prev) => ({ ...prev, openEdit: value }));
+                  },
+                }}
+                actions={{
+                  onSubmit: updateService,
+                  onFieldChange: setUpdateInputs,
+                  onSelectChange: setUpdateSelects,
+                }}
+              />
+            </div>
+          )}
+
+          {admin && (
+            <Dialog
+            // open={open.openDelete}
+            // onOpenChange={(value) =>
+            //   setOpen((prev) => ({ ...prev, openDelete: value }))
+            // }
+            >
+              <DialogTrigger
+                render={
+                  <Button size="icon" variant="destructive">
+                    <Trash />
+                  </Button>
+                }
+              ></DialogTrigger>
+              <DialogContent className={"bg-card"}>
+                <DialogHeader>
+                  <DialogTitle>{service.service_name}</DialogTitle>
+                  <DialogDescription></DialogDescription>
+                </DialogHeader>
+                <div>
+                  <p> Are you sure you want to remove the above service</p>
+                </div>
+                <Button onClick={() => deleteProduct()} variant="destructive">
+                  delete
+                </Button>
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
       </div>
     </div>
   );
