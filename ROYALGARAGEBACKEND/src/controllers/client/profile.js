@@ -9,8 +9,12 @@ export const profileData = async (req, res) => {
   const { client_id } = req.userinfo;
   try {
     const clientdata = await pool.query(
-      `SELECT email,first_name,second_name,last_name,phonenumber,county ,city,street , id, client.client_id 
-      FROM client LEFT JOIN address ON address.client_id = client.client_id  WHERE client.client_id = $1 `,
+      `SELECT
+       ac.email, first_name, second_name,last_name,phone_number,county ,city,street , id, c.client_id 
+      FROM client c
+      LEFT JOIN address a  ON a.client_id = c.client_id 
+      LEFT JOIN accounts ac ON ac.account_id = c.account_id
+       WHERE c.client_id = $1 `,
       [client_id],
     );
 
@@ -21,10 +25,13 @@ export const profileData = async (req, res) => {
           first_name: item.first_name,
           second_name: item.second_name,
           last_name: item.last_name,
-          phone_number: item.phonenumber,
+          phone_number: item.phone_number,
           email: item.email,
           address: [],
         };
+      }
+      if (!item.id) {
+        return acc;
       }
 
       if (acc.client_id === item.client_id) {

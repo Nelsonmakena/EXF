@@ -196,6 +196,30 @@ export const newJobSelect = {
     data: [],
   },
 };
+
+export const newAddressInputs = [
+  {
+    label: "county ",
+    name: "county",
+    type: "text",
+    maxLength: "20",
+    format: stringWordCase,
+  },
+  {
+    label: "city ",
+    name: "city",
+    type: "text",
+    maxLength: "15",
+    format: stringWordCase,
+  },
+  {
+    label: "street ",
+    name: "street",
+    type: "text",
+    maxLength: "15",
+    format: stringWordCase,
+  },
+];
 export const newVehicleInputs = [
   {
     label: "plate number",

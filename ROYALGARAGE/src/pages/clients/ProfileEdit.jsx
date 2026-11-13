@@ -10,28 +10,67 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 
-import { Mail, Map, Pen, Phone } from "lucide-react";
+import { Mail, Map, Pen, Phone, Plus } from "lucide-react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getClientProfile } from "@/store/client";
+import { getClientProfile, newAddress } from "@/store/client";
 import { Button } from "@/components/ui/button";
+import { AvatarFormatter } from "@/utils/utils";
+import { Spinner } from "@/components/ui/spinner";
+import CustomDialog from "@/Comp/customdialog";
+import { newAddressInputs } from "@/utils/inputs";
+import { toast } from "sonner";
 
 export default function ProfileEdit() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState({
+    openNewAddress: false,
+    openEditAddress: false,
+  });
   const { profileInfo } = useSelector((state) => state.client);
   const dispatch = useDispatch();
+
+  //inputs for new address
+  const [inputs, setInputs] = useState({
+    county: "",
+    city: "",
+    street: "",
+  });
 
   useEffect(() => {
     dispatch(getClientProfile());
   }, []);
 
+  //adding a new address
+
+  const addNewAddress = () => {
+    dispatch(newAddress(inputs)).then((results) => {
+      if (results?.payload?.success) {
+        toast(results.payload.message);
+        setOpen((prev) => ({ ...prev, openNewAddress: false }));
+        dispatch(getClientProfile());
+      } else {
+        toast(results.payload.message);
+        setOpen((prev) => ({ ...prev, openNewAddress: true }));
+      }
+    });
+  };
+
+  //return loader if the profile info fetches nothing
+  if (!profileInfo) {
+    return (
+      <div className="w-full h-screen flex   items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="">
         <div className="w-full  flex items-center  card bg-card-bg rounded-md gap-normal h-30  font-bold tracking-widest text-card ">
-          <h1 className="ml-3.5">{profileInfo?.client_info.first_name}</h1>
-          <h1>{profileInfo?.client_info.second_name[0]}.</h1>
-          <h1>{profileInfo?.client_info.last_name}</h1>
+          <h1 className="ml-3.5">{profileInfo.client_info.first_name}</h1>
+          <h1>{AvatarFormatter(profileInfo.client_info.second_name, "U")}.</h1>
+          <h1>{profileInfo.client_info.last_name}</h1>
         </div>
         <div className=" card  w-full">
           <div className="w-full flex justify-between py-3.5  ">
@@ -68,83 +107,96 @@ export default function ProfileEdit() {
           </div>
         </div>
 
-        {profileInfo.client_info.address.map((item, index) => (
-          <div
-            key={item.id}
-            className="
-      card mt-4 w-full overflow-hidden rounded-xl
-      border bg-card
-      transition-shadow hover:shadow-md
-    "
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between border-b px-5 py-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Map size={20} />
+        {profileInfo.client_info?.address.length === 0 ? (
+          <div className="w-2xs">
+            <CustomDialog
+              title={"new address"}
+              trigger={{ name: "new address", icon: Plus }}
+              fields={newAddressInputs}
+              actions={{ onFieldChange: setInputs, onSubmit: addNewAddress }}
+              states={{
+                inputs: inputs,
+                open: open.openNewAddress,
+                setOpen: (value) =>
+                  setOpen((prev) => ({ ...prev, openNewAddress: value })),
+              }}
+            />
+          </div>
+        ) : (
+          profileInfo.client_info.address.map((item, index) => (
+            <div
+              key={item.id}
+              className="card mt-4 w-full overflow-hidden rounded-xl border bg-card transition-shadow hover:shadow-md"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b px-5 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Map size={20} />
+                  </div>
+
+                  <div>
+                    <h2 className="font-bold">Address {index + 1}</h2>
+
+                    <p className="text-sm text-muted-foreground">
+                      Your saved location
+                    </p>
+                  </div>
+                </div>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <Pen size={15} />
+                      Edit
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent className="bg-card">
+                    <DialogHeader>
+                      <DialogTitle>Edit Address</DialogTitle>
+
+                      <DialogDescription>
+                        Update your address information below.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    {/* Your form goes here */}
+
+                    <div className="flex justify-end gap-3">
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+
+                      <Button>Save changes</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              {/* Address information */}
+              <div className="grid grid-cols-1 gap-5 px-5 py-5 sm:grid-cols-3">
+                <div>
+                  <p className="text-sm text-muted-foreground">County</p>
+
+                  <p className="mt-1 font-medium">{item.county}</p>
                 </div>
 
                 <div>
-                  <h2 className="font-bold">Address {index + 1}</h2>
+                  <p className="text-sm text-muted-foreground">City</p>
 
-                  <p className="text-sm text-muted-foreground">
-                    Your saved location
-                  </p>
+                  <p className="mt-1 font-medium">{item.city}</p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground">Street</p>
+
+                  <p className="mt-1 font-medium">{item.street}</p>
                 </div>
               </div>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Pen size={15} />
-                    Edit
-                  </Button>
-                </DialogTrigger>
-
-                <DialogContent className="bg-card">
-                  <DialogHeader>
-                    <DialogTitle>Edit Address</DialogTitle>
-
-                    <DialogDescription>
-                      Update your address information below.
-                    </DialogDescription>
-                  </DialogHeader>
-
-                  {/* Your form goes here */}
-
-                  <div className="flex justify-end gap-3">
-                    <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-
-                    <Button>Save changes</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
             </div>
-
-            {/* Address information */}
-            <div className="grid grid-cols-1 gap-5 px-5 py-5 sm:grid-cols-3">
-              <div>
-                <p className="text-sm text-muted-foreground">County</p>
-
-                <p className="mt-1 font-medium">{item.county}</p>
-              </div>
-
-              <div>
-                <p className="text-sm text-muted-foreground">City</p>
-
-                <p className="mt-1 font-medium">{item.city}</p>
-              </div>
-
-              <div>
-                <p className="text-sm text-muted-foreground">Street</p>
-
-                <p className="mt-1 font-medium">{item.street}</p>
-              </div>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </section>
     </>
   );

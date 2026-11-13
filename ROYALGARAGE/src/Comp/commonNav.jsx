@@ -47,7 +47,7 @@ export default function CommonNav({ menuItems, homePath, initiator }) {
                 </div>
               )}
             </ul>
-            <AccountDropDown />
+            <AccountDropDown user={initiator} />
           </div>
         </nav>
       </div>
@@ -64,7 +64,11 @@ export default function CommonNav({ menuItems, homePath, initiator }) {
             <span className="text-green-700 text-shadow-xs"> Garage </span>{" "}
           </h1>
         </div>
-        <AccountDropDown initiator={"mobile"} menuItems={menuItems} />
+        <AccountDropDown
+          initiator={"mobile"}
+          menuItems={menuItems}
+          user={initiator}
+        />
       </div>
     </>
   );

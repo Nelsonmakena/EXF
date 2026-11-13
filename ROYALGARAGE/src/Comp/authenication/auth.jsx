@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../../store/authslice";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import ProfileEdit from "../profileEdit";
 
 export default function Authenticated({ children }) {
   const { isLoading, isAuthenticated, userinfo } = useSelector(

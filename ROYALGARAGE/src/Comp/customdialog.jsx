@@ -23,9 +23,12 @@ export default function CustomDialog({
   const { open, setOpen, inputs } = states ?? {};
 
   const Icon = trigger?.icon;
+
+  // setting selected ids
   const handleSelected = (field, id) => {
     onSelectChange((prev) => ({ ...prev, [field]: id }));
   };
+
   //handling input data
   const handleInput = (e, item) => {
     const { name, value } = e.target;
@@ -36,6 +39,7 @@ export default function CustomDialog({
     }));
   };
 
+  //form submission
   const submit = (e) => {
     e.preventDefault();
     onSubmit();
@@ -61,7 +65,7 @@ export default function CustomDialog({
       ></DialogTrigger>
       <DialogContent className={"bg-card"}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle className="capitalize">{title}</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <form onSubmit={submit}>
