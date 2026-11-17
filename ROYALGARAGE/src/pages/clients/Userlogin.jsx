@@ -27,12 +27,12 @@ export default function Userlogin() {
     const formdata = new FormData(e.target);
     const data = Object.fromEntries(formdata.entries());
 
-    dispatch(loginUser(data)).then((data) => {
-      if (data?.payload?.success) {
-        toast(data.payload.message);
+    dispatch(loginUser(data)).then((result) => {
+      if (result?.payload?.success) {
+        toast(result.payload.message);
         navigate("/client/dashboard");
       } else {
-        toast(data.payload.message);
+        toast(result?.payload.message);
       }
     });
   };

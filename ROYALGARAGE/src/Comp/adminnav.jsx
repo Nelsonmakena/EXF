@@ -10,7 +10,6 @@ export default function AdminNav({ menuItems, initiator, hideMenu }) {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
-  console.log(hideMenu);
 
   return (
     <div className="section flex flex-col gap-9 ">

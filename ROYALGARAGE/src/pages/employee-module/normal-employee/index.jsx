@@ -7,7 +7,7 @@ export default function WorkerTemplate() {
       <div>
         <Wknav />
       </div>
-      <div>
+      <div className="mt-1.5">
         <Outlet />
       </div>
     </main>

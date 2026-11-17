@@ -9,6 +9,7 @@ export default function CarChecker() {
         <CommonNav
           menuItems={assessmentMenuItems}
           homePath={"/assessment/home"}
+          initiator={"employee"}
         />
       </div>
       <div className="container-main">

@@ -108,6 +108,10 @@ const ClientInfoView = lazy(
 const WorkerTemplate = lazy(
   () => import("@/pages/employee-module/normal-employee/index"),
 );
+
+const EmployeeProfileEdit = lazy(
+  () => import("../pages/employee-module/employeeProfileEdit"),
+);
 const WkJobs = lazy(
   () => import("@/pages/employee-module/normal-employee/pages/jobs"),
 );
@@ -248,9 +252,11 @@ export default function AppRoutes() {
         >
           <Route path="dashboard" element={<WorkerDashboard />} />
           <Route path="schedule" element={<WkSchedule />} />
+
           <Route path="jobs" element={<WkJobs />} />
           <Route path="jobs/:jobId" element={<WkJobCard />} />
           <Route path="messages" element={<WkMessages />} />
+          <Route path="profile-edit" element={<EmployeeProfileEdit />} />
         </Route>
 
         {/* teamleaderroutes */}
@@ -277,6 +283,7 @@ export default function AppRoutes() {
           />
         </Route>
         {/* 404 */}
+
         <Route path="*" element={<Pages404 />} />
       </Routes>
     </Suspense>
