@@ -78,7 +78,7 @@ export default function CustomDialog({
                   type={item.type}
                   placeholder={item.label}
                   name={item.name}
-                  value={inputs?.[item.name] ?? ""}
+                  value={inputs?.[item.name]}
                   maxlength={item?.maxLength}
                   required
                   onChange={(e) => handleInput(e, item)}

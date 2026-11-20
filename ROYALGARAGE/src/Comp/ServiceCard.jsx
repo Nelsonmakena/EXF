@@ -32,6 +32,7 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
   const [open, setOpen] = useState({
     openEdit: false,
     openDelete: false,
+    openClient: false,
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -99,17 +100,17 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
   const newJobSubmission = async () => {
     const data = {
       appointment_day: inputs.appointment_day,
-      service_id: selectedItem,
+      service_id: service.service_id,
       vehicle_id: selects.vehicle_id,
     };
 
     dispatch(newJob(data)).then((results) => {
       if (results.payload.success) {
         toast(results.payload.message);
-        setOpen(false);
+        setOpen((prev) => ({ ...prev, openClient: false }));
       } else {
         toast(results.payload.message);
-        setOpen(true);
+        setOpen((prev) => ({ ...prev, openClient: true }));
       }
     });
   };
@@ -151,10 +152,9 @@ export default function ServiceCard({ vehicles, service, client, admin }) {
                 onSelectChange: setSelects,
               }}
               states={{
-                open: open,
+                open: open.openClient,
                 setOpen: (v) => {
-                  setOpen(v);
-                  setSelectedItem(service.service_id);
+                  setOpen((prev) => ({ ...prev, openClient: v }));
                 },
               }}
             />

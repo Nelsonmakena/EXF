@@ -10,6 +10,7 @@ import clientSlice from "./client";
 import AccountSlice from "./accountsslice";
 import AssessmentSlice from "./assessmentSlice";
 import ProductSlice from "./productSlice";
+import employeeSlice from "./employeeSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     client: clientSlice,
     Accounts: AccountSlice,
     assessments: AssessmentSlice,
+    emmployee: employeeSlice,
   },
 });
 

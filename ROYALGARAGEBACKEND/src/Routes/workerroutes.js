@@ -7,6 +7,7 @@ import {
 } from "../middlewares/authenicationmidleware.js";
 
 import {
+  newEmployeeData,
   profile,
   updateProfile,
 } from "./../controllers/Worker/workersettings.js";
@@ -33,6 +34,8 @@ Router.get("/dashboard", totalAssigned);
 ///profile info fetcher
 
 Router.get("/profile", profile);
+
+Router.put("/profile", newEmployeeData);
 
 //updating profile info
 

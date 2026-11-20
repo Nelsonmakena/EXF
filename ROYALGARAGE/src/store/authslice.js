@@ -60,6 +60,7 @@ export const wkLogin = createAsyncThunk("/auth/wk", async (data) => {
 
   return response.data;
 });
+
 //checking auth status of logged in users
 
 export const checkAuth = createAsyncThunk(

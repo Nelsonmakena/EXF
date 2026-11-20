@@ -262,6 +262,7 @@ export default function AppRoutes() {
         {/* teamleaderroutes */}
         <Route path="/unit" element={<TeamLeaderIndex />}>
           <Route path="home" element={<TeamHome />} />
+          <Route path="profile-edit" element={<EmployeeProfileEdit />} />
         </Route>
 
         {/* assessments routes */}
@@ -281,6 +282,7 @@ export default function AppRoutes() {
             path="vehicle/:garage_id"
             element={<AssessmentSingleVehicle />}
           />
+          <Route path="profile-edit" element={<EmployeeProfileEdit />} />
         </Route>
         {/* 404 */}
 

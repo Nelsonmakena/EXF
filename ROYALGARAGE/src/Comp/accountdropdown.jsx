@@ -35,7 +35,7 @@ export default function AccountDropDown({ initiator, menuItems, user }) {
         navigate();
         break;
       case "employee":
-        navigate("/w001/profile-edit");
+        navigate("profile-edit");
         break;
 
       default:
