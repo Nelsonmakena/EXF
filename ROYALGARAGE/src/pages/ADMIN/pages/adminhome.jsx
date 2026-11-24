@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import AdminNav from "../../../Comp/adminnav";
-import { TotalService } from "./ervices";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkerList } from "@/store/wokerslice";
 import { getJobList } from "@/store/jobsslice";
@@ -59,9 +59,7 @@ export default function AdminHome() {
         </div>
       </section>
       <section className="section">
-        <div className="card-lg">
-          <TotalService />
-        </div>
+        <div className="card-lg"></div>
       </section>
     </>
   );
