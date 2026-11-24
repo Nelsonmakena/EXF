@@ -1,180 +1,160 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import logo from "/src/assets/images/logo.png";
-import Userlogin from "../pages/clients/Userlogin";
-
-import logodata from "/src/assets/logoanimation.json";
-import smallmenuanimation from "/src/assets/smallmenu.json";
-import { Button } from "@/components/ui/button";
-import Lottie from "lottie-react";
-import { Search, Menu, Moon, Sun, ShoppingBag } from "lucide-react";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Moon, Sun, ArrowUpRight } from "lucide-react";
 import { useTheme } from "@/Comp/theme-provider";
-import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
-function Nav() {
-  const [showNav, setShowNav] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [enabled, setEnabled] = useState(false);
-  const navigate = useNavigate();
-  const { setTheme, theme } = useTheme();
+const links = [
+  { name: "Home", path: "/home" },
+  { name: "Services", path: "services" },
+  { name: "About", path: "about" },
+  { name: "Blog", path: "blog" },
+  { name: "Contact", path: "contact" },
+];
 
-  const commonNavLinks = [
-    { name: "Home ", Path: "/" },
-    { name: "Shop ", Path: "services" },
-    { name: "blog ", Path: "blog" },
-    { name: "About ", Path: "about" },
-  ];
+export default function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const { theme, setTheme } = useTheme();
+  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+    let previousY = window.scrollY;
 
-      if (currentScrollY > lastScrollY) {
-        // scrolling DOWN
-        setShowNav(false);
-      } else {
-        // scrolling UP
-        setShowNav(true);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+
+      setScrolled(currentY > 40);
+
+      if (currentY < 80) {
+        setHidden(false);
+      } else if (currentY > previousY + 5) {
+        setHidden(true);
+        setMobileOpen(false);
+      } else if (currentY < previousY - 5) {
+        setHidden(false);
       }
 
-      setLastScrollY(currentScrollY);
+      previousY = currentY;
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
-    <>
-      <div
-        className={`fixed top-0 left-0 z-50 flex h-20 w-full items-center justify-between px-2.5   transition-transform duration-300 ${
-          showNav
-            ? "translate-y-0 bg-primary transition-all duration-300"
-            : "-translate-y-full"
-        }`}
-      >
-        <nav className=" hidden h-full md:flex items-center    ">
-          <div className="w-18  ">
-            <Lottie animationData={logodata} />
+    <header
+      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${scrolled ? "bg-primary shadow-lg" : "bg-transparent"}`}
+    >
+      <nav className="container-main flex h-20 items-center justify-between">
+        {/* Brand */}
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src="/src/assets/images/logo.png"
+            alt="Royal Auto Garage"
+            className="w-12 h-12 object-contain"
+          />
+          <div className="leading-tight">
+            <h2 className="font-bold text-lg text-white tracking-wide">
+              ROYAL
+            </h2>
+            <span className="text-[10px] tracking-[0.25em] text-white/70">
+              AUTO GARAGE
+            </span>
           </div>
-          <div className="flex ">
-            <ul className="flex space-x-3.5 ">
-              {commonNavLinks.map((single, index) => {
-                return (
-                  <li key={index} className=" card ">
-                    <Link to={single.Path}> {single.name} </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <Search />
-        </nav>
+        </Link>
 
-        <div className=" hidden md:flex h-full items-center  gap-7 ">
-          <Button size="icon">
-            <ShoppingBag />
-          </Button>
-          <button
-            onClick={() => navigate("/login")}
-            className={`flex  justify-center items-center w-44  shadow-md  h-14 rounded-md
-               ${showNav ? "bg-transparent " : " bg-white text-black"}`}
-          >
-            Get Started
-          </button>
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8">
+          {links.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`text-sm font-medium transition-colors ${
+                location.pathname.includes(link.path)
+                  ? "text-header"
+                  : "text-white/80 hover:text-white"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop actions */}
+        <div className="hidden md:flex items-center gap-4">
           <Button
+            variant="ghost"
             size="icon"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="rounded-full bg-none"
+            className="text-white hover:bg-white/10"
           >
-            {theme === "dark" ? (
-              <Moon className="h-4 w-4" />
-            ) : (
-              <Sun className="h-4 w-4 " />
-            )}
+            {theme === "dark" ? <Moon /> : <Sun />}
+          </Button>
+
+          <Link
+            to="/royalgarage/services"
+            className="flex items-center gap-2 bg-accent text-white px-5 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition"
+          >
+            Book a Service
+            <ArrowUpRight size={17} />
+          </Link>
+        </div>
+
+        {/* Mobile menu trigger */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden text-white p-2"
+          aria-label="Toggle navigation"
+          aria-expanded={mobileOpen}
+        >
+          {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      <div
+        className={`md:hidden overflow-hidden bg-primary transition-all duration-300 ${
+          mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="container-main py-5 flex flex-col gap-5">
+          {links.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="text-white/90 hover:text-header font-medium"
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          <Link
+            to="/royalgarage/services"
+            className="bg-accent text-primary p-3 rounded-md text-center font-semibold"
+          >
+            Book a Service
+          </Link>
+
+          <Button
+            variant="ghost"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="justify-start text-white"
+          >
+            {theme === "dark" ? <Sun /> : <Moon />}
+            Toggle Theme
           </Button>
         </div>
-
-        {/* small-screen menu  */}
-        <div className="flex  w-full  items-center justify-between  md:hidden ">
-          <div className=" ">
-            {" "}
-            <Lottie animationData={smallmenuanimation} />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Menu className="w-10 h-10" />
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent
-              className={"w-2xs flex flex-col  gap-normal mt-5 "}
-            >
-              <ul className=" ">
-                {commonNavLinks.map((single) => {
-                  return (
-                    <li className="card w-2xs">
-                      <DropdownMenuItem
-                        className={"flex  "}
-                        onClick={() => {
-                          navigate(single.Path);
-                        }}
-                      >
-                        {single.name}
-                      </DropdownMenuItem>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <DropdownMenuSeparator></DropdownMenuSeparator>
-              <DropdownMenuGroup className="flex justify-between px-4.5">
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTheme("dark");
-                  }}
-                >
-                  <Moon
-                    className={`  ${theme === "dark" ? "text-blue-400" : "text-black"}`}
-                  />
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setTheme("light");
-                  }}
-                >
-                  <Sun
-                    className={`  ${theme === "light" ? "text-blue-400" : "text-black"}`}
-                  />
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuItem className={"flex  justify-center"}>
-                <Button
-                  className={"w-43 h-10"}
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Login
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </div>
-    </>
+    </header>
   );
 }
-export default Nav;

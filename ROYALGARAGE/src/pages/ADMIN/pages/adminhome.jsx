@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import AdminNav from "../../../Comp/adminnav";
-import { TotalService } from "./Datacharts/Totalservices";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkerList } from "@/store/wokerslice";
 import { getJobList } from "@/store/jobsslice";
@@ -22,7 +22,6 @@ export default function AdminHome() {
         <div className="grid grid-cols-1 card md:grid-cols-3 gap-6">
           <div
             onClick={() => navigate("/admin/tasks/jobs")}
-            data-aos="fadeup"
             className=" bg-linear-to-br from-violet-500 to-purple-600  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl"
           >
             <div
@@ -37,10 +36,7 @@ export default function AdminHome() {
               {jobsList.length}
             </p>
           </div>
-          <div
-            data-aos="fadeup"
-            className="bg-linear-to-br from-green-400 to-green-700  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl"
-          >
+          <div className="bg-linear-to-br from-green-400 to-green-700  rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl">
             <div className="flex items-start justify-between mb-4">
               <p className="text-white/80 text-sm transition-colors duration-200">
                 Revenue Today
@@ -50,10 +46,7 @@ export default function AdminHome() {
               50,000/=
             </p>
           </div>
-          <div
-            data-aos="fadeup"
-            className="bg-linear-to-br from-orange-700 to-orange-500 rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl  flex flex-col items-center"
-          >
+          <div className="bg-linear-to-br from-orange-700 to-orange-500 rounded-2xl p-6 text-white shadow-lg transition-colors duration-200 hover:shadow-2xl  flex flex-col items-center">
             <div className="flex items-start justify-between mb-4">
               <p className="text-white/80 text-sm transition-colors duration-200">
                 Workers
@@ -66,9 +59,7 @@ export default function AdminHome() {
         </div>
       </section>
       <section className="section">
-        <div className="card-lg">
-          <TotalService />
-        </div>
+        <div className="card-lg"></div>
       </section>
     </>
   );

@@ -61,7 +61,7 @@ const SystemServiceCategories = lazy(
 );
 
 // Common
-const Template = lazy(() => import("../pages/Common/Common"));
+const Template = lazy(() => import("../pages/Common"));
 const Home = lazy(() => import("../pages/Common/Home"));
 const About = lazy(() => import("../pages/Common/About"));
 const Service = lazy(() => import("../pages/Common/Services"));
@@ -145,10 +145,9 @@ export default function AppRoutes() {
       }
     >
       <Routes>
-        <Route path="/" element={<Navigate to="/royal-garage/home" />} />
-
         {/* Common routes */}
-        <Route path="/royal-garage" element={<Template />}>
+        <Route path="/" element={<Template />}>
+          <Route index element={<Navigate to="home" replace />} />
           <Route path="home" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="services" element={<Service />} />
@@ -194,6 +193,7 @@ export default function AppRoutes() {
           <Route path="home" element={<AdminHome />} />
 
           <Route path="management">
+            <Route index element={<Navigate to="workers" replace />} />
             <Route path="workers" element={<WorkerView />} />
             <Route path="clients" element={<ClientsView />} />
             <Route path="clients/:client_id" element={<ClientInfoView />} />
@@ -201,6 +201,7 @@ export default function AppRoutes() {
           </Route>
 
           <Route path="inventory">
+            <Route index element={<Navigate to="products" replace />} />
             <Route path="products" element={<AdminViewProducts />} />
             <Route path="service-categories" element={<ServiceCategories />} />
             <Route path="services" element={<AdminViewServices />} />
@@ -212,6 +213,7 @@ export default function AppRoutes() {
           </Route>
 
           <Route path="tasks">
+            <Route index element={<Navigate to="jobs" replace />} />
             <Route path="jobs" element={<JobList />} />
             <Route path="in-progress" element={<InprogressJobs />} />
             <Route path="jobs/:job_id" element={<AdminJobCard />} />

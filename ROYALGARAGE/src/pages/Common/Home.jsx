@@ -1,471 +1,668 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import {
   ArrowRight,
-  Glasses,
-  ToolCase,
-  BrushCleaning,
-  Combine,
+  ArrowUpRight,
+  Wrench,
+  ShieldCheck,
+  Clock3,
+  Handshake,
+  ScanSearch,
+  ClipboardCheck,
+  Settings,
+  CheckCircle2,
+  Quote,
+  Phone,
+  CarFront,
+  Gauge,
 } from "lucide-react";
 
-import "aos/dist/aos.css";
-
+// Existing assets
 import bg2 from "../../assets/images/bg2.jpg";
 import bg3 from "../../assets/images/bg3.jpg";
 import bg4 from "../../assets/images/tirereplacement.jpg";
 import bg from "../../assets/images/engine3.jpg";
+import landRover from "../../assets/images/landroverimage.png";
 import Banner from "../../Comp/banner";
 
-function Home() {
-  const slides = [
-    {
-      image: bg2,
-      text: "At Royal Auto Garage, we provide expert vehicle repair,diagnostics, and maintenance services to keep your car safe, efficient, and road-ready at all times.",
-    },
-    {
-      image: bg2,
-      text: "Manage your clients efficiently",
-    },
-    {
-      image: bg3,
-      text: "Track revenue in real time",
-    },
-    {
-      image: bg4,
-      text: "Boost productivity with smart tools",
-    },
-  ];
-  const [index, setIndex] = useState(0);
-  const [CoreServices, SetCoreServices] = useState([
-    {
-      heading: "General Auto Repairs",
-      paragraph:
-        "We handle a wide range of mechanical issues including engine faults, transmission problems, and system failures. Our goal is to restore your vehicle’s performance efficiently.",
-    },
-    {
-      heading: "Engine Diagnostics & Repair",
-      paragraph:
-        "Using advanced diagnostic tools, we accurately detect engine problems and fix them before they become costly repairs.",
-    },
-    {
-      heading: "Routine Vehicle Servicing",
-      paragraph:
-        "Regular maintenance such as oil changes, filter replacements, and inspections to ensure your car remains in top condition.",
-    },
-    {
-      heading: "Electrical & Battery Services",
-      paragraph:
-        "We diagnose and repair electrical issues including wiring faults, battery problems, and lighting systems.",
-    },
-  ]);
-  const [Starts, SetStarts] = useState([
-    {
-      image: "/src/assets/logo.png",
-      paragraph: "500+projects",
-    },
-    {
-      image: "/src/assets/logo.png",
-      paragraph: "500 projects",
-    },
-    {
-      image: "/src/assets/logo.png",
-      paragraph: "500 + projects",
-    },
-  ]);
+// --------------------------------------------------
+// STATIC DATA
+// --------------------------------------------------
+
+const slides = [
+  {
+    image: bg2,
+    text: "From routine maintenance to complex mechanical repairs, we provide dependable automotive care.",
+  },
+  {
+    image: bg3,
+    text: "Our experienced team is committed to keeping your vehicle performing at its best.",
+  },
+  {
+    image: bg4,
+    text: "Quality workmanship and customer-focused service are at the heart of everything we do.",
+  },
+  {
+    image: bg,
+    text: "Trust Royal Auto Garage for professional vehicle maintenance and repair solutions.",
+  },
+];
+
+const coreServices = [
+  {
+    icon: Wrench,
+    heading: "General Auto Repairs",
+    paragraph:
+      "We handle a wide range of mechanical issues, restoring your vehicle's performance and reliability.",
+  },
+  {
+    icon: Gauge,
+    heading: "Engine Diagnostics",
+    paragraph:
+      "We identify engine faults and performance issues using diagnostic tools and professional expertise.",
+  },
+  {
+    icon: CarFront,
+    heading: "Routine Vehicle Servicing",
+    paragraph:
+      "Regular maintenance, including oil changes, filter replacements and vehicle inspections.",
+  },
+  {
+    icon: Settings,
+    heading: "Electrical Services",
+    paragraph:
+      "Diagnosis and repair of battery, wiring, lighting and other vehicle electrical systems.",
+  },
+];
+
+const advantages = [
+  {
+    icon: ShieldCheck,
+    title: "Quality Workmanship",
+    description:
+      "We focus on careful inspection, proper repairs and attention to detail.",
+  },
+  {
+    icon: Wrench,
+    title: "Experienced Technicians",
+    description:
+      "Our team brings practical automotive knowledge to every service.",
+  },
+  {
+    icon: Clock3,
+    title: "Efficient Service",
+    description:
+      "We follow an organized service process to keep work moving efficiently.",
+  },
+  {
+    icon: Handshake,
+    title: "Customer Commitment",
+    description:
+      "We value honest communication, dependable service and lasting relationships.",
+  },
+];
+
+const processSteps = [
+  {
+    icon: ScanSearch,
+    number: "01",
+    title: "Vehicle Assessment",
+    description:
+      "We inspect your vehicle, understand your concerns and identify its service requirements.",
+  },
+  {
+    icon: ClipboardCheck,
+    number: "02",
+    title: "Diagnosis & Estimate",
+    description:
+      "We determine the necessary repairs and communicate the estimated work before proceeding.",
+  },
+  {
+    icon: Wrench,
+    number: "03",
+    title: "Repair & Servicing",
+    description:
+      "Our technicians carry out the agreed repairs and maintenance with attention to quality.",
+  },
+  {
+    icon: CheckCircle2,
+    number: "04",
+    title: "Inspection & Collection",
+    description:
+      "We inspect completed work and prepare your vehicle for collection.",
+  },
+];
+
+const galleryImages = [
+  { image: bg, title: "Engine Maintenance" },
+  { image: bg2, title: "Workshop Activities" },
+  { image: bg3, title: "Vehicle Inspection" },
+  { image: bg4, title: "Tyre Replacement" },
+  { image: landRover, title: "Vehicle Servicing" },
+];
+
+const teamMembers = [
+  {
+    name: "Mr. Kimani",
+    role: "Founder & Director",
+    image: null,
+  },
+  {
+    name: "Team Member",
+    role: "Lead Technician",
+    image: null,
+  },
+  {
+    name: "Team Member",
+    role: "Service Manager",
+    image: null,
+  },
+];
+
+const testimonials = [
+  {
+    name: "Customer Name",
+    vehicle: "Vehicle Owner",
+    message:
+      "Add a genuine customer review describing their experience with Royal Auto Garage.",
+  },
+  {
+    name: "Customer Name",
+    vehicle: "Vehicle Owner",
+    message:
+      "Add another genuine review highlighting the quality of service and customer experience.",
+  },
+  {
+    name: "Customer Name",
+    vehicle: "Vehicle Owner",
+    message:
+      "Share feedback from a customer who has used your automotive services.",
+  },
+];
+
+// --------------------------------------------------
+// REUSABLE COMPONENTS
+// --------------------------------------------------
+
+function SectionHeading({ eyebrow, title, description, center = false }) {
+  return (
+    <div className={`${center ? "text-center mx-auto" : ""} max-w-2xl`}>
+      {eyebrow && (
+        <span className="text-header uppercase tracking-[0.2em] text-sm font-semibold">
+          {eyebrow}
+        </span>
+      )}
+
+      <h2 className="heading-medium text-primary mt-3">{title}</h2>
+
+      {description && (
+        <p className="text-muted-foreground leading-7 mt-4">{description}</p>
+      )}
+    </div>
+  );
+}
+
+function SectionLink({ to, children }) {
   const navigate = useNavigate();
 
+  return (
+    <button
+      onClick={() => navigate(to)}
+      className="inline-flex items-center gap-2 font-semibold text-primary hover:gap-4 transition-all"
+    >
+      {children}
+      <ArrowUpRight size={18} />
+    </button>
+  );
+}
+
+// --------------------------------------------------
+// HOME PAGE
+// --------------------------------------------------
+
+export default function Home() {
+  const navigate = useNavigate();
+  const [index, setIndex] = useState(0);
+
+  // Hero image rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
-    }, 12000); //
+    }, 12000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <>
-      <main>
-        {/*pg1 */}
-        <section className="  w-full  h-screen    ">
-          {/* img scroll */}
-          <div className="flex  w-full z-10 h-screen transition-all duration-700">
-            <img
-              src={slides[index].image}
-              className=" w-full  object-cover  transition-all duration-700"
-            />{" "}
+    <div className="w-full overflow-hidden=">
+      {/* ==========================================
+          01. HERO
+      ========================================== */}
+
+      <section className="relative w-full h-screen min-h-[650px] overflow-hidden ">
+        {slides.map((slide, i) => (
+          <img
+            key={slide.image}
+            src={slide.image}
+            alt="Royal Auto Garage automotive services"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              index === i ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+
+        <div className="absolute inset-0 bg-black/60 z-10" />
+
+        <div className="relative z-20 container-main h-full flex flex-col justify-center items-center text-center">
+          <span className="uppercase tracking-[0.3em] text-sm text-white/80 mb-6">
+            Professional Automotive Care
+          </span>
+
+          <h1 className="font-[Outfit] font-bold text-secondary text-5xl md:text-7xl lg:text-8xl">
+            Royal <span className="text-header">Auto</span>{" "}
+            <span className="text-white">Garage</span>
+          </h1>
+
+          <div className="max-w-2xl mt-8">
+            <h2 className="text-white text-xl md:text-2xl font-semibold">
+              Reliable Auto Repair & Maintenance Services in Nairobi
+            </h2>
+
+            <p className="text-white/80 leading-8 mt-5">{slides[index].text}</p>
           </div>
-          <div className="w-full h-full  bg-black/50 absolute z-20 top-0   ">
-            {" "}
-          </div>
-          {/* pg1 */}
-          <div className="absolute z-30 inset-0 w-full h-screen flex  flex-col items-center justify-center">
-            <div data-aos="zoom-in" className="p-3.5">
-              <h1 className="text-secondary font-[Outfit] font-bold md:text-7xl text-4xl">
-                Royal <span className="text-header">Auto </span>
-                <span className="text-header-foreground text-shadow-xs">
-                  {" "}
-                  Garage{" "}
-                </span>{" "}
-              </h1>
-            </div>
-            <div data-aos="fade-up" className=" w-full p-3.5 md:w-1/2">
-              <h1 className="font-semibold  text-secondary  ">
-                Reliable Auto Repair & Maintenance Services in Nairobi
-              </h1>
-              <p className="py-2.5 transition-all duration-700 text-white text-body">
-                {slides[index].text}
-              </p>
-            </div>
-            <div
-              data-aos="fade-up"
-              className="flex  flex-col  w-full items-center  md:w-1/2  md:flex-row gap-10   justify-center"
+
+          <div className="flex flex-col sm:flex-row gap-5 mt-10">
+            <button
+              onClick={() => navigate("/royalgarage/services")}
+              className="px-8 py-4 bg-accent rounded-lg font-semibold text-primary flex items-center justify-center gap-3 hover:opacity-90 active:scale-95 transition"
             >
-              <button
-                onClick={() => navigate("/royalgarage/services")}
-                className=" w-44 mt-3.5 h-16  p-2.5 bg-accent  rounded-md active:scale-95 transition-all"
-              >
-                Book services
-              </button>
-              <button
-                onClick={() => navigate("/login")}
-                className="group mt-3.5 w-44 p-2.5 h-16 bg-primary rounded-lg   cursor-pointer active:scale-95 transition duration-300 "
-              >
-                login
-              </button>
-            </div>
+              Book a Service
+              <ArrowRight size={19} />
+            </button>
+
+            <button
+              onClick={() => navigate("/royalgarage/about")}
+              className="px-8 py-4 border border-white/70 text-white rounded-lg hover:bg-white hover:text-black transition"
+            >
+              Discover Our Story
+            </button>
           </div>
+
+          {/* Slide indicators */}
+          <div className="flex gap-3 mt-12">
+            {slides.map((slide, i) => (
+              <button
+                key={slide.image}
+                aria-label={`Show slide ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={`h-2 rounded-full transition-all ${
+                  index === i ? "w-10 bg-accent" : "w-3 bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 w-full z-30">
           <Banner />
-        </section>
+        </div>
+      </section>
 
-        {/* pg2 */}
-        <section className="section">
-          <div className="w-full  px-4 sm:px-6 lg:px-8 overflow-hidden">
-            <div className="max-w-7xl mx-auto ">
-              <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                <div className="space-y-6 sm:space-y-8">
-                  <div className="gap-large">
-                    <span data-aos="fadeup" className="heading-medium">
-                      About Us
-                    </span>
-                    <h2
-                      data-aos="fadeup"
-                      className="heading-medium text-primary   "
-                    >
-                      Our journey of transformation
-                    </h2>
-                    <p
-                      data-aos="faderight"
-                      className="mt-6 text-base leading-relaxed"
-                    >
-                      Our story reflects a commitment to growth and excellence.
-                      Through collaboration and dedication, we've built a legacy
-                      of innovation that continues to evolve and inspire
-                      meaningful change.
-                    </p>
-                  </div>
+      {/* ==========================================
+          02. ABOUT US
+      ========================================== */}
 
-                  <div
-                    data-aos="fadeup"
-                    className="grid grid-cols-2 gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8 pt-4"
-                  >
-                    <div className="space-y-2">
-                      <h3 className="text-blue-400 text-xl sm:text-2xl font-bold ">
-                        10+ Years
-                      </h3>
-                      <p className="text-sm  leading-relaxed">
-                        Shaping the future of digital innovation
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className=" text-secondary text-xl sm:text-2xl font-bold">
-                        180k+ succesfully completed jobs
-                      </h3>
-                      <p className="text-sm leading-relaxed">
-                        Delivering excellence across industries
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className=" text-accent text-xl sm:text-2xl font-bold ">
-                        35+ Awards
-                      </h3>
-                      <p className="text-sm leading-relaxed">
-                        Recognized for outstanding achievements
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className=" text-muted text-xl sm:text-2xl font-bold ">
-                        98% client Satisfaction
-                      </h3>
-                      <p className="text-sm  leading-relaxed">
-                        Client trust built on consistent results
-                      </p>
-                    </div>
-                  </div>
+      <section className="section container-main">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="space-y-7">
+            <SectionHeading
+              eyebrow="About Royal Auto Garage"
+              title="Decades of experience. A commitment to better automotive care."
+            />
 
-                  <div data-aos="fadeup" className="pt-4">
-                    <button
-                      onClick={() => {
-                        navigate("/royalgarage/about");
-                      }}
-                      className="inline-flex items-center gap-2 text-primary transition-colors group font-medium"
-                    >
-                      Read More
-                    </button>
-                  </div>
-                </div>
+            <p className="text-muted-foreground leading-8">
+              Royal Auto Garage began in the 1990s as a small automotive parts
+              business under the leadership of Mr. Kimani. What started with a
+              single mechanic gradually developed into a growing automotive
+              service centre.
+            </p>
 
-                <div className="relative">
-                  <div
-                    data-aos="zoom-in"
-                    className="relative rounded-3xl overflow-hidden shadow-2xl"
-                  >
-                    <img
-                      src=""
-                      alt="Team collaboration"
-                      className="w-full h-[500px] sm:h-[600px] object-cover"
-                    />
-                  </div>
-                </div>
+            <p className="text-muted-foreground leading-8">
+              Through dedication, experience and a commitment to quality, the
+              business continued to grow. Today, Royal Auto Garage serves more
+              than 100 vehicles weekly.
+            </p>
+
+            <SectionLink to="/royalgarage/about">
+              Discover Our Story
+            </SectionLink>
+
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t">
+              <div>
+                <h3 className="text-3xl md:text-4xl font-bold text-primary">
+                  1990s
+                </h3>
+                <p className="text-muted-foreground mt-2 text-sm">
+                  Our journey began
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-3xl md:text-4xl font-bold text-primary">
+                  100+
+                </h3>
+                <p className="text-muted-foreground mt-2 text-sm">
+                  Vehicles serviced weekly
+                </p>
               </div>
             </div>
           </div>
-        </section>
-        <section className=" section ">
-          <div
-            data-aos="fade-up"
-            style={{ backgroundImage: `url(${bg2})` }}
-            className=" bg-center bg-cover w-full h-32 ]"
-          >
-            <div className="  flex justify-center items-center relative w-full h-32  inset-0  bg-black/50">
-              <h1 className="text-white font-bold">
-                {" "}
-                Trusted all over the country{" "}
-              </h1>
+
+          <div className="relative">
+            <img
+              src={landRover}
+              alt="Vehicle at Royal Auto Garage"
+              className="w-full h-[450px] md:h-[580px] object-cover rounded-2xl shadow-xl"
+            />
+
+            <div className="absolute -bottom-6 -left-4 md:-left-8 bg-primary text-primary-foreground p-6 rounded-xl max-w-[220px]">
+              <p className="text-sm opacity-80">Driven by experience</p>
+              <h3 className="text-xl font-bold mt-2">
+                Built on trust and dedication.
+              </h3>
             </div>
           </div>
-          <div className=" z-10 relative bottom-5 w-full flex justify-center items-center gap-4">
-            <div
-              data-aos="fade-right"
-              className="  w-44 h-44  flex flex-col rounded-md bg-amber-50"
-            >
-              <img src="" alt=" alt" />
-              <h1> 500+ projects completed</h1>
-            </div>
-          </div>
-          <div
-            data-aos="zoom-in"
-            className=" flex  flex-col justify-center items-center"
-          >
-            <h1> Call Now </h1>
-            <ul>
-              <li> Certified & experienced mechanics </li>
-              <li> Fast turnaround time </li>
-              <li> Affordable and transparent pricing </li>
-              <li> Trusted by car owners across Nairobi </li>
-            </ul>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section className=" section  flex flex-col  ">
-          <div className=" container-main   flex justify-center items-center gap-normal section-sm   ">
-            <h1 data-aos="fade-right" className="text-header heading-medium  ">
-              Our Core Services Overview{" "}
-            </h1>
-            <ArrowRight className=" text-header  heading-bold  " />
-          </div>
+      {/* ==========================================
+          03. WHY CHOOSE US
+      ========================================== */}
 
-          <div className=" container-main grid grid-cols-2  md:grid-cols-4  gap-x-8 gap-y-3.5 p-2.5   ">
-            {CoreServices.map((item, key) => {
+      <section className="section bg-muted/40">
+        <div className="container-main">
+          <SectionHeading
+            eyebrow="The Royal Difference"
+            title="Why choose Royal Auto Garage?"
+            description="We combine practical experience, professional workmanship and a customer-focused approach to deliver dependable automotive care."
+            center
+          />
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
+            {advantages.map((item) => {
+              const Icon = item.icon;
+
               return (
                 <div
-                  key={key}
-                  data-aos="fade-up"
-                  className=" bg-card  flex flex-col  h-84 justify-between items-center  shadow-md  rounded-md card "
+                  key={item.title}
+                  className="bg-card p-7 rounded-xl border border-border hover:shadow-lg transition-shadow"
                 >
-                  <h1 className="font-bold text-primary"> {item.heading} </h1>
-                  <p className=" text-xs md:text-sm">{item.paragraph}</p>
+                  <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center text-primary">
+                    <Icon size={28} />
+                  </div>
+
+                  <h3 className="text-xl font-bold mt-7">{item.title}</h3>
+
+                  <p className="text-muted-foreground leading-7 mt-3 text-sm">
+                    {item.description}
+                  </p>
                 </div>
               );
             })}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/** pg 3 the process  */}
+      {/* ==========================================
+          04. CORE SERVICES
+      ========================================== */}
 
-        <section className="section ">
-          <div className=" container-main ">
-            <div className="mx-auto max-w-2xl text-center mb-16 ">
-              <h2
-                data-aos="fade-right"
-                className=" text-header heading-medium "
+      <section className="section container-main">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <SectionHeading
+            eyebrow="What We Do"
+            title="Our Core Services"
+            description="From routine maintenance to specialized repairs, we provide solutions that help keep your vehicle in good condition."
+          />
+
+          <SectionLink to="/royalgarage/services">
+            View All Services
+          </SectionLink>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
+          {coreServices.map((service) => {
+            const Icon = service.icon;
+
+            return (
+              <div
+                key={service.heading}
+                className="bg-card border rounded-xl p-7 flex flex-col min-h-[290px] hover:shadow-lg transition-shadow"
               >
-                Auto repair process in four basic steps
-              </h2>
-            </div>
+                <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center text-primary">
+                  <Icon size={27} />
+                </div>
 
-            <div className="flex ">
-              <div className="hidden md:flex md:flex-1  items-center">
-                <img data-aos="fade-right" src="" alt="" className="h-fit " />
+                <h3 className="text-xl font-bold mt-7">{service.heading}</h3>
+
+                <p className="text-sm text-muted-foreground leading-7 mt-4 flex-1">
+                  {service.paragraph}
+                </p>
+
+                <button
+                  onClick={() => navigate("/royalgarage/services")}
+                  className="flex items-center gap-2 mt-6 text-primary font-semibold text-sm"
+                >
+                  Explore Service
+                  <ArrowRight size={17} />
+                </button>
               </div>
-              <div className="flex-1">
-                <div className="rounded-xl  p-8 md:p-12">
-                  <div className="max-w-3xl mx-auto">
-                    <div className="relative">
-                      <div
-                        data-aos="fade-up"
-                        className=" bg-secondary absolute left-5 top-2 bottom-2 w-0.5  "
-                      ></div>
+            );
+          })}
+        </div>
+      </section>
 
-                      <div className="space-y-8">
-                        <div data-aos="fade-left" className="relative pl-12 ">
-                          <div className="absolute left-0 top-0  rounded-full  h-10 w-10 flex items-center justify-center bg-blue-400">
-                            <Glasses />
-                          </div>
+      {/* ==========================================
+          05. HOW WE WORK
+      ========================================== */}
 
-                          <div className="bg-header rounded-lg p-5 transition-all hover:shadow-md">
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className="heading-normal fancy">
-                                Assesment and estmates{" "}
-                              </h3>
-                            </div>
-                            <p className="  text-sm">
-                              Initial planning and team assembly. Define project
-                              scope and objectives.
-                            </p>
-                          </div>
-                        </div>
+      <section className="section container-main">
+        <div className="container-main">
+          <SectionHeading
+            eyebrow="Our Process"
+            title="Professional care, from assessment to collection."
+            description="We follow an organized process to make your vehicle service experience straightforward and transparent."
+            center
+          />
 
-                        <div data-aos="fade-left" className="relative pl-12">
-                          <div className="absolute left-0 top-0  rounded-full border  h-10 w-10 flex items-center justify-center bg-blue-400">
-                            <ToolCase />
-                          </div>
-                          <div className="bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className="heading-normal fancy">
-                                Repair work
-                              </h3>
-                            </div>
-                            <p className=" text-sm">
-                              Create wireframes, mockups, and finalize design
-                              system.
-                            </p>
-                          </div>
-                        </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+            {processSteps.map((step) => {
+              const Icon = step.icon;
 
-                        <div data-aos="fade-left" className="relative pl-12">
-                          <div className="absolute left-0 top-0  rounded-full border  border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
-                            <BrushCleaning />
-                          </div>
-                          <div className="bg-header border  rounded-lg p-5 transition-all hover:shadow-md">
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className="heading-normal fancy">
-                                Cleaning and detailing
-                              </h3>
-                            </div>
-                            <p className=" text-sm">
-                              Core functionality implementation and backend
-                              architecture.
-                            </p>
-                          </div>
-                        </div>
-
-                        <div data-aos="fade-left" className="relative pl-12">
-                          <div className="absolute left-0 top-0  rounded-full border  border-blue-400 h-10 w-10 flex items-center justify-center bg-blue-400 ">
-                            <Combine />
-                          </div>
-                          <div className="bg-header-foreground border  rounded-lg p-5 transition-all hover:shadow-md">
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className="heading-normal fancy">Pick Up</h3>
-                            </div>
-                            <p className=" text-sm">
-                              Comprehensive testing, bug fixes, and performance
-                              optimization.
-                            </p>
-                          </div>
-                        </div>
+              return (
+                <div key={step.number} className="relative">
+                  <div className="bg-card border rounded-xl p-7 h-full">
+                    <div className="flex justify-between items-center">
+                      <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center text-primary">
+                        <Icon size={27} />
                       </div>
+
+                      <span className="text-4xl font-bold text-muted/50">
+                        {step.number}
+                      </span>
                     </div>
+
+                    <h3 className="text-xl font-bold mt-8">{step.title}</h3>
+
+                    <p className="text-sm text-muted-foreground leading-7 mt-4">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/** pg 4  img curosel */}
-        <section className="contanier-main ">
-          <div className="section">
-            <div className="mx-auto max-w-2xl text-center mb-16 ">
-              <h2 className=" text-header heading-medium text-nowrap">
-                Inside RoyalAutoGarage Work In Progress
-              </h2>
-            </div>
-            <div className="` grid  grid-cols-1 gap-normal md:grid-cols-3 card  ">
-              <div className="flex flex-col ">
-                <div className="section-sm ">
-                  <img className="shadow-md rounded-2xl" src={bg} alt="" />
-                </div>
+      {/* ==========================================
+          06. WORKSHOP GALLERY
+      ========================================== */}
 
-                <div className="flex flex-row gap-normal">
-                  <div className=" section-sm">
-                    {" "}
-                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
-                  </div>
-                  <div className="section-sm">
-                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col ">
-                <div className="flex flex-row gap-normal">
-                  <div className=" section-sm">
-                    {" "}
-                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
-                  </div>
-                  <div className="section-sm">
-                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
-                  </div>
-                </div>
+      <section className="section container-main">
+        <SectionHeading
+          eyebrow="Inside Our Workshop"
+          title="A closer look at what we do."
+          description="Explore the people, equipment and automotive work that make up the Royal Auto Garage experience."
+        />
 
-                <div className="section-sm ">
-                  <img className="shadow-md rounded-2xl" src={bg} alt="" />
-                </div>
-              </div>
-              <div className="flex flex-col ">
-                <div className="section-sm ">
-                  <img className="shadow-md rounded-2xl" src={bg} alt="" />
-                </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-14">
+          {galleryImages.map((item, index) => (
+            <div
+              key={item.title}
+              className={`relative overflow-hidden rounded-xl group ${
+                index === 0 ? "lg:row-span-2" : ""
+              }`}
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                className={`w-full object-cover group-hover:scale-105 transition-transform duration-500 ${
+                  index === 0
+                    ? "h-full min-h-[350px]"
+                    : "h-[220px] md:h-[270px]"
+                }`}
+              />
 
-                <div className="flex flex-row gap-normal">
-                  <div className=" section-sm">
-                    {" "}
-                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
-                  </div>
-                  <div className="section-sm">
-                    <img className="shadow-md rounded-2xl" src={bg2} alt="" />
-                  </div>
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-5">
+                <h3 className="text-white font-semibold">{item.title}</h3>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ==========================================
+          07. OUR EXPERTS
+      ========================================== */}
+
+      <section className="section container-main">
+        <div className="container-main">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <SectionHeading
+              eyebrow="The People Behind Our Work"
+              title="Meet Our Experts"
+              description="The skilled hands and dedicated people behind every vehicle we service."
+            />
+
+            <SectionLink to="/royalgarage/about">Meet the Team</SectionLink>
           </div>
-        </section>
 
-        {/**page 5 Garage experts  */}
-        <section className="container-main">
-          <div className="section">
-            <h1 className="flex justify-center heading-medium text-header ">
-              {" "}
-              Meet Our Experts{" "}
-            </h1>
-            <p className="flex justify-center heading-normal">
-              {" "}
-              The skilled hands and trusted faces behind every smooth running at
-              Royal Garage{" "}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+            {teamMembers.map((person) => (
+              <div key={person.role}>
+                <div className="h-[350px] bg-muted rounded-xl overflow-hidden flex items-center justify-center">
+                  {person.image ? (
+                    <img
+                      src={person.image}
+                      alt={person.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                      <CarFront size={55} />
+                      <span className="text-sm">Team photograph</span>
+                    </div>
+                  )}
+                </div>
+
+                <h3 className="text-xl font-bold mt-5">{person.name}</h3>
+
+                <p className="text-muted-foreground mt-1">{person.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================
+          08. TESTIMONIALS
+      ========================================== */}
+
+      <section className="section container-main">
+        <SectionHeading
+          eyebrow="Customer Experiences"
+          title="Our clients talk about us."
+          description="Customer trust is built through consistent service, communication and quality workmanship."
+          center
+        />
+
+        <div className="grid md:grid-cols-3 gap-6 mt-14">
+          {testimonials.map((item, index) => (
+            <div key={index} className="border bg-card rounded-xl p-8">
+              <Quote size={30} className="text-header" />
+
+              <p className="leading-8 text-muted-foreground mt-6">
+                "{item.message}"
+              </p>
+
+              <div className="border-t mt-7 pt-5">
+                <h3 className="font-bold">{item.name}</h3>
+
+                <p className="text-sm text-muted-foreground mt-1">
+                  {item.vehicle}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ==========================================
+          09. FINAL CALL TO ACTION
+      ========================================== */}
+
+      <section className="container-main pb-16">
+        <div className="relative overflow-hidden rounded-2xl bg-neutral-950 text-white p-10 md:p-20 text-center">
+          <div className="absolute inset-0 opacity-20">
+            <img src={bg3} alt="" className="w-full h-full object-cover" />
+          </div>
+
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <span className="text-header uppercase tracking-[0.2em] text-sm font-semibold">
+              Royal Auto Garage
+            </span>
+
+            <h2 className="text-4xl md:text-6xl font-bold mt-6">
+              Your vehicle deserves dependable care.
+            </h2>
+
+            <p className="text-white/70 leading-8 mt-6">
+              From routine maintenance to complex repairs, our team is ready to
+              help keep you moving. Get in touch with Royal Auto Garage today.
             </p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-5 mt-10">
+              <button
+                onClick={() => navigate("/royalgarage/services")}
+                className="px-8 py-4 bg-accent text-white rounded-lg font-semibold flex items-center justify-center gap-3 hover:opacity-90 transition"
+              >
+                Book a Service
+                <ArrowRight size={19} />
+              </button>
+
+              <button
+                onClick={() => navigate("/royalgarage/contact")}
+                className="px-8 py-4 border border-white/40 rounded-lg flex items-center justify-center gap-3 hover:bg-white hover:text-black transition"
+              >
+                <Phone size={18} />
+                Contact Us
+              </button>
+            </div>
           </div>
-        </section>
-      </main>
-    </>
+        </div>
+      </section>
+    </div>
   );
 }
-export default Home;
